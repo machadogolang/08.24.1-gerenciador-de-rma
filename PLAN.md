@@ -18,8 +18,10 @@
       itens `LEG-RMA-NNN`) e matriz de paridade V2→V3 (`paridade-v2-v3.md`)
 - [ ] ARQ-06b — Resolver dúvidas de presença por tema (RN-12 a RN-21 em TEMA V1; default
       de `usuario.app`; RN-11/RN-28/29 em TEMA V1) — ver `INV-RMA-00` §9
-- [ ] ARQ-07 — Interface e identidade visual (`inventario-visual-tema-v1.md`,
-      `inventario-visual-tema-v2.md`, ainda não escritos)
+- [X] ARQ-07a — Interface e identidade visual, primeira passada com evidência real do
+      LEGACY-RUNTIME (`inventario-visual-tema-v1.md`, `inventario-visual-tema-v2.md`) —
+      falta screenshot em imagem e telas internas (novo RMA, detalhes)
+- [X] ARQ-07b — Inventário de banco dedicado (`inventario-banco-rma-v2.md`)
 - [ ] ARQ-08 — Parecer arqueológico consolidado (`docs/pareceres/`)
 
 ### LEGACY-RUNTIME — Ambiente executável da V2

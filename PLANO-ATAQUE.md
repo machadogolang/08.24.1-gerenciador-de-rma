@@ -52,6 +52,27 @@ depois ARQ-06b (dúvidas de presença de regra por tema).
   (pendente — ARQ-07).
 - Mapa legado→V3 por tabela/campo existente (pendente — MIG-V3).
 
+## Catálogo inicial de OpenSpec proposto (ainda nenhuma escrita — proposta de agrupamento)
+
+Nascido do inventário funcional (48 itens `LEG-RMA-NNN`), agrupado por capacidade
+coerente, não por botão nem num bloco só:
+
+| Change proposta | Itens `LEG-RMA` cobertos |
+|---|---|
+| `autenticacao-usuarios` | 001–006, 043 |
+| `rma-cadastro-e-localizacao` | 007–010 |
+| `rma-ciclo-de-vida` | 011–017 (receber/encaminhar/concluir/arquivar/rollback) |
+| `rma-alertas-e-prioridade` | 018–029 (as 10 regras + classificação visual + threshold) |
+| `parceiros` (cliente/fabricante/fornecedor/assistência) | 030–035 |
+| `rma-creditos-e-relatorios` | 036–039, 048 |
+| `rma-logistica-e-historico` | 040–041, 044–047 |
+| `temas-v1-v2` | apresentação — decisão de arquitetura de tema, não itens LEG-RMA específicos |
+| `migracao-v2-v3` | MIG-01/02, não itens LEG-RMA |
+
+Cada change só é escrita quando: (a) as dúvidas `[DÚVIDA]` dos itens que ela cobre
+estiverem resolvidas (ARQ-06b), e (b) houver decisão de arquitetura madura o bastante
+(INV-RMA-05) para descrever "como será na V3", não só "como era na V2".
+
 ## NÃO FAZER AINDA
 
 - Não criar migration, model, controller, view Laravel da V3.
@@ -80,7 +101,9 @@ depois ARQ-06b (dúvidas de presença de regra por tema).
 | ARQ-05 | Árvore RMA V2/TEMA V1/TEMA V2 | Matriz completa, ordem histórica confirmada pelo autor | `[X]` |
 | ARQ-06a | Inventário funcional catalogado | 48 itens `LEG-RMA-NNN` + matriz de paridade | `[X]` |
 | ARQ-06b | Resolver dúvidas de presença por tema | RN-12 a RN-21 verificadas em TEMA V1 | `[ ]` |
-| ARQ-07 | Interface/identidade visual | `inventario-visual-tema-{v1,v2}.md` escritos | `[ ]` |
+| ARQ-07a | Interface/identidade visual (1ª passada) | `inventario-visual-tema-{v1,v2}.md` escritos com evidência de runtime | `[X]` |
+| ARQ-07b | Inventário de banco dedicado | `inventario-banco-rma-v2.md` escrito | `[X]` |
+| ARQ-07c | Screenshots + telas internas | Imagem real dos dois temas, novo RMA e detalhes | `[ ]` |
 | ARQ-08 | Parecer arqueológico consolidado | 17 pontos respondidos | `[ ]` |
 | LR-01 | Design do LEGACY-RUNTIME | `legacy-runtime-ambiente.md` escrito, compat. PHP verificada | `[X]` |
 | LR-02 | `compose.yaml`/`Dockerfile` escritos e testados | TEMA V1 e TEMA V2 respondem em `localhost:8091` | `[X]` |

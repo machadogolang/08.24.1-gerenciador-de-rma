@@ -36,15 +36,35 @@
 - [X] ARQ-07b — Inventário de banco dedicado (`inventario-banco-rma-v2.md`)
 - [ ] ARQ-08 — Parecer arqueológico consolidado (`docs/pareceres/`)
 
-### LEGACY-RUNTIME — agora vive em `08.24.4-legacy-gerenciador-de-rma`
+### LEGACY-RUNTIME — vive em `08.24.4-legacy-gerenciador-de-rma`
 
-- [X] Repositório criado localmente (`~/github/08.24.4-legacy-gerenciador-de-rma`,
-      remoto ainda não existe no GitHub — confirmar/criar quando for autorizado a
-      publicar), código histórico copiado byte-a-byte (exceto os 2 arquivos com
-      segredo real), Docker validado (TEMA V1 e TEMA V2 autenticando em `localhost:8091`)
-- [X] `scripts/legacy-reset.sh` escrito (reset determinístico)
-- [ ] Confirmar neutralização de e-mail de fato (disparar ação real, checar Mailpit)
-- [ ] Screenshots/evidência visual dos dois temas autenticados
+- [X] V2 em `:8094` — porta oficial fixa, documentada em `docs/desenvolvimento/
+      ambiente-v2-v3.md`
+- [X] TEMA V1 validado — smoke test real (login, home, listagem)
+- [X] TEMA V2 validado — smoke test real (login, home, listagem, criar/localizar RMA de
+      fixture, transições receber/concluir)
+- [X] Troca de tema validada — `trocarapp.php` + persistência confirmada após
+      logout/login (preferência `usuario.app` lida corretamente no redirect de login)
+- [X] Banco de laboratório — `rma_legacy` (MariaDB), schema sanitizado, **banco
+      compartilhado entre os dois temas confirmado por evidência direta** (RMA criado
+      via TEMA V2 aparece na listagem do TEMA V1)
+- [X] Mailpit validado de fato — `mail()` disparado dentro do container, capturado no
+      Mailpit, nada saiu para a internet
+- [X] Execução simultânea com V3 — confirmada, 6 containers (3+3) ativos ao mesmo
+      tempo, sem conflito de porta/nome/rede/volume
+- [ ] Remoto no GitHub — **`machadogolang/08.24.4-legacy-gerenciador-de-rma` ainda não
+      existe** (HTTP 404 verificado via API), apesar de instrução anterior dizer que os
+      dois repositórios já tinham sido publicados. Repositório continua só local.
+
+### V3-BASE
+
+- [X] Laravel 13/PHP 8.3 sobe (`sail up -d`)
+- [X] Porta `:8095` — oficial, fixa
+- [X] Infraestrutura isolada (`name: rma-v3` no compose, containers/rede/volume
+      próprios, sem colisão com o Legacy)
+- [X] Banco local (`rma_v3`, MySQL 8.4) — migrations padrão do Laravel aplicadas, ainda
+      **sem nenhuma tabela de domínio RMA** (correto — aguarda OpenSpec)
+- [X] Smoke test básico — HTTP 200 na home, suíte de testes (2/2) passando
 
 ### MIG-V3 — Migração V2 → V3
 
@@ -66,10 +86,16 @@ implementação sem OpenSpec correspondente madura.
       camada de apresentação — investigar antes de fixar)
 - [ ] OpenSpecs por capacidade funcional coerente (catálogo proposto em
       `PLANO-ATAQUE.md`, nenhuma escrita ainda)
-- [ ] Fundação técnica, autenticação, domínio RMA, cadastros, fluxo, filas, garantia,
-      encaminhamento, estoque, conclusão, relatórios, TEMA V1, TEMA V2, seletor de tema
-- [ ] QA funcional + QA visual (comparando com `08.24.4-legacy-gerenciador-de-rma`
-      rodando lado a lado) + QA de migração
+- [ ] Autenticação, domínio RMA, cadastros, fluxo, filas, garantia, encaminhamento,
+      estoque, conclusão, relatórios, TEMA V1, TEMA V2, seletor de tema (fundação
+      técnica pura já concluída — ver V3-BASE acima)
+
+### PARIDADE
+
+- [ ] Comparação funcional (por `LEG-RMA-NNN`, ver `paridade-v2-v3.md`)
+- [ ] Comparação visual (TEMA V1 e TEMA V2, lado a lado com o Legacy rodando em
+      `:8094`)
+- [ ] Comparação de dados (banco `rma_legacy` migrado → `rma_v3`, contagens batendo)
 
 ## Objetivo 3 — Evolução (Trilha B)
 

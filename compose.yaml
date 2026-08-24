@@ -1,0 +1,65 @@
+name: rma-v3
+
+services:
+    laravel.test:
+        build:
+            context: './vendor/laravel/sail/runtimes/8.3'
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: 'sail-8.3/rma-v3-app'
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '127.0.0.1:${APP_PORT:-8095}:80'
+            - '127.0.0.1:${VITE_PORT:-5195}:${VITE_PORT:-5195}'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - rma-v3
+        depends_on:
+            - mysql
+            - mailpit
+    mysql:
+        image: 'mysql:8.4'
+        ports:
+            - '127.0.0.1:${FORWARD_DB_PORT:-3310}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'rma-v3-mysql:/var/lib/mysql'
+            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - rma-v3
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+    mailpit:
+        image: 'axllent/mailpit:latest'
+        ports:
+            - '127.0.0.1:${FORWARD_MAILPIT_PORT:-1037}:1025'
+            - '127.0.0.1:${FORWARD_MAILPIT_DASHBOARD_PORT:-8037}:8025'
+        networks:
+            - rma-v3
+networks:
+    rma-v3:
+        driver: bridge
+volumes:
+    rma-v3-mysql:
+        driver: local

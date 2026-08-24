@@ -13,7 +13,7 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-001 | Login/logout | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-002 | Autocadastro com convite | confirmado | dúvida | — | — | — | PENDENTE |
 | LEG-RMA-003 | Resetar senha (admin) | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-004 | Trocar própria senha | dúvida | quebrado | — | — | — | PENDENTE |
+| LEG-RMA-004 | Trocar própria senha | funcional (correto) | quebrado (regressão) | — | — | — | PENDENTE — V3 usa TEMA V1 como especificação |
 | LEG-RMA-005 | Gerenciar usuários/permissões | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-006 | Selecionar tema V1/V2 | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-007 | Cadastrar novo RMA | confirmado | confirmado | — | — | — | PENDENTE |
@@ -49,15 +49,15 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-037 | Relatório RCD | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-038 | Relatório RPEC | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-039 | Relatório RMPE | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-040 | Consolidação de frete (Porto Alegre) | dúvida | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-040 | Consolidação de frete (Porto Alegre) | código morto/comentado | confirmado, ativo | — | — | — | PENDENTE |
 | LEG-RMA-041 | Boletins relacionados (histórico por contraparte) | dúvida | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-042 | Bloco de notas pessoal | confirmado | dúvida | — | — | — | PENDENTE |
 | LEG-RMA-043 | Auditoria de autenticação | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-044 | Auditoria de modificação de RMA | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-045 | Notificação por e-mail | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-046 | Normalização automática (HGST→Hitachi, origem) | dúvida | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-047 | S/N de retorno auto-preenchido | dúvida | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-048 | Módulo Créditos pendentes/usados/disponíveis | dúvida | quebrado | — | — | — | PENDENTE (decidir: reconstruir a intenção, não o bug) |
+| LEG-RMA-046 | Normalização automática (HGST→Hitachi, origem) | confirmado (duplicado) | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-047 | S/N de retorno auto-preenchido | ausente | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-048 | Módulo Créditos pendentes/usados/disponíveis | N/A (nunca existiu) | quebrado | — | — | — | PENDENTE (reconstruir só a intenção: fluxo único de crédito) |
 
 **Legenda de Status:** `PENDENTE` (aguardando OpenSpec) · `EM ESPECIFICAÇÃO` ·
 `EM IMPLEMENTAÇÃO` · `PARIDADE` (implementado + QA aprovado) · `NÃO RECONSTRUIR`

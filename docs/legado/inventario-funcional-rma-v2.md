@@ -17,7 +17,7 @@ Situação: **funcional** · **parcial** · **quebrado** · **legado** · **cód
 | LEG-RMA-001 | Login/logout | `inc/signin.php` | `pp/senha.php`, `page/logout.php`; `login.php` órfão (redireciona sem renderizar) | tela inicial de cada tema | pública (login), qualquer autenticado (logout) | funcional |
 | LEG-RMA-002 | Autocadastro de usuário com convite | `inc/signup.php` — exige "Key" comparado a segredo fixo hardcoded | **[DÚVIDA]** equivalente em Tema V2 não verificado | tela de signup do Tema V1 | pública + segredo de convite | funcional (Tema V1); dúvida (Tema V2) |
 | LEG-RMA-003 | Resetar senha de outro usuário (admin) | `post/mudar_senha.php` (grava mesmo valor em `Key1461`/`Key1581`) | `subp/resetar_senha.php` (correta) | tela de gestão de usuários | permissão ≥3 | funcional |
-| LEG-RMA-004 | Trocar a própria senha | **[DÚVIDA]** | `alterar_senha()` — SQL inválido (`SET ... SET ...`) | tela de perfil | qualquer autenticado | **quebrado** (Tema V2, ver RN-21); dúvida Tema V1 |
+| LEG-RMA-004 | Trocar a própria senha | `mudarSenha()` — SQL **correto**, funcional | `alterar_senha()` — SQL inválido (`SET ... SET ...`) | tela de perfil | qualquer autenticado | **funcional em Tema V1, quebrado em Tema V2** — regressão confirmada (RN-21), V3 usa Tema V1 como especificação |
 | LEG-RMA-005 | Gerenciar usuários e permissões | `menujs-right/usuarios.php` | `subp/usuarios.php`, `pp/mudar_permissao.php` | painel de usuários | permissão ≥3 (gerenciar), ≥4 invisível na lista | funcional |
 | LEG-RMA-006 | Selecionar/trocar tema (V1↔V2) | `inc/menuright.php` (link "Trocar p/ 15.8.1") | link equivalente | `trocarapp.php` | qualquer autenticado | funcional |
 | LEG-RMA-043 | Auditoria de autenticação (log) | grava em `log` | idem | `subp/logs_de_autenticacao.php` | permissão ≥3 vê ampliado (exceto dev), ≥4 vê tudo | funcional |
@@ -78,27 +78,29 @@ de Tema V2). Detalhe completo em `regras-negocio-rma-legado.md` RN-01 a RN-10.
 | LEG-RMA-037 | Relatório RCD — créditos disponíveis | presente | presente | funcional |
 | LEG-RMA-038 | Relatório RPEC — produtos em estoque para contagem | presente | presente | funcional |
 | LEG-RMA-039 | Relatório RMPE — produtos encaminhados pelo RMA | presente | presente | funcional (um relatório tem intervalo hardcoded para 2014 — bug, RN correlata) |
-| LEG-RMA-040 | Consolidação de frete por cidade (Porto Alegre) | **[DÚVIDA]** | `right_portoalegre()` | RN-16 — confirmado só em Tema V2 |
+| LEG-RMA-040 | Consolidação de frete por cidade (Porto Alegre) | presente, **código morto/comentado** (`inc/startpage.php`) | `right_portoalegre()`, ativa | funcional só em Tema V2; existiu e foi desativada em Tema V1 (RN-16) |
 | LEG-RMA-041 | Boletins de defeito relacionados (histórico por contraparte) | **[DÚVIDA]** | rodapé de `page/rma.php`, sem LIMIT | funcional (Tema V2), risco de performance |
-| LEG-RMA-042 | Bloco de notas pessoal do usuário | `post/salvarnotas.php` | equivalente **[DÚVIDA]** | tela de localizar/topo | funcional (Tema V1 confirmado) |
-| LEG-RMA-048 | Módulo de Créditos "pendentes/usados/disponíveis" | **[DÚVIDA]** | rotas existem no `.htaccess`, arquivos de destino (`subp/{pendentes,usados,disponiveis}.php`) não existem | **quebrado** (Tema V2, RN-18) |
+| LEG-RMA-042 | Bloco de notas pessoal do usuário | `post/salvarnotas.php` | equivalente **[DÚVIDA]** | funcional (Tema V1 confirmado) |
+| LEG-RMA-048 | Módulo de Créditos "pendentes/usados/disponíveis" | N/A — nunca existiu essa divisão em Tema V1 | rotas existem no `.htaccess`, arquivos de destino não existem | **quebrado só em Tema V2** (RN-18); Tema V1 nunca tentou o split |
 
 ## Normalização de dados (regras escondidas na gravação)
 
 | ID | Nome | Situação |
 |---|---|---|
 | LEG-RMA-045 | Notificação por e-mail (conclusão / tentativa negada) | funcional, destinatários hardcoded (`naopermitido()`, `ezequiel()`) |
-| LEG-RMA-046 | Normalização automática (HGST→Hitachi, cascata de `origem`) | funcional (Tema V2, RN-13/RN-14), **[DÚVIDA]** Tema V1 |
-| LEG-RMA-047 | S/N de retorno auto-preenchido (anti-fraude) | funcional (Tema V2, RN-15), **[DÚVIDA]** Tema V1 |
+| LEG-RMA-046 | Normalização automática (HGST→Hitachi, cascata de `origem`) | **funcional em ambos os temas**, implementação duplicada (não compartilhada) — RN-13/RN-14 |
+| LEG-RMA-047 | S/N de retorno auto-preenchido (anti-fraude) | funcional só em Tema V2 — **ausente em Tema V1** (RN-15) |
 
 ## Cobertura e método
 
 Este inventário nasceu da leitura já registrada em `regras-negocio-rma-legado.md`,
 `modelo-dominio-rma-legado.md` e dos relatórios originais de arqueologia — não é uma
 nova leitura de código, é a primeira consolidação em formato de catálogo com ID estável.
-48 itens catalogados. Itens marcados **[DÚVIDA]** quanto à presença em Tema V1 precisam
-da comparação linha a linha ainda pendente (ver `INV-RMA-00` §9) antes de fechar a
-paridade desses itens especificamente no Tema V1.
+48 itens catalogados. **ARQ-06b concluído (2026-08-24):** comparação linha a linha
+`14.6.1/post/*` vs `15.8.1/pp/*` resolveu as dúvidas de LEG-RMA-004, 040, 046, 047, 048 —
+ver `regras-negocio-rma-legado.md` §Notas de cobertura para o detalhe. Único item ainda
+em aberto: LEG-RMA-029 (threshold R$75) — busca textual não encontrou equivalente em
+Tema V1, sem confirmação absoluta por leitura linha a linha completa.
 
 **Não catalogado ainda** (pendente de leitura): plugins JS específicos além dos já
 citados (iCheck, Lightbox — uso real não confirmado), atalhos de teclado (nenhum

@@ -4,18 +4,19 @@
 
 ## AGORA
 
-**LEGACY-RUNTIME está no ar** (LR-01/02/03 concluídos — ver
-`docs/legado/legacy-runtime-ambiente.md`). Próxima ação: fechar as lacunas de
-documentação pedidas na diretriz mestre (inventário de banco dedicado, inventário
-visual dos dois temas com evidência do runtime real, catálogo de OpenSpec proposto) e
-depois ARQ-06b (dúvidas de presença de regra por tema).
+**Repositório Legacy separado:** o código executável do RMA V2 e o Docker migraram
+para `~/github/08.24.4-legacy-gerenciador-de-rma` (repo próprio, commit `#L0`) —
+`docs/legado/legacy-runtime-ambiente.md` deste repo passa a ser só a memória de design/
+achados da sessão em que foi montado; o `README.md` do repo Legacy é agora a fonte
+operacional (`cp .env.example .env && docker compose up -d`). ARQ-06 (a comparação
+14.6.1×15.8.1) está **concluído** — ver `regras-negocio-rma-legado.md` §Notas de
+cobertura. Próxima ação: `ARQ-08` (parecer arqueológico consolidado).
 
 ## DEPOIS (em paralelo quando fizer sentido)
 
-1. **ARQ-06b** — resolver dúvidas de presença por tema (RN-12 a RN-21 em TEMA V1;
-   default de `usuario.app`) — retomando leitura de código, agora autorizada, sempre
-   registrando achado direto em `regras-negocio-rma-legado.md`/`inventario-funcional-
-   rma-v2.md`, nunca só na conversa.
+1. ~~ARQ-06b~~ **CONCLUÍDO** — RN-13 a RN-18, RN-21 comparadas linha a linha; achado
+   maior: regressão real de "trocar senha" entre TEMA V1 (funciona) e TEMA V2 (quebrado).
+   Único residual: RN-12 (threshold R$75), não localizado em TEMA V1, risco baixo.
 2. **ARQ-07** — interface e identidade visual: com o LEGACY-RUNTIME de pé, capturar
    evidência real (não só CSS estático) para `inventario-visual-tema-v1.md` e
    `inventario-visual-tema-v2.md` (ainda não escritos).

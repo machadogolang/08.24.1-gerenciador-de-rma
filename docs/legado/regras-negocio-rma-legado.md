@@ -190,7 +190,10 @@ produz erro) · **MORTA** (rota/arquivo inalcançável) · **DÚVIDA**.
 - **Por que existe:** consolidação de marca pós-aquisição empresarial (HGST foi
   adquirida pela Western Digital/associada à Hitachi historicamente), codificada como
   find-and-replace em vez de cadastro corrigido.
-- **Situação:** VIGENTE em 15.8.1. **[DÚVIDA]** se existe em 14.6.1.
+- **Situação:** **[CONFIRMADO-TEMA-V1] VIGENTE em ambos os temas**, código quase
+  idêntico: `14.6.1/post/novo.php:14-16` — `if ($fabricante == "HGST") { $fabricante =
+  "Hitachi"; }`. Implementação duplicada, não herdada/compartilhada — cada tema tem sua
+  própria cópia da regra.
 
 ## RN-14 — Normalização/cascata do campo `origem`
 
@@ -206,7 +209,13 @@ produz erro) · **MORTA** (rota/arquivo inalcançável) · **DÚVIDA**.
   for string vazia, é no-op (ok), mas se um cliente real se chamar "Loja" ou um
   fornecedor for substring de outro valor de origem, ocorre corrupção silenciosa de
   dados.
-- **Situação:** VIGENTE em 15.8.1. **[DÚVIDA]** se existe em 14.6.1.
+- **Situação:** **[CONFIRMADO-TEMA-V1] VIGENTE em ambos os temas**, sequência quase
+  idêntica em `14.6.1/post/novo.php:65-75`. **Mesmo bug de variável não inicializada
+  confirmado aqui também**: `$fornecedor` é usado na linha 67
+  (`str_replace($fornecedor,"Unknown",$origem)`) sem nunca ter sido definido antes nesse
+  arquivo — replica exatamente o achado do agente de arqueologia do TEMA V1 (seção
+  "post/processa_detalhes.php", mesma classe de bug), confirmando que é um padrão
+  copiado entre os dois formulários de criação/edição, não um acidente isolado.
 
 ## RN-15 — S/N de retorno auto-preenchido (anti-fraude de troca de peça)
 
@@ -219,7 +228,11 @@ produz erro) · **MORTA** (rota/arquivo inalcançável) · **DÚVIDA**.
   PRODUTO`, `DEVOLUCAO DO PRODUTO`, crédito, reembolso), volta outro aparelho, campo
   fica em branco para digitação manual. Rastreia serial-in ≠ serial-out — controle de
   custódia, prevenção de "troca de gato por lebre".
-- **Situação:** VIGENTE em 15.8.1. **[DÚVIDA]** se existe em 14.6.1.
+- **Situação:** **[CONFIRMADO-TEMA-V1] AUSENTE em TEMA V1** — `snretorno` é gravado como
+  coluna passiva em `14.6.1/banco.oo.php` (parâmetro simples de INSERT/UPDATE), mas
+  `14.6.1/post/processa_detalhes.php` **não contém nenhuma lógica de auto-preenchimento**
+  condicionada à `solucao`. Este é o primeiro achado de melhoria real e verificada entre
+  temas: a regra anti-fraude nasceu só na geração TEMA V2, não existia na TEMA V1.
 
 ## RN-16 — Consolidação de frete por cidade (Porto Alegre)
 
@@ -231,11 +244,17 @@ produz erro) · **MORTA** (rota/arquivo inalcançável) · **DÚVIDA**.
 - **Regra de negócio:** agrupar itens destinados a Porto Alegre para consolidar uma única
   viagem/frete. Única query de todo o sistema com JOINs reais; única com cidade
   hardcoded.
-- **Situação:** VIGENTE em 15.8.1 (com achado: dois aliases de JOIN — `FOD`, `FAD` —
+- **Situação:** VIGENTE em TEMA V2 (com achado: dois aliases de JOIN — `FOD`, `FAD` —
   declarados mas não usados no `WHERE`, evidência de refatoração incompleta).
-  **[DÚVIDA]** se existe em 14.6.1.
+  **[CONFIRMADO-TEMA-V1] [CÓDIGO-MORTO em TEMA V1]** — a mesma query (idêntica,
+  inclusive comentário de "versão anterior") existe em
+  `14.6.1/inc/startpage.php:139-165`, mas está **inteiramente comentada** (bloco
+  `/* ... */` do PHP e comentário HTML `<!-- -->` no ponto de exibição) — o widget
+  "TRANSPORTE P/ PORTO ALEGRE" foi desativado na tela inicial do TEMA V1, deliberadamente
+  ou por regressão não documentada. Evidência de que a funcionalidade existiu nos dois
+  temas em algum momento, mas só continuou ativa no TEMA V2.
 
-## RN-17 [BUG-LEGADO, alto impacto] — `marcarestoque` computado e depois sobrescrito
+## RN-17 [DÍVIDA-TÉCNICA, revisado] — `marcarestoque` sem enforcement automático real
 
 - **Origem:** `15.8.1/pp/novo_rma.php:119-125`.
 - **Sequência:**
@@ -248,19 +267,32 @@ produz erro) · **MORTA** (rota/arquivo inalcançável) · **DÚVIDA**.
   padrão). Como `marcarestoque` é o discriminador central da RN-11 (inconformidade), esse
   override silencioso significa que **produtos de cliente cadastrados sem desmarcar o
   checkbox escapam de todos os alertas de prazo legal**.
-- **Situação:** QUEBRADA em 15.8.1 (bug confirmado, provavelmente o de maior impacto
-  operacional de todo o levantamento). **[DÚVIDA]** se existe em 14.6.1 — a variável
-  equivalente e a lógica de criação de RMA em `14.6.1/post/novo.php` não foi comparada
-  linha a linha ainda.
+- **Situação:** **[CONFIRMADO-TEMA-V1] achado revisado.** `14.6.1/post/novo.php:79-83`
+  **não tem o passo de cálculo por `origem`** — lê o checkbox direto:
+  ```php
+  if (isset($_POST["marcarestoque"])){ $marcarestoque=1; } else { $marcarestoque=0; }
+  ```
+  Ou seja: o "bug" em TEMA V2 não é uma regressão funcional de comportamento (em ambos
+  os temas o valor final sempre foi só o que veio do checkbox — em TEMA V2 o cálculo por
+  `origem` é feito e imediatamente descartado, então não muda o resultado observável).
+  É **código morto/enganoso em TEMA V2** (parece implementar uma regra que na prática
+  nunca se aplica), não uma regressão de comportamento entre temas. Reclassificado de
+  `[BUG-LEGADO, alto impacto]` para **[DÍVIDA-TÉCNICA]** — o problema real, presente nos
+  **dois** temas, é a ausência de qualquer enforcement automático (o checkbox vem
+  marcado por padrão no formulário e depende só do operador lembrar de desmarcar) —
+  isso sim é candidato a correção na V3, não a preservar.
 
 ## RN-18 [QUEBRADA] — Módulo de Créditos "pendentes/usados/disponíveis"
 
 - **Origem:** `.htaccess` do app 15.8.1 define rotas `^creditos/pendentes`,
   `^creditos/usados`, `^creditos/disponiveis`, mas `subp/pendentes.php`,
   `subp/usados.php`, `subp/disponiveis.php` **não existem** → erro fatal garantido.
-- **Situação:** QUEBRADA em 15.8.1. Só `page/credito.php` (singular, rota
+- **Situação:** QUEBRADA em TEMA V2. Só `page/credito.php` (singular, rota
   `^creditos?$`) funciona de fato, chamando `listar_creditos()`.
-- **[DÚVIDA]** situação em 14.6.1 — não verificado se existe equivalente.
+- **[CONFIRMADO-TEMA-V1] N/A em TEMA V1** — o tema mais simples nunca teve a tentativa de
+  split em 3 sub-rotas (`pendentes`/`usados`/`disponíveis`); só existe
+  `page/aguardandocredito.php` + `menujs-right/creditos.php` (link único). A quebra é
+  específica de uma ambição de escopo maior que só apareceu — e falhou — em TEMA V2.
 
 ## RN-19 [MORTA] — "Autorizada" como entidade separada
 
@@ -273,23 +305,50 @@ produz erro) · **MORTA** (rota/arquivo inalcançável) · **DÚVIDA**.
   nenhum app grava esse valor de `status`. Situação: MORTA/abandonada em ambos os apps
   (mecanismo de rota existe, implementação nunca foi concluída).
 
-## RN-21 [BUG-LEGADO] — Troca de senha pelo usuário nunca funcionou
+## RN-21 [REGRESSÃO CONFIRMADA] — Troca de senha pelo usuário: funciona em TEMA V1, quebrada em TEMA V2
 
 - **Origem:** `15.8.1/banco.php` (`alterar_senha()`): `"UPDATE usuario SET Key1581 = ?,
   SET Key1461 = ? WHERE ..."` — segundo `SET` é sintaxe SQL inválida.
-- **Impacto:** usuários não conseguem trocar a própria senha; só reset por admin
-  (`resetar_senha()`, correta) funciona.
-- **Situação:** QUEBRADA em 15.8.1. **[DÚVIDA]** em 14.6.1.
+- **Impacto em TEMA V2:** usuários não conseguem trocar a própria senha; só reset por
+  admin (`resetar_senha()`, correta) funciona.
+- **[CONFIRMADO-TEMA-V1] TEMA V1 tem a mesma funcionalidade FUNCIONANDO
+  CORRETAMENTE:** `14.6.1/post/mudar_senha.php` (fluxo de autoatendimento, usa
+  `$_SESSION["START1597_email"]` — o próprio usuário logado, não um alvo de admin) chama
+  `banco.oo.php::mudarSenha($email,$novaSenha)`, com SQL **válido**:
+  `"UPDATE usuario SET Key1461 = ?, Key1581 = ? WHERE email = ?"` (um único `SET`,
+  vírgula entre as duas atribuições).
+- **Situação:** **Esta é a evidência mais forte de todo o levantamento de que "fidelidade
+  não é copiar bug"** (regra de ouro da diretriz mestre) — a troca de senha pelo próprio
+  usuário é comportamento intencional **comprovado pelo TEMA V1**, a build de TEMA V2 é
+  quem introduziu a regressão. A V3 deve implementar a funcionalidade corretamente,
+  usando o TEMA V1 como especificação de comportamento, sem qualquer dúvida sobre a
+  "intenção" — não é mais inferência, é evidência direta comparativa.
+- **Achado de segurança adicional (TEMA V1):** `banco.oo.php::deletaUsuario()`, chamada
+  pelo mesmo arquivo de administração, monta `"DELETE FROM usuario WHERE email =
+  '$usuarioInputDel'"` por concatenação direta — SQL Injection confirmada também aqui,
+  mesma classe de vulnerabilidade já catalogada para TEMA V2.
 
 ---
 
-## Notas de cobertura (o que ainda não foi comparado)
+## Notas de cobertura — ARQ-06b concluído (2026-08-24)
 
-As regras RN-12 a RN-17 (threshold R$75, HGST→Hitachi, cascata de origem, snretorno,
-Porto Alegre, bug do marcarestoque) foram confirmadas **apenas no app 15.8.1**. Não foi
-verificado se o app 14.6.1 tem implementação própria equivalente, herdada, ausente ou
-diferente para nenhuma delas — todas marcadas **[DÚVIDA]**. Isso é trabalho pendente de
-uma próxima rodada de arqueologia (comparação direta `14.6.1/post/novo.php` e
-`14.6.1/post/processa_detalhes.php` contra `15.8.1/pp/novo_rma.php` e
-`15.8.1/pp/salvar_rma.php`), não bloqueante para o parecer inicial porque 15.8.1 é a
-referência funcional confirmada (ver matriz de comparação).
+Comparação `14.6.1/post/novo.php` + `14.6.1/post/processa_detalhes.php` +
+`14.6.1/banco.oo.php` contra o equivalente em TEMA V2, resolvendo todas as dúvidas de
+RN-12 a RN-18 e RN-21:
+
+| Regra | Resultado em TEMA V1 |
+|---|---|
+| RN-12 (threshold R$75) | **[DÚVIDA] ainda não localizada** — não encontrada em nenhum arquivo lido de TEMA V1 (busca por `right_urgente`/valor>75 sem resultado); tratar como provavelmente ausente, não confirmado 100% |
+| RN-13 (HGST→Hitachi) | **presente, idêntica** (implementação duplicada) |
+| RN-14 (cascata de origem) | **presente, idêntica**, inclusive o mesmo bug de `$fornecedor` não inicializado |
+| RN-15 (snretorno anti-fraude) | **ausente** — só em TEMA V2 |
+| RN-16 (Porto Alegre) | **presente mas código morto/comentado** — existiu, foi desativada |
+| RN-17 (marcarestoque) | **reclassificada** — não é bug exclusivo de TEMA V2, é ausência de enforcement em ambos os temas (TEMA V1 nunca teve a etapa de cálculo, só lê o checkbox) |
+| RN-18 (créditos quebrados) | **N/A** — TEMA V1 nunca teve a tentativa de split que quebrou em TEMA V2 |
+| RN-21 (trocar senha) | **FUNCIONA em TEMA V1** — TEMA V2 introduziu a regressão (achado mais importante desta rodada) |
+
+Único item ainda genuinely em aberto: RN-12 (threshold R$75) — busca textual não
+encontrou equivalente em TEMA V1, mas não houve leitura linha a linha de 100% dos
+arquivos de `14.6.1/menujs-right/` e `14.6.1/page/` para descartar com certeza absoluta.
+Risco baixo de mudar decisão de reconstrução (é uma regra aditiva, não um comportamento
+básico).

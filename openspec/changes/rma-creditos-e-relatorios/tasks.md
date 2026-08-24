@@ -1,0 +1,21 @@
+# Tasks — Créditos e relatórios
+
+- [ ] `database/migrations/2026_08_30_000000_add_credito_fields_to_rmas_table.php`
+- [ ] `app/Rma/Aplicacao/MarcarCreditoDisponivel.php`
+- [ ] `app/Rma/Aplicacao/Alertas/AguardandoCredito.php`
+- [ ] `app/Rma/Aplicacao/Relatorios/RelatorioCreditosDisponiveis.php`
+- [ ] `app/Rma/Aplicacao/Relatorios/RelatorioProdutosEmEstoqueParaContagem.php`
+- [ ] `app/Rma/Aplicacao/Relatorios/RelatorioProdutosEncaminhados.php`
+- [ ] `app/Http/Controllers/Rma/RelatorioController.php`
+- [ ] `app/Http/Controllers/Rma/CreditoController.php`
+- [ ] `resources/views/rma/relatorios/{rcd,rpec,rmpe}.blade.php`
+- [ ] `resources/views/rma/credito/index.blade.php`
+- [ ] Rotas em `routes/web.php`
+- [ ] `tests/Feature/Rma/MarcarCreditoDisponivelTest.php`
+- [ ] `tests/Unit/Rma/Relatorios/RelatorioCreditosDisponiveisTest.php`
+- [ ] `tests/Unit/Rma/Relatorios/RelatorioProdutosEmEstoqueParaContagemTest.php`
+- [ ] `tests/Unit/Rma/Relatorios/RelatorioProdutosEncaminhadosTest.php`
+- [ ] `sail test` verde
+- [ ] Atualizar `docs/produto/paridade-v2-v3.md` (`LEG-RMA-036/037/038/039/048`)
+- [ ] Atualizar `docs/produto/checklist-master-v3.md` (Fase 6 concluída)
+- [ ] Commit `#F6 - Creditos e relatorios (fluxo de credito, RCD/RPEC/RMPE)`

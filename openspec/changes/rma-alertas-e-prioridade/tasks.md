@@ -1,0 +1,29 @@
+# Tasks — Alertas e prioridade
+
+- [ ] `database/migrations/2026_08_29_000000_add_alertas_fields_to_rmas_table.php`
+- [ ] `app/Rma/Dominio/Origem.php`
+- [ ] `app/Rma/Dominio/Prioridade.php`
+- [ ] `app/Rma/Dominio/StatusDeLancamento.php`
+- [ ] `app/Rma/Dominio/ClasseDeAlerta.php`
+- [ ] `app/Rma/Dominio/Rma.php` — estender: `classeDeAlerta()`, `prazoLegal()`
+- [ ] `app/Rma/Aplicacao/Alertas/RecebidosSemEncaminhar30Dias.php`
+- [ ] `app/Rma/Aplicacao/Alertas/NaoVaiDarGarantia.php`
+- [ ] `app/Rma/Aplicacao/Alertas/NfRetornoPendenteDeLancar.php`
+- [ ] `app/Rma/Aplicacao/Alertas/ProtocoloAbertoNaoEncaminhado.php`
+- [ ] `app/Rma/Aplicacao/Alertas/GarantiaFornecedorExpirada.php`
+- [ ] `app/Rma/Aplicacao/Alertas/GarantiaFornecedorExpirandoEm30Dias.php`
+- [ ] `app/Rma/Aplicacao/Alertas/PrazoDestinatarioEstourado.php`
+- [ ] `app/Rma/Aplicacao/Alertas/PrioridadeAltaSemEncaminhar.php`
+- [ ] `app/Rma/Aplicacao/Alertas/SemNotaFiscal.php`
+- [ ] `app/Rma/Aplicacao/Alertas/SemNumeroDeSerie.php`
+- [ ] `app/Rma/Aplicacao/Alertas/UrgenciaPorThreshold.php`
+- [ ] `app/Http/Controllers/Rma/PainelDeAlertasController.php`
+- [ ] `resources/views/rma/_painel_de_alertas.blade.php`
+- [ ] Rotas em `routes/web.php`
+- [ ] `tests/Unit/Rma/Alertas/RecebidosSemEncaminhar30DiasTest.php` (+ 9 análogos)
+- [ ] `tests/Unit/Rma/ClasseDeAlertaTest.php`
+- [ ] `tests/Unit/Rma/UrgenciaPorThresholdTest.php`
+- [ ] `sail test` verde
+- [ ] Atualizar `docs/produto/paridade-v2-v3.md` (`LEG-RMA-018` a `029`)
+- [ ] Atualizar `docs/produto/checklist-master-v3.md` (Fase 5 concluída)
+- [ ] Commit `#F5 - Alertas e prioridade (10 regras + MARKVISION + threshold R$75)`

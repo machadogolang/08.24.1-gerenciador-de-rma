@@ -8,9 +8,9 @@ DEPENDÊNCIAS); este documento é o **checklist granular** dos dois, para não p
 nenhum item pequeno entre uma sessão e outra.
 
 **Sumário:** Parte 1 — tudo já investigado (índice) · Parte 2 — arquitetura decidida e
-inventário de tecnologia · Parte 3 — as 10 fases de implementação, Fase 1 já em
-especificação · Parte 4 — estratégia de migração em detalhe · Parte 5 — pendências
-operacionais menores.
+inventário de tecnologia · Parte 3 — as 10 fases de implementação, Fases 1-8 já em
+especificação (Fases 9/10 em esqueleto, `INV-RMA-05` §14/§15) · Parte 4 — estratégia de
+migração em detalhe · Parte 5 — pendências operacionais menores.
 
 ---
 
@@ -100,18 +100,21 @@ operacionais menores.
 - [x] Decidido: `Rma` (só ele) usa fronteira completa `Dominio`/`Aplicacao`/
       `Infraestrutura` com interface de repositório — `Identidade`/`Parceiros` usam
       Eloquent direto (ver `INV-RMA-05` §8 para a justificativa)
-- [ ] Investigar granularidade real de compartilhamento entre TEMA V1 e TEMA V2 (fica
-      para a Fase 8/apresentação, quando for desenhada em detalhe):
-  - [ ] Comparar as duas telas de "novo RMA" lado a lado (V1 vs V2) campo a campo
-  - [ ] Comparar as duas telas de "detalhe do RMA" lado a lado campo a campo
-  - [ ] Decidir se a diferença é só de apresentação (view/layout) ou também de
-        Controller/rota
-- [ ] Definir enum/máquina de estado final de `status` (fica para a Fase 4/ciclo de
-      vida, hoje só `PROVISÓRIO`)
-- [ ] Definir enum final de `solucao` (fica para a Fase 4/6 — 17 valores confirmados,
-      decidir se agrupa por categoria)
-- [ ] Registrar decisão de identificadores (ID incremental vs UUID/ULID) para `Rma` e
-      demais entidades (fica para a Fase 3/núcleo do Rma)
+- [x] Granularidade de compartilhamento entre TEMA V1 e TEMA V2 — **decidida por
+      evidência já reunida nas Fases 1-7** (`INV-RMA-05` §13): Controllers/casos de uso
+      únicos, views/rotas por tema. 2 sub-itens continuam pendentes, mas bloqueiam só a
+      *implementação* da Fase 8, não mais o *planejamento*:
+  - [ ] Comparar as duas telas de "novo RMA"/"detalhe do RMA" lado a lado campo a campo
+        (ainda depende de renderizar telas internas reais de TEMA V1, não capturadas)
+  - [ ] Confirmar mecanismo real das âncoras de TEMA V2 (AJAX vs. scroll) inspecionando
+        o LEGACY-RUNTIME
+- [x] Enum/máquina de estado final de `status` definida — `INV-RMA-05` §9 (Fase 4):
+      `Entrada`/`Recebido`/`Encaminhado`/`Concluido`/`Arquivado`, sem `Retornou`
+- [x] Enum final de `solucao` definido — `INV-RMA-05` §9 (Fase 4): 16 valores
+      confirmados por leitura direta de `15.8.1/page/rma.php`, sem agrupamento por
+      categoria (só o método `implicaMesmoAparelhoDeRetorno()` para RN-15)
+- [x] Identificadores: `id` incremental do Eloquent (decidido na Fase 3, `INV-RMA-05`
+      §8) — mantido para as fases seguintes, sem novo caso de uso de exposição pública
 
 ## Parte 3 — As 10 fases de implementação (ordem de dependência, `INV-RMA-05` §5)
 
@@ -185,48 +188,100 @@ incremental (sem UUID/ULID — sem caso de uso ainda). Tasks (resumido):
 - [ ] `sail test` verde, `paridade-v2-v3.md` atualizado
       (`LEG-RMA-007/008/009/010/046`), commit `#F3`
 
-### Fase 4 — Ciclo de vida — **NÃO INICIADA**
+### Fase 4 — Ciclo de vida — **EM ESPECIFICAÇÃO**
 
-- [ ] Escrever `openspec/changes/rma-ciclo-de-vida/{proposal,design,tasks}.md`
-- [ ] Definir enum de `status` e de `solucao`
-- [ ] Casos de uso: receber/encaminhar/concluir/arquivar/reverter
-      (`LEG-RMA-011` a `017`)
-- [ ] Testes de todas as transições válidas/inválidas
+OpenSpec escrita: `openspec/changes/rma-ciclo-de-vida/{proposal,design,tasks}.md`.
+Arquivo por arquivo detalhado em `INV-RMA-05` §9. **Decisões já tomadas:** `ArquivarRma`
+usa TEMA V2 como especificação (TEMA V1 confirmado quebrado nesta revisão — `Fatal
+Error` incondicional, classe `controle` inexistente); `Solucao` enum com os 16 valores
+lidos diretamente de `15.8.1/page/rma.php:578-595`; datas por transição
+(`recebido_em`/`encaminhado_em`/`concluido_em`/`arquivado_em`), não `updated_at`
+genérico. Tasks (resumido):
 
-### Fase 5 — Alertas e regras — **NÃO INICIADA**
+- [ ] Migration com `status`, datas por transição, `protocolo`, `solucao`, `snretorno`,
+      `destinatario` polimórfico
+- [ ] `Status`, `Solucao` (enums de domínio)
+- [ ] `ReceberRma`, `EncaminharRma`, `ConcluirRma`, `ArquivarRma`,
+      `ReverterRmaParaEntrada`, `RegistrarSolucao` (`LEG-RMA-011` a `017`, `047`)
+- [ ] `Papel::podeReverterAlemDoMesmoDia()` (novo método, Fase 1 estendida)
+- [ ] Controller + views mínimas + rotas
+- [ ] 6 arquivos de teste feature + 2 unit
+- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado, commit `#F4`
 
-- [ ] Escrever `openspec/changes/rma-alertas-e-prioridade/{proposal,design,tasks}.md`
-- [ ] As 10 regras de alerta (`LEG-RMA-018` a `027`)
-- [ ] Classificação visual de inconformidade (`LEG-RMA-028`)
-- [ ] Regra MARKVISION e threshold R$75 (`LEG-RMA-019`/`029`, confirmar RN-12 antes)
-- [ ] Teste unitário por regra, com fixture
+### Fase 5 — Alertas e regras — **EM ESPECIFICAÇÃO**
 
-### Fase 6 — Créditos e relatórios — **NÃO INICIADA**
+OpenSpec escrita: `openspec/changes/rma-alertas-e-prioridade/{proposal,design,tasks}.md`.
+Arquivo por arquivo detalhado em `INV-RMA-05` §10. **Decisão já tomada:** filtro de data
+inteiramente no SQL (query builder), nunca em PHP pós-`SELECT` — elimina por construção
+a classe de bug "num_rows mentiroso" do legado. RN-12 (threshold R$75) implementada
+para os dois temas (inferência registrada, não evidência direta — ver `design.md`).
+Tasks (resumido):
 
-- [ ] Escrever `openspec/changes/rma-creditos-e-relatorios/{proposal,design,tasks}.md`
-- [ ] Fluxo de crédito (`LEG-RMA-036`)
-- [ ] Relatórios RCD/RPEC/RMPE (`LEG-RMA-037` a `039`)
-- [ ] Testes
+- [ ] Migration com `prioridade`, `marcarestoque`, NF (compra/venda), `lancadoretorno`
+- [ ] `Origem`, `Prioridade`, `StatusDeLancamento`, `ClasseDeAlerta` (enums)
+- [ ] 10 classes de regra + `UrgenciaPorThreshold` em `app/Rma/Aplicacao/Alertas/`
+- [ ] `Rma::classeDeAlerta()`, `Rma::prazoLegal()`
+- [ ] Controller + view do painel + rotas
+- [ ] 12 arquivos de teste unitário (10 regras + `ClasseDeAlerta` + threshold)
+- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado (`LEG-RMA-018` a `029`),
+      commit `#F5`
 
-### Fase 7 — Auditoria — **NÃO INICIADA**
+### Fase 6 — Créditos e relatórios — **EM ESPECIFICAÇÃO**
 
-- [ ] Escrever `openspec/changes/rma-logistica-e-historico/{proposal,design,tasks}.md`
-      (cobre também `LEG-RMA-040`/`041` — consolidação de frete, boletins relacionados)
-- [ ] Log de modificação de RMA (`LEG-RMA-044`) — decidir snapshot vs. diff estruturado
-- [ ] Notificação por e-mail (`LEG-RMA-045`) — via Mailable do Laravel, destinatário
-      configurável (não hardcoded como o legado)
-- [ ] Testes
+OpenSpec escrita: `openspec/changes/rma-creditos-e-relatorios/{proposal,design,tasks}.md`.
+Arquivo por arquivo detalhado em `INV-RMA-05` §11. Cobre `LEG-RMA-036` a `039` e `048`
+(reconstrói só a intenção do módulo de créditos quebrado em TEMA V2 — um fluxo único,
+não 3 sub-rotas). Tasks (resumido):
 
-### Fase 8 — Apresentação (Temas V1/V2) — **NÃO INICIADA**
+- [ ] Migration com `credito_disponivel`
+- [ ] `MarcarCreditoDisponivel`, `AguardandoCredito`
+- [ ] 3 relatórios (RCD/RPEC/RMPE) — RMPE corrige intervalo hardcoded para 2014
+- [ ] Controller + views + rotas
+- [ ] 4 arquivos de teste
+- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado, commit `#F6`
 
-- [ ] Escrever `openspec/changes/temas-v1-v2/{proposal,design,tasks}.md`
-- [ ] Resolver a investigação de granularidade pendente (Parte 2)
-- [ ] Árvore de Blade por tema + Sass com paleta capturada
-      (`inventario-visual-tema-{v1,v2}.md`)
-- [ ] Seletor de tema com fidelidade visual
-- [ ] QA visual lado a lado com o Legacy (`:8094`)
+### Fase 7 — Auditoria — **EM ESPECIFICAÇÃO**
 
-### Fase 9 — Migração V2→V3 — **NÃO INICIADA**
+OpenSpec escrita: `openspec/changes/rma-logistica-e-historico/{proposal,design,tasks}.md`
+(cobre também `LEG-RMA-040`/`041` — consolidação de frete Porto Alegre e boletins
+relacionados). Arquivo por arquivo detalhado em `INV-RMA-05` §12. **Decisão já tomada:**
+`ConsolidarFretePorCidade` usa TEMA V2 como especificação (TEMA V1 tem o mesmo código,
+mas desativado/comentado). Log de modificação de RMA usa snapshot estruturado com ação
+nomeada (não diff campo-a-campo — `EVO-AUD-001` fica como pendência registrada, não
+decidida). Notificação por e-mail via Mailable, destinatário configurável (não
+hardcoded como o legado). Tasks (resumido):
+
+- [ ] Migration `modificacoes_de_rma` (FK real para `rmas`/`users`)
+- [ ] `AcaoDeModificacao` (enum)
+- [ ] `RegistrarModificacaoDeRma`, `EnviarNotificacaoDeConclusao`,
+      `EnviarNotificacaoDeTentativaNaoPermitida` (listeners)
+- [ ] `ConsolidarFretePorCidade`, `BoletinsRelacionados`
+- [ ] Controllers de histórico (modificação de RMA + acesso) + views + rotas
+- [ ] 7 arquivos de teste
+- [ ] `sail test` verde, pendência de `EVO-AUD-001` registrada (perguntar ao usuário),
+      `paridade-v2-v3.md` atualizado (`LEG-RMA-040/041/044/045`), commit `#F7`
+
+### Fase 8 — Apresentação (Temas V1/V2) — **EM ESPECIFICAÇÃO**
+
+OpenSpec escrita: `openspec/changes/temas-v1-v2/{proposal,design,tasks}.md`. Arquivo por
+arquivo detalhado em `INV-RMA-05` §13. **Investigação de granularidade (Parte 2)
+resolvida por evidência já reunida nas Fases 1-7:** Controllers/casos de uso únicos
+(nenhuma regra de negócio diverge por tema, exceto RN-15/RN-21 já tratadas por
+presença/ausência), views e rotas por tema. **2 pendências reais permanecem, bloqueiam
+só a implementação, não o planejamento:** mecanismo exato das âncoras de TEMA V2
+(AJAX vs. scroll — exige inspecionar o LEGACY-RUNTIME) e RN-11 em TEMA V1 (exige
+renderizar telas internas reais, ainda não capturadas). Tasks (resumido):
+
+- [ ] Resolver as 2 pendências reais (pré-requisito de implementação)
+- [ ] Sass por tema (`_v1.scss`/`_v2.scss`/`_compartilhado.scss`)
+- [ ] `ResolverTemaAtivo` (middleware) + rotas por tema
+- [ ] Árvore de Blade por tema (`resources/views/temas/{v1,v2}/`)
+- [ ] Testes de smoke por tema + Playwright (390/768/1440)
+- [ ] Screenshots reais (PNG) — fecha a pendência da Parte 1/Parte 5
+- [ ] `sail test` verde, `checklist-master-v3.md`/`paridade-v2-v3.md` atualizados
+      (paridade visual), commit `#F8`
+
+### Fase 9 — Migração V2→V3 — **NÃO INICIADA (esqueleto em `INV-RMA-05` §14)**
 
 - [ ] Escrever `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`
 - [ ] Escrever `openspec/changes/migracao-v2-v3/{proposal,design,tasks}.md`
@@ -234,7 +289,7 @@ incremental (sem UUID/ULID — sem caso de uso ainda). Tasks (resumido):
 - [ ] Migrador oficial + relatório de reconciliação + idempotência
 - [ ] Teste de migração determinístico
 
-### Fase 10 — QA de paridade — **contínua, fecha por último**
+### Fase 10 — QA de paridade — **contínua, fecha por último (esqueleto em `INV-RMA-05` §15)**
 
 - [ ] Paridade funcional por `LEG-RMA-NNN` (atualizar `paridade-v2-v3.md` a cada fase)
 - [ ] Paridade visual (screenshot V2×V3, 390/768/1440)

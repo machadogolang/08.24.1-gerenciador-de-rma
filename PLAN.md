@@ -77,18 +77,48 @@
 
 ## Objetivo 2 — Reconstrução V3
 
-Não iniciar antes de ARQ-08 e `INV-RMA-05`/`INV-RMA-06` escritos. Ordem obrigatória por
-funcionalidade: legado → evidência → inventário funcional → regra documentada → decisão
-de reconstrução → OpenSpec → tasks → implementação. Nenhuma funcionalidade entra em
-implementação sem OpenSpec correspondente madura.
+Ordem obrigatória por funcionalidade: legado → evidência → inventário funcional → regra
+documentada → decisão de reconstrução → OpenSpec → tasks → implementação. Nenhuma
+funcionalidade entra em implementação sem OpenSpec correspondente madura.
 
-- [ ] Arquitetura (compartilhar domínio/controllers/casos de uso; TEMA V1/TEMA V2 só na
-      camada de apresentação — investigar antes de fixar)
+### Arquitetura — decidida em `INV-RMA-05`
+
+- [X] `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` escrita — **monólito
+      modular, referência CONAHOM real** (inspecionado o código de
+      `~/github/online-conahom-laravel/app/`, não copiado de memória):
+      `app/{Modulo}/{Dominio,Aplicacao,Infraestrutura}` por módulo de domínio +
+      `app/Compartilhado/`, casos de uso nomeados por verbo em `Aplicacao/`, convenção
+      `...EmBanco` para adapter Eloquent de uma interface de `Dominio/` **só onde isso
+      se justifica** (não em todo módulo — CRUD simples usa Eloquent direto).
+- [X] Decisão explícita de proporcionalidade: **não** replicar a abstração de
+      Identidade própria do CONAHOM (lá existe para reconciliar identidade entre dois
+      sistemas — problema que o RMA não tem); Fase 1 usa `App\Models\User` padrão do
+      Laravel. Interface de repositório de domínio só se justifica no módulo `Rma`
+      (por causa da migração do schema `rma_legacy`, bem diferente do novo).
+- [X] Princípio fixo registrado: **sem número mágico** — todo conceito de domínio
+      fechado vira `enum` PHP com métodos nomeados de comparação (nunca
+      `$papel->value >= 3` nem reprodução direta do `-1/1/2/3/4` do legado); o número
+      original do legado só pode existir dentro do migrador (`MIG-V3`), isolado.
+- [X] Módulos definidos: `Identidade`, `Parceiros`, `Rma` (créditos e relatórios ficam
+      dentro dele, não módulos próprios — são sub-fluxo/consulta, não entidade
+      independente), `Compartilhado`. "Temas" (V1/V2) não é módulo de domínio, é
+      apresentação (`resources/views/temas/{v1,v2}/`).
+- [X] Tecnologia consolidada (tabela completa no documento): Laravel 13/PHP 8.3, MySQL
+      8.4 (Sail), `Auth`/Breeze/`Hash` nativos, Blade+Vite+Sass+Bootstrap 5.3, PHPUnit +
+      Playwright.
+- [X] 10 fases de implementação definidas por ordem de dependência (Identidade →
+      Parceiros → Rma núcleo → ciclo de vida → alertas/regras → créditos/relatórios →
+      auditoria → apresentação/temas → migração → QA de paridade).
+- [X] Fase 1 (Identidade) detalhada arquivo por arquivo (migrations, `Papel`/
+      `TemaPreferido` como enum sem backing mágico, casos de uso, controllers, testes)
+      — ver §6 do documento de arquitetura.
+- [ ] `INV-RMA-06` (estratégia de migração formal) — ainda não escrita, próxima depois
+      da Fase 1 implementada.
+
 - [ ] OpenSpecs por capacidade funcional coerente (catálogo proposto em
-      `PLANO-ATAQUE.md`, nenhuma escrita ainda)
-- [ ] Autenticação, domínio RMA, cadastros, fluxo, filas, garantia, encaminhamento,
-      estoque, conclusão, relatórios, TEMA V1, TEMA V2, seletor de tema (fundação
-      técnica pura já concluída — ver V3-BASE acima)
+      `PLANO-ATAQUE.md`; `autenticacao-usuarios` — Fase 1 — sendo escrita agora)
+- [ ] Implementação por fase (ver lista de 10 fases acima) — nenhuma iniciada ainda,
+      fundação técnica pura já concluída (V3-BASE)
 
 ### PARIDADE
 

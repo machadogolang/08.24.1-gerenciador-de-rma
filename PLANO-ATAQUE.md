@@ -4,13 +4,12 @@
 
 ## AGORA
 
-**Arqueologia concluída.** Parecer consolidado em
-`docs/pareceres/2026-08-24-parecer-arqueologia-rma.md`, investigação arquivada em
-`docs/investigacoes-pendente/concluido/`. Ambiente executável validado nos dois
-repositórios (`08.24.4-legacy-gerenciador-de-rma` porta 8094, `08.24.1-gerenciador-de-rma`
-porta 8095, rodando simultaneamente — ver `docs/desenvolvimento/ambiente-v2-v3.md`).
-Próxima ação: `INV-RMA-05` (arquitetura moderna proposta) e primeira OpenSpec real do
-catálogo (seção "Catálogo inicial de OpenSpec proposto" abaixo).
+**Arquitetura decidida** (`docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` —
+monólito modular, referência CONAHOM real). **Fase 1 (Identidade) em especificação**:
+OpenSpec escrita em `openspec/changes/autenticacao-usuarios/`, ainda não implementada.
+Checklist granular por fase (1 a 10) em `docs/produto/checklist-master-v3.md` — usar
+esse documento como mapa operacional a partir de agora, este arquivo continua sendo só
+o resumo de fase/dependência/critério de saída.
 
 ## DEPOIS
 

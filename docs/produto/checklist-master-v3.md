@@ -107,8 +107,21 @@ granular** dos dois, para não perder nenhum item pequeno entre uma sessão e ou
   - [ ] Comparar as duas telas de "detalhe do RMA" lado a lado campo a campo
   - [ ] Decidir se a diferença é só de apresentação (view/layout) ou também de
         Controller/rota
-- [ ] Decidir estratégia de autenticação (Breeze/Fortify/Sanctum — qual se aplica a um
-      sistema sem API pública ainda)
+- [ ] **Fixar como princípio explícito:** autenticação da V3 usa os recursos nativos do
+      Laravel (`Auth` facade, guards de sessão, scaffolding Breeze, `Hash::make` —
+      bcrypt/argon2, não o SHA1 sem salt do legado) — nunca reimplementar login/sessão
+      na mão como o legado fazia. O que precisa ser **preservado 1:1** é só o
+      comportamento percebido:
+  - [ ] 5 níveis de permissão (`-1` bloqueado / `1` leitura / `2` operador / `3`
+        supervisor / `4` super-admin oculto da listagem) — via Policy/Gate do Laravel,
+        não `if ($permissao == X)` espalhado
+  - [ ] Login redireciona para o tema (V1/V2) conforme a preferência salva do usuário —
+        mesma regra de `usuario.app`/`trocarapp.php`, implementada como coluna +
+        Controller Laravel, não a função PHP procedural
+  - [ ] Troca de tema com persistência entre sessões (já validada no Legacy, ver
+        `docs/desenvolvimento/ambiente-v2-v3.md`)
+  - [ ] Decidir stack exata (Breeze/Fortify/Sanctum — qual se aplica a um sistema sem
+        API pública ainda) ao escrever `INV-RMA-05`
 - [ ] Decidir onde entra a fronteira arquitetural entre "modelo legado" e "aplicação
       moderna" (repositories/adapters/DTOs) — ver seção 6 da diretriz mestre do usuário
 - [ ] Definir enum/máquina de estado final de `status` (hoje só `PROVISÓRIO`)

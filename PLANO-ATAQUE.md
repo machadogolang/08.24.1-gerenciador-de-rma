@@ -4,10 +4,11 @@
 
 ## AGORA
 
-**LEGACY-RUNTIME** — escrever e testar `compose.yaml`/`Dockerfile` do ambiente PHP 7.4 +
-MariaDB 10.3 + Mailpit para rodar TEMA V1 e TEMA V2 do RMA V2 localmente (design em
-`docs/legado/legacy-runtime-ambiente.md`). Objetivo: ter o legado rodando como
-especificação visual/funcional viva antes de fechar `ARQ-07`/`ARQ-08`.
+**LEGACY-RUNTIME está no ar** (LR-01/02/03 concluídos — ver
+`docs/legado/legacy-runtime-ambiente.md`). Próxima ação: fechar as lacunas de
+documentação pedidas na diretriz mestre (inventário de banco dedicado, inventário
+visual dos dois temas com evidência do runtime real, catálogo de OpenSpec proposto) e
+depois ARQ-06b (dúvidas de presença de regra por tema).
 
 ## DEPOIS (em paralelo quando fizer sentido)
 
@@ -82,7 +83,8 @@ especificação visual/funcional viva antes de fechar `ARQ-07`/`ARQ-08`.
 | ARQ-07 | Interface/identidade visual | `inventario-visual-tema-{v1,v2}.md` escritos | `[ ]` |
 | ARQ-08 | Parecer arqueológico consolidado | 17 pontos respondidos | `[ ]` |
 | LR-01 | Design do LEGACY-RUNTIME | `legacy-runtime-ambiente.md` escrito, compat. PHP verificada | `[X]` |
-| LR-02 | `compose.yaml`/`Dockerfile` escritos e testados | TEMA V1 e TEMA V2 respondem em `localhost` | `[ ]` |
-| LR-03 | Login e navegação básica validados nos dois temas | Evidência registrada | `[ ]` |
+| LR-02 | `compose.yaml`/`Dockerfile` escritos e testados | TEMA V1 e TEMA V2 respondem em `localhost:8091` | `[X]` |
+| LR-03 | Login validado nos dois temas | Dashboard autenticado renderiza (TEMA V2: "Build 2.5"; TEMA V1: "FIR 1.3") | `[X]` |
+| LR-04 | Reset determinístico + evidência visual | `reset-legacy.sh` + screenshots dos dois temas | `[ ]` |
 | MIG-01 | Mapa legado → V3 por tabela/campo | Documento completo, nascido da arqueologia | `[ ]` |
 | MIG-02 | Migrador oficial implementado | Repetível, testável, auditável, idempotente | `[ ]` |

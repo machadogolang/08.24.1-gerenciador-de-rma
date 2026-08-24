@@ -26,11 +26,12 @@
 
 - [X] Design registrado (`docs/legado/legacy-runtime-ambiente.md`), verificação estática
       de compatibilidade PHP/MariaDB feita
-- [ ] `compose.yaml` + `Dockerfile` do PHP legado (não escrito)
-- [ ] Banco `rma_legacy` de laboratório (schema + reset determinístico)
-- [ ] Neutralização de e-mail (Mailpit) e isolamento de rede
-- [ ] Validar login e navegação básica em TEMA V1 e TEMA V2 rodando
-- [ ] Registrar limitações encontradas no bring-up
+- [X] `compose.yaml` + `Dockerfile` do PHP legado (PHP 7.4 + Apache + mysqli/mbstring)
+- [X] Banco `rma_legacy` de laboratório (schema completo via `schema-only.sql`)
+- [X] Login validado em TEMA V1 (14.6.1) e TEMA V2 (15.8.1), ambos em `localhost:8091`
+- [ ] Reset determinístico (`reset-legacy.sh`, ainda não escrito)
+- [ ] Confirmar neutralização de e-mail de fato (disparar ação real, checar Mailpit)
+- [ ] Screenshots/evidência visual dos dois temas autenticados
 
 ### MIG-V3 — Migração V2 → V3
 

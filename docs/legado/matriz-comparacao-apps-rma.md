@@ -123,6 +123,16 @@ implementação de referência das 10 regras de alerta**, e 14.6.1 depende dela.
     os que preferiam o novo, mas isso não está documentado em lugar nenhum do código,
     é inferência razoável a partir do mecanismo existir.
 
+## Achado do LEGACY-RUNTIME — codinome interno "FIR"
+
+**[CONFIRMADO]** Rodando o TEMA V1 (14.6.1) de verdade no ambiente de laboratório (ver
+`legacy-runtime-ambiente.md`), o título da página autenticada é
+`Intranet : FIR 1.3 - <data>` — codinome **"FIR"** nunca encontrado na leitura estática
+de código (só aparece montado em runtime). `1.3` bate com `$version="1.3"` já
+confirmado em `14.6.1/config.php`. TEMA V2 (15.8.1) exibe `RMA 15.8.1  Build: 2.5`,
+confirmando `$build="2.5"` também já encontrado. **[DÚVIDA]** o que "FIR" significa
+(possíveis expansões não verificadas — não especular sem evidência).
+
 ## Ordem histórica — RESOLVIDA por relato do autor original
 
 **[CONFIRMADO-RELATO-USUARIO]** TEMA V1 (14.6.1) foi construído primeiro; TEMA V2

@@ -98,9 +98,38 @@ bring-up real acontecer):
   executa o migrador oficial da V3 (ver `INV-RMA-00-arqueologia-cellsystem-15.9.7.md`
   §10/§14 para a regra de evolução do banco), gera relatório de reconciliação.
 
-## Status desta sessão
+## Status — LEGACY-RUNTIME FUNCIONAL (2026-08-24)
 
-**Design registrado, verificação estática de compatibilidade feita (resultado
-favorável a PHP 7.4 + MariaDB 10.3 + Apache/mod_rewrite).** `compose.yaml` e
-`Dockerfile` ainda **não escritos/testados** — próxima ação concreta, ver
-`PLANO-ATAQUE.md` frente `LEGACY-RUNTIME`.
+**[CONFIRMADO]** Ambiente no ar e validado: `docker compose up -d` em
+`_rma-arqueologia/backup-15.9.7/legacy-runtime/` sobe `php-legacy` (PHP 7.4 +
+Apache/mod_rewrite), `mariadb` (10.3, banco `rma_legacy`) e `mailpit`, todos em
+`127.0.0.1`. Login testado de ponta a ponta com usuário de laboratório
+(`lab@localhost`, criado só no `schema-only.sql`, senha `rma-lab-2026` — não é
+credencial histórica):
+
+- **TEMA V2 (15.8.1):** `http://localhost:8091/` (login) → POST autenticado em
+  `15.8.1/pp/senha.php` → redirect 302 → `http://localhost:8091/15.8.1/` renderiza
+  dashboard autenticado, título dinâmico `RMA 15.8.1  Build: 2.5 | Data de hoje:
+  <data corrente>`. Confirma o `$build="2.5"` já achado no código. Sem erro/warning PHP
+  nos logs do Apache.
+- **TEMA V1 (14.6.1):** `http://localhost:8091/14.6.1/` responde 200, título
+  `Intranet : FIR 1.3 - <data corrente>`. **Achado novo:** o codinome interno do TEMA V1
+  é **"FIR"** (não visto em nenhuma leitura de código anterior — aparece só na string de
+  título montada em runtime). `$version="1.3"` confirmado batendo com o já encontrado em
+  `14.6.1/config.php`.
+
+**Adaptações de laboratório efetivamente usadas** (nenhuma edição da fonte em
+`extracted/`, tudo via bind mount de arquivo único ou config de container):
+
+| Legado original | Adaptação de laboratório | Motivo |
+|---|---|---|
+| `conexao.php` (credencial de produção real) | `overrides/conexao.php` com host `mariadb`, usuário/senha só de laboratório | nunca usar credencial real |
+| `config.php` (raiz, `$local` apontando pra `cellsystem.com.br`) | `overrides/config-root.php` com `$local="http://localhost:8091/"` | permitir que assets/links funcionem localmente |
+| `15.8.1/config.php` (`$caminho`/`$local` de produção) | `overrides/config-15.8.1.php` | idem |
+| `14.6.1/config.php` (`$pedecabra` = segredo histórico de convite) | `overrides/config-14.6.1.php` com **hash novo**, gerado só para o laboratório (`sha1("rma-lab-convite-2026")`) — nunca o valor histórico | evita reproduzir credencial encontrada no backup, mesmo operacionalmente |
+| `mail()` nativo (destinatários hardcoded reais) | `sendmail_path` do container relayado via `msmtp` para o Mailpit (`legacy-runtime/php-legacy/Dockerfile`) | nenhum e-mail real sai do ambiente — ainda **não testado** um envio de fato (próximo passo) |
+
+**Pendente:** disparar uma ação que envie e-mail (ex.: concluir um RMA) e confirmar que
+chega no Mailpit (`http://localhost:8036`), não em lugar nenhum real. Capturar evidência
+visual (screenshots) dos dois temas autenticados para `inventario-visual-tema-v1.md` e
+`inventario-visual-tema-v2.md`.

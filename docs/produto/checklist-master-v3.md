@@ -128,8 +128,15 @@ Arquivo por arquivo já detalhado em `INV-RMA-05` §6. Tasks (de `tasks.md`, res
 - [ ] View de login mínima (sem fidelidade visual ainda)
 - [ ] Factory/Seeder de usuário (1 por papel, para QA manual)
 - [ ] 4 arquivos de teste (autenticação, permissão, alternância de tema, enum `Papel`)
+- [ ] **Ajuste da revisão (`docs/arquitetura/revisao-fases-1-2-3.md`):** gestão de
+      usuários incorporada a esta fase — `TrocarPropriaSenha` (`LEG-RMA-004`, TEMA V1
+      como especificação, RN-21), `ResetarSenhaDeUsuario` (`LEG-RMA-003`),
+      `UsuarioController` (`LEG-RMA-005`), `AtualizarAnotacaoPessoal` (`LEG-RMA-042`) +
+      4 testes correspondentes
+- [ ] Pendência registrada, não decidida: `LEG-RMA-002` (autocadastro com convite) —
+      perguntar ao usuário antes de implementar
 - [ ] `sail test` verde
-- [ ] Atualizar `paridade-v2-v3.md` (`LEG-RMA-001`, `006`, `043`)
+- [ ] Atualizar `paridade-v2-v3.md` (`LEG-RMA-001`, `003`, `004`, `005`, `006`, `042`, `043`)
 - [ ] Commit `#F1 - Identidade`
 
 ### Fase 2 — Parceiros — **EM ESPECIFICAÇÃO**
@@ -140,6 +147,9 @@ arquivo detalhado em `INV-RMA-05` §7. **Decisão já tomada:** FK real desde a 
 Tasks (resumido):
 
 - [ ] 4 migrations (`clientes`/`fabricantes`/`fornecedores`/`assistencias_tecnicas`)
+- [ ] **Ajuste da revisão (`docs/arquitetura/revisao-fases-1-2-3.md`):**
+      `app/Compartilhado/Uf.php` (enum das 27 UFs, prometido em `INV-RMA-05` §3 mas
+      ausente do desenho original — campo `uf` era string solta)
 - [ ] `trait TemEnderecoEContato` + 4 Eloquent models
 - [ ] `EncontrarOuCriarCliente` (único caso de uso real — corrige dedup do legado)
 - [ ] 4 Policies (delegam a `Papel::podeGravar()` da Fase 1)
@@ -157,17 +167,23 @@ interface de repositório (justificativa: a Fase 9/migração precisa dessa fron
 não vazar a leitura do schema `rma_legacy` pro resto da aplicação); identificador
 incremental (sem UUID/ULID — sem caso de uso ainda). Tasks (resumido):
 
-- [ ] Migration incremental de `rmas` (só os campos desta fase, não a tabela inteira)
+- [ ] Migration incremental de `rmas` (só os campos desta fase, não a tabela inteira) —
+      **ajuste da revisão:** inclui `fornecedor_id` (ausente do desenho original)
 - [ ] `Rma` (objeto de domínio puro), `RepositorioDeRmas` (interface),
       `CriterioDeBusca` (value object — substitui os `campo=TUDO/NF/SNPNSNID` do
       legado por named constructors)
 - [ ] `RmasEmBanco` (Eloquent, implementação interna da infra) + binding no
       `AppServiceProvider`
-- [ ] `CriarRma`, `BuscarRmas`, `VerDetalheDoRma` (casos de uso)
+- [ ] `CriarRma`, `EditarRma` (**ajuste da revisão** — `LEG-RMA-010` não tinha fase
+      dona), `BuscarRmas`, `VerDetalheDoRma` (casos de uso)
+- [ ] **Ajuste da revisão:** normalizações RN-13 (HGST→Hitachi) e RN-14 (cascata de
+      `origem`) em `CriarRma`/`EditarRma` — não adiar para Fase 4/5; RN-17
+      (`marcarestoque`) reproduzida só como valor do formulário, sem o cálculo morto
+      do legado
 - [ ] Controller + views mínimas + rotas
-- [ ] Factory + 4 arquivos de teste (3 feature + 1 unit de `CriterioDeBusca`)
-- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado (`LEG-RMA-007/008/009`),
-      commit `#F3`
+- [ ] Factory + 6 arquivos de teste (4 feature + 2 unit de `CriterioDeBusca`/`Rma`)
+- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado
+      (`LEG-RMA-007/008/009/010/046`), commit `#F3`
 
 ### Fase 4 — Ciclo de vida — **NÃO INICIADA**
 

@@ -4,6 +4,8 @@
 - [ ] `database/migrations/2026_08_26_000001_create_fabricantes_table.php`
 - [ ] `database/migrations/2026_08_26_000002_create_fornecedores_table.php`
 - [ ] `database/migrations/2026_08_26_000003_create_assistencias_tecnicas_table.php`
+- [ ] `app/Compartilhado/Uf.php` (enum das 27 UFs — ajuste da revisão, ver
+      `docs/arquitetura/revisao-fases-1-2-3.md`)
 - [ ] `app/Parceiros/Concerns/TemEnderecoEContato.php` (trait)
 - [ ] `app/Models/Cliente.php`
 - [ ] `app/Models/Fabricante.php`

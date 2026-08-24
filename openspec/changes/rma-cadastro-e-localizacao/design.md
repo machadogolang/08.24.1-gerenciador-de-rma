@@ -7,11 +7,17 @@ rmas
   id                bigint pk
   descricao         string
   fabricante_id     bigint fk -> fabricantes, nullable
+  fornecedor_id     bigint fk -> fornecedores, nullable   -- ajuste da revisão, ver
+                                  docs/arquitetura/revisao-fases-1-2-3.md: ausente do
+                                  desenho original; bd.fornecedor é campo de "Partes" do
+                                  mesmo grupo de fabricante/cliente
   modelo            string nullable
   sn                string nullable
   os                string nullable
-  origem            string    -- enum de domínio na Fase 4/5 quando a regra existir;
-                                  nesta fase é só um campo informativo
+  origem            string    -- já normalizado por RN-13/RN-14 na gravação (ver abaixo);
+                                  enum de domínio fica para Fase 4/5, quando o conjunto
+                                  fechado de valores usado pelas regras de alerta for
+                                  fixado por completo
   empresa           string nullable   -- ver nota abaixo
   cliente_id        bigint fk -> clientes, nullable
   defeito            string
@@ -32,6 +38,7 @@ final class Rma
         public readonly ?int $id,
         public readonly string $descricao,
         public readonly ?int $fabricanteId,
+        public readonly ?int $fornecedorId,
         public readonly ?string $modelo,
         public readonly ?string $sn,
         public readonly ?string $os,
@@ -41,8 +48,44 @@ final class Rma
         public readonly string $defeito,
         public readonly ?string $observacao,
     ) {}
+
+    /**
+     * RN-13 (HGST→Hitachi) + RN-14 (cascata de origem) — normalização confirmada
+     * idêntica nos dois temas do legado, aplicada na criação e na edição. Método puro
+     * (sem side effect), chamado por CriarRma/EditarRma antes de persistir.
+     */
+    public function comNormalizacaoDeGravacao(
+        ?string $nomeFabricante,
+        ?string $nomeFornecedor,
+        ?string $nomeCliente,
+        ?string $nomeEmpresa,
+    ): self {
+        $fabricante = $nomeFabricante === 'HGST' ? 'Hitachi' : $nomeFabricante;
+
+        $origem = match (true) {
+            $this->origem === $fabricante => 'Unknown',
+            $this->origem === $nomeFornecedor => 'Unknown',
+            $this->origem === $nomeCliente => 'Cliente',
+            $this->origem === $nomeEmpresa => 'Cliente',
+            in_array($this->origem, ['CELLSYSTEM', 'Cellsystem'], true) => 'Loja',
+            in_array($this->origem, ['Leilao', 'Receita Federal', 'Receita'], true) => 'Leilão',
+            default => $this->origem,
+        };
+
+        return new self(
+            $this->id, $this->descricao, $this->fabricanteId, $this->fornecedorId,
+            $this->modelo, $this->sn, $this->os, $origem, $this->empresa,
+            $this->clienteId, $this->defeito, $this->observacao,
+        );
+    }
 }
 ```
+
+Diferença deliberada sobre o legado: a cascata é `match` sequencial e puro sobre valores
+já resolvidos (nome do fabricante/fornecedor/cliente/empresa, buscados via FK — Fase 2),
+não `str_replace` sobre uma string solta — corrige o bug confirmado de `$fornecedor` não
+inicializado (`regras-negocio-rma-legado.md` RN-14) porque aqui os parâmetros são
+explícitos, não variáveis implícitas do escopo do arquivo.
 
 Sem métodos de negócio ainda nesta fase (não há regra além de existir). As fases
 seguintes que adicionam `status`/`solucao` também adicionam os métodos de transição
@@ -94,6 +137,12 @@ Eloquent model fora desta classe).
 
 - `CriarRma`: cria com cliente novo (dispara `EncontrarOuCriarCliente`), cria com
   cliente já existente (reaproveita).
+- `EditarRma`: atualiza campos do núcleo, reaplica normalização RN-13/RN-14.
 - `BuscarRmas`: os 3 tipos de critério, caso vazio.
 - `VerDetalheDoRma`: existente, inexistente (404).
 - `CriterioDeBusca` (unit, sem banco): named constructors devolvem tipo/valor corretos.
+- `RmaTest::comNormalizacaoDeGravacao` (unit, sem banco): fabricante "HGST"→"Hitachi";
+  origem igual ao fabricante/fornecedor→"Unknown"; origem igual ao cliente/empresa→
+  "Cliente"; "Cellsystem"→"Loja"; "Receita"/"Receita Federal"/"Leilao"→"Leilão"; valor
+  fora do domínio conhecido permanece inalterado (sem bug de variável não
+  inicializada — prova de que o achado RN-14 foi corrigido, não herdado).

@@ -6,19 +6,22 @@
 - [ ] `app/Rma/Dominio/CriterioDeBusca.php`
 - [ ] `app/Rma/Infraestrutura/RmasEmBanco.php`
 - [ ] `app/Models/Rma.php` (Eloquent, uso interno da infra)
-- [ ] `app/Rma/Aplicacao/CriarRma.php`
+- [ ] `app/Rma/Aplicacao/CriarRma.php` (aplica `comNormalizacaoDeGravacao`, RN-13/RN-14/RN-17)
+- [ ] `app/Rma/Aplicacao/EditarRma.php` (idem — ajuste da revisão, `LEG-RMA-010`)
 - [ ] `app/Rma/Aplicacao/BuscarRmas.php`
 - [ ] `app/Rma/Aplicacao/VerDetalheDoRma.php`
 - [ ] Registrar binding `RepositorioDeRmas -> RmasEmBanco` (`AppServiceProvider`)
-- [ ] `app/Http/Controllers/Rma/RmaController.php`
-- [ ] `resources/views/rma/{index,create,show}.blade.php`
+- [ ] `app/Http/Controllers/Rma/RmaController.php` (inclui `edit`/`update`)
+- [ ] `resources/views/rma/{index,create,edit,show}.blade.php`
 - [ ] Rotas em `routes/web.php`
 - [ ] `database/factories/RmaFactory.php`
 - [ ] `tests/Feature/Rma/CriarRmaTest.php`
+- [ ] `tests/Feature/Rma/EditarRmaTest.php`
 - [ ] `tests/Feature/Rma/BuscarRmasTest.php`
 - [ ] `tests/Feature/Rma/VerDetalheDoRmaTest.php`
 - [ ] `tests/Unit/Rma/CriterioDeBuscaTest.php`
+- [ ] `tests/Unit/Rma/RmaTest.php` (`comNormalizacaoDeGravacao` — RN-13/RN-14, casos do design.md)
 - [ ] `sail test` verde
-- [ ] Atualizar `docs/produto/paridade-v2-v3.md` (`LEG-RMA-007`, `008`, `009`)
+- [ ] Atualizar `docs/produto/paridade-v2-v3.md` (`LEG-RMA-007`, `008`, `009`, `010`, `046`)
 - [ ] Atualizar `docs/produto/checklist-master-v3.md` (Fase 3 concluída)
 - [ ] Commit `#F3 - Rma núcleo (criação, busca, detalhe)`

@@ -136,7 +136,8 @@ decisão pode mudar com o que se aprende implementando).
 
 - `database/migrations/2026_08_25_000000_add_identidade_fields_to_users_table.php`
   — adiciona `papel` (tinyint, domínio -1/1/2/3/4), `tema_preferido` (string, domínio
-  `v1`/`v2`) à tabela `users` padrão do Laravel.
+  `v1`/`v2`), `anotacao` (text, nullable — equivalente a `usuario.anotacao`, bloco de
+  notas pessoal, `LEG-RMA-042`) à tabela `users` padrão do Laravel.
 - `database/migrations/2026_08_25_000001_create_tentativas_de_acesso_table.php`
   — equivalente à tabela `log` do legado: `user_id` (nullable, FK), `email_informado`,
   `ip`, `user_agent`, `resultado` (enum: permitido/negado/bloqueado), `criado_em`.
@@ -236,6 +237,54 @@ decisão pode mudar com o que se aprende implementando).
   subsequente respeita a preferência salva (equivalente ao smoke test já feito no
   Legacy, ver `docs/desenvolvimento/ambiente-v2-v3.md`).
 
+### Gestão de usuários (ajuste da revisão — ver `docs/arquitetura/revisao-fases-1-2-3.md`)
+
+Achado da revisão de Fase 1-3: `LEG-RMA-002` (autocadastro com convite), `LEG-RMA-003`
+(resetar senha de outro usuário), `LEG-RMA-004` (trocar a própria senha) e `LEG-RMA-005`
+(gerenciar usuários/permissões) não tinham fase dona em nenhum dos 10 itens de `§5` —
+ficavam mencionados como "fora do escopo, decisão futura" sem que nenhuma fase seguinte
+os reivindicasse. Como o schema (`User`, `Papel`), a `UserPolicy` e o conceito de
+"usuário autenticado com papel X" já nascem nesta fase, gestão de usuários é a mesma
+fronteira de domínio — não uma fase nova. Passam a fazer parte da Fase 1:
+
+- `app/Identidade/Aplicacao/TrocarPropriaSenha.php` — **usa TEMA V1 como especificação**
+  (RN-21: SQL único e válido `UPDATE users SET password = ? WHERE id = ?`, via
+  `Hash::make`), não o SQL quebrado de TEMA V2. Exige senha atual correta antes de
+  trocar (mesmo fluxo de autoatendimento de `14.6.1/post/mudar_senha.php`).
+- `app/Identidade/Aplicacao/ResetarSenhaDeUsuario.php` — equivalente a
+  `subp/resetar_senha.php` (a versão correta em ambos os temas — TEMA V1 usa o mesmo
+  SQL correto por outro caminho); exige `Papel::podeGerenciarUsuarios()` do ator.
+- `app/Identidade/Aplicacao/AtualizarAnotacaoPessoal.php` — equivalente a
+  `post/salvarnotas.php` (`LEG-RMA-042`, confirmado em TEMA V1; **[DÚVIDA]** equivalente
+  em TEMA V2 — tratar como mesmo comportamento, único bloco de notas por usuário,
+  já que a tabela `usuario` é compartilhada pelos dois temas no legado).
+- `app/Http/Controllers/Identidade/UsuarioController.php` — `index` (lista, aplica
+  `Papel::ocultoDaListagemDeUsuarios()` — método que já existia no enum da Fase 1, mas
+  não tinha nenhum caller planejado até este ajuste), `edit`/`update` (troca de papel,
+  usa `UserPolicy::gerenciar`), mais as duas ações de senha acima.
+- `app/Http/Controllers/Identidade/AnotacaoPessoalController.php` — `update` (usa
+  `AtualizarAnotacaoPessoal`).
+- `app/Policies/UserPolicy.php` — a descrição original ("papel ≥ Supervisor") era só
+  prosa; a implementação real **chama o método nomeado do enum**
+  (`$ator->papel->podeGerenciarUsuarios()`), nunca compara por ordinal — reforçado aqui
+  para não deixar ambiguidade de leitura.
+- `resources/views/identidade/usuarios/index.blade.php`,
+  `resources/views/identidade/perfil/senha.blade.php` — sem fidelidade visual ainda.
+- `tests/Feature/Identidade/TrocarPropriaSenhaTest.php` — senha correta troca; senha
+  errada nega; **prova de regressão corrigida**: o teste teria falhado se a V3
+  reproduzisse o SQL quebrado de TEMA V2.
+- `tests/Feature/Identidade/ResetarSenhaDeUsuarioTest.php`,
+  `GerenciarUsuariosTest.php` (lista oculta SuperAdministrador do papel Supervisor),
+  `AnotacaoPessoalTest.php`.
+
+**Pendência registrada, não decidida aqui (não inventar):** `LEG-RMA-002` (autocadastro
+público com convite, hoje um segredo hardcoded comparado em `inc/signup.php`, confirmado
+só em TEMA V1, `[DÚVIDA]` em TEMA V2) — decidir com o usuário se a V3 reconstrói
+autocadastro público (com segredo em `.env`, não hardcoded) ou se usuário passa a ser
+sempre criado por um Supervisor/SuperAdministrador via `UsuarioController`. Nenhuma das
+duas opções tem evidência suficiente de qual é "o comportamento pretendido" — é decisão
+de produto, não de arqueologia.
+
 ### OpenSpec desta fase
 
 `openspec/changes/autenticacao-usuarios/{proposal.md,design.md,tasks.md}` — escrita
@@ -297,6 +346,13 @@ para a regra que existe de fato.
 - `app/Parceiros/Aplicacao/EncontrarOuCriarCliente.php` — único caso de uso real: busca
   por nome normalizado (trim + case-insensitive — correção sobre o bug do legado),
   cria se não existir, nunca duplica
+- `app/Compartilhado/Uf.php` — **ajuste da revisão** (ver
+  `docs/arquitetura/revisao-fases-1-2-3.md`): o próprio `§3` deste documento já prometia
+  um "enum de UF" em `Compartilhado`, mas o schema desta fase usava `uf string(2)
+  nullable` solto — exatamente o tipo de primitiva substituível por enum que o princípio
+  1.1 proíbe (conjunto fechado de 27 valores). `enum Uf: string { case SP = 'SP'; case
+  RJ = 'RJ'; ... }` (as 27 UFs do Brasil), usado via cast Eloquent nativo nos 4 models
+  desta fase
 - `app/Policies/ClientePolicy.php`, `FabricantePolicy.php`, `FornecedorPolicy.php`,
   `AssistenciaTecnicaPolicy.php` — todas delegam a `$user->papel->podeGravar()`
   (`Identidade\Dominio\Papel`, já existe da Fase 1); repetição de 1 linha em 4 arquivos
@@ -340,11 +396,16 @@ fronteira, o código de migração vazaria pra dentro da aplicação toda.
 
 - `database/migrations/2026_08_27_000000_create_rmas_table.php` — schema novo,
   **não** espelha as ~56 colunas de `bd` 1:1 (ver mapa campo-a-campo em `INV-RMA-06`,
-  Fase 9); nesta fase só os campos que o núcleo (criar/buscar/ver) precisa:
-  identificador, `descricao`, `fabricante_id`, `modelo`, `sn`, `os`, `origem`,
-  `empresa`, `cliente_id`, `defeito`, `observacao`, timestamps. Campos de
-  status/solução/NF/crédito entram nas Fases 4/5/6 (migration incremental, não
-  monolítica — evita uma tabela gigante nascendo de uma vez sem uso real ainda)
+  Fase 9); nesta fase só os campos que o núcleo (criar/buscar/ver/editar) precisa:
+  identificador, `descricao`, `fabricante_id`, `fornecedor_id`, `modelo`, `sn`, `os`,
+  `origem`, `empresa`, `cliente_id`, `defeito`, `observacao`, timestamps. **Ajuste da
+  revisão** (`docs/arquitetura/revisao-fases-1-2-3.md`): `fornecedor_id` estava ausente
+  do desenho original — `bd.fornecedor` é campo de "Partes" do mesmo grupo de
+  `fabricante`/`cliente` em `modelo-dominio-rma-legado.md`, preenchido na mesma tela de
+  criação (`LEG-RMA-007`); não há motivo para incluir `fabricante_id`/`cliente_id` como
+  FK real e deixar `fornecedor_id` como string solta. Campos de status/solução/NF/
+  crédito entram nas Fases 4/5/6 (migration incremental, não monolítica — evita uma
+  tabela gigante nascendo de uma vez sem uso real ainda)
 - [DECISÃO A REGISTRAR NO `design.md` DA OPENSPEC, NÃO AQUI] identificador: `id`
   incremental do Eloquent é suficiente para a baseline — não há caso de uso de
   identificador público exposto externamente ainda (RMA não tem API pública, portal do
@@ -360,9 +421,47 @@ fronteira, o código de migração vazaria pra dentro da aplicação toda.
   mágica" já fixado para `Papel`
 - `app/Rma/Aplicacao/CriarRma.php` — caso de uso: recebe dados do formulário, usa
   `EncontrarOuCriarCliente` (módulo `Parceiros`) se o cliente for novo, grava via
-  `RepositorioDeRmas`
+  `RepositorioDeRmas`; aplica as normalizações de gravação abaixo
+- `app/Rma/Aplicacao/EditarRma.php` — **ajuste da revisão**
+  (`docs/arquitetura/revisao-fases-1-2-3.md`): `LEG-RMA-010` ("editar/salvar RMA") não
+  tinha fase dona — não é uma transição de ciclo de vida (Fase 4), é a mesma família de
+  `CriarRma`/`VerDetalheDoRma` (escrever/ler o núcleo do agregado antes de qualquer
+  status/solução existir); aplica as mesmas normalizações de `CriarRma`
 - `app/Rma/Aplicacao/BuscarRmas.php` — caso de uso de leitura, usa `CriterioDeBusca`
 - `app/Rma/Aplicacao/VerDetalheDoRma.php` — caso de uso de leitura simples
+
+### Normalizações de gravação — RN-13/RN-14/RN-17 (ajuste da revisão)
+
+`CriarRma` e `EditarRma` compartilham (via método privado ou objeto de domínio) três
+regras confirmadas **em ambos os temas**, que no legado disparam tanto na criação quanto
+na edição (`pp/novo_rma.php`/`pp/salvar_rma.php`, `post/novo.php`/
+`post/processa_detalhes.php`) — nenhuma das Fases 4-8 as reivindicava, e adiar para
+Fase 4/5 (que dependem de `status`/`solucao`, ainda não existentes) faria `CriarRma`
+gravar dado não normalizado, quebrando fidelidade desde o primeiro RMA criado:
+
+- **RN-13 (`LEG-RMA-046`, HGST→Hitachi):** se `fabricante`/`destinatario` informado for
+  "HGST", grava como "Hitachi" — comparação simples, sem enum (é substituição de string
+  de exibição, não um conjunto fechado de domínio).
+- **RN-14 (`LEG-RMA-046`, cascata de `origem`):** sequência de normalização
+  confirmada idêntica nos dois temas — implementada como método puro em
+  `Dominio/Rma` (não `str_replace` solto como o legado, que tinha bug de variável não
+  inicializada); domínio fechado de saída (`Unknown`/`Cliente`/`Loja`/`Leilão`/valor
+  original) — candidato a enum `Origem` quando a Fase 4/5 (que também leem `origem` nas
+  regras de alerta) fixarem o domínio completo; nesta fase o resultado da normalização é
+  gravado como string, sem introduzir o enum ainda (evita fixar o enum com informação
+  parcial).
+- **RN-17 (`marcarestoque`, dívida técnica, não bug):** o legado **calcula** um valor por
+  `origem` e imediatamente **descarta**, usando só o checkbox do formulário — achado já
+  reclassificado em `regras-negocio-rma-legado.md` como dívida técnica, não regressão. A
+  V3 **não reproduz o cálculo morto**: `marcarestoque` é gravado só a partir do valor
+  informado no formulário, produzindo exatamente o mesmo resultado observável, sem o
+  código morto. Campo `marcarestoque` só é adicionado ao schema quando a Fase 5 (que o
+  usa nas regras de alerta) precisar dele — nesta fase, se o formulário mínimo (sem
+  fidelidade visual) já expuser o checkbox, o valor é persistido, mas a coluna nasce
+  junto com a Fase 5, não antes.
+
+RN-15 (`snretorno` auto-preenchido, `LEG-RMA-047`) **fica fora desta fase** — depende de
+`solucao`, que só existe a partir da Fase 4; entra lá.
 - `app/Rma/Infraestrutura/RmasEmBanco.php` — implementa `RepositorioDeRmas` via
   Eloquent (usa um `app/Models/Rma.php` interno, não exposto fora da infra)
 - `app/Models/Rma.php` — Eloquent, **uso interno da Infraestrutura só** — o resto da
@@ -379,9 +478,10 @@ fronteira, o código de migração vazaria pra dentro da aplicação toda.
 
 ### O que NÃO entra na Fase 3 (fica pras fases seguintes, mesmo já estando no schema de `bd`)
 
-`status`, `solucao`, `prioridade`, campos de NF, crédito, destinatário — tudo isso é
-Fase 4/5/6. Criar a coluna antes de ter a regra que a usa é exatamente o tipo de
-"planejar no escuro" que este documento evita.
+`status`, `solucao`, `prioridade`, campos de NF, crédito, destinatário, `snretorno`
+(RN-15/`LEG-RMA-047`, depende de `solucao`), `marcarestoque` como coluna (RN-17, entra
+com a Fase 5) — tudo isso é Fase 4/5/6. Criar a coluna antes de ter a regra que a usa é
+exatamente o tipo de "planejar no escuro" que este documento evita.
 
 ## 9. O que fica para quando a Fase 2/3 estiverem implementadas
 

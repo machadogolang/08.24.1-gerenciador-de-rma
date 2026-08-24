@@ -8,6 +8,8 @@ users (estende a migration padrão do Laravel)
   papel                string   -- nome do case do enum Papel (Bloqueado/Leitura/
                                     Operador/Supervisor/SuperAdministrador)
   tema_preferido        string   -- nome do case do enum TemaPreferido (V1/V2)
+  anotacao              text nullable  -- bloco de notas pessoal (LEG-RMA-042,
+                                           equivalente a usuario.anotacao)
 
 tentativas_de_acesso
   id                    bigint pk
@@ -135,3 +137,67 @@ carregado; não há regra de negócio adicional a esconder atrás de uma porta.
 - Cada um dos 4 métodos do enum `Papel` testado isoladamente (unit test puro, sem
   banco).
 - `AlternarTemaPreferido` — alterna e persiste; login subsequente usa o novo valor.
+
+## Gestão de usuários (ajuste da revisão — ver `docs/arquitetura/revisao-fases-1-2-3.md`)
+
+### `TrocarPropriaSenha` — TEMA V1 como especificação (RN-21)
+
+```php
+final class TrocarPropriaSenha
+{
+    public function trocar(User $usuario, string $senhaAtual, string $novaSenha): void
+    {
+        if (! Hash::check($senhaAtual, $usuario->password)) {
+            throw new SenhaAtualIncorretaException();
+        }
+        $usuario->update(['password' => Hash::make($novaSenha)]);
+    }
+}
+```
+
+Espelha `14.6.1/post/mudar_senha.php` + `banco.oo.php::mudarSenha()` — SQL único e
+válido, fluxo de autoatendimento do próprio usuário logado. **Não** espelha
+`15.8.1/banco.php::alterar_senha()` (`"SET ... SET ..."`, sintaxe inválida, RN-21) — essa
+é a regressão confirmada que a V3 corrige, não preserva.
+
+### `ResetarSenhaDeUsuario` — exige `Papel::podeGerenciarUsuarios()`
+
+```php
+final class ResetarSenhaDeUsuario
+{
+    public function resetar(User $ator, User $alvo, string $novaSenha): void
+    {
+        abort_unless($ator->papel->podeGerenciarUsuarios(), 403);
+        $alvo->update(['password' => Hash::make($novaSenha)]);
+    }
+}
+```
+
+Equivalente a `subp/resetar_senha.php` (correta em TEMA V2) e ao mesmo SQL correto
+usado por TEMA V1 pelo caminho de admin — os dois temas concordam neste fluxo (só o
+autoatendimento divergiu, RN-21).
+
+### `UsuarioController::index` — oculta SuperAdministrador (LEG-RMA-005)
+
+```php
+$usuarios = User::query()
+    ->when(
+        ! $ator->papel->podeGerenciarUsuarios() || $ator->papel !== Papel::SuperAdministrador,
+        fn ($q) => $q->get()->reject(fn (User $u) => $u->papel->ocultoDaListagemDeUsuarios())
+    );
+```
+
+Usa o método `ocultoDaListagemDeUsuarios()` do enum `Papel` (já existia desde a
+primeira versão desta fase, mas não tinha nenhum caller planejado até este ajuste) —
+nunca compara papel por ordinal/inteiro.
+
+### Testes adicionais
+
+- `TrocarPropriaSenhaTest`: senha atual correta → troca e persiste; senha atual errada →
+  nega; **o teste falharia se a V3 replicasse o SQL quebrado de TEMA V2** (prova de que a
+  regressão foi corrigida, não herdada).
+- `ResetarSenhaDeUsuarioTest`: ator sem `podeGerenciarUsuarios()` → 403; ator válido →
+  troca a senha do alvo.
+- `GerenciarUsuariosTest`: Supervisor não vê `SuperAdministrador` na listagem;
+  SuperAdministrador vê todos.
+- `AnotacaoPessoalTest`: salva e recupera a anotação do próprio usuário autenticado.

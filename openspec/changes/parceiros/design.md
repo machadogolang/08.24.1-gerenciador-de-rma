@@ -18,7 +18,7 @@ clientes
   complemento        string nullable
   bairro             string nullable
   cidade             string nullable
-  uf                 string(2) nullable
+  uf                 string(2) nullable   -- cast Eloquent para App\Compartilhado\Uf
   observacao         text nullable
   timestamps
 
@@ -39,6 +39,33 @@ fabricantes / fornecedores / assistencias_tecnicas   (schema idêntico entre os 
   politica_de_garantia        text nullable    -- texto livre, nunca parseado (igual legado)
   timestamps
 ```
+
+### `App\Compartilhado\Uf` — ajuste da revisão (ver `docs/arquitetura/revisao-fases-1-2-3.md`)
+
+O `INV-RMA-05` §3 já registrava `Compartilhado` como o lugar para "value objects sem
+dono único (ex.: enum de UF...)", mas o desenho original desta fase usava `uf
+string(2) nullable` solto nos 4 models — o mesmo padrão de primitiva-representando-
+conceito-fechado que o princípio "sem número mágico" (`INV-RMA-05` §1.1) proíbe (UF é
+um conjunto fechado de 27 valores, não texto livre).
+
+```php
+enum Uf: string
+{
+    case AC = 'AC'; case AL = 'AL'; case AP = 'AP'; case AM = 'AM'; case BA = 'BA';
+    case CE = 'CE'; case DF = 'DF'; case ES = 'ES'; case GO = 'GO'; case MA = 'MA';
+    case MT = 'MT'; case MS = 'MS'; case MG = 'MG'; case PA = 'PA'; case PB = 'PB';
+    case PR = 'PR'; case PE = 'PE'; case PI = 'PI'; case RJ = 'RJ'; case RN = 'RN';
+    case RS = 'RS'; case RO = 'RO'; case RR = 'RR'; case SC = 'SC'; case SP = 'SP';
+    case SE = 'SE'; case TO = 'TO';
+}
+```
+
+Backing `string` é aceitável aqui pelo mesmo motivo de `TemaPreferido` (Fase 1): sem
+ordem/precedência a esconder, só um conjunto fechado de siglas que precisa aparecer
+como texto em formulário/URL. Os 4 models (`Cliente`, `Fabricante`, `Fornecedor`,
+`AssistenciaTecnica`) usam `casts(): array { return ['uf' => Uf::class]; }` — cast nativo
+de enum puro do Eloquent, sem `EmBanco`/repositório (mesmo caso do `TemaPreferido`).
+Campo continua nullable — nem todo cadastro do legado tinha UF preenchida.
 
 Não migrar `rgie` (Registro de Inscrição Estadual — achado do legado, baixíssimo uso,
 sem nenhuma regra de negócio associada) nem `cfop` como algo mais que texto livre — o

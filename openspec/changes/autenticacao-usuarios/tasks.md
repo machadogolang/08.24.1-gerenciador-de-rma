@@ -20,6 +20,19 @@
 - [ ] `tests/Feature/Identidade/PermissaoTest.php`
 - [ ] `tests/Feature/Identidade/AlternarTemaTest.php`
 - [ ] `tests/Unit/Identidade/PapelTest.php` (os 4 métodos do enum, sem banco)
+- [ ] `app/Identidade/Aplicacao/TrocarPropriaSenha.php` (TEMA V1 como especificação, RN-21)
+- [ ] `app/Identidade/Aplicacao/ResetarSenhaDeUsuario.php`
+- [ ] `app/Identidade/Aplicacao/AtualizarAnotacaoPessoal.php`
+- [ ] `app/Http/Controllers/Identidade/UsuarioController.php`
+- [ ] `app/Http/Controllers/Identidade/AnotacaoPessoalController.php`
+- [ ] `resources/views/identidade/usuarios/index.blade.php`
+- [ ] `resources/views/identidade/perfil/senha.blade.php`
+- [ ] `tests/Feature/Identidade/TrocarPropriaSenhaTest.php`
+- [ ] `tests/Feature/Identidade/ResetarSenhaDeUsuarioTest.php`
+- [ ] `tests/Feature/Identidade/GerenciarUsuariosTest.php`
+- [ ] `tests/Feature/Identidade/AnotacaoPessoalTest.php`
+- [ ] Registrar pendência de `LEG-RMA-002` (autocadastro com convite) sem decidir —
+      perguntar ao usuário antes de implementar (ver `proposal.md`)
 - [ ] `composer test` / `sail test` verde
 - [ ] Atualizar `docs/produto/paridade-v2-v3.md`: `LEG-RMA-001`, `LEG-RMA-006`,
       `LEG-RMA-043` passam de `PENDENTE` para `EM IMPLEMENTAÇÃO`/`PARIDADE` conforme

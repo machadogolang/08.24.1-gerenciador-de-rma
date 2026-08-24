@@ -241,9 +241,150 @@ decisão pode mudar com o que se aprende implementando).
 `openspec/changes/autenticacao-usuarios/{proposal.md,design.md,tasks.md}` — escrita
 nesta mesma sessão, ver arquivos correspondentes.
 
-## 7. O que fica para quando a Fase 1 estiver implementada
+## 7. Fase 2 em detalhe — Parceiros
 
-Fases 2 a 10 recebem o mesmo nível de detalhe (arquivo por arquivo) **só quando forem a
-fase corrente** — detalhar todas agora, antes de aprender com a implementação da Fase 1,
-seria planejar no escuro. O esqueleto de dependência (seção 5) já é suficiente para
-saber a ordem.
+### Decisão de modelagem (resolve a pendência da Parte 2 do checklist)
+
+**FK real desde a baseline**, não relação por string. Isso é uma correção estrutural
+que **não muda comportamento percebido** (mesma tela, mesmo CRUD, mesmo resultado para
+o usuário) — só corrige um problema real e documentado do legado (auto-criação de
+`cliente` sem deduplicação real, ver `modelo-dominio-rma-legado.md`). Registro
+ANTES/PROBLEMA/DEPOIS/MIGRAÇÃO/COMPATIBILIDADE/TESTE (exigido pela regra de evolução do
+banco):
+
+- **ANTES:** `bd.cliente`/`bd.fabricante`/`bd.fornecedor`/`bd.destinatario` = nome em
+  texto livre, sem FK.
+- **PROBLEMA:** duplicidade por variação de digitação (`adicionar_cli()` só compara
+  `WHERE nome = ?` exato); RMA "órfão" se o nome não bater exatamente numa listagem.
+- **DEPOIS:** `Rma` referencia `Cliente`/`Fabricante`/`Fornecedor` por `foreignId` real;
+  `destinatario` (que no legado é polimórfico — pode ser assistência, fornecedor ou
+  fabricante) vira relação polimórfica nativa do Eloquent (`morphTo`).
+- **MIGRAÇÃO:** o migrador (`MIG-V3`, Fase 9) resolve nomes existentes por
+  correspondência aproximada, cria os registros que faltarem, relaciona por ID, reporta
+  ambiguidade — não é problema desta fase, só precisa que o schema já esteja pronto pra
+  receber isso.
+- **COMPATIBILIDADE:** nenhuma — é mudança interna, invisível ao usuário.
+- **TESTE:** a decidir na OpenSpec da Fase 9 (contagem de parceiros após migração bate
+  com estimativa do legado).
+
+**Não unificar `Cliente`/`Fabricante`/`Fornecedor`/`AssistenciaTecnica` num único
+`Parceiro` polimórfico na baseline** — é exatamente a tentativa que o próprio legado
+abandonou pela metade (tabela órfã `assistencias`, ver `regras-negocio-rma-legado.md`
+RN-19). A ideia fica registrada como `EVO-DOM-001` no backlog evolutivo, não implementada
+agora — os 4 tipos nascem como 4 tabelas/models separados, exatamente como
+`LEG-RMA-030` a `033` já os cataloga.
+
+### Arquitetura do módulo (mais simples que `Identidade`, com justificativa)
+
+Sem `Dominio/`/`Infraestrutura/` — é CRUD com uma única regra de negócio real
+(deduplicação na auto-criação de cliente), que não justifica a fronteira de repositório
+completa. Eloquent direto em `app/Models/`, com **um** caso de uso em `Aplicacao/` só
+para a regra que existe de fato.
+
+### Arquivos
+
+- `database/migrations/2026_08_26_000000_create_clientes_table.php`
+- `database/migrations/2026_08_26_000001_create_fabricantes_table.php`
+- `database/migrations/2026_08_26_000002_create_fornecedores_table.php`
+- `database/migrations/2026_08_26_000003_create_assistencias_tecnicas_table.php`
+- `app/Models/Cliente.php`, `Fabricante.php`, `Fornecedor.php`, `AssistenciaTecnica.php`
+  — Eloquent puro; os 3 últimos compartilham o mesmo shape (endereço, contato,
+  `politicadegarantia` — texto livre, sem parsing, igual ao legado) via um `trait`
+  `app/Parceiros/Concerns/TemEnderecoEContato.php` (evita repetir os mesmos `$fillable`/
+  `casts()` 3 vezes; `Cliente` não usa o trait porque não tem `politicadegarantia`/
+  `email2`/`www` — schema genuinely diferente, não forçar uniformidade que o legado não
+  tem)
+- `app/Parceiros/Aplicacao/EncontrarOuCriarCliente.php` — único caso de uso real: busca
+  por nome normalizado (trim + case-insensitive — correção sobre o bug do legado),
+  cria se não existir, nunca duplica
+- `app/Policies/ClientePolicy.php`, `FabricantePolicy.php`, `FornecedorPolicy.php`,
+  `AssistenciaTecnicaPolicy.php` — todas delegam a `$user->papel->podeGravar()`
+  (`Identidade\Dominio\Papel`, já existe da Fase 1); repetição de 1 linha em 4 arquivos
+  é aceitável (não vale criar abstração para isso)
+- `app/Http/Controllers/Parceiros/ClienteController.php`,
+  `FabricanteController.php`, `FornecedorController.php`,
+  `AssistenciaTecnicaController.php` — `index/create/store/edit/update/destroy`
+  padrão de resource controller do Laravel
+- `resources/views/parceiros/_form.blade.php` — **parcial compartilhada**
+  parametrizada (não fidelidade visual ainda — isso é Fase 8, então não há razão para
+  4 formulários quase idênticos agora)
+- `resources/views/parceiros/index.blade.php` — genérica, recebe título/rota/coleção
+- `routes/web.php` — grupo `parceiros.*` (resource routes ×4)
+- `database/factories/ClienteFactory.php` (+ Fabricante/Fornecedor/AssistenciaTecnica)
+- `tests/Feature/Parceiros/ClienteCrudTest.php` (+ 3 análogos)
+- `tests/Feature/Parceiros/EncontrarOuCriarClienteTest.php` — caso feliz, caso de
+  duplicata evitada, caso de variação de digitação/espaço
+
+## 8. Fase 3 em detalhe — Rma núcleo
+
+### Decisão de modelagem — aqui SIM se justifica a fronteira completa
+
+Ao contrário de `Parceiros`, o módulo `Rma` **usa a fronteira completa do padrão
+CONAHOM**: `Dominio/` com objeto de domínio **puro** (não Eloquent — achado confirmado
+nesta sessão lendo `app/Filiacao/Dominio/SolicitacaoDeFiliacao.php` do CONAHOM: não
+estende `Model`) + interface de repositório; `Infraestrutura/` implementa a interface.
+Diferença deliberada do CONAHOM: a implementação usa **Eloquent**, não `DB::table()` cru
+— o rigor que vale a pena replicar aqui é a **fronteira** (a interface, que isola quem
+usa `Rma` de como ele é persistido), não o estilo de acesso a dado dentro da
+implementação. `DB::table()` puro no CONAHOM se justifica pela escala e pelas consultas
+muito específicas de reconciliação; o RMA não tem esse mesmo motivo.
+
+**Por que a fronteira se paga aqui e não em `Parceiros`:** a Fase 9 (migração) precisa
+ler o banco `rma_legacy` (schema `bd`, ~56 colunas, sem FK, valores legados fora do
+domínio moderno) e gravar como `Rma` da V3. Se o resto da aplicação (casos de uso,
+Controllers, regras de alerta da Fase 5) depender da interface de `Dominio/`, o
+migrador é só mais um `Infraestrutura/` que sabe ler o formato velho — sem essa
+fronteira, o código de migração vazaria pra dentro da aplicação toda.
+
+### Arquivos
+
+- `database/migrations/2026_08_27_000000_create_rmas_table.php` — schema novo,
+  **não** espelha as ~56 colunas de `bd` 1:1 (ver mapa campo-a-campo em `INV-RMA-06`,
+  Fase 9); nesta fase só os campos que o núcleo (criar/buscar/ver) precisa:
+  identificador, `descricao`, `fabricante_id`, `modelo`, `sn`, `os`, `origem`,
+  `empresa`, `cliente_id`, `defeito`, `observacao`, timestamps. Campos de
+  status/solução/NF/crédito entram nas Fases 4/5/6 (migration incremental, não
+  monolítica — evita uma tabela gigante nascendo de uma vez sem uso real ainda)
+- [DECISÃO A REGISTRAR NO `design.md` DA OPENSPEC, NÃO AQUI] identificador: `id`
+  incremental do Eloquent é suficiente para a baseline — não há caso de uso de
+  identificador público exposto externamente ainda (RMA não tem API pública, portal do
+  cliente não existe). UUID/ULID fica registrado como `EVO` se/quando isso mudar.
+- `app/Rma/Dominio/Rma.php` — objeto de domínio puro (não Eloquent), representa o
+  agregado com os campos desta fase
+- `app/Rma/Dominio/RepositorioDeRmas.php` — interface: `criar(...)`,
+  `buscarPorId(int)`, `buscar(CriterioDeBusca)` (ver próximo item)
+- `app/Rma/Dominio/CriterioDeBusca.php` — value object da busca/localização
+  (`LEG-RMA-008`) — em vez de replicar os `campo=TUDO/NF/SNPNSNID` do legado como string
+  mágica, vira um objeto com métodos nomeados (`porTexto(string)`,
+  `porNotaFiscal(string)`, `porSerial(string)`) — mesmo princípio de "sem número/string
+  mágica" já fixado para `Papel`
+- `app/Rma/Aplicacao/CriarRma.php` — caso de uso: recebe dados do formulário, usa
+  `EncontrarOuCriarCliente` (módulo `Parceiros`) se o cliente for novo, grava via
+  `RepositorioDeRmas`
+- `app/Rma/Aplicacao/BuscarRmas.php` — caso de uso de leitura, usa `CriterioDeBusca`
+- `app/Rma/Aplicacao/VerDetalheDoRma.php` — caso de uso de leitura simples
+- `app/Rma/Infraestrutura/RmasEmBanco.php` — implementa `RepositorioDeRmas` via
+  Eloquent (usa um `app/Models/Rma.php` interno, não exposto fora da infra)
+- `app/Models/Rma.php` — Eloquent, **uso interno da Infraestrutura só** — o resto da
+  aplicação nunca importa este model diretamente, só o objeto de `Dominio/Rma.php`
+- `app/Http/Controllers/Rma/RmaController.php` — `index` (busca), `create`/`store`
+  (novo), `show` (detalhe) — usa os casos de uso de `Aplicacao/`, nunca o Eloquent
+  model direto
+- `resources/views/rma/index.blade.php`, `create.blade.php`, `show.blade.php` — sem
+  fidelidade visual ainda
+- `routes/web.php` — grupo `rma.*`
+- `database/factories/RmaFactory.php`
+- `tests/Feature/Rma/CriarRmaTest.php`, `BuscarRmasTest.php`, `VerDetalheDoRmaTest.php`
+- `tests/Unit/Rma/CriterioDeBuscaTest.php`
+
+### O que NÃO entra na Fase 3 (fica pras fases seguintes, mesmo já estando no schema de `bd`)
+
+`status`, `solucao`, `prioridade`, campos de NF, crédito, destinatário — tudo isso é
+Fase 4/5/6. Criar a coluna antes de ter a regra que a usa é exatamente o tipo de
+"planejar no escuro" que este documento evita.
+
+## 9. O que fica para quando a Fase 2/3 estiverem implementadas
+
+Fases 4 a 10 recebem o mesmo nível de detalhe **quando forem a fase corrente** — depois
+de aprender o que funcionou (ou não) nas Fases 1 a 3. O esqueleto de dependência
+(seção 5) já é suficiente para saber a ordem até lá.

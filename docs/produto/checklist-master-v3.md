@@ -94,9 +94,12 @@ operacionais menores.
 - [x] Inventário de tecnologia completo — tabela em `INV-RMA-05` §4: Laravel 13/PHP
       8.3, MySQL 8.4 (Sail), Auth/Breeze/Hash nativos, Blade+Vite+Sass+Bootstrap 5.3,
       JS moderno (jQuery só se justificado caso a caso), PHPUnit+Playwright
-- [ ] Decidir: FK reais desde a baseline para `cliente`/`fabricante`/`fornecedor`/
-      `assistencia_tecnica`, ou preservar relação por string na primeira versão? (fica
-      para quando a Fase 2/Parceiros for desenhada em detalhe)
+- [x] Decidido: FK real desde a baseline para `cliente`/`fabricante`/`fornecedor`/
+      `assistencia_tecnica` (não string) — detalhe em `INV-RMA-05` §7, com registro
+      ANTES/PROBLEMA/DEPOIS/MIGRAÇÃO/COMPATIBILIDADE/TESTE
+- [x] Decidido: `Rma` (só ele) usa fronteira completa `Dominio`/`Aplicacao`/
+      `Infraestrutura` com interface de repositório — `Identidade`/`Parceiros` usam
+      Eloquent direto (ver `INV-RMA-05` §8 para a justificativa)
 - [ ] Investigar granularidade real de compartilhamento entre TEMA V1 e TEMA V2 (fica
       para a Fase 8/apresentação, quando for desenhada em detalhe):
   - [ ] Comparar as duas telas de "novo RMA" lado a lado (V1 vs V2) campo a campo
@@ -129,22 +132,42 @@ Arquivo por arquivo já detalhado em `INV-RMA-05` §6. Tasks (de `tasks.md`, res
 - [ ] Atualizar `paridade-v2-v3.md` (`LEG-RMA-001`, `006`, `043`)
 - [ ] Commit `#F1 - Identidade`
 
-### Fase 2 — Parceiros — **NÃO INICIADA**
+### Fase 2 — Parceiros — **EM ESPECIFICAÇÃO**
 
-- [ ] Escrever `openspec/changes/parceiros/{proposal,design,tasks}.md`
-- [ ] Decidir FK vs. string (ver Parte 2)
-- [ ] Migrations de `clientes`/`fabricantes`/`fornecedores`/`assistencias_tecnicas`
-- [ ] CRUD de cada um (Controller + Policy + views mínimas)
-- [ ] Testes
+OpenSpec escrita: `openspec/changes/parceiros/{proposal,design,tasks}.md`. Arquivo por
+arquivo detalhado em `INV-RMA-05` §7. **Decisão já tomada:** FK real desde a baseline
+(não string), sem unificar os 4 tipos num `Parceiro` só (ideia fica em `EVO-DOM-001`).
+Tasks (resumido):
 
-### Fase 3 — Rma núcleo — **NÃO INICIADA**
+- [ ] 4 migrations (`clientes`/`fabricantes`/`fornecedores`/`assistencias_tecnicas`)
+- [ ] `trait TemEnderecoEContato` + 4 Eloquent models
+- [ ] `EncontrarOuCriarCliente` (único caso de uso real — corrige dedup do legado)
+- [ ] 4 Policies (delegam a `Papel::podeGravar()` da Fase 1)
+- [ ] 4 Controllers (resource padrão) + rotas
+- [ ] Views genéricas (`_form.blade.php` compartilhada + `index.blade.php`)
+- [ ] 4 Factories + 5 arquivos de teste (CRUD ×4 + dedup)
+- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado, commit `#F2`
 
-- [ ] Escrever `openspec/changes/rma-cadastro-e-localizacao/{proposal,design,tasks}.md`
-- [ ] Decidir identificador (incremental/UUID/ULID)
-- [ ] Migration da entidade `Rma` (mapear campos de `bd`, ver
-      `inventario-banco-rma-v2.md`)
-- [ ] Criação de RMA + busca/localização (equivalente a `LEG-RMA-007`/`008`/`009`)
-- [ ] Testes
+### Fase 3 — Rma núcleo — **EM ESPECIFICAÇÃO**
+
+OpenSpec escrita: `openspec/changes/rma-cadastro-e-localizacao/{proposal,design,tasks}.md`.
+Arquivo por arquivo detalhado em `INV-RMA-05` §8. **Decisão já tomada:** este é o único
+módulo que usa a fronteira completa `Dominio`(puro)/`Aplicacao`/`Infraestrutura` com
+interface de repositório (justificativa: a Fase 9/migração precisa dessa fronteira para
+não vazar a leitura do schema `rma_legacy` pro resto da aplicação); identificador
+incremental (sem UUID/ULID — sem caso de uso ainda). Tasks (resumido):
+
+- [ ] Migration incremental de `rmas` (só os campos desta fase, não a tabela inteira)
+- [ ] `Rma` (objeto de domínio puro), `RepositorioDeRmas` (interface),
+      `CriterioDeBusca` (value object — substitui os `campo=TUDO/NF/SNPNSNID` do
+      legado por named constructors)
+- [ ] `RmasEmBanco` (Eloquent, implementação interna da infra) + binding no
+      `AppServiceProvider`
+- [ ] `CriarRma`, `BuscarRmas`, `VerDetalheDoRma` (casos de uso)
+- [ ] Controller + views mínimas + rotas
+- [ ] Factory + 4 arquivos de teste (3 feature + 1 unit de `CriterioDeBusca`)
+- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado (`LEG-RMA-007/008/009`),
+      commit `#F3`
 
 ### Fase 4 — Ciclo de vida — **NÃO INICIADA**
 

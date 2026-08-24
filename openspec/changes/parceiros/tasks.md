@@ -1,0 +1,24 @@
+# Tasks — Parceiros
+
+- [ ] `database/migrations/2026_08_26_000000_create_clientes_table.php`
+- [ ] `database/migrations/2026_08_26_000001_create_fabricantes_table.php`
+- [ ] `database/migrations/2026_08_26_000002_create_fornecedores_table.php`
+- [ ] `database/migrations/2026_08_26_000003_create_assistencias_tecnicas_table.php`
+- [ ] `app/Parceiros/Concerns/TemEnderecoEContato.php` (trait)
+- [ ] `app/Models/Cliente.php`
+- [ ] `app/Models/Fabricante.php`
+- [ ] `app/Models/Fornecedor.php`
+- [ ] `app/Models/AssistenciaTecnica.php`
+- [ ] `app/Parceiros/Aplicacao/EncontrarOuCriarCliente.php`
+- [ ] `app/Policies/ClientePolicy.php` (+ Fabricante/Fornecedor/AssistenciaTecnica)
+- [ ] `app/Http/Controllers/Parceiros/ClienteController.php` (+ 3 análogos)
+- [ ] `resources/views/parceiros/_form.blade.php`
+- [ ] `resources/views/parceiros/index.blade.php`
+- [ ] Rotas resource ×4 em `routes/web.php`
+- [ ] `database/factories/ClienteFactory.php` (+ 3 análogas)
+- [ ] `tests/Feature/Parceiros/ClienteCrudTest.php` (+ 3 análogos)
+- [ ] `tests/Feature/Parceiros/EncontrarOuCriarClienteTest.php`
+- [ ] `sail test` verde
+- [ ] Atualizar `docs/produto/paridade-v2-v3.md` (`LEG-RMA-030` a `033`)
+- [ ] Atualizar `docs/produto/checklist-master-v3.md` (Fase 2 concluída)
+- [ ] Commit `#F2 - Parceiros (cliente/fabricante/fornecedor/assistência técnica)`

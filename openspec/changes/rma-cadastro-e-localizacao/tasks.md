@@ -1,0 +1,24 @@
+# Tasks — Rma núcleo
+
+- [ ] `database/migrations/2026_08_27_000000_create_rmas_table.php` (schema desta fase)
+- [ ] `app/Rma/Dominio/Rma.php`
+- [ ] `app/Rma/Dominio/RepositorioDeRmas.php`
+- [ ] `app/Rma/Dominio/CriterioDeBusca.php`
+- [ ] `app/Rma/Infraestrutura/RmasEmBanco.php`
+- [ ] `app/Models/Rma.php` (Eloquent, uso interno da infra)
+- [ ] `app/Rma/Aplicacao/CriarRma.php`
+- [ ] `app/Rma/Aplicacao/BuscarRmas.php`
+- [ ] `app/Rma/Aplicacao/VerDetalheDoRma.php`
+- [ ] Registrar binding `RepositorioDeRmas -> RmasEmBanco` (`AppServiceProvider`)
+- [ ] `app/Http/Controllers/Rma/RmaController.php`
+- [ ] `resources/views/rma/{index,create,show}.blade.php`
+- [ ] Rotas em `routes/web.php`
+- [ ] `database/factories/RmaFactory.php`
+- [ ] `tests/Feature/Rma/CriarRmaTest.php`
+- [ ] `tests/Feature/Rma/BuscarRmasTest.php`
+- [ ] `tests/Feature/Rma/VerDetalheDoRmaTest.php`
+- [ ] `tests/Unit/Rma/CriterioDeBuscaTest.php`
+- [ ] `sail test` verde
+- [ ] Atualizar `docs/produto/paridade-v2-v3.md` (`LEG-RMA-007`, `008`, `009`)
+- [ ] Atualizar `docs/produto/checklist-master-v3.md` (Fase 3 concluída)
+- [ ] Commit `#F3 - Rma núcleo (criação, busca, detalhe)`

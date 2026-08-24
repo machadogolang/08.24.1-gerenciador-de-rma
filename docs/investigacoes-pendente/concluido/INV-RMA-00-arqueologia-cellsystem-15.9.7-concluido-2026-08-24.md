@@ -1,9 +1,20 @@
-# INV-RMA-00 — Arqueologia do CellSystem RMA 15.9.7 (investigação viva)
+# INV-RMA-00 — Arqueologia do CellSystem RMA 15.9.7
 
-Iniciada: 2026-08-24. Status: **EM ANDAMENTO**. Este é o documento normativo da
-arqueologia — a conversa que o produziu não é fonte de verdade a partir de agora. Toda
-descoberta nova entra aqui (ou nos documentos especializados referenciados) antes de
-qualquer outra ação.
+**Concluída em:** 2026-08-24
+**Resultado:** Arqueologia suficiente para avançar à arquitetura da V3 — 48
+funcionalidades catalogadas, 21 regras de negócio com rastreabilidade por tema, schema
+de banco completo, os dois temas (TEMA V1/14.6.1, TEMA V2/15.8.1) validados rodando de
+verdade no LEGACY-RUNTIME (`08.24.4-legacy-gerenciador-de-rma`, porta 8094).
+**Parecer gerado:** `docs/pareceres/2026-08-24-parecer-arqueologia-rma.md`
+**Próxima etapa:** `INV-RMA-05` (arquitetura moderna proposta) e catálogo formal de
+OpenSpec por capacidade funcional.
+
+---
+
+Iniciada: 2026-08-24. Status: **CONCLUÍDA**. Este é o documento normativo da
+arqueologia — a conversa que o produziu não é fonte de verdade. Toda descoberta nova a
+partir de agora entra em `INV-RMA-05`/`INV-RMA-06` ou nos documentos especializados de
+`docs/legado/`, não mais aqui.
 
 **Nomenclatura oficial** (definida pelo autor original do sistema, 2026-08-24): **RMA V2
 FINAL** = `15.9.7` · **TEMA V1** = `14.6.1` · **TEMA V2** = `15.8.1` · **RMA V3** = o

@@ -34,7 +34,7 @@
       LEGACY-RUNTIME (`inventario-visual-tema-v1.md`, `inventario-visual-tema-v2.md`) —
       falta screenshot em imagem e telas internas (novo RMA, detalhes)
 - [X] ARQ-07b — Inventário de banco dedicado (`inventario-banco-rma-v2.md`)
-- [ ] ARQ-08 — Parecer arqueológico consolidado (`docs/pareceres/`)
+- [X] ARQ-08 — Parecer arqueológico consolidado (`docs/pareceres/2026-08-24-parecer-arqueologia-rma.md`)
 
 ### LEGACY-RUNTIME — vive em `08.24.4-legacy-gerenciador-de-rma`
 

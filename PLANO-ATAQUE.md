@@ -4,54 +4,45 @@
 
 ## AGORA
 
-**Repositório Legacy separado:** o código executável do RMA V2 e o Docker migraram
-para `~/github/08.24.4-legacy-gerenciador-de-rma` (repo próprio, commit `#L0`) —
-`docs/legado/legacy-runtime-ambiente.md` deste repo passa a ser só a memória de design/
-achados da sessão em que foi montado; o `README.md` do repo Legacy é agora a fonte
-operacional (`cp .env.example .env && docker compose up -d`). ARQ-06 (a comparação
-14.6.1×15.8.1) está **concluído** — ver `regras-negocio-rma-legado.md` §Notas de
-cobertura. Próxima ação: `ARQ-08` (parecer arqueológico consolidado).
+**Arqueologia concluída.** Parecer consolidado em
+`docs/pareceres/2026-08-24-parecer-arqueologia-rma.md`, investigação arquivada em
+`docs/investigacoes-pendente/concluido/`. Ambiente executável validado nos dois
+repositórios (`08.24.4-legacy-gerenciador-de-rma` porta 8094, `08.24.1-gerenciador-de-rma`
+porta 8095, rodando simultaneamente — ver `docs/desenvolvimento/ambiente-v2-v3.md`).
+Próxima ação: `INV-RMA-05` (arquitetura moderna proposta) e primeira OpenSpec real do
+catálogo (seção "Catálogo inicial de OpenSpec proposto" abaixo).
 
-## DEPOIS (em paralelo quando fizer sentido)
+## DEPOIS
 
-1. ~~ARQ-06b~~ **CONCLUÍDO** — RN-13 a RN-18, RN-21 comparadas linha a linha; achado
-   maior: regressão real de "trocar senha" entre TEMA V1 (funciona) e TEMA V2 (quebrado).
-   Único residual: RN-12 (threshold R$75), não localizado em TEMA V1, risco baixo.
-2. **ARQ-07** — interface e identidade visual: com o LEGACY-RUNTIME de pé, capturar
-   evidência real (não só CSS estático) para `inventario-visual-tema-v1.md` e
-   `inventario-visual-tema-v2.md` (ainda não escritos).
-3. **ARQ-08** — parecer arqueológico consolidado (17 pontos), referenciando todos os
-   documentos de `docs/legado/`.
-4. **MIG-V3** — mapa completo legado→V3 por tabela/campo; desenho do migrador oficial
-   (requisito de produto, ver `INV-RMA-00` §10); baseline antes de qualquer melhoria
-   estrutural (regra ANTES/PROBLEMA/DEPOIS/MIGRAÇÃO/COMPATIBILIDADE/TESTE).
-5. **INV-RMA-05** — arquitetura moderna proposta (Laravel, proporcional, linha CONAHOM,
-   compartilhamento de domínio/controllers entre TEMA V1 e TEMA V2 na apresentação).
-6. **INV-RMA-06** — estratégia de reconstrução/migração formal.
-7. Só depois: OpenSpecs por capacidade funcional coerente, tasks, fundação técnica.
+1. **INV-RMA-05** — arquitetura moderna proposta (Laravel, proporcional, linha CONAHOM,
+   investigar granularidade real de compartilhamento de domínio/controllers entre
+   TEMA V1 e TEMA V2 antes de fixar).
+2. **INV-RMA-06** — estratégia de reconstrução/migração formal (mapa legado→V3 por
+   tabela/campo, ver `MIG-V3` abaixo).
+3. Primeira OpenSpec real do catálogo proposto (`autenticacao-usuarios` é o candidato
+   mais simples/seguro — schema estável, regra já validada nos dois temas).
+4. Só depois: tasks, primeira fatia de implementação.
+5. Item residual de baixo risco, não bloqueante: RN-12 (threshold R$75) — confirmar
+   ausência/presença em TEMA V1 com leitura linha a linha completa, se necessário.
+6. ARQ-07c — screenshots/telas internas (novo RMA, detalhes) dos dois temas.
 
 ## DEPENDÊNCIAS
 
-- ARQ-07/08 se beneficiam do LEGACY-RUNTIME rodando (evidência viva > CSS estático), mas
-  não são estritamente bloqueados por ele — se o bring-up levar muito tempo, ARQ-07 pode
-  avançar com o CSS/HTML já lido, marcando lacunas.
-- ARQ-08 depende de ARQ-06b resolvido para as regras `[BUG-LEGADO]` de maior impacto
-  (RN-17, RN-18, RN-21) não ficarem `[DÚVIDA]` por omissão.
-- INV-RMA-05/06 dependem do parecer (ARQ-08).
+- INV-RMA-05/06 dependem do parecer — **já disponível** (ARQ-08 concluído).
 - MIG-V3 (migrador real) depende de INV-RMA-05/06 (schema da V3 precisa existir).
 - Implementação da V3 depende de OpenSpec madura por funcionalidade — nunca "legado →
   interpretação rápida → código".
 
-## CRITÉRIO DE SAÍDA da arqueologia
+## CRITÉRIO DE SAÍDA da arqueologia — ATINGIDO
 
-- Todas as 48 funcionalidades de `inventario-funcional-rma-v2.md` com situação conhecida
-  nos dois temas (crítica: as `[BUG-LEGADO]` de alto impacto não podem ficar `[DÚVIDA]`
-  por omissão).
-- Árvore RMA V2/TEMA V1/TEMA V2 documentada sem contradição (feito — ARQ-05).
-- Inventário de segurança cobrindo os dois temas + camada compartilhada (feito).
-- Identidade visual dos dois temas registrada o suficiente para reconstrução fiel
-  (pendente — ARQ-07).
-- Mapa legado→V3 por tabela/campo existente (pendente — MIG-V3).
+- [X] 48 funcionalidades com situação conhecida nos dois temas (1 residual de baixo
+      risco: RN-12).
+- [X] Árvore RMA V2/TEMA V1/TEMA V2 documentada sem contradição.
+- [X] Inventário de segurança cobrindo os dois temas + camada compartilhada.
+- [X] Identidade visual dos dois temas registrada (1ª passada, com evidência de
+      runtime real — faltam só screenshots/telas internas, não bloqueante).
+- [ ] Mapa legado→V3 por tabela/campo — pendente, é o próximo passo (`MIG-V3`/
+      `INV-RMA-06`), não faz parte do critério de saída da arqueologia em si.
 
 ## Catálogo inicial de OpenSpec proposto (ainda nenhuma escrita — proposta de agrupamento)
 
@@ -70,23 +61,21 @@ coerente, não por botão nem num bloco só:
 | `temas-v1-v2` | apresentação — decisão de arquitetura de tema, não itens LEG-RMA específicos |
 | `migracao-v2-v3` | MIG-01/02, não itens LEG-RMA |
 
-Cada change só é escrita quando: (a) as dúvidas `[DÚVIDA]` dos itens que ela cobre
-estiverem resolvidas (ARQ-06b), e (b) houver decisão de arquitetura madura o bastante
-(INV-RMA-05) para descrever "como será na V3", não só "como era na V2".
+Cada change só é escrita quando houver decisão de arquitetura madura o bastante
+(`INV-RMA-05`) para descrever "como será na V3", não só "como era na V2".
 
 ## NÃO FAZER AINDA
 
-- Não criar migration, model, controller, view Laravel da V3.
-- Não fixar schema novo, enums finais, máquina de estado final — tudo
-  `PROVISÓRIO — AGUARDANDO VALIDAÇÃO` até o parecer.
+- Não criar migration, model, controller, view Laravel da V3 sem OpenSpec correspondente.
+- Não fixar schema novo, enums finais, máquina de estado final até `INV-RMA-05` decidir.
 - Não implementar nenhum item do `backlog-evolutivo.md`.
 - Não fazer melhoria estrutural de banco antes da baseline V3 validada (ver regra de
-  evolução do banco, `INV-RMA-00` §10).
-- Não editar o código-fonte legado dentro de `_rma-arqueologia/backup-15.9.7/extracted/`
-  — qualquer adaptação de ambiente é documentada como configuração de container, nunca
-  como edição da fonte histórica.
+  evolução do banco, na investigação arquivada §10).
+- Não editar o código-fonte legado dentro de `08.24.4-legacy-gerenciador-de-rma/
+  legacy-source/` — qualquer adaptação de ambiente é documentada como configuração de
+  container, nunca como edição da fonte histórica.
 - Não publicar o LEGACY-RUNTIME fora de `localhost`; não usar credencial real; não
-  permitir envio de e-mail real (Mailpit obrigatório).
+  permitir envio de e-mail real (Mailpit obrigatório — já validado).
 - Não `git push`, não PR, não merge remoto, não alterar os repositórios/backup
   históricos.
 
@@ -101,14 +90,17 @@ estiverem resolvidas (ARQ-06b), e (b) houver decisão de arquitetura madura o ba
 | ARQ-04 | Camada compartilhada 15.9.7 | `metodo.php`/`conexao.php`/`trocarapp.php` documentados | `[X]` |
 | ARQ-05 | Árvore RMA V2/TEMA V1/TEMA V2 | Matriz completa, ordem histórica confirmada pelo autor | `[X]` |
 | ARQ-06a | Inventário funcional catalogado | 48 itens `LEG-RMA-NNN` + matriz de paridade | `[X]` |
-| ARQ-06b | Resolver dúvidas de presença por tema | RN-12 a RN-21 verificadas em TEMA V1 | `[ ]` |
+| ARQ-06b | Resolver dúvidas de presença por tema | RN-13 a RN-18/RN-21 comparadas linha a linha (RN-12 residual) | `[X]` |
 | ARQ-07a | Interface/identidade visual (1ª passada) | `inventario-visual-tema-{v1,v2}.md` escritos com evidência de runtime | `[X]` |
 | ARQ-07b | Inventário de banco dedicado | `inventario-banco-rma-v2.md` escrito | `[X]` |
 | ARQ-07c | Screenshots + telas internas | Imagem real dos dois temas, novo RMA e detalhes | `[ ]` |
-| ARQ-08 | Parecer arqueológico consolidado | 17 pontos respondidos | `[ ]` |
-| LR-01 | Design do LEGACY-RUNTIME | `legacy-runtime-ambiente.md` escrito, compat. PHP verificada | `[X]` |
-| LR-02 | `compose.yaml`/`Dockerfile` escritos e testados | TEMA V1 e TEMA V2 respondem em `localhost:8091` | `[X]` |
-| LR-03 | Login validado nos dois temas | Dashboard autenticado renderiza (TEMA V2: "Build 2.5"; TEMA V1: "FIR 1.3") | `[X]` |
-| LR-04 | Reset determinístico + evidência visual | `reset-legacy.sh` + screenshots dos dois temas | `[ ]` |
+| ARQ-08 | Parecer arqueológico consolidado | 17 pontos respondidos | `[X]` |
+| LR-01 | Design do LEGACY-RUNTIME | Escrito, compat. PHP verificada | `[X]` |
+| LR-02 | `compose.yaml`/`Dockerfile` escritos e testados | TEMA V1 e TEMA V2 respondem em `localhost:8094` | `[X]` |
+| LR-03 | Login validado nos dois temas | Smoke test real: login, home, listagem, RMA de fixture, transições, troca de tema | `[X]` |
+| LR-04 | Ambiente separado em repositório próprio + porta oficial | `08.24.4-legacy-gerenciador-de-rma`, porta 8094, `scripts/legacy-reset.sh` | `[X]` |
+| LR-05 | Mailpit validado de verdade | `mail()` capturado, nada saiu para a internet | `[X]` |
+| LR-06 | Execução simultânea com V3 | 6 containers ativos ao mesmo tempo, sem conflito | `[X]` |
+| V3-01 | Fundação técnica executável | Laravel 13/PHP 8.3, porta 8095, migrations + testes básicos passando | `[X]` |
 | MIG-01 | Mapa legado → V3 por tabela/campo | Documento completo, nascido da arqueologia | `[ ]` |
 | MIG-02 | Migrador oficial implementado | Repetível, testável, auditável, idempotente | `[ ]` |

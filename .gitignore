@@ -1,0 +1,11 @@
+# Nesta fase (investigação arqueológica) este repo recebe apenas documentação.
+# Nunca deve conter dump de banco, backup ou material do legado 14.10.2/15.9.7.
+*.sql
+*.sql.gz
+*.dump
+*.bak
+*.tar.gz
+*.zip
+*.7z
+*.rar
+.env

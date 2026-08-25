@@ -43,6 +43,21 @@ final class Rma
         public readonly ?string $nfvenda = null,
         public readonly ?\DateTimeInterface $nfvendaEmissao = null,
         public readonly ?string $nfvendaChave = null,
+        /**
+         * VIS-V1-003 — promovidos de "coluna histórica de preservação" (Fase 9) para
+         * campo de primeira classe do agregado: confirmado em runtime que `P/N` e
+         * `SNID` são inputs reais do formulário "Novo" do TEMA V1 legado
+         * (`menujs-top/novo.php`), gravados por `banco.oo.php::novo()` na criação e
+         * incluídos na assinatura de `banco.oo.php::salvar()` (edição — código morto,
+         * nunca chamado por nenhuma página, então não editáveis depois na prática).
+         * Não aparecem em `detalhes.php` nem em nenhuma busca/regra de negócio do
+         * legado — write-once na criação. Decisão: campo de primeira classe (a coluna
+         * já existe, `App\Models\Rma::$fillable`), exposto no formulário de criação e
+         * no detalhe do TEMA V1; não exposto no formulário de edição (mesmo
+         * comportamento do legado).
+         */
+        public readonly ?string $pn = null,
+        public readonly ?string $snid = null,
         public readonly ?StatusDeLancamento $lancadoretorno = null,
         public readonly ?float $valor = null,
         public readonly ?\DateTimeInterface $createdAt = null,
@@ -148,6 +163,8 @@ final class Rma
             'nfvenda' => $this->nfvenda,
             'nfvendaEmissao' => $this->nfvendaEmissao,
             'nfvendaChave' => $this->nfvendaChave,
+            'pn' => $this->pn,
+            'snid' => $this->snid,
             'lancadoretorno' => $this->lancadoretorno,
             'valor' => $this->valor,
             'createdAt' => $this->createdAt,
@@ -226,6 +243,8 @@ final class Rma
             'snretorno' => $this->snretorno,
             'destinatario_type' => $this->destinatarioType,
             'destinatario_id' => $this->destinatarioId,
+            'pn' => $this->pn,
+            'snid' => $this->snid,
         ];
     }
 }

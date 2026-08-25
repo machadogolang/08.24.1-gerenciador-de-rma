@@ -27,3 +27,19 @@ if (botaoSessao && painelSessao) {
         botaoSessao.setAttribute('aria-expanded', aberto ? 'false' : 'true');
     });
 }
+
+// VIS-V1-002 — equivalente a `NovoMaximize()` (`pattern/14.6.1.js`): expande
+// `#JS-Novo` sobre a superfície atual sem navegar. `href` continua apontando para
+// `/rmas/create` (fallback funcional sem JS); com JS, o clique normal é interceptado
+// e a navegação, cancelada — o conteúdo da página atual permanece visível abaixo do
+// formulário expandido.
+const botaoNovo = document.querySelector('#menu-novo');
+const painelNovo = document.querySelector('#JS-Novo');
+
+if (botaoNovo && painelNovo) {
+    botaoNovo.addEventListener('click', (evento) => {
+        evento.preventDefault();
+        painelNovo.style.display = 'block';
+        botaoNovo.style.fontWeight = 'bold';
+    });
+}

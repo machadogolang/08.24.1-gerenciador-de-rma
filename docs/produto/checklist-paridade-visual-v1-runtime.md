@@ -99,9 +99,19 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Critério de aceite: abrir "Novo" em qualquer tela do TEMA V1 mantém o conteúdo da
   tela visível abaixo do formulário expandido; submissão continua validando/persistindo
   pelo caso de uso Laravel real (`CriarRmaTest.php`), sem PHP procedural
-- Status: **NÃO CORRIGIDO NESTA SESSÃO** — reestruturação de layout compartilhado,
-  requer decidir o mecanismo (Livewire/Alpine/fetch parcial) antes de implementar;
-  registrado para a próxima sessão.
+- Status: **[x] CORRIGIDO NESTA SESSÃO** — sem framework front-end (JS nativo, mesma
+  filosofia do resto do TEMA V1). Partial compartilhado
+  `temas/v1/rma/_form_novo.blade.php` incluído uma vez em `temas.v1.layout` dentro de
+  `#JS-Novo` (oculto por `style="display:none;"`, mesma composição de
+  `inc/menuright.php`), presente em toda página do TEMA V1. `v1.js` ganhou o handler de
+  `#menu-novo` (equivalente a `NovoMaximize()`): `preventDefault()` + `display:block`,
+  sem navegar; `href` continua apontando para `/rmas/create` como fallback funcional
+  (sem JS, ctrl-clique, etc.). POST normal para `rmas.store` — nenhum caso de uso novo.
+  Prova end-to-end (Playwright, clique real de browser):
+  `tests/Browser/PainelNovoInlineTemaV1.spec.ts` — URL não muda, painel fica visível,
+  conteúdo anterior (`Aguardando credito`) continua no DOM/visível, formulário aparece
+  antes de `#CONTEUDO` na ordem do DOM. Screenshot:
+  `docs/produto/screenshots-vis-v1-001/11-v3-novo-inline-sobre-aguardando-credito.png`.
 
 ## VIS-V1-003 — formulário "Novo RMA" estruturalmente diferente
 
@@ -130,9 +140,40 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Critério de aceite: formulário reproduz a composição de 5 colunas do legado, todos os
   campos citados presentes e funcionais (persistem, aparecem no detalhe), sem simular
   campo que não persiste de verdade
-- Status: **NÃO CORRIGIDO NESTA SESSÃO** — precisa primeiro confirmar até onde a camada
-  de aplicação (request/caso de uso) já aceita `snid`/`nfcompra`/`nfvenda`/`pn`/
-  `marcarestoque` antes de desenhar o formulário; registrado para a próxima sessão.
+- Status: **[x] CORRIGIDO NESTA SESSÃO** — reconstrução completa em
+  `temas/v1/rma/_form_novo.blade.php` (5 colunas / 5 linhas, mesma ordem de campos de
+  `menujs-top/novo.php`; ver VIS-V1-004 abaixo para a geometria/CSS).
+  **Grupo A** (`marcarestoque`/`nfcompra`/`nfcompra_emissao`/`nfvenda`/`nfvenda_emissao`)
+  — já existiam no agregado e na coluna, mas `CriarRma::criar()` descartava tudo ao
+  montar `new Rma(...)` do zero; corrigido verticalmente: `RmaController::validarDados()`
+  → `CriarRma` → `Rma` (construtor) → `RmasEmBanco` (já mapeava) → formulário V1 →
+  detalhe V1 (`show.blade.php`) → `tests/Feature/Rma/CriarRmaTest.php` (3 casos novos:
+  persistência dos 5 campos, `marcarestoque=false` quando checkbox não enviado —
+  semântica de checkbox HTML, mesmo comportamento do legado). De brinde: achado e
+  corrigido um bug pré-existente em `MarcarCreditoDisponivel` (reconstruía o agregado
+  campo a campo em vez de `comAlteracoes()`, o mesmo anti-padrão que motivou ARQ-001 —
+  zeraria `pn`/`snid` silenciosamente; teste de regressão em
+  `MarcarCreditoDisponivelTest`).
+  **PN/SNID** — investigação concluída (não ficou pendência): confirmado em runtime que
+  são inputs reais de `menujs-top/novo.php` (linhas 51-52/105-106), gravados por
+  `banco.oo.php::novo()` na criação; participam da assinatura de `banco.oo.php::salvar()`
+  (edição), mas essa função é **código morto** — nenhuma página do legado a chama, então
+  não são editáveis depois na prática; não aparecem em `detalhes.php` nem em nenhuma
+  busca/regra de negócio. Decisão registrada: promovidos a campo de primeira classe do
+  agregado (`App\Rma\Dominio\Rma`, docblock do construtor), expostos no formulário de
+  criação e no detalhe do TEMA V1 (`show.blade.php`), **não expostos no formulário de
+  edição** (mesmo comportamento do legado — write-once). Teste:
+  `test_pn_e_snid_persistem_na_criacao`.
+  **Campos V3 extras classificados** — `Fornecedor` (`fornecedor_id`) **NÃO** existe em
+  `menujs-top/novo.php`; é campo que só o domínio moderno adicionou. Removido da
+  reconstrução V1 (continua existindo normalmente em `_campos.blade.php`, usado pela
+  Edição e pelo TEMA V2). `Fabricante` mantido como `<select fabricante_id>` (FK) em vez
+  do `<input list>` de texto livre do legado — classificado como modernização já
+  existente do domínio (não uma lacuna desta correção: reverter para texto livre exigiria
+  um caso de uso de resolução por nome tipo `EncontrarOuCriarCliente`, que não existe
+  hoje para Fabricante). Autocomplete via `<datalist>` de Descrição/Origem/Modelo/Empresa
+  não reproduzido (perda de conveniência de digitação, sem impacto em estrutura/dado
+  persistido — fora do critério de aceite).
 
 ## VIS-V1-004 — CSS do "Novo RMA" não corresponde ao original
 
@@ -143,8 +184,13 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   .formButtonEnviarNovo/.novo_defeito/.formInputObservacao`
 - V3: `.tablenovo` generalizada para `width:100%`, sem os seletores específicos
 - Categoria: [x] geometria [x] tipografia [x] cor
-- Status: **NÃO CORRIGIDO NESTA SESSÃO** — depende de VIS-V1-003 (a estrutura de campos
-  precisa existir antes do CSS fazer sentido); registrado para a próxima sessão.
+- Status: **[x] CORRIGIDO NESTA SESSÃO** — valores reais de `pattern/14.6.1.css`
+  portados para `resources/sass/temas/v1.scss`: `.tablenovo` (700px, não `width:100%`),
+  `.novo_formInput`/`.novo_formInputDATE`/`.novo_formInputSmall` (22px altura, cor
+  `#C3FF00`), `.novo_defeito`, `.formInputObservacao`, `.formButtonEnviarNovo`,
+  `.novoIconTitleTop`, `.title-comicone` (não estava definida em lugar nenhum antes
+  desta correção, apesar de já usada por `VIS-V1-001`/`VIS-V1-010`). Nenhum seletor
+  generalizado para `width:100%` onde o legado tem geometria própria.
 
 ## VIS-V1-005 — Quadro de Anotações com botão "Salvar anotação" que não existia
 
@@ -182,7 +228,16 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Categoria: [x] estrutura [x] tipografia
 - Status: **NÃO AUDITADO TELA A TELA NESTA SESSÃO** — precisa passar por cada view do
   TEMA V1 conferindo se o legado tinha heading equivalente; registrado para a próxima
-  sessão.
+  sessão. **Impacto pontual corrigido nesta sessão**: a tela `/rmas/create`
+  (`VIS-V1-002`) tinha `<h1 class="titulo-v1">Novo RMA</h1>` acima do painel, mas
+  `menujs-top/novo.php` começa pelo ícone/texto próprios (`novoIconTitleTop`/
+  `title-comicone`), sem H1. `temas.v1.layout` ganhou um utilitário `.sr-only` (sem
+  fonte no legado, utilitário de acessibilidade V3) aplicado só nessa rota — o H1
+  continua no DOM (semântica/acessibilidade preservada), só não aparece visualmente.
+  Demais telas do TEMA V1 continuam com o H1 visível (não auditadas, fora de escopo
+  desta correção pontual). Teste: `PainelNovoTemaV1Test::test_titulo_novo_rma_fica_
+  visualmente_oculto_mas_presente_no_dom` +
+  `test_titulo_continua_visivel_nas_demais_paginas`.
 
 ## VIS-V1-008 — MENU administrativo incompleto
 
@@ -440,12 +495,12 @@ por isso fica registrado para a próxima sessão junto de VIS-V1-001/002/003/004
 | ID | Status |
 |---|---|
 | VIS-V1-001 | **Corrigido e testado nesta sessão** |
-| VIS-V1-002 | Registrado, não corrigido — reestruturação de layout compartilhado |
-| VIS-V1-003 | Registrado, não corrigido — achado: campos já existem no schema |
-| VIS-V1-004 | Registrado, não corrigido — depende de VIS-V1-003 |
+| VIS-V1-002 | **Corrigido e testado nesta sessão** — painel Novo inline, JS nativo |
+| VIS-V1-003 | **Corrigido e testado nesta sessão** — Grupo A + PN/SNID promovidos, Fornecedor removido |
+| VIS-V1-004 | **Corrigido nesta sessão** — geometria/CSS reais de `pattern/14.6.1.css` |
 | VIS-V1-005 | Registrado, não corrigido — mudança de mecanismo de persistência |
 | VIS-V1-006 | Registrado, não corrigido — falta segundo seletor "solução" |
-| VIS-V1-007 | Não auditado tela a tela |
+| VIS-V1-007 | Não auditado tela a tela — impacto pontual na tela Novo corrigido |
 | VIS-V1-008 | **Corrigido nesta sessão anterior — refinamento em `VIS-V1-010`** |
 | VIS-V1-009 | Pendente — 5 telas de detalhe de parceiro ausentes (`PAR-PARCEIRO-001`) |
 | VIS-V1-010 | **Corrigido e testado nesta sessão** — painel Controle V1 próprio, link reclassificado |

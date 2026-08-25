@@ -30,6 +30,34 @@ class MarcarCreditoDisponivelTest extends TestCase
         $this->assertTrue($rma->credito_disponivel);
     }
 
+    /**
+     * ARQ-001 (`INV-RMA-10`) — antes desta correção, `MarcarCreditoDisponivel`
+     * reconstruía o agregado campo a campo (`new Rma(...)`) em vez de usar
+     * `comAlteracoes()`, apagando silenciosamente qualquer campo fora da lista
+     * explícita. Achado ao adicionar `pn`/`snid` (VIS-V1-003): marcar crédito
+     * disponível zerava os dois. Prova de regressão.
+     */
+    public function test_marcar_credito_disponivel_preserva_pn_e_snid(): void
+    {
+        $operador = User::factory()->create(['papel' => Papel::Operador]);
+        $rma = RmaEloquent::factory()->create([
+            'solucao' => Solucao::GeradoCredito,
+            'credito_disponivel' => false,
+            'pn' => 'PN-000123',
+            'snid' => 'SNID-000456',
+        ]);
+
+        $response = $this->actingAs($operador)->post('/rmas-credito/marcar', [
+            'rma_id' => $rma->id,
+        ]);
+
+        $response->assertRedirect();
+        $rma->refresh();
+        $this->assertTrue($rma->credito_disponivel);
+        $this->assertSame('PN-000123', $rma->pn);
+        $this->assertSame('SNID-000456', $rma->snid);
+    }
+
     public function test_nega_quando_solucao_nao_e_gerado_credito(): void
     {
         $operador = User::factory()->create(['papel' => Papel::Operador]);

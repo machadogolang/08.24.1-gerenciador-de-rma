@@ -87,4 +87,79 @@ class CriarRmaTest extends TestCase
         $response->assertForbidden();
         $this->assertDatabaseMissing('rmas', ['descricao' => 'Não deveria existir']);
     }
+
+    /**
+     * VIS-V1-003 (Grupo A) — `marcarestoque`/`nfcompra`/`nfcompra_emissao`/`nfvenda`/
+     * `nfvenda_emissao` já existiam no agregado e na coluna, mas `CriarRma` descartava
+     * tudo ao montar `new Rma(...)` do zero. Prova de ponta a ponta: os 5 campos
+     * persistem exatamente como enviados.
+     */
+    public function test_grupo_a_persiste_na_criacao(): void
+    {
+        $operador = User::factory()->create(['papel' => Papel::Operador]);
+
+        $response = $this->actingAs($operador)->post('/rmas', [
+            'descricao' => 'HD com NF',
+            'defeito' => 'Não liga',
+            'nfcompra' => '123456',
+            'nfcompra_emissao' => '2026-01-10',
+            'nfvenda' => '654321',
+            'nfvenda_emissao' => '2026-02-15',
+            'marcarestoque' => '1',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('rmas', [
+            'descricao' => 'HD com NF',
+            'nfcompra' => '123456',
+            'nfcompra_emissao' => '2026-01-10',
+            'nfvenda' => '654321',
+            'nfvenda_emissao' => '2026-02-15',
+            'marcarestoque' => true,
+        ]);
+    }
+
+    /**
+     * Checkbox HTML ausente da requisição quando desmarcado — mesma semântica do
+     * legado (`isset($_POST['marcarestoque'])`, `post/novo.php`).
+     */
+    public function test_marcarestoque_fica_falso_quando_checkbox_nao_enviado(): void
+    {
+        $operador = User::factory()->create(['papel' => Papel::Operador]);
+
+        $response = $this->actingAs($operador)->post('/rmas', [
+            'descricao' => 'Item fora do estoque',
+            'defeito' => 'Risco',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('rmas', [
+            'descricao' => 'Item fora do estoque',
+            'marcarestoque' => false,
+        ]);
+    }
+
+    /**
+     * VIS-V1-003 — `pn`/`snid` promovidos de coluna histórica de preservação para
+     * campo de primeira classe (evidência: `menujs-top/novo.php` + `banco.oo.php::novo()`
+     * do Legacy 14.6.1, ver docblock do construtor de `App\Rma\Dominio\Rma`).
+     */
+    public function test_pn_e_snid_persistem_na_criacao(): void
+    {
+        $operador = User::factory()->create(['papel' => Papel::Operador]);
+
+        $response = $this->actingAs($operador)->post('/rmas', [
+            'descricao' => 'Placa-mãe',
+            'defeito' => 'Não liga',
+            'pn' => 'PN-000123',
+            'snid' => 'SNID-000456',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('rmas', [
+            'descricao' => 'Placa-mãe',
+            'pn' => 'PN-000123',
+            'snid' => 'SNID-000456',
+        ]);
+    }
 }

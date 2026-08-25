@@ -22,6 +22,16 @@
         <tr><td>Cliente</td><td>{{ $cliente?->nome }}</td></tr>
         <tr><td>Defeito</td><td>{{ $registro->defeito }}</td></tr>
         <tr><td>Observação</td><td>{{ $registro->observacao }}</td></tr>
+        {{-- VIS-V1-003 (Grupo A + PN/SNID) — campos do painel "Novo" do TEMA V1 que
+        antes não persistiam (Grupo A) ou não existiam no agregado (PN/SNID, ver
+        docblock de `App\Rma\Dominio\Rma`). --}}
+        <tr><td>P/N</td><td>{{ $registro->pn }}</td></tr>
+        <tr><td>SNID</td><td>{{ $registro->snid }}</td></tr>
+        <tr><td>NF de compra</td><td>{{ $registro->nfcompra }}</td></tr>
+        <tr><td>NF de compra — emissão</td><td>{{ $registro->nfcompraEmissao?->format('d/m/Y') }}</td></tr>
+        <tr><td>NF de venda</td><td>{{ $registro->nfvenda }}</td></tr>
+        <tr><td>NF de venda — emissão</td><td>{{ $registro->nfvendaEmissao?->format('d/m/Y') }}</td></tr>
+        <tr><td>Item de estoque</td><td>{{ $registro->marcarestoque ? 'Sim' : 'Não' }}</td></tr>
         <tr><td>Recebido em</td><td>{{ $registro->recebidoEm }}</td></tr>
         <tr><td>Encaminhado em</td><td>{{ $registro->encaminhadoEm }}</td></tr>
         <tr><td>Concluído em</td><td>{{ $registro->concluidoEm }}</td></tr>

@@ -14,6 +14,13 @@
             'rmas.credito.*',
             'rmas.relatorios.*',
         );
+        // VIS-V1-007 — `/rmas/create` (fallback funcional de VIS-V1-002) não tinha
+        // heading `<h1>` no runtime original (`menujs-top/novo.php` começa pelo
+        // ícone/texto próprios, ver `_form_novo.blade.php`); o H1 de `#CONTEUDO`
+        // continua no DOM (acessibilidade/semântica), só fica visualmente oculto
+        // aqui — não é uma auditoria tela-a-tela de VIS-V1-007, só o impacto direto
+        // encontrado nesta correção.
+        $ocultarTituloVisual = request()->routeIs('rmas.create', 'v1.rmas.create');
     @endphp
 
     <div id="FIXADO">
@@ -25,7 +32,11 @@
                 <li class="menu-up {{ request()->routeIs('v1.rmas.index') ? 'active' : '' }}">
                     <a href="{{ rota_tema('rmas.index') }}">Pag. Inicial</a>
                 </li>
-                <li class="menu-up {{ request()->routeIs('v1.rmas.create') ? 'active' : '' }}">
+                {{-- VIS-V1-002 — `NovoMaximize()` original só expande `#JS-Novo`
+                (abaixo) sem navegar; `href` continua apontando pra rota real como
+                fallback funcional (sem JS, ou clique do meio/ctrl-clique), mas o
+                clique normal é interceptado por `v1.js`. --}}
+                <li id="menu-novo" class="menu-up {{ request()->routeIs('v1.rmas.create') ? 'active' : '' }}">
                     <a href="{{ rota_tema('rmas.create') }}">Novo</a>
                 </li>
                 <li class="menu-up"><a href="{{ rota_tema('rmas.index') }}#localizar">Localizar</a></li>
@@ -80,9 +91,23 @@
                 </div>
             </div>
 
+            {{-- VIS-V1-002 — equivalente a `inc/menuright.php` (`#JS-Novo`, sempre no
+            DOM, oculto por `style="display:none;"`, `NovoMaximize()` só troca pra
+            `block`). Presente em toda página do TEMA V1 (não só `/rmas/create`) para
+            que "Novo" abra o formulário sem perder o conteúdo da tela atual embaixo —
+            ver `_form_novo.blade.php`. Fabricantes vêm de `View::composer` scoped a
+            essa view (`AppServiceProvider::boot()`), mesmo padrão do legado (a query
+            de `listar_nome_de_fabricantes()` roda em toda carga de página, painel
+            oculto ou não). --}}
+            @unless ($ocultarTituloVisual)
+                <div class="JS-Novo tam" id="JS-Novo" style="display:none;">
+                    @include('temas.v1.rma._form_novo')
+                </div>
+            @endunless
+
             @unless ($painelSessao)
                 <div id="CONTEUDO">
-                    <h1 class="titulo-v1">{{ $titulo ?? '' }}</h1>
+                    <h1 class="titulo-v1 {{ $ocultarTituloVisual ? 'sr-only' : '' }}">{{ $titulo ?? '' }}</h1>
                     @if (session('status'))
                         <p class="centrodeavisos">{{ session('status') }}</p>
                     @endif

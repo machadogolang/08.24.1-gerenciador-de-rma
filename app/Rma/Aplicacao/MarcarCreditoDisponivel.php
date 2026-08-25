@@ -26,42 +26,11 @@ final class MarcarCreditoDisponivel
         abort_unless($ator->papel->podeGravar(), 403);
         abort_unless($rma->solucao === Solucao::GeradoCredito, 422);
 
-        $comCreditoDisponivel = new Rma(
-            id: $rma->id,
-            descricao: $rma->descricao,
-            fabricanteId: $rma->fabricanteId,
-            fornecedorId: $rma->fornecedorId,
-            modelo: $rma->modelo,
-            sn: $rma->sn,
-            os: $rma->os,
-            origem: $rma->origem,
-            empresa: $rma->empresa,
-            clienteId: $rma->clienteId,
-            defeito: $rma->defeito,
-            observacao: $rma->observacao,
-            status: $rma->status,
-            recebidoEm: $rma->recebidoEm,
-            encaminhadoEm: $rma->encaminhadoEm,
-            concluidoEm: $rma->concluidoEm,
-            arquivadoEm: $rma->arquivadoEm,
-            protocolo: $rma->protocolo,
-            solucao: $rma->solucao,
-            snretorno: $rma->snretorno,
-            destinatarioType: $rma->destinatarioType,
-            destinatarioId: $rma->destinatarioId,
-            prioridade: $rma->prioridade,
-            marcarestoque: $rma->marcarestoque,
-            nfcompra: $rma->nfcompra,
-            nfcompraEmissao: $rma->nfcompraEmissao,
-            nfcompraChave: $rma->nfcompraChave,
-            nfvenda: $rma->nfvenda,
-            nfvendaEmissao: $rma->nfvendaEmissao,
-            nfvendaChave: $rma->nfvendaChave,
-            lancadoretorno: $rma->lancadoretorno,
-            valor: $rma->valor,
-            createdAt: $rma->createdAt,
-            creditoDisponivel: true,
-        );
+        // ARQ-001 — reconstrução manual campo a campo trocada por `comAlteracoes()`:
+        // a versão anterior desta classe apagava silenciosamente qualquer campo do
+        // agregado que não estivesse na lista explícita (achado ao adicionar `pn`/
+        // `snid`, VIS-V1-003 — marcar crédito disponível zerava os dois).
+        $comCreditoDisponivel = $rma->comAlteracoes(['creditoDisponivel' => true]);
 
         return $this->repositorio->atualizar($comCreditoDisponivel);
     }

@@ -98,6 +98,9 @@ class RmaController extends Controller
         Gate::authorize('create', RmaEloquent::class);
 
         $dados = $this->validarDados($request);
+        // Checkbox HTML: ausente na requisição quando desmarcado (mesma semântica do
+        // legado, `isset($_POST['marcarestoque'])` — ver `post/novo.php`).
+        $dados['marcarestoque'] = $request->boolean('marcarestoque');
 
         $rma = $caso->criar($dados);
 
@@ -165,6 +168,16 @@ class RmaController extends Controller
             'cliente_nome' => ['nullable', 'string', 'max:255'],
             'defeito' => ['required', 'string', 'max:255'],
             'observacao' => ['nullable', 'string'],
+            // VIS-V1-003 (Grupo A) — já existiam no agregado (`App\Rma\Dominio\Rma`) e
+            // na coluna, mas nunca chegavam validados até `CriarRma`. `pn`/`snid`
+            // promovidos de coluna histórica para campo de primeira classe (ver
+            // docblock do construtor de `Rma`).
+            'nfcompra' => ['nullable', 'string', 'max:255'],
+            'nfcompra_emissao' => ['nullable', 'date'],
+            'nfvenda' => ['nullable', 'string', 'max:255'],
+            'nfvenda_emissao' => ['nullable', 'date'],
+            'pn' => ['nullable', 'string', 'max:255'],
+            'snid' => ['nullable', 'string', 'max:255'],
         ]);
 
         return $dados;

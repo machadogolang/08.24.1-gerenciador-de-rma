@@ -45,6 +45,13 @@ final class CriarRma
      *     cliente_nome: ?string,
      *     defeito: string,
      *     observacao: ?string,
+     *     marcarestoque: ?bool,
+     *     nfcompra: ?string,
+     *     nfcompra_emissao: ?string,
+     *     nfvenda: ?string,
+     *     nfvenda_emissao: ?string,
+     *     pn: ?string,
+     *     snid: ?string,
      * } $dados
      */
     public function criar(array $dados): Rma
@@ -74,6 +81,16 @@ final class CriarRma
             clienteId: $cliente?->id,
             defeito: $dados['defeito'],
             observacao: $dados['observacao'] ?? null,
+            // VIS-V1-003 (Grupo A) — o formulário já validava/enviava esses campos,
+            // mas este caso de uso descartava tudo silenciosamente ao montar `new
+            // Rma(...)` do zero; corrigido para repassar o que o form manda.
+            marcarestoque: $dados['marcarestoque'] ?? true,
+            nfcompra: $dados['nfcompra'] ?? null,
+            nfcompraEmissao: filled($dados['nfcompra_emissao'] ?? null) ? new \DateTimeImmutable($dados['nfcompra_emissao']) : null,
+            nfvenda: $dados['nfvenda'] ?? null,
+            nfvendaEmissao: filled($dados['nfvenda_emissao'] ?? null) ? new \DateTimeImmutable($dados['nfvenda_emissao']) : null,
+            pn: $dados['pn'] ?? null,
+            snid: $dados['snid'] ?? null,
         );
 
         $rmaNormalizado = $rma->comNormalizacaoDeGravacao(

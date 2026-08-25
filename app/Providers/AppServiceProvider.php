@@ -14,9 +14,11 @@ use App\Rma\Dominio\Eventos\RmaRecebido;
 use App\Rma\Dominio\Eventos\RmaRevertido;
 use App\Rma\Dominio\Eventos\SolucaoRegistrada;
 use App\Rma\Dominio\Eventos\TentativaDeGravacaoNaoPermitida;
+use App\Models\Fabricante;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Infraestrutura\RmasEmBanco;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -54,5 +56,15 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(RmaConcluido::class, EnviarNotificacaoDeConclusao::class);
         Event::listen(TentativaDeGravacaoNaoPermitida::class, EnviarNotificacaoDeTentativaNaoPermitida::class);
+
+        // VIS-V1-002 — `temas.v1.layout` inclui o painel "Novo" (`#JS-Novo`) em toda
+        // página do TEMA V1, não só na rota de criação; o `<select fabricante_id>`
+        // precisa da lista independente de qual controller renderizou a página atual.
+        // Mesmo comportamento do legado: `menujs-top/novo.php` roda
+        // `listar_nome_de_fabricantes()` toda vez que `#JS-Novo` é incluído no HTML,
+        // painel visível ou não.
+        View::composer('temas.v1.rma._form_novo', function ($view) {
+            $view->with('fabricantes', Fabricante::query()->orderBy('nome')->get());
+        });
     }
 }

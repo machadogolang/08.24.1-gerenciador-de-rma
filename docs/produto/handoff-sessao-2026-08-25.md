@@ -20,6 +20,83 @@ registra o contexto operacional, o que foi efetivamente concluído e a ordem de 
 > passo 4 abaixo (`F10-FUN-07`), agora sobre uma baseline corrigida. O restante deste
 > documento permanece válido.
 
+> **Atualização (mesmo dia, terceira sessão) — GATE VISUAL DO TEMA V1 REABERTO,
+> AGORA É A PRIORIDADE 0.** Inspeção humana direta em runtime (`:8094/14.6.1/` ×
+> `:8095`) encontrou divergências estruturais que o checkpoint anterior (`F10-V1-01..08`)
+> não capturou — o teste `ParidadeVisualTemaV1.spec.ts` deu **falso positivo**: passou
+> com menu incompleto, interação de "Novo" diferente, formulário de Novo RMA sem 7
+> campos e com CSS genérico, Quadro de Anotações com mecanismo de salvamento diferente,
+> Home/Localizar com composição diferente e headings `<h1>` que talvez não existissem no
+> legado. Fonte completa do achado, com todas as evidências e o plano de reabertura
+> tela-a-tela: `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-no-layout.md`
+> (screenshots comparáveis Legacy×V3 em
+> `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT/`, **não versionadas** — mesma cautela
+> de `docs/produto/screenshots-paridade-v1/`, reproduzir localmente se precisar
+> revisitar). `docs/produto/checklist-master-v3.md` (seção F10 visual) foi atualizado
+> reabrindo `F10-V1-01/02/03/04/07/08` (`F10-V1-05/06`, fontes/assets, não foram
+> contestados e continuam `[x]`).
+>
+> **Documento operacional desta frente:**
+> `docs/produto/checklist-paridade-visual-v1-runtime.md` — 8 achados (`VIS-V1-001` a
+> `VIS-V1-008`) já registrados no formato obrigatório (ID/Tela/Legacy/V3/Categoria/
+> Evidência/Problema/Fontes/Critério de aceite/Status). **Só `VIS-V1-008` (menu
+> administrativo — Controle/Créditos/Relatórios) foi corrigido e testado nesta sessão**
+> (commit abaixo); os outros 7 continuam abertos, cada um com achados técnicos já
+> levantados (ex.: `VIS-V1-003` — os campos que pareciam faltar no formulário de Novo RMA
+> **já existem no schema** de `rmas`: `snid`, `nfcompra`/`nfcompra_emissao`,
+> `nfvenda`/`nfvenda_emissao`, `pn`, `marcarestoque` — falta só confirmar se a camada de
+> aplicação já aceita e expor no TEMA V1, não é lacuna de domínio).
+>
+> **Por que não foi tudo corrigido nesta sessão:** o pedido original também previa lançar
+> 3 subagentes de investigação (inventário do legado, comparador visual, comparador de
+> interação) e um loop contínuo "encontrou → registrou → corrigiu" tela a tela por ~19
+> áreas. O trabalho real restante é substancial (`VIS-V1-001` sozinho exige recriar 4
+> páginas de listagem por status com regra de destaque de linha própria; `VIS-V1-002`
+> exige reestruturar o layout do TEMA V1 para permitir o formulário "Novo" abrir inline
+> sem navegar) — maior do que cabia num ciclo curto sem arriscar entregar correção
+> superficial (exatamente o problema que motivou a reabertura). Ficou registrado por
+> completo, não implementado às pressas.
+>
+> **Ordem de retomada da próxima sessão (substitui o passo 4 anterior enquanto este gate
+> estiver aberto):**
+> 1. Ler `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-no-layout.md` por
+>    inteiro (tem o plano de subagentes, formato de checklist e ordem de telas sugerida
+>    pelo usuário) e `docs/produto/checklist-paridade-visual-v1-runtime.md`.
+> 2. Seguir a ordem da seção 13 daquele documento: cabeçalho/menu (✓ feito) → Home/`rmas`
+>    → interação de Novo → formulário Novo RMA → Localizar/filtros → Aguardando Crédito →
+>    Entrada → Encaminhado → Concluído → Detalhe/edição → demais telas.
+>    `VIS-V1-001` (as 4 páginas de listagem por status) é o maior item e desbloqueia
+>    parte da navegação — considerar começar por ele ou por `VIS-V1-006`
+>    (Home/Localizar), que é menor.
+> 3. Cada tela corrigida: registrar no checklist auxiliar (Screenshot antes/depois,
+>    Teste, Status), rodar a suíte, commit próprio pequeno.
+> 4. Antes de fechar o gate de novo, auditar e reforçar `ParidadeVisualTemaV1.spec.ts`
+>    (seção 17/18 do documento fonte) para que ele pare de dar falso positivo —
+>    `getBoundingClientRect()` + computed styles nos blocos, não só screenshot mascarado.
+> 5. Só depois disso retomar `F10-FUN-07` (M-02/M-04/M-06, e fechar a persistência de
+>    tema pós-relogin do M-01 — ver achado abaixo).
+>
+> **Commits desta sessão (branch `main`, sem push — 4 à frente de `origin/main`):**
+> - `97e338f` `#F10-VIS - Reabre gate V1 apos divergencias comprovadas em runtime`
+> - `53fba74` `#F10-VIS - Registra achados runtime do Tema V1 em checklist auxiliar`
+> - `7fffb13` `#F10-VIS - Restaura Controle, Creditos e Relatorios no menu administrativo do Tema V1`
+> - `148e2f9` `#F10-FUN-07 - Executa M-01 parcial, M-03 e M-05 do roteiro de paridade funcional`
+>
+> **F10-FUN-07 (achados, não bloqueantes, ver `docs/qa/roteiro-paridade-funcional.md`
+> para o texto completo de Observado):** M-03 e M-05 executados sem achado bloqueante
+> (busca por texto/serial/nota fiscal funcionando; painel de alertas com os 11 grupos e
+> contagens reais). M-01 parcial — login dos dois lados confirmado, alternador de tema
+> real localizado em `/perfil` ("Alternar tema"), mas o clique + persistência pós-logout/
+> login não fechou nesta rodada (timeout de automação no botão SIGN OUT, que é um form
+> POST). M-02, M-04, M-06 continuam não executados (dependem de registro descartável ou
+> decisão sobre mutação de estado). Achado de escopo a confirmar, não bloqueante: a
+> redação do roteiro cita busca "por número", mas a tela só implementa Texto/Serial/Nota
+> fiscal — sem busca por protocolo.
+>
+> Suíte completa reexecutada nesta sessão (após o fix de `VIS-V1-008`): **331 testes,
+> 696 assertions, verde**. Nenhum código de domínio/aplicação foi tocado, só a view do
+> menu do TEMA V1.
+
 ## Estado exato no encerramento
 
 - Repositório V3: `/home/legionario/github/08.24.1-gerenciador-de-rma`.

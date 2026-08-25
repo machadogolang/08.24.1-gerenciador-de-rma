@@ -1,0 +1,207 @@
+// _v2-base.scss — port literal do shell/header/nav do TEMA V2 (fonte real:
+// `legacy-source/15.8.1/index.php`, `pattern/15.8.1.css:132-192,815-816`,
+// `15.8.1/css/media.php`). CP16/CP17 do plano de paridade V2
+// (`docs/produto/plano-execucao-paridade-v2.md`).
+//
+// Composição medida no runtime Legacy (Chromium, zoom 100%, DPR 1, 2048×1152):
+// wrapper de conteúdo 1190px centralizado; `.container` (990px, já portado em
+// v2.scss) flutua à esquerda dentro dele; o que sobra (195px + 5px de
+// margin-left = 200px) é ocupado pela sidebar `#menuright`. `header` é a MESMA
+// barra vermelha #C20F41 fixa no topo, com o wrapper de 1190px centralizado por
+// dentro contendo só a `<ul class="nav nav-tabs">`.
+$shell-largura-v2: 1190px;
+$shell-sidebar-largura-v2: 195px;
+$shell-sidebar-margin-left-v2: 5px;
+$vermelho-header-v2: #c20f41;
+$vermelho-aba-ativa-v2: #fe0048;
+$vermelho-hover-v2: #f67d7d;
+
+.shell-v2 {
+    width: $shell-largura-v2;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+}
+
+// `.container` já tem 990px via o mapa de breakpoints em v2.scss — aqui só
+// removemos a centralização própria (`margin:0 auto`) quando ele está dentro do
+// shell, porque no Legacy é `float:left` dentro do wrapper de 1190px, não
+// centralizado sozinho na viewport.
+.shell-v2 > .container {
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.shell-v2__sidebar {
+    flex: 0 0 auto;
+    width: $shell-sidebar-largura-v2;
+    margin-left: $shell-sidebar-margin-left-v2;
+    // Legacy: `#menuright` (outer, `margin-top:44px` inline) > filho (`margin-top:3px`
+    // inline) = 47px do topo da viewport até o conteúdo da sidebar — mesma referência
+    // vertical usada por `.shell-v2 > .container` (`margin-top:40px`, ver abaixo).
+    margin-top: 47px;
+    border: 1px solid #444;
+    min-height: 100px;
+}
+
+.header-v2 {
+    padding: 0;
+    height: 40px;
+    z-index: 999;
+    position: fixed;
+    width: 100%;
+    top: -3px;
+    background-color: $vermelho-header-v2;
+    border-bottom: 1px solid #333 !important;
+}
+
+.header-v2__wrapper {
+    width: $shell-largura-v2;
+    margin: 0 auto;
+}
+
+// `.tab-content` do Legacy (`15.8.1.css`) — aqui aplicado direto no `.container`
+// do shell, que já cumpre o papel de `.tab-content` (não existe wrapper extra
+// `box-content`/`h1` como o V3 tinha antes desta correção).
+.shell-v2 > .container {
+    margin-top: 40px;
+    min-height: 450px;
+    padding: 0;
+    color: #fff;
+}
+
+.nav-v2 {
+    color: #fff;
+
+    a {
+        color: #fff;
+    }
+}
+
+.nav-tabs.nav-v2 {
+    border-bottom: 0;
+    width: $shell-largura-v2;
+
+    li {
+        border: 0;
+        padding: 0;
+        position: relative;
+        text-align: center;
+        font-weight: 300;
+        font-size: 14px;
+        display: block;
+        margin: 0;
+        border-right-width: 0;
+        width: 11.1%; // 1190px / 9 itens ≈ 132px cada, medido no runtime
+
+        &:hover {
+            border: 0;
+        }
+
+        a,
+        .link-como-item-dropdown {
+            margin: 0;
+            border: 0;
+            border-radius: 0;
+            color: #fff;
+            height: 39px;
+            line-height: 39px;
+        }
+
+        .link-como-item-dropdown {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        a,
+        .link-como-item-dropdown {
+            &:active,
+            &:hover,
+            &:focus {
+                background-color: $vermelho-hover-v2;
+            }
+        }
+
+        &.active > a,
+        &.active > a:hover,
+        &.active > a:focus {
+            background-color: $vermelho-aba-ativa-v2;
+            color: #eee;
+            font-weight: 700;
+        }
+    }
+}
+
+// Só Inicio/Pesquisar recebem esta classe no legado (`inc/menu.php`) — leve tingido
+// de fundo distinto dos demais itens da barra.
+.iniciocolor {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+
+    &:hover {
+        background-color: $vermelho-hover-v2 !important;
+    }
+}
+
+// Itens do dropdown "Menu" (`.dropdown-menu`) — geometria/cores de
+// `pattern/15.8.1.css:479-502`. `.menuz` alterna o fundo dos itens ímpares, igual
+// ao HTML histórico (não é um `:nth-child` — segue as classes literais do PHP).
+// `15.8.1/css/media.php` — presente em TODOS os breakpoints (inclusive 1280/1366,
+// os únicos relevantes nesta frente desktop-only, ver CP16-02): sem isso o fundo
+// escuro de cada item não preenche a largura do `.dropdown-menu`, sobrando branco
+// (fundo padrão do Bootstrap) nas laterais.
+.dropdown-menu {
+    min-width: 100% !important;
+}
+
+.lidropdown {
+    width: 100% !important;
+    text-transform: uppercase !important;
+    text-align: left !important;
+    background-color: #555 !important;
+    border-bottom: 1px solid #323131 !important;
+    font-size: 12px !important;
+    padding: 3px 5px !important;
+    margin: 0 !important;
+    height: 25px !important;
+    letter-spacing: 1px !important;
+
+    &:hover {
+        background-color: #111 !important;
+    }
+
+    > a,
+    > form {
+        display: block;
+    }
+}
+
+.menuz {
+    background-color: #444 !important;
+}
+
+.logoutx a {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+
+    &:hover,
+    &:active {
+        background-color: $vermelho-hover-v2 !important;
+    }
+}
+
+// "Logout"/"Trocar p/ 14.6.1" são POST (CSRF), não podem ser `<a href>` — este
+// botão reproduz a aparência de um item de navegação/dropdown comum, sem cromo
+// nativo de `<button>`.
+.link-como-item-dropdown {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+}

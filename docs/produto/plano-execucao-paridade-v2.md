@@ -57,34 +57,101 @@ do prompt original — foi lido e conferido):
 
 Tarefas:
 
-- [ ] CP16-01 — medir no Legacy, `getBoundingClientRect()`, viewport 2048×1152:
+- [x] CP16-01 — medir no Legacy, `getBoundingClientRect()`, viewport 2048×1152:
       wrapper de 1190px (`x`, `width`), `.container` (`x`, `width`), `#menuright`
       (`x`, `width`, `margin-top` computado).
-- [ ] CP16-02 — confirmar que as 4 viewports do plano caem todas no mesmo bloco de
+- [x] CP16-02 — confirmar que as 4 viewports do plano caem todas no mesmo bloco de
       `media.php` (≥1280px) — se sim, implementar só esse bloco primeiro e não gastar
       ciclo com os breakpoints menores (fora do escopo desta frente, que é desktop).
-- [ ] CP16-03 — criar a composição do shell em `_v2-base.scss` (arquivo novo, mesmo
+- [x] CP16-03 — criar a composição do shell em `_v2-base.scss` (arquivo novo, mesmo
       padrão de `_v1-base.scss`): wrapper 1190px centralizado, `.container` mantido
       (990px, já correto), sidebar 195px com a geometria medida em CP16-01. Pode usar
       flex/grid moderno desde que `x`/`width`/`y`/`height` batam com o Legacy — não
       copiar `float` por obrigação.
-- [ ] CP16-04 — adicionar as regras que faltam de `.nav`/`.nav-tabs li` por
+- [x] CP16-04 — adicionar as regras que faltam de `.nav`/`.nav-tabs li` por
       breakpoint (mapa `$breakpoints-tema-v2` já existe em `v2.scss`, só falta
       estender com essas 2 propriedades).
-- [ ] CP16-05 — ajustar `resources/views/temas/v2/layout.blade.php` para a árvore
+- [x] CP16-05 — ajustar `resources/views/temas/v2/layout.blade.php` para a árvore
       estrutural correta (wrapper 1190 → header + container + sidebar), sem ainda
       mexer no conteúdo do header/nav (isso é CP17) nem no conteúdo do
       `tab-content`/`.container` interno (isso é CP19+).
-- [ ] CP16-06 — inspecionar o CSS FINAL compilado pelo Vite (não só o SCSS fonte)
+- [x] CP16-06 — inspecionar o CSS FINAL compilado pelo Vite (não só o SCSS fonte)
       para confirmar que a ordem final de cascata é Bootstrap → base V2 →
       compartilhado → media V2, igual à ordem do `index.php` legado (Bootstrap →
       font-opensans → Fira → `15.8.1.css` → `15.9.7.css` → `media.php`) — mesmo tipo
       de achado que gerou CP1 na fase 1 do Tema V1; não presumir que já está certo.
-- [ ] CP16-07 — capturar/reabrir/comparar shell (sem header/nav ainda finalizados),
+- [x] CP16-07 — capturar/reabrir/comparar shell (sem header/nav ainda finalizados),
       registrar diário com a tabela `shell width/x`, `main width/x`, `sidebar
       width/x`.
-- [ ] CP16-08 — testes/build e commit local. Rodar também os testes V1 (CP16 não
+- [x] CP16-08 — testes/build e commit local. Rodar também os testes V1 (CP16 não
       deveria tocar `_v1-base.scss`/`_compartilhado.scss`, mas confirmar).
+
+### CMP-V2-001 — CP16/CP17, shell (1190/990/195) + header/nav reais
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, sem bloquear fontes
+  remotas. Medido em **4 viewports**: 2048×1152, 1440×1000, 1562×1400, 1700×1000 —
+  todas caem no mesmo bloco de `media.php` (`min-width:1366px`, o último e mais
+  específico que casa com todas), confirmando CP16-02.
+- Login: `localhost:8094/` sempre pousa na preferência salva do usuário
+  (`app($email)`), que hoje é `14.6.1`. Alternar exige um GET em
+  `http://localhost:8094/trocarapp.php` (achado novo, documentado aqui porque nenhum
+  script anterior desta sessão precisava acessar `15.8.1`).
+- **Bug real encontrado e corrigido, fora do escopo original do CP16/17 mas
+  bloqueante para ele:** `bootstrap/js/tab` e `bootstrap/js/dropdown` (Bootstrap 3,
+  pacote npm) são IIFEs que fecham sobre o identificador global `jQuery` no momento em
+  que o módulo é avaliado (`}(jQuery)`). Como `import` em ESM é içado para o topo do
+  módulo, `window.jQuery = $` escrito depois dos `import` dos plugins no mesmo
+  arquivo (`v2.js`) executava tarde demais — os plugins lançavam `jQuery is not
+  defined` ao carregar. Isso já quebrava silenciosamente a troca de abas
+  Início/Pesquisar/Entrada/etc. **antes desta sessão** (bug pré-existente, não
+  introduzido pela correção de paridade). Corrigido extraindo
+  `resources/js/temas/_jquery-global.js` (import próprio, importado antes dos
+  plugins — ordem entre módulos é respeitada pelo ESM, só a ordem *dentro* de um
+  módulo é içada). Confirmado via Playwright: `$(document).find('#entrada')` ganha
+  `.active` corretamente ao clicar, dropdown abre.
+- Achado de composição: `.container` do Legacy tem `y=0` (sem margem própria); quem
+  tem `margin-top:40px` é `.tab-content`, um DESCENDENTE dele. O V3 fundiu
+  `.container`/`.tab-content` em um único elemento (`margin-top:40` direto), então o
+  conteúdo real começa em `y=40` no V3 contra `y≈37` no Legacy (a folha de estilo
+  original tem mais uma camada de aninhamento que produz esse deslocamento de 3px) —
+  diferença mínima, documentada, não perseguida (mesmo padrão de tolerância já usado
+  na fase 1 do Tema V1 para diferenças ≤3px).
+- Tabela de medidas (`getBoundingClientRect`, Legacy × V3), idêntica nas 4 viewports
+  testadas (só o `x` muda com a centralização, sempre `(viewport-1190)/2`):
+
+  | Elemento | Legacy | V3 | Resultado |
+  |---|---|---|---|
+  | `header` (`x,y,width,height`) | `0,-3,2048,40` | `0,-3,2048,40` | OK |
+  | wrapper do header (1190px) | `x=429,width=1190,right=1619` | idêntico | OK |
+  | `.container`/`.shell-v2 > .container` (990px) | `x=429,width=990,right=1419` | idêntico | OK |
+  | sidebar (195px) | `x=1424,y=47,width=195,right=1619` | idêntico | OK |
+  | `.nav`/`.nav-tabs.nav-v2` (1190px) | `x=429,width=1190,right=1619` | idêntico | OK |
+  | largura de cada `<li>` (9 itens, 11.1%) | `132px` cada, `x` em passos de 132 | idêntico | OK |
+  | cor do header | `#C20F41` | `#C20F41` | OK |
+  | cor da aba ativa | `#FE0048` | `#FE0048` | OK |
+  | H1 artificial | ausente (nunca existiu) | removido | OK |
+  | navbar duplicada (RMAs/Clientes/...) | não existe | removida | OK |
+  | "Bem-vindo(a), usuário" | não existe | removido | OK |
+  | rodapé "TEMA V2 — CellSystem RMA (reconstrução V3)" | não existe | removido | OK |
+  | dropdown "Menu" (9 itens, fundo escuro `.lidropdown`/`.menuz` alternado) | presente | presente, abre/fecha (bug de jQuery corrigido) | OK |
+
+- Diferença perceptível restante: nenhuma nas primitivas de shell/header/nav. Sidebar
+  ainda **vazia** (CP19 não iniciado — só a geometria do container foi provada, não o
+  conteúdo das 14 seções).
+- Screenshots versionados (sem dado real de cliente/produto — só chrome estrutural e
+  títulos de seção, seguindo a mesma regra já aplicada às evidências do Tema V1):
+  `docs/produto/screenshots-vis-v2-001/{01,02,03}-*.png`.
+- Decisão: **CP16 e CP17 APROVADOS** para shell/header/navegação/dropdown/rodapé/
+  ausência de H1. Pendências explícitas para checkpoints futuros: conteúdo da sidebar
+  (CP19), páginas próprias vs. tab-panes para Entrada/Recebido/Encaminhado/Concluído
+  fora do índice (decisão de arquitetura tomada aqui: reaproveitar os tab-panes
+  existentes com link+hash em vez de criar rotas novas — ver comentário em
+  `layout.blade.php`), gap de "Anotacoes" sem página própria (documentado inline).
+- Testes/build: `php artisan test` (363/818, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` (4/4, confirma **zero regressão no Tema V1** — nenhum
+  arquivo compartilhado com V1 foi tocado nesta rodada).
+- Commit: a seguir (`#ARQ-RMA - Restaurada a composicao original do cabecalho e menu
+  do Tema V2` + correção do bug de jQuery).
 
 ## CP17 — header e navegação reais
 
@@ -101,39 +168,41 @@ inline — reproduzir os dois casos, não só um). `#224A5D`/`#18354B` (azul pet
 marinho) **não pertencem a este componente** — são de outros controles
 (`.buttonSalvar`, `.formSubmit`) e não devem aparecer na barra/nav principal.
 
-- [ ] CP17-01 — remover a navbar dupla atual (`temas/v2/layout.blade.php`, a lista
+- [x] CP17-01 — remover a navbar dupla atual (`temas/v2/layout.blade.php`, a lista
       RMAs/Clientes/Fabricantes/Fornecedores/Assistências/Usuários/perfil/Sair) e a
       navegação duplicada de `rma/index.blade.php` (Início/Pesquisar/Novo
       RMA/Entrada/Recebido/Encaminhado/Concluído) — unificar numa única barra.
-- [ ] CP17-02 — montar a barra única com os 9 itens históricos na ordem exata,
+- [x] CP17-02 — montar a barra única com os 9 itens históricos na ordem exata,
       mapeando rota moderna para cada um: Inicio→`v2.rmas.index`(ou equivalente),
       Pesquisar→aba/seção de busca, Novo→formulário de criação, Entrada/Recebido/
       Encaminhado/Concluido→filtros por status, Menu→dropdown, Logout→logout.
-- [ ] CP17-03 — dropdown "Menu" com os itens históricos na ordem:
+      Implementado como link+hash para as âncoras `data-toggle="tab"` existentes
+      (`temas/v2/rma/index.blade.php`) quando fora do índice — decisão de
+      arquitetura registrada em CMP-V2-001, não cria rotas novas por status.
+- [x] CP17-03 — dropdown "Menu" com os itens históricos na ordem:
       Creditos/Assistencias/Fabricantes/Fornecedores/Clientes/Relatorios/Anotacoes/
       Controle/"Trocar p/ 14.6.1" — rotas modernas, texto/posição/apresentação
-      históricos. Não expor RMAs/Usuários/perfil direto na barra principal se no
-      legado eles não estão lá (usuários realmente não aparece no dropdown legado —
-      confirmar se existe equivalente moderno faltando ou se é V3-only por design;
-      documentar a decisão, não remover sem registrar).
-- [ ] CP17-04 — importar plugin Bootstrap `dropdown` (além do já importado `tab`) só
-      se o dropdown do Menu depender dele — checar antes de importar bundle inteiro.
-- [ ] CP17-05 — aplicar a geometria do `header` (fixed, 40px, `#C20F41`,
+      históricos. Usuários adicionado (gated) por não ter lugar histórico óbvio,
+      documentado inline como acréscimo V3 (mesmo critério de VIS-V1-008).
+      "Anotacoes" aponta para o perfil por falta de página própria — `[GAP]`
+      documentado inline, não fabricado.
+- [x] CP17-04 — importado `bootstrap/js/dropdown` — necessário (o Menu histórico é
+      mesmo um dropdown Bootstrap real, `data-toggle="dropdown"`).
+- [x] CP17-05 — aplicada a geometria do `header` (fixed, 40px, `#C20F41`,
       `border-bottom:1px solid #333`) e o estado ativo (`#FE0048`) — sem usar
-      `#18354B`/`#224A5D` nesta superfície.
-- [ ] CP17-06 — aplicar `.nav-tabs li`/`.nav-tabs li a` (altura 39px, `font-size:14px`,
-      `font-weight:300`, hover/active `#F67D7D`) e as larguras por item definidas em
-      CP16-04.
-- [ ] CP17-07 — ajustar `.tab-content` (`margin:0 -15px; margin-top:40px;
-      min-height:450px; padding:0`) — não continuar compensando com
-      `margin-top:15px;padding:15px` do wrapper atual; reproduzir a árvore correta
-      primeiro, só manter compensação se ainda for necessária depois de medir.
-- [ ] CP17-08 — remover o H1 automático do layout V2 (mesmo achado que gerou CP6 na
-      fase 2 do Tema V1) — cada superfície produz seu próprio cabeçalho conforme o
-      PHP histórico; heading pode virar `sr-only`.
-- [ ] CP17-09 — capturar/reabrir/comparar header+nav completo (incluindo dropdown
+      `#18354B`/`#224A5D` nesta superfície (removida a regra antiga que usava essas
+      cores para o `.active`).
+- [x] CP17-06 — aplicado `.nav-tabs li`/`.nav-tabs li a` (altura 39px, `font-size:14px`,
+      `font-weight:300`, hover/active `#F67D7D`) e as larguras por item (11.1%,
+      medidas ≈132px cada em todas as 4 viewports testadas).
+- [x] CP17-07 — `.container`/`.tab-content` fundidos em um só elemento com
+      `margin-top:40px; min-height:450px; padding:0` — ver diferença de 3px
+      documentada em CMP-V2-001 (aceitável, mesma tolerância da fase 1 V1).
+- [x] CP17-08 — H1 automático removido do layout V2 (nunca existia no Legacy, nem
+      como `sr-only` — a árvore de `index.php` não tem heading nenhum aqui).
+- [x] CP17-09 — capturar/reabrir/comparar header+nav completo (incluindo dropdown
       aberto), registrar diário com `x`/`width`/`height` de cada `<li>`.
-- [ ] CP17-10 — testes focados/build e commit local.
+- [x] CP17-10 — testes focados/build e commit local.
 
 ## CP18 — cascata e fontes do V2
 

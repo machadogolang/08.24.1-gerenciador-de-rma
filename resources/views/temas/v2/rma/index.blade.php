@@ -14,22 +14,17 @@
 @endphp
 
 @section('conteudo')
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#inicio" data-toggle="tab">Início</a></li>
-        <li><a href="#pesquisar" data-toggle="tab">Pesquisar</a></li>
-        <li><a href="#novo_rma" data-toggle="tab">Novo RMA</a></li>
-        <li><a href="#entrada" data-toggle="tab">Entrada</a></li>
-        <li><a href="#recebido" data-toggle="tab">Recebido</a></li>
-        <li><a href="#encaminhado" data-toggle="tab">Encaminhado</a></li>
-        <li><a href="#concluido" data-toggle="tab">Concluído</a></li>
-    </ul>
-
+    {{-- CP17 (`docs/produto/plano-execucao-paridade-v2.md`) — a `<ul class="nav
+    nav-tabs">` histórica virou parte do header único (`temas/v2/layout.blade.php`),
+    fonte real `legacy-source/15.8.1/inc/menu.php`: os 9 itens (Inicio…Logout) são um
+    componente do layout inteiro, não desta tela — mesmo tratamento já dado ao TEMA
+    V1. --}}
     <div class="tab-content">
         <div id="inicio" class="tab-pane fade in active">
             <div class="painel-inicio-fundo-escuro">
-                <p class="centrodeavisos">Bem-vindo(a), {{ auth()->user()?->name }}.</p>
-
-                {{-- Busca simplificada da aba "Início" — fonte real: `15.8.1/index.php`
+                {{-- Achado CP20 (16 do prompt original): "Bem-vindo(a), usuário."
+                não existe em `15.8.1/index.php`/`page/inicio.php` — removido.
+                Busca simplificada da aba "Início" — fonte real: `15.8.1/index.php`
                 (campo único "Pesquisar:"/"Enviar pesquisa", sem o seletor de tipo da aba
                 "Pesquisar"). MESMA rota/Controller da aba #pesquisar — só um subconjunto
                 da UI, nenhuma regra de negócio nova. --}}

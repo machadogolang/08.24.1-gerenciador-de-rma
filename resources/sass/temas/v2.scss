@@ -7,12 +7,12 @@
 // Escopado só a este entry point — não vaza para o bundle de v1 (que não importa
 // nada daqui).
 @use "compartilhado";
+@use "v2-base";
 @use "sass:map";
 
 @import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 
 $azul-petroleo: #224a5d;
-$azul-marinho: #18354b;
 $fundo: #262626; // mesmo fundo escuro do V1 (pattern/15.8.1.css:12-18)
 $fundo-painel: #fff; // painéis/cards de conteúdo sobre o fundo escuro (.box-content, .blocos)
 $fonte: "Arial", "Fira Sans", sans-serif; // fallback real observado — Open Sans nunca
@@ -106,14 +106,6 @@ $largura-padding-box-content: 15px; // mesmo valor do `padding:15px` inline em `
     margin-right: 10px !important;
     background-color: $azul-petroleo !important;
     color: #fff !important;
-}
-
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
-    background-color: $azul-petroleo;
-    color: #fff;
-    border-color: $azul-marinho;
 }
 
 // Breakpoints reais do tema (largura de `.container` por faixa `min-width`, ver

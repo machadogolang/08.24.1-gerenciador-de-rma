@@ -16,3 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+const botaoSessao = document.querySelector('#menu-sessao');
+const painelSessao = document.querySelector('#JS-Sessao');
+
+if (botaoSessao && painelSessao) {
+    botaoSessao.addEventListener('click', () => {
+        const aberto = painelSessao.style.display !== 'none';
+        painelSessao.style.display = aberto ? 'none' : 'block';
+        botaoSessao.setAttribute('aria-expanded', aberto ? 'false' : 'true');
+    });
+}

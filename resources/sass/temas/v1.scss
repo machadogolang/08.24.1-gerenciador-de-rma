@@ -243,3 +243,228 @@ $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scs
         box-sizing: border-box;
     }
 }
+
+// Port consciente da estrutura autenticada do TEMA V1. Fonte:
+// `pattern/14.6.1.css` + `14.6.1/index.php`; apenas seletores usados pelos Blades V1.
+li {
+    list-style: none;
+}
+
+.tam {
+    width: 964px;
+}
+
+.menu-up {
+    float: left;
+    margin-top: -2px;
+    padding-right: 30px;
+    font-size: 14px;
+}
+
+.image-up {
+    float: left;
+    margin-top: -10px;
+    margin-right: 15px;
+}
+
+.menuDivSession {
+    float: left;
+    width: 982px;
+    margin: -13px 0 10px;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.JS-SessaoRIGHT {
+    float: right;
+    width: 144px;
+    padding: 10px 0;
+}
+
+.JS-SessaoLEFT {
+    float: left;
+    width: 838px;
+    height: 100%;
+}
+
+.JS-DivLEFT {
+    clear: both;
+    min-height: 100px;
+    padding: 10px;
+}
+
+.lisessao {
+    display: block;
+    box-sizing: border-box;
+    width: 130px;
+    height: 25px;
+    margin: 0 0 2px -3px;
+    padding: 5px 0 0 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    &:hover,
+    &.active {
+        background-color: #9b3949;
+        color: rgba(255, 255, 255, 0.8);
+    }
+}
+
+.formButtonMENU,
+.formButtonSIGNOUT {
+    float: right;
+    margin: -5px 0 0 5px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 0;
+    background-color: #9b3949;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    &:hover {
+        background-color: gold;
+        color: blue;
+    }
+}
+
+.p-rodape {
+    margin: 0 0 40px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.titulo-v1 {
+    margin: 0 0 10px 5px;
+    padding-top: 10px;
+    font-family: Arial, "Fira Mono", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.Tabelinha-Table {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: #363333;
+    font-size: 12px;
+}
+
+.Tabelinha-TR1,
+.Tabelinha-TR2,
+.Tabelinha-TR3 {
+    height: 30px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+.Tabelinha-TR1 { background-color: #3f3f3f; }
+.Tabelinha-TR2 { background-color: #3b3b3e; }
+.Tabelinha-TR3 { background-color: #232320; }
+.Tabelinha-TR1:hover,
+.Tabelinha-TR2:hover,
+.Tabelinha-TR3:hover { background-color: #904141; }
+
+.formInputPanel {
+    box-sizing: border-box;
+    width: 100%;
+    height: 20px;
+    margin: 0;
+    padding: 0 2px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: #26251f;
+    color: #fff;
+    font-size: 11px;
+}
+
+.formSelectPanel {
+    width: 135px;
+    height: 20px;
+    margin: 0;
+    padding: 0 2px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: rgb(54, 100, 139);
+    color: #fff;
+    font-size: 12px;
+}
+
+.formButtonEnviarPanel {
+    width: 75px;
+    height: 20px;
+    margin: 0 0 0 10px;
+    padding: 0 2px;
+    border-radius: 0;
+    font-size: 11px;
+}
+
+.usuariosemail {
+    text-transform: lowercase;
+    font-family: "Fira Mono", Arial, sans-serif;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.tabela-usuarios-v1 {
+    th,
+    td {
+        padding: 5px;
+    }
+
+    th:nth-child(1) { width: 20%; }
+    th:nth-child(2) { width: 28%; }
+    th:nth-child(3) { width: 20%; }
+    th:nth-child(4) { width: 32%; }
+}
+
+.form-usuario-v1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    .formButtonEnviarPanel {
+        margin-left: 0;
+    }
+}
+
+.JS-Novo,
+.JS-Localizar {
+    clear: both;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.JS-Novo { min-height: 100px; }
+.JS-Localizar { min-height: 25px; }
+
+.JSformLocalizarInput {
+    width: 422px;
+    height: 30px;
+    margin-left: 2px;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: #26251f;
+    color: #fff;
+    font-family: "Fira Mono", Arial, sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.JSformLocalizarButton {
+    width: 100px;
+    height: 52px;
+    margin-left: 15px;
+    padding: 0 2px;
+    border-radius: 0;
+    background-color: #106d78;
+    font-size: 14px;
+    letter-spacing: 1px;
+}

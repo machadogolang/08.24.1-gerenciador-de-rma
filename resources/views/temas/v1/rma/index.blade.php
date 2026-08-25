@@ -3,7 +3,7 @@
 @section('conteudo')
     <p><a href="{{ rota_tema('rmas.create') }}">Novo RMA</a></p>
 
-    <form method="GET" action="{{ rota_tema('rmas.index') }}" id="LINHA">
+    <form method="GET" action="{{ rota_tema('rmas.index') }}" id="localizar" class="JS-Localizar tam">
         <label>Buscar por
             <select name="tipo" class="formSelect">
                 <option value="texto" @selected($tipo === 'texto')>Texto</option>
@@ -11,8 +11,8 @@
                 <option value="nota_fiscal" @selected($tipo === 'nota_fiscal')>Nota fiscal</option>
             </select>
         </label>
-        <input type="text" name="valor" value="{{ $valor }}">
-        <button type="submit">Buscar</button>
+        <input class="JSformLocalizarInput" type="text" name="valor" value="{{ $valor }}">
+        <button class="JSformLocalizarButton" type="submit">Buscar</button>
     </form>
 
     @if (count($rmas) === 0)

@@ -17,6 +17,16 @@ mutação do banco histórico:
 Saída do lote: nenhuma linha funcional sem método de prova, suíte verde, checklist e
 OpenSpec coerentes e commit local próprio.
 
+## CHECKPOINT INCORPORADO — PARIDADE VISUAL TEMA V1
+
+Concluído em 2026-08-25 sem substituir o lote funcional em AGORA: comparação runtime
+14.6.1 × V3 em dez superfícies/1440 px, correção estrutural de Blade/CSS, Fira Mono e
+logo locais, teste permanente de assets/geometria e matriz em
+`docs/produto/paridade-visual-tema-v1.md`. O gate visual F10 permanece aberto para TEMA
+V2, demais superfícies e breakpoints previstos no checklist mestre.
+
+Após este checkpoint, retomar o item 1 de AGORA e concluir o lote funcional em curso.
+
 ## DEPOIS
 
 1. **F10 visual:** fechar 2 temas × 3 breakpoints × telas principais, reutilizando

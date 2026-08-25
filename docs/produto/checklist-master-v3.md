@@ -57,6 +57,25 @@ Gate: os 48 IDs têm prova explícita ou justificativa de exclusão.
 
 Gate: 2 temas × 3 breakpoints × telas acordadas, sem divergência silenciosa.
 
+Checkpoint dirigido TEMA V1 desktop (incorporado ao plano em 2026-08-25):
+
+- [x] **QA F10-V1-01 — comparar runtimes reais em 1440 px.** Dez superfícies Legacy
+  14.6.1 × V3, com 20 capturas locais reproduzíveis.
+- [x] **ARQ F10-V1-02 — auditar CSS integral e HTML autenticado.** Matriz consciente em
+  `docs/produto/paridade-visual-tema-v1.md`; sem cópia integral das folhas históricas.
+- [x] **DEV F10-V1-03 — restaurar cabeçalho/menu/painel históricos.** Blade Laravel e
+  seletores usados, mantendo base fixa de 984 px.
+- [x] **DEV F10-V1-04 — corrigir usuários, busca e novo RMA.** Tabelas, formulários,
+  controles e wrappers compatíveis com a composição 14.6.1.
+- [x] **DEV F10-V1-05 — tornar fontes e logo locais.** Fira Mono válida via Vite e logo
+  próprio do V3; nenhuma consulta ao Legacy como CDN.
+- [x] **QA F10-V1-06 — provar assets essenciais.** Sem 4xx/5xx/falha em build, fonte e
+  imagem nas superfícies monitoradas.
+- [x] **QA F10-V1-07 — criar regressão Playwright.** Geometria, fonte, assets e matriz
+  desktop em `ParidadeVisualTemaV1.spec.ts`.
+- [x] **DOC F10-V1-08 — registrar diferenças conscientes.** Gateway compartilhado,
+  ações Laravel e dados distintos não são redesenho.
+
 - [ ] **QA F10-VIS-01 — fixar matriz de telas.** Login, home/alertas, novo RMA,
   detalhe/edição, busca/listagem, parceiros, crédito, relatórios e histórico.
 - [ ] **QA F10-VIS-02 — inventariar evidências reutilizáveis da F8.** Por tela/tema/ponto.

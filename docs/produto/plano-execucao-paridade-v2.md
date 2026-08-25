@@ -388,29 +388,84 @@ Fonte: `legacy-source/15.8.1/page/inicio.php`, `page/pesquisar.php`,
 `inc/menu_pesquisar.php` (ler os 3 por inteiro antes de implementar — ainda não
 lidos nesta sessão).
 
-- [ ] CP20-01 — ler os 3 arquivos fonte por inteiro.
-- [ ] CP20-02 — remover "Bem-vindo(a), usuário." se não existir no runtime Legacy
-      (confirmar por captura, não só pela leitura do PHP).
-- [ ] CP20-03 — reproduzir a composição real da Home: inclui `pesquisar.php` no topo,
-      depois separador (CP21), depois Centro de Avisos (CP22).
-- [ ] CP20-04 — reproduzir o formulário de Pesquisar histórico: breadcrumb "Qualquer
-      campo / Nota fiscal / Número de série" (não um `<select>` genérico — troca
-      visual confirmada pelo prompt original, validar contra o PHP fonte), label
-      "Pesquisar:", campo, botão "Enviar pesquisa", posicionado à direita.
-- [ ] CP20-05 — capturar/reabrir/comparar Home+Pesquisar, registrar diário.
-- [ ] CP20-06 — testes focados/build e commit local.
+- [x] CP20-01 — ler os 3 arquivos fonte por inteiro. **Achado que muda o CP17:**
+      `page/inicio.php` faz `include("page/pesquisar.php")` por inteiro — Início e
+      Pesquisar são a MESMA composição (breadcrumb+busca+tabela), não duas telas
+      diferentes como o comentário do CP17 assumia. Corrigido nesta rodada.
+- [x] CP20-02 — "Bem-vindo(a), usuário." já não existe no runtime Legacy (confirmado
+      por captura no CP16/CP17) e já tinha sido removido do V3 então.
+- [x] CP20-03 — reproduzir a composição real da Home: `_pesquisar_conteudo.blade.php`
+      (breadcrumb+busca+tabela, compartilhado com #pesquisar) → separador2 → Centro
+      de Avisos, nesta ordem exata.
+- [x] CP20-04 — breadcrumb "Qualquer campo / Nota fiscal / Número de série"
+      (`_breadcrumb_pesquisar.blade.php`) no lugar do `<select>` genérico, mapeado
+      para os 3 critérios já existentes (`CriterioDeBusca::porTexto/porNotaFiscal/
+      porSerial`) — nenhuma regra de busca nova.
+- [x] CP20-05 — capturar/reabrir/comparar Home+Pesquisar, registrar diário.
+- [x] CP20-06 — testes focados/build e commit local.
 
 ## CP21 — separador antes do Centro de Avisos
 
-- [ ] CP21-01 — localizar `separador2.png` no Legacy, portar para
-      `public/images/tema-v2/` (ou reaproveitar o já portado em `tema-v1/` se os
-      bytes forem os mesmos — conferir hash antes de duplicar).
-- [ ] CP21-02 — aplicar `float:right; margin-top:50px; height:40px` na posição real
-      (Home, entre Pesquisar e Centro de Avisos) — não usar a classe genérica
-      `.separador-alerta { margin:5px 0; }` do compartilhado para esta ocorrência
-      específica se a geometria for diferente (achado 19 do prompt original).
-- [ ] CP21-03 — capturar/reabrir/comparar, registrar diário e commit (pode ser junto
-      de CP22).
+- [x] CP21-01 — `separador2.png` (e `lembrete.png`/`separador.png`, usados por
+      CP21/CP22) portados para `public/images/tema-v2/`, hash conferido byte a byte
+      contra o Legacy.
+- [x] CP21-02 — aplicado `float:right; margin-top:50px; height:40px` inline, na
+      posição real (entre a tabela de busca e o Centro de Avisos) — não usa a classe
+      genérica `.separador-alerta`.
+- [x] CP21-03 — capturado/comparado junto do CP20 (mesma tela); commit junto do CP20.
+
+### CMP-V2-004 — CP20/CP21, Início/Pesquisar unificados + separador
+
+- Ambiente: Chromium headless (Playwright), 2048×1152, dado fictício de QA (busca por
+  "EQUIPAMENTO", ~60 resultados).
+- Achado central (muda uma decisão do CP17): lidos por inteiro
+  `15.8.1/page/inicio.php`, `page/pesquisar.php`, `inc/menu_pesquisar.php`,
+  `subp/pesquisar_rma.php`. `page/inicio.php` literalmente `include("page/
+  pesquisar.php")` — Início não é uma versão "simplificada" da busca (como o
+  comentário original do CP17 assumia sem ter lido o fonte ainda); é a MESMA tela,
+  com separador+Centro de Avisos anexados depois. Corrigido: `#inicio` e `#pesquisar`
+  agora incluem o mesmo partial `_pesquisar_conteudo.blade.php`.
+- Implementado nesta rodada (extrapolando um pouco do CP20 para dentro do CP23,
+  registrado aqui para não fazer o trabalho duas vezes): a tabela de resultados real
+  de `subp/pesquisar_rma.php` — 11 colunas (`DT ENTRADA` 9%, `ORIGEM` 8%, `NF C` 6%,
+  `NF V` 6%, `FABRICANTE` 12%, `DESCRICAO` 13%, `MODELO` 20%, `S/N` 16%, `OS` 5%, `S`
+  2%, `A` 2%), ícone de status (`entrada`/`recebido`/`encaminhado`/`concluido.png`,
+  25px) e ícone de ação (`ver.png`, link para `rmas.show`) — substituindo o
+  `_tabela.blade.php` genérico (`#`/Descrição/Defeito/Origem/Ações) só nesta tela.
+  `RmaController@index` ganhou `mapaDeFabricantes()` (mesmo padrão de
+  `ListagensPorStatusController`) porque a tabela histórica mostra o nome do
+  fabricante, que a busca não resolvia antes.
+- **[INVESTIGAR] registrado, não corrigido:** a zebra de `pesquisar_rma.php` usa
+  `TrSemGarantia1/2` só quando `status=concluido AND solucao=SEM GARANTIA` — fora
+  dessa combinação específica, solução "SEM GARANTIA" cai no mesmo `TrInconformidade`
+  dos outros critérios. `Rma::classeDeAlerta()` (Fase 5) mapeia solução SemGarantia
+  para `Inconformidade` sempre, sem olhar o status. Reaproveitada sem alteração (não
+  reescrever regra de negócio sem necessidade) — divergência documentada no código
+  (`_tabela_pesquisa.blade.php`) para decisão futura, não corrigida às cegas.
+- **Achado sobre `.painel-inicio-fundo-escuro`:** a classe existia para "escapar" de
+  um fundo branco que a estrutura antiga aplicaria a `#inicio`. Lendo `pattern/
+  15.8.1.css` inteiro, `.tab-content` não tem `background-color` própria (só
+  `color:#FFF`) e `.box-content`/`.blocos` (brancas) não são referenciadas por
+  `page/inicio.php`/`page/pesquisar.php` — o fundo escuro já é o padrão do
+  `.shell-v2 > .container` (herda de `body`) na estrutura nova do CP16. Confirmado
+  por captura: removida a classe de escape, fundo continua escuro corretamente.
+- Legado não imprime nenhum resumo (`$soma`/`$quantidadetotal` são calculados em
+  `pesquisar_rma.php` mas nunca usados no HTML — confirmado por leitura completa do
+  arquivo) — nenhum "VALOR TOTAL" nesta tela, diferente de Concluídos no TEMA V1.
+  Também não emite nenhuma mensagem quando a busca não retorna nada (`else { }`
+  vazio) — reproduzido literalmente (sem HTML nesse caso).
+- Assets portados e conferidos por hash: `entrada.png`, `recebido.png`,
+  `encaminhado.png`, `concluido.png`, `ver.png`, `separador2.png`, `lembrete.png`,
+  `separador.png` → `public/images/tema-v2/`.
+- Screenshot versionado (dado fictício de QA):
+  `docs/produto/screenshots-vis-v2-001/05-v3-inicio-pesquisar-unificados.png`.
+- Diferença perceptível restante: nenhuma na composição/geometria/tabela. A zebra
+  `TrSemGarantia` fica para investigação futura (achado acima).
+- Decisão: **CP20 e CP21 APROVADOS**.
+- Testes/build: `php artisan test` (363/818, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` (4/4, zero regressão V1).
+- Commit: a seguir (`#ARQ-RMA - Unifica Inicio e Pesquisar e restaura a tabela de
+  busca historica do Tema V2`).
 
 ## CP22 — Centro de Avisos
 

@@ -21,44 +21,30 @@
     V1. --}}
     <div class="tab-content">
         <div id="inicio" class="tab-pane fade in active">
-            <div class="painel-inicio-fundo-escuro">
-                {{-- Achado CP20 (16 do prompt original): "Bem-vindo(a), usuário."
-                não existe em `15.8.1/index.php`/`page/inicio.php` — removido.
-                Busca simplificada da aba "Início" — fonte real: `15.8.1/index.php`
-                (campo único "Pesquisar:"/"Enviar pesquisa", sem o seletor de tipo da aba
-                "Pesquisar"). MESMA rota/Controller da aba #pesquisar — só um subconjunto
-                da UI, nenhuma regra de negócio nova. --}}
-                <form method="GET" action="{{ rota_tema('rmas.index') }}" class="form-inline">
-                    <input type="hidden" name="tipo" value="texto">
-                    <label for="inicio-pesquisar" class="control-label" style="margin-right:10px;">Pesquisar:</label>
-                    <div class="form-group">
-                        <input id="inicio-pesquisar" type="text" name="valor" class="form-control" placeholder="Search" value="{{ $valor }}">
-                    </div>
-                    <button type="submit" class="btn formSubmit">Enviar pesquisa</button>
-                </form>
+            {{-- `page/inicio.php` = `include("page/pesquisar.php")` por inteiro, depois
+            separador + Centro de Avisos — não é uma versão simplificada, é a MESMA
+            composição da aba #pesquisar (achado confirmado lendo o PHP fonte
+            completo nesta sessão; a suposição anterior de "busca simplificada" nesta
+            aba estava errada, corrigida no CP20). --}}
+            @include('temas.v2.rma._pesquisar_conteudo')
 
-                <img src="{{ asset('images/rma/separador2.png') }}" alt="Separador" class="separador-alerta">
+            <div style="clear:both;"></div>
+            <img src="{{ asset('images/tema-v2/separador2.png') }}" alt="Separador" title="Separador" height="40" style="margin-top:50px;float:right;">
+            <div style="clear:both;"></div>
 
-                @include('rma._centro_de_avisos', ['grupos' => $grupos])
+            <div class="centrodeavisos">
+                <img class="fl" src="{{ asset('images/tema-v2/lembrete.png') }}" alt="Lembrete" title="Lembrete" width="40">
+                <h5 class="fl">CENTRO DE AVISOS E RELATORIOS</h5>
+                <div style="clear:both;height:10px;"></div>
+                <hr class="hrup">
             </div>
+            <div style="clear:both;"></div>
+
+            @include('rma._centro_de_avisos', ['grupos' => $grupos])
         </div>
 
         <div id="pesquisar" class="tab-pane fade">
-            <form method="GET" action="{{ rota_tema('rmas.index') }}" class="form-inline" style="margin-bottom:10px;">
-                <div class="form-group">
-                    <select name="tipo" class="form-control formSelect">
-                        <option value="texto" @selected($tipo === 'texto')>Texto</option>
-                        <option value="serial" @selected($tipo === 'serial')>Serial</option>
-                        <option value="nota_fiscal" @selected($tipo === 'nota_fiscal')>Nota fiscal</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="text" name="valor" class="form-control" value="{{ $valor }}">
-                </div>
-                <button type="submit" class="btn formSubmit">Buscar</button>
-            </form>
-
-            @include('temas.v2.rma._tabela', ['registros' => $rmas])
+            @include('temas.v2.rma._pesquisar_conteudo')
         </div>
 
         <div id="novo_rma" class="tab-pane fade">

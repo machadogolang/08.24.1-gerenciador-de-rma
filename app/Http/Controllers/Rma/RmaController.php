@@ -36,11 +36,18 @@ class RmaController extends Controller
             default => CriterioDeBusca::porTexto($valor),
         };
 
+        $rmas = $valor !== '' ? $caso->buscar($criterio) : [];
+
         return view_do_tema('rma.index', [
             'titulo' => 'RMAs',
-            'rmas' => $valor !== '' ? $caso->buscar($criterio) : [],
+            'rmas' => $rmas,
             'tipo' => $tipo,
             'valor' => $valor,
+            // CP20 (paridade visual V2) — a tabela de resultados histórica
+            // (`15.8.1/subp/pesquisar_rma.php`) mostra o nome do fabricante, não
+            // só o id; mesmo padrão de
+            // `ListagensPorStatusController::mapaDeFabricantes()`.
+            'fabricantes' => $this->mapaDeFabricantes($rmas),
             // "CENTRO DE AVISOS E RELATORIOS" (correção de fidelidade Fase 8,
             // 2026-08-25) — a aba "Início"/"Pág. Inicial" dos dois temas mostra as
             // mesmas 11 regras da Fase 5 (`PainelDeAlertasController`), sempre
@@ -55,6 +62,17 @@ class RmaController extends Controller
             // composição direta (não é caso de uso/regra de negócio nova).
             'contadores' => $this->contadoresDoPainel(),
         ]);
+    }
+
+    /**
+     * @param  \App\Rma\Dominio\Rma[]  $registros
+     * @return array<int, string>
+     */
+    private function mapaDeFabricantes(array $registros): array
+    {
+        $ids = array_unique(array_filter(array_map(fn ($r) => $r->fabricanteId, $registros)));
+
+        return $ids === [] ? [] : Fabricante::query()->whereIn('id', $ids)->pluck('nome', 'id')->all();
     }
 
     /**

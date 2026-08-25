@@ -84,4 +84,41 @@ class MarcarCreditoDisponivelTest extends TestCase
 
         $response->assertRedirect('/login');
     }
+
+    public function test_rma_id_inexistente_devolve_404(): void
+    {
+        $operador = User::factory()->create(['papel' => Papel::Operador]);
+
+        $response = $this->actingAs($operador)->post('/rmas-credito/marcar', [
+            'rma_id' => 999999,
+        ]);
+
+        $response->assertNotFound();
+    }
+
+    public function test_pagina_de_aguardando_credito_lista_rma_com_solucao_pendente_credito(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        RmaEloquent::factory()->create([
+            'descricao' => 'RMA aguardando credito',
+            'solucao' => Solucao::PendenteCredito,
+        ]);
+        RmaEloquent::factory()->create([
+            'descricao' => 'RMA ja com credito gerado',
+            'solucao' => Solucao::GeradoCredito,
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/rmas-credito');
+
+        $response->assertOk();
+        $response->assertSee('RMA aguardando credito');
+        $response->assertDontSee('RMA ja com credito gerado');
+    }
+
+    public function test_pagina_de_aguardando_credito_exige_autenticacao(): void
+    {
+        $response = $this->get('/rmas-credito');
+
+        $response->assertRedirect('/login');
+    }
 }

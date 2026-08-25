@@ -435,4 +435,15 @@ crédito (`EVO-AUT-002`, backlog evolutivo); dashboard de recorrência de defeit
 **Commit:** `#F6 - Creditos e relatorios (fluxo de credito, RCD/RPEC/RMPE)` (ver hash
 abaixo, aplicado junto com este log).
 
+**Revisão pós-fase (sessão principal, 2026-08-25):** encontrados 2 gaps reais de
+cobertura de teste HTTP, ambos fechados, nenhum ajuste de código de produto necessário:
+- `CreditoController::index` (GET `/rmas-credito`, listagem de `AguardandoCredito`) não
+  tinha nenhum teste — nem o caminho feliz (lista RMA com `solucao=PendenteCredito`,
+  não lista `GeradoCredito`) nem a exigência de autenticação.
+- `CreditoController::marcar` com `rma_id` inexistente não tinha teste do 404
+  (`abort_if($registro === null, ...)`).
+
+4 testes novos em `MarcarCreditoDisponivelTest.php`. `sail test`: 221/221 verdes, 396
+assertions (218→221, 390→396).
+
 ---

@@ -1,0 +1,201 @@
+// _compartilhado.scss — porta de verdade `pattern/15.9.7.css` (296 linhas), a folha de
+// estilo que os DOIS temas do legado carregam ALÉM do CSS próprio (14.6.1/index.php e
+// 15.8.1/inc/menu.php incluem ambos). Fonte: `legacy-source/pattern/15.9.7.css`.
+// Só é consumido via `@use 'compartilhado'` a partir de v1.scss/v2.scss — nunca é um
+// entry point Vite próprio (sem extensão sem underscore).
+
+@font-face {
+    font-family: "Fira Mono";
+    src: url("../fonts/fira-mono/FiraMono-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Fira Mono";
+    src: url("../fonts/fira-mono/FiraMono-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+$cor-alerta: #904141;
+
+// Classes de estado de linha (RN-11, Fase 5 — `ClasseDeAlerta`) — mesma definição
+// para os dois temas, fonte real: pattern/15.9.7.css:56-67.
+.TrZebrada1 {
+    background-color: #3f3f3f;
+    text-shadow: 0px 1px 1px #777;
+    color: #fff;
+    height: 18px;
+
+    &:hover {
+        background-color: $cor-alerta;
+    }
+}
+
+.TrZebrada2 {
+    background-color: #3b3b3e;
+    text-shadow: 0px 1px 1px #777;
+    color: #fff;
+    height: 18px;
+
+    &:hover {
+        background-color: $cor-alerta;
+    }
+}
+
+.TrInconformidade {
+    background-color: #303033;
+    text-shadow: 0px 1px 1px #777;
+    color: #fff;
+    height: 18px;
+
+    &:hover {
+        background-color: $cor-alerta;
+    }
+}
+
+.TrUrgente {
+    background-color: #382830;
+    text-shadow: 0px 1px 1px #777;
+    color: #fff;
+    height: 18px;
+
+    &:hover {
+        background-color: $cor-alerta;
+    }
+}
+
+.TrSemGarantia1 {
+    background-color: #232320;
+    text-shadow: 0px 1px 1px #777;
+    color: #fff;
+    height: 18px;
+
+    &:hover {
+        background-color: $cor-alerta;
+    }
+}
+
+.TrSemGarantia2 {
+    background-color: #272723;
+    text-shadow: 0px 1px 1px #777;
+    color: #fff;
+    height: 18px;
+
+    &:hover {
+        background-color: $cor-alerta;
+    }
+}
+
+.breadcrumb {
+    margin-top: -10px;
+    background-color: rgba(0, 0, 0, 0) !important;
+    font-family: "Fira Mono", "Arial", "Fira Sans";
+    border-radius: 0px;
+
+    a {
+        color: #fff;
+
+        &:hover {
+            color: #ddd !important;
+            font-weight: 500;
+        }
+    }
+
+    .active {
+        color: #ffdaab !important;
+        font-weight: 500;
+    }
+}
+
+.centrodeavisos {
+    text-align: left;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #f6e3a3;
+        font-size: 14px;
+        font-family: "Arial", "Fira Sans" !important;
+    }
+}
+
+.formSelect,
+.formSelect option {
+    font-family: "Arial", "Fira Sans" !important;
+}
+
+.designedby {
+    font-size: 12px;
+    font-weight: 300;
+    text-shadow: 1px 1px 10px gray;
+    clear: both;
+    text-align: right;
+    color: rgba(255, 255, 255, 0.2);
+    padding-top: 10px;
+    font-family: "Arial", "Fira Sans" !important;
+
+    a {
+        color: #d2d59d;
+
+        &:hover {
+            color: gold;
+        }
+    }
+}
+
+// Toggle "mostrar/ocultar" (anotação pessoal etc.) — pattern/15.9.7.css:46-47.
+.pmo {
+    font-family: "Fira Mono", "Arial", "Fira Sans";
+    width: 200px;
+    color: #f8e1c3;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+    margin-top: -30px;
+    padding: 5px;
+
+    &:hover {
+        color: gold !important;
+    }
+}
+
+.nenhumencontrado {
+    margin-top: 0px;
+    font-size: 14px;
+    text-align: left;
+    margin-left: 15px;
+    color: #eee;
+}
+
+table {
+    border-collapse: collapse !important;
+}
+
+td {
+    text-align: center;
+    height: 18px;
+    padding-left: 0px;
+    letter-spacing: 1px;
+    font-size: 11px;
+    font-weight: 300 !important;
+    text-transform: uppercase;
+    border: 1px solid rgba(87, 84, 84, 0.4) !important;
+}
+
+tr {
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+th {
+    text-align: center;
+    border: 1px solid rgba(87, 84, 84, 0.4) !important;
+}

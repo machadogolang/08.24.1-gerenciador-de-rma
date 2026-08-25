@@ -1,0 +1,20 @@
+{
+  "_fonte": "resources/sass/temas/v2.scss ($breakpoints-tema-v2 / $larguras-container-tema-v2), que por sua vez porta legacy-source/pattern/15.8.1/css/media.php. Mantido manualmente em sincronia com o Sass (sem gerador automático nesta fase) — qualquer teste Playwright que precise desses 6 valores deve ler este arquivo, nunca redigitar os literais.",
+  "breakpoints": {
+    "sm": 568,
+    "md": 800,
+    "lg": 992,
+    "xl": 1080,
+    "xxl": 1280,
+    "xxxl": 1366
+  },
+  "largurasContainer": {
+    "sm": 549,
+    "md": 730,
+    "lg": 990,
+    "xl": 990,
+    "xxl": 990,
+    "xxxl": 990
+  },
+  "larguraFixaTemaV1": 984
+}

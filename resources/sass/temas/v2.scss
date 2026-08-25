@@ -1,0 +1,107 @@
+// v2.scss — entry point Vite do TEMA V2. TEMA V2 depende de verdade do Bootstrap
+// 3.3.5 real (grid, `.form-group`/`.form-control`, plugin de abas) — o pacote npm
+// `bootstrap@3.3.5` só publica LESS/CSS pré-compilado (não SCSS), então importamos o
+// CSS de distribuição real como CSS puro (`@import` de arquivo `.css` é repassado pelo
+// Sass sem processamento) — o mesmo bytes que o legado carregava via CDN
+// (`maxcdn.bootstrapcdn.com`), agora self-hostado via Vite em vez de CDN solto.
+// Escopado só a este entry point — não vaza para o bundle de v1 (que não importa
+// nada daqui).
+@use "compartilhado";
+@use "sass:map";
+
+@import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+
+$azul-petroleo: #224a5d;
+$azul-marinho: #18354b;
+$fundo: #262626; // mesmo fundo escuro do V1 (pattern/15.8.1.css:12-18)
+$fundo-painel: #fff; // painéis/cards de conteúdo sobre o fundo escuro (.box-content, .blocos)
+$fonte: "Arial", "Fira Sans", sans-serif; // fallback real observado — Open Sans nunca
+// carrega de fato no legado (URL de produção morta); decisão do usuário 2026-08-25:
+// reproduzir o fallback, nunca self-hostar Open Sans de verdade. Ver design.md "Fontes".
+
+// Breakpoints reais do TEMA V2, fonte `15.8.1/css/media.php` — únicos breakpoints
+// próprios do tema (Bootstrap 3 contribui os seus 768/992/1200 à parte, sem sobrepor).
+// Mapa nomeado: nenhum destes 6 valores aparece solto em Blade/JS/Playwright.
+$breakpoints-tema-v2: (
+    "sm": 568px,
+    "md": 800px,
+    "lg": 992px,
+    "xl": 1080px,
+    "xxl": 1280px,
+    "xxxl": 1366px,
+);
+
+// Larguras reais de `.container` por breakpoint (fonte: `15.8.1/css/media.php`) —
+// nomeadas junto do mapa acima para não haver literais soltos nos testes visuais.
+$larguras-container-tema-v2: (
+    "sm": 549px,
+    "md": 730px,
+    "lg": 990px,
+    "xl": 990px,
+    "xxl": 990px,
+    "xxxl": 990px,
+);
+
+body {
+    margin: 0 auto;
+    padding: 0px;
+    background-color: $fundo;
+    background-repeat: repeat;
+    font-weight: 300;
+    font-family: $fonte;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 300;
+}
+
+hr {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.box-content,
+.blocos,
+.linhasuperior {
+    background-color: $fundo-painel;
+    color: #222;
+}
+
+.formSubmit {
+    border-radius: 0px !important;
+    width: 88px !important;
+    height: 30px !important;
+    padding: 0px !important;
+    margin-right: 10px !important;
+    background-color: $azul-petroleo !important;
+    color: #fff !important;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    background-color: $azul-petroleo;
+    color: #fff;
+    border-color: $azul-marinho;
+}
+
+// Breakpoints reais do tema (largura de `.container` por faixa `min-width`, ver
+// `$larguras-container-tema-v2` acima) — layout PRÓPRIO do TEMA V2, distinto dos
+// breakpoints padrão do Bootstrap 3.
+@each $nome, $largura in $breakpoints-tema-v2 {
+    @media (min-width: $largura) {
+        .container {
+            width: map.get($larguras-container-tema-v2, $nome);
+            padding: 0px;
+            margin: 0 auto;
+        }
+    }
+}

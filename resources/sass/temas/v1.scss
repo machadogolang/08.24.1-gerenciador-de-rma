@@ -1,0 +1,179 @@
+// v1.scss — entry point Vite do TEMA V1. Porta os seletores essenciais de
+// `legacy-source/pattern/14.6.1.css` (207 linhas). TEMA V1 NÃO depende de nenhum
+// framework CSS — formulários são `<table>` autoral (`.tablenovo`, confirmado em
+// `14.6.1/index.php`). Layout FIXO, sem NENHUM @media (ausência de breakpoint é o
+// próprio achado de fidelidade — não "consertar" a responsividade).
+
+@use "compartilhado";
+
+$fundo: #262626;
+$acento: #c3ff00;
+$texto: #fff;
+$fonte: "Arial", "Fira Sans", sans-serif; // fallback real observado, ver design.md "Fontes"
+
+// #BASE/#TOPO/#CONTEUDO no legado — nomeada para nunca reaparecer como "984px" solto.
+$largura-fixa-tema-v1: 984px;
+
+body {
+    font-family: $fonte;
+    font-size: 12px;
+    color: $texto;
+    margin: 0 auto;
+    background-color: $fundo;
+    font-weight: 300;
+}
+
+ul {
+    list-style: none;
+    margin: 0 0 0 -40px;
+}
+
+h3 {
+    margin-top: 0px;
+}
+
+p {
+    margin: 0 0 5px;
+}
+
+textarea {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: #26251f;
+    color: $texto;
+}
+
+button {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: #662d37;
+    color: $texto;
+    height: 25px;
+}
+
+select {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: #26251f;
+    color: $texto;
+    width: 186px;
+    padding: 2px;
+    font-size: 14px;
+    height: 24px;
+    appearance: none;
+}
+
+option {
+    padding: 5px;
+}
+
+a:link,
+a:visited {
+    color: $texto;
+    text-decoration: none;
+}
+
+a:hover {
+    color: yellow;
+}
+
+hr {
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 0.05em;
+    border: 0px;
+}
+
+#BASE {
+    margin: 0 auto;
+    padding-top: 65px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: $largura-fixa-tema-v1;
+}
+
+#FIXADO {
+    margin: 0px;
+    position: fixed;
+    background-color: #ae0d3a;
+    width: 100%;
+    border-bottom: 1px solid #363636;
+}
+
+#TOPO {
+    font-family: $fonte;
+    margin: 0 auto;
+    padding: 18px 10px;
+    width: $largura-fixa-tema-v1;
+    height: 15px;
+}
+
+#MEIO {
+    clear: both;
+}
+
+#CONTEUDO {
+    clear: both;
+    width: $largura-fixa-tema-v1;
+    border-radius: 0px;
+    padding: 0px 0px 10px 0px;
+    margin-bottom: 10px;
+    min-height: 50px;
+}
+
+#DIREITA {
+    margin-left: 10px;
+    width: 152px;
+    float: right;
+}
+
+#LINHA {
+    height: 25px;
+    margin-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    border-radius: 5px;
+}
+
+#RODAPE {
+    padding: 10px;
+    clear: both;
+    border-radius: 5px;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.both {
+    clear: both;
+}
+
+// Formulário "Novo RMA"/edição — HTML <table> autoral, sem grid de framework.
+.tablenovo {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.novo_formInput {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: #26251f;
+    color: $texto;
+    font-size: 12px;
+    padding: 4px;
+}
+
+.buttonSave {
+    border-radius: 0px;
+    width: 186px;
+    height: 35px;
+    margin-top: 5px;
+    margin-right: 0px;
+    border: 1px solid rgb(32, 29, 29);
+}
+
+.acento {
+    color: $acento;
+}

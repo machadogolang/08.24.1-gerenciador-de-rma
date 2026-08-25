@@ -10,11 +10,15 @@ registra o contexto operacional, o que foi efetivamente concluído e a ordem de 
 > incorporada a frente `INV-RMA-10` (arquitetura, front-end, paridade de temas — ver
 > `docs/investigacoes-pendente/INV-RMA-10-arquitetura-front-paridade-temas.md`,
 > `docs/produto/matriz-paridade-temas-v1-v2-v3.md` e a seção H do checklist mestre). Ela
-> encontrou 3 achados P0 (`ARQ-001` perda de estado do agregado, `ARQ-002` dry-run que
-> não valida migração, `ARQ-003` escalada de privilégio do Supervisor) que **passam a
-> preceder** o passo 4 abaixo (`F10-FUN-07`). A ordem de retomada correta é `ARQ H-001…
-> H-004` (seção H.1 do checklist) antes de qualquer outro item deste handoff. O restante
-> deste documento permanece válido para o que vem depois do P0.
+> encontrou 3 achados P0: `ARQ-001` (perda de estado do agregado — **corrigido**,
+> commit `5e37d81`), `ARQ-003` (escalada de privilégio do Supervisor — **corrigido**,
+> commit `e8b4ea9`) e `ARQ-002` (dry-run do migrador não valida migração — **pendente**).
+> Os dois primeiros têm regressão dedicada e suíte completa verde (324 testes/678
+> assertions). `ARQ-002` **passa a preceder** o passo 4 abaixo (`F10-FUN-07`) e bloqueia
+> `F10-DAD-04…09`; é maior escopo (8 importadores, `app/Rma/Infraestrutura/Migracao/`,
+> ~1.442 linhas) e não foi iniciado. A ordem de retomada correta é `ARQ H-002` (seção
+> H.1 do checklist) antes de qualquer outro item deste handoff. O restante deste
+> documento permanece válido para o que vem depois do P0.
 
 ## Estado exato no encerramento
 
@@ -241,9 +245,13 @@ Nunca usar a base V3 corrente como alvo por inferência.
    - `docs/produto/checklist-master-v3.md` (seção H.1 primeiro);
    - `docs/qa/roteiro-paridade-funcional.md`;
    - `docs/produto/paridade-visual-tema-v1.md`.
-4. Começar em `ARQ H-001` (`ARQ-001`, perda de estado do agregado): provar por
-   regressão e corrigir. Depois `H-003` (`ARQ-003`, segurança) e `H-002` (`ARQ-002`,
-   dry-run) na ordem do `PLANO-ATAQUE.md`. Só então retomar `F10-FUN-07`, pelos passos
+4. `ARQ H-001` e `ARQ H-003` já estão corrigidos e testados (ver nota de atualização no
+   topo). Começar em `ARQ H-002` (`ARQ-002`, dry-run do migrador não valida migração):
+   `ImportarRmas` precisa executar `traduzirLinha()` também em `--dry-run`, e o
+   relatório precisa separar `origem`/`planejado`/`criado`/`atualizado`/`ignorado` do
+   total real no destino (hoje `$processados` mistura os dois). Escopo: 8 importadores
+   em `app/Rma/Infraestrutura/Migracao/Importadores/` e `RelatorioDeReconciliacao`. Só
+   depois de `H-002` e da suíte renovada (`QA H-004`) retomar `F10-FUN-07`, pelos passos
    somente leitura.
 5. Registrar imediatamente esperado, observado, data, ambiente e evidência no roteiro.
 6. Criar commit local pequeno ao concluir o checkpoint; não fazer push.

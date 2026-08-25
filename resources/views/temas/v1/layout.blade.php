@@ -50,7 +50,7 @@
                     <a href="{{ route('rmas.aguardando-credito') }}">Aguardando credito</a>
                 </li>
                 <li class="menu-up {{ request()->routeIs('rmas.concluidos') ? 'active' : '' }}">
-                    <a href="{{ route('rmas.concluidos') }}">Concluido</a>
+                    <a href="{{ route('rmas.concluidos') }}">Concluido!</a>
                 </li>
             </ul>
             <form method="POST" action="{{ route('logout') }}">

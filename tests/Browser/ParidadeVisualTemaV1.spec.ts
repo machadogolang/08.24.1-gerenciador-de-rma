@@ -22,6 +22,25 @@ function vigiarRecursos(page: Page, falhas: Falha[]): void {
     });
 }
 
+async function fontesRasterizadas(page: Page, seletor: string) {
+    const sessao = await page.context().newCDPSession(page);
+    await sessao.send('DOM.enable');
+    await sessao.send('CSS.enable');
+    const { root } = await sessao.send('DOM.getDocument');
+    const { nodeId } = await sessao.send('DOM.querySelector', {
+        nodeId: root.nodeId,
+        selector: seletor,
+    });
+    const { fonts } = await sessao.send('CSS.getPlatformFontsForNode', { nodeId });
+    await sessao.detach();
+
+    return fonts;
+}
+
+function usaOpenSansLocal(fontes: Awaited<ReturnType<typeof fontesRasterizadas>>): boolean {
+    return fontes.some(fonte => fonte.familyName === 'Open Sans' && fonte.isCustomFont);
+}
+
 async function loginLegacy(browser: Browser): Promise<Page> {
     const context = await browser.newContext({ viewport: VIEWPORT });
     const page = await context.newPage();
@@ -66,19 +85,45 @@ test('captura os gateways de login para registrar a decisão de paridade', async
     await context.close();
 });
 
-test('TEMA V1 carrega estrutura fixa, menu histórico e assets locais sem erro', async ({ browser }) => {
+test('TEMA V1 carrega estrutura fixa, menu histórico, cascata e assets locais sem erro', async ({ browser }) => {
     const falhas: Falha[] = [];
     const page = await loginV3(browser, falhas);
     await page.goto(`${V3}/v1/usuarios`, { waitUntil: 'domcontentloaded' });
     await page.evaluate(() => document.fonts.ready);
 
     expect(await page.locator('#BASE').evaluate(el => getComputedStyle(el).width)).toBe('984px');
-    expect(await page.locator('.menu-up').count()).toBe(3);
+    expect(await page.locator('.menu-up').count()).toBe(7);
     expect(await page.locator('.menu-up').first().evaluate(el => getComputedStyle(el).float)).toBe('left');
     expect(await page.locator('.menuDivSession').evaluate(el => getComputedStyle(el).width)).toBe('982px');
     expect(await page.locator('.JS-SessaoLEFT').evaluate(el => getComputedStyle(el).width)).toBe('838px');
     expect(await page.locator('.JS-SessaoRIGHT').evaluate(el => getComputedStyle(el).width)).toBe('144px');
     expect((await page.evaluate(() => document.fonts.load('400 12px "Fira Mono"'))).length).toBeGreaterThan(0);
+    expect((await page.evaluate(() => document.fonts.load('400 12px "Open Sans"'))).length).toBeGreaterThan(0);
+
+    await page.goto(`${V3}/rmas-concluidos`, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => document.fonts.ready);
+    const familia = async (seletor: string) => page.locator(seletor).first()
+        .evaluate(el => getComputedStyle(el).fontFamily);
+
+    expect(await familia('body')).toBe('Arial, "Open Sans", "Fira Mono"');
+    expect(await familia('.menu-up')).toBe('"Open Sans", Arial, Roboto');
+    expect(await familia('#CONTEUDO .title-comicone')).toBe('"Open Sans", Arial, Roboto');
+    expect(await familia('.TableListarFPEF-TR th')).toBe('"Open Sans", Arial, Roboto');
+    expect(await familia('.Tabelinha-TD')).toBe('Arial, "Open Sans", "Fira Mono"');
+    expect(await familia('.Tabelinha-TD:last-child')).toBe('Arial, "Open Sans", "Fira Mono"');
+    expect(await familia('#RODAPE')).toBe('"Open Sans", Arial, Roboto');
+
+    const concluido = page.locator('.menu-up').filter({ hasText: 'Concluido!' });
+    await expect(concluido).toHaveClass(/active/);
+    expect(await concluido.evaluate(el => getComputedStyle(el).fontWeight)).toBe('700');
+    expect(await concluido.evaluate(el => getComputedStyle(el).color)).toBe('rgb(255, 215, 0)');
+
+    // `fontFamily` acima prova a cascata declarada; CDP prova a fonte que efetivamente
+    // rasterizou os glifos. Isso evita o falso positivo de uma pilha "Open Sans" que
+    // caiu silenciosamente em Arial por arquivo inválido ou falha de rede.
+    expect(usaOpenSansLocal(await fontesRasterizadas(page, '.menu-up'))).toBe(true);
+    expect(usaOpenSansLocal(await fontesRasterizadas(page, '#CONTEUDO .title-comicone'))).toBe(true);
+    expect(usaOpenSansLocal(await fontesRasterizadas(page, '.TableListarFPEF-TR th'))).toBe(true);
 
     const essenciais = falhas.filter(falha =>
         /\/build\/|\/images\/tema-v1\//.test(falha.url)

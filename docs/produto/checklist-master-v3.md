@@ -64,6 +64,14 @@ Checkpoint dirigido TEMA V1 desktop (incorporado ao plano em 2026-08-25):
 > divergências estruturais que contradizem os `[x]` abaixo — não é apenas
 > diferença de massa de dados. Fonte completa do achado e o plano de
 > reabertura tela-a-tela: `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-no-layout.md`.
+>
+> **Reabertura estrutural CP1–CP5:** a instrução consolidada está em
+> `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-falhas.md`; checklist atômico e
+> diário obrigatório em `docs/produto/plano-execucao-paridade-estrutural-v1.md`;
+> parecer em `docs/pareceres/parecer-paridade-estrutural-v1-falhas-layout.md`. O par
+> atual de Concluído confirma ícone/cabeçalho ausente, H1 artificial, família de linha
+> errada, colunas sem largura e resumo ausente. Nenhum item fecha sem abrir o print
+> posterior normalizado e registrar medidas/fonte rasterizada no diário.
 > Evidência local (não versionada — 8 PNGs Legacy×V3 comparáveis, mesma
 > cautela de `docs/produto/screenshots-paridade-v1/`):
 > `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT/`. Não apagar o histórico
@@ -107,10 +115,11 @@ Checkpoint dirigido TEMA V1 desktop (incorporado ao plano em 2026-08-25):
 - [ ] **DEV F10-V1-04 — corrigir usuários, busca e novo RMA.** ~~Tabelas, formulários,
   controles e wrappers compatíveis com a composição 14.6.1.~~ Reaberto: Novo RMA
   perdeu campos e a interação inline; Localizar/Home com composição diferente.
-- [x] **DEV F10-V1-05 — tornar fontes e logo locais.** Fira Mono válida via Vite e logo
-  próprio do V3; nenhuma consulta ao Legacy como CDN.
-- [x] **QA F10-V1-06 — provar assets essenciais.** Sem 4xx/5xx/falha em build, fonte e
-  imagem nas superfícies monitoradas.
+- [ ] **DEV F10-V1-05 — tornar fontes e assets locais.** Reaberto: Fira Mono e logo
+  continuam válidos, mas Open Sans não estava vendorizada e faltam os quatro ícones
+  reais das listagens. Executar CP1/CP3A–D.
+- [ ] **QA F10-V1-06 — provar assets essenciais.** Reaberto: provar Open Sans realmente
+  rasterizada via CDP, hashes/50×50 dos quatro ícones e ausência de dependência externa.
 - [ ] **QA F10-V1-07 — criar regressão Playwright.** ~~Geometria, fonte, assets e matriz
   desktop em `ParidadeVisualTemaV1.spec.ts`.~~ Reaberto: o teste deu falso
   positivo — passou com as divergências estruturais acima presentes; precisa
@@ -192,7 +201,9 @@ Gate: migração real em alvo descartável e reconciliação sem diferença inex
 - [ ] **ARQ C-02 — RN-12 no TEMA V1.** Busca dirigida; confirmar ausência/presença.
 - [ ] **ARQ C-03 — Lightbox2.** Uso funcional ou resíduo de template.
 - [ ] **ARQ C-04 — skin AdminLTE.** Identificar skin efetiva ou ausência comprovável.
-- [x] **DECISAO C-05 — Open Sans.** Reproduzir fallback, não self-hostar.
+- [x] **DECISAO C-05 — Open Sans.** Reaberta e resolvida no CP1: fonte oficial válida
+  self-hosted, sem rede; FontFaceSet e CDP provam carregamento/rasterização. As cópias
+  estáticas históricas truncadas foram inventariadas, não portadas.
 - [x] **DECISAO C-06 — pós-login.** Gateway respeita `tema_preferido`.
 - [x] **DECISAO C-07 — `informacaoadicional`.** Não migrar na baseline.
 - [ ] **DECISAO C-08 — visibilidade do V3.** Operacional; requer autorização.

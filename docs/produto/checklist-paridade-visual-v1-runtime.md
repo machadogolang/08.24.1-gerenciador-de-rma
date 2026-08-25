@@ -6,6 +6,17 @@ verdade: runtime real `http://localhost:8094/14.6.1/` (Legacy) × `http://localh
 (V3), nunca suposição por nome de classe. Só marca `[x]` quando existir runtime Legacy +
 runtime V3 + comparação depois da correção + teste.
 
+## Reabertura estrutural CP1–CP5
+
+O status funcional de `VIS-V1-001` (rotas/listagens existem) permanece histórico, mas
+a paridade visual das quatro telas está **reaberta**. O par Concluído salvo em
+`INV-RMA-BUG-LAYOUT/` confirma classes de linha, ícone/cabeçalho, larguras e resumo
+incorretos/ausentes. O critério anterior que aceitava não copiar CSS pixel a pixel foi
+substituído pela fidelidade literal do Tema V1.
+
+Checklist/diário: `docs/produto/plano-execucao-paridade-estrutural-v1.md`. Parecer:
+`docs/pareceres/parecer-paridade-estrutural-v1-falhas-layout.md`.
+
 ## Estratégia de evidência visual (prints comparativos Legado×V3)
 
 Todo achado de divergência visual/estrutural registrado a partir de 2026-08-25 deve
@@ -50,11 +61,11 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Arquivos candidatos: nova rota `GET /rmas-entrada|encaminhados|aguardando-credito|concluidos`
   (paralelo a `rmas-alertas`), controller próprio ou método adicional, view
   `resources/views/temas/v1/rma/{entrada,encaminhados,...}.blade.php`
-- Critério de aceite: os 4 itens aparecem no header do TEMA V1, na mesma posição/ordem
-  do legado, cada um abre uma listagem real com as colunas e regras de destaque
-  equivalentes (não precisa copiar CSS pixel a pixel de cor, mas a lógica de
-  destaque — garantia/urgência/prazo — precisa ser a mesma regra de negócio já provada
-  por `RecebidosSemEncaminhar30DiasTest`/`NaoVaiDarGarantiaTest`/etc.)
+- Critério de aceite revisado: os 4 itens aparecem na posição/ordem e geometria do
+  legado; cada listagem usa ícone, cabeçalho, colunas, famílias de linha, formatação e
+  composição literais comprovadas no PHP/CSS/runtime. Estados escritos mas
+  inalcançáveis pelos `SELECTs` de Entrada/Encaminhado são `[BUG-LEGADO]` e exigem
+  decisão registrada, não afirmação de runtime.
 - Screenshot antes: `(V3) Tela Inicial do Tema 14.6.1.png` (nesta pasta)
 - Screenshot depois: `docs/produto/screenshots-vis-v1-001/01-home-header-com-4-atalhos.png`
   (header) e `02-entrada.png`/`03-encaminhados.png`/`04-aguardando-credito.png`/
@@ -65,7 +76,7 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Teste: `tests/Feature/Rma/ListagensPorStatusTest.php` (6 casos: filtro por
   status/solução de cada painel, destaque RN-11 reaproveitado, presença dos 4 links no
   header)
-- Status: **CORRIGIDO NESTA SESSÃO** — 4 rotas novas (`rmas.entrada`,
+- Status funcional: **CORRIGIDO NESTA SESSÃO** — 4 rotas novas (`rmas.entrada`,
   `rmas.encaminhados`, `rmas.aguardando-credito`, `rmas.concluidos`), controller
   `ListagensPorStatusController`, caso de uso `ListarRmasDoPainel`, filtro no
   repositório (`RmasEmBanco::listarPorPainel()`, novo enum de domínio
@@ -78,7 +89,8 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   — não simulado com dado falso. Exclusivo do TEMA V1 (o header do TEMA V2 não tem esses
   atalhos, achado original), por isso o controller renderiza `temas.v1.rma.*`
   diretamente em vez de `view_do_tema()`. Suíte completa: 337 testes / 716 assertions,
-  verde.
+  verde. **Status visual: REABERTO** — executar CP1–CP4 do plano estrutural antes de
+  voltar a marcar esta superfície como equivalente.
 
 ## VIS-V1-002 — "Novo" perdeu a interação inline
 

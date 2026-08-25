@@ -6,6 +6,25 @@ Handoff para nova sessão: `docs/produto/handoff-sessao-2026-08-25.md`.
 
 ## AGORA
 
+**Interrupção vigente — paridade estrutural do Tema V1.** Por determinação de
+2026-08-25, `F10-FUN-07` fica temporariamente pausado. Executar, em ordem, o checklist
+atômico e o diário de provas de
+`docs/produto/plano-execucao-paridade-estrutural-v1.md`:
+
+1. [x] CP1 — cascata/fontes, captura normalizada, inspeção visual e regressão CDP;
+2. [ ] CP2 — primitivas reais de tabela;
+3. [ ] CP3A — composição completa de Concluído;
+4. [ ] CP3B/CP3C/CP3D — Entrada, Encaminhado e Aguardando crédito;
+5. [ ] CP4 — resumo inferior de Concluídos sem SQL no Blade;
+6. [ ] CP5 — propagação, regressões, três viewports e prova final.
+
+Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da
+alteração, gerar e abrir o novo par normalizado. Toda comparação entra no Diário do MD
+operacional. Parecer independente:
+`docs/pareceres/parecer-paridade-estrutural-v1-falhas-layout.md`.
+
+### Lote anterior pausado, não descartado
+
 Executar primeiro a correção P0 descoberta pela auditoria da nova frente, sem depender
 de decisão de produto nem de mutação do banco histórico:
 
@@ -38,16 +57,16 @@ Investigação consolidada em `INV-RMA-10` e matriz em
 Tema 3 e não substitui F10. Ela corrige a ordem quando um achado compromete integridade,
 segurança ou a validade do próprio gate de QA.
 
-## CHECKPOINT INCORPORADO — PARIDADE VISUAL TEMA V1
+## CHECKPOINT REABERTO — PARIDADE VISUAL TEMA V1
 
-Concluído em 2026-08-25 sem substituir o lote funcional em AGORA: comparação runtime
+O checkpoint que havia sido concluído em 2026-08-25 foi reaberto por evidência visual
+estrutural em `INV-RMA-BUG-LAYOUT-falhas.md`. A comparação anterior cobriu
 14.6.1 × V3 em dez superfícies/1440 px, correção estrutural de Blade/CSS, Fira Mono e
 logo locais, teste permanente de assets/geometria e matriz em
-`docs/produto/paridade-visual-tema-v1.md`. O gate visual F10 permanece aberto para TEMA
-V2, demais superfícies e breakpoints previstos no checklist mestre.
+`docs/produto/paridade-visual-tema-v1.md`, mas não detectou cascata invertida, H1/ícones,
+famílias de linha, colunas e resumo de Concluído. O gate visual permanece aberto.
 
-O lote funcional foi retomado: itens 1, 2, 4 e 5 de AGORA estão concluídos. A próxima
-sessão começa no item 3 (`F10-FUN-07`), pelos smokes somente leitura.
+O lote funcional volta a `F10-FUN-07` somente depois de CP1–CP5.
 
 ## DEPOIS
 

@@ -2,7 +2,17 @@
 // estilo que os DOIS temas do legado carregam ALÉM do CSS próprio (14.6.1/index.php e
 // 15.8.1/inc/menu.php incluem ambos). Fonte: `legacy-source/pattern/15.9.7.css`.
 // Só é consumido via `@use 'compartilhado'` a partir de v1.scss/v2.scss — nunca é um
-// entry point Vite próprio (sem extensão sem underscore).
+// entry point Vite próprio (sem extensão sem underscore). No V1 ele obrigatoriamente
+// vem depois de `_v1-base.scss`, como os dois `<link>` do 14.6.1.
+
+@font-face {
+    font-family: "Open Sans";
+    src: url("../../fonts/open-sans/OpenSans-VariableFont_wdth,wght.ttf") format("truetype-variations");
+    font-weight: 300 700;
+    font-stretch: 75% 100%;
+    font-style: normal;
+    font-display: swap;
+}
 
 @font-face {
     font-family: "Fira Mono";
@@ -18,6 +28,27 @@
     font-weight: 700;
     font-style: normal;
     font-display: swap;
+}
+
+// `15.9.7.css` repete a base Open Sans e, mais abaixo, sobrescreve apenas os alvos
+// históricos com Arial. Manter seletores e precedência evita a falsa simplificação
+// "Arial em tudo".
+html,
+html * {
+    font-family: "Open Sans", "Arial", Roboto;
+}
+
+body,
+tr,
+td,
+textarea,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Arial", "Open Sans", "Fira Mono" !important;
 }
 
 $cor-alerta: #904141;
@@ -122,13 +153,13 @@ $cor-alerta: #904141;
     h6 {
         color: #f6e3a3;
         font-size: 14px;
-        font-family: "Arial", "Fira Sans" !important;
+        font-family: "Arial", "Open Sans", "Fira Mono" !important;
     }
 }
 
 .formSelect,
 .formSelect option {
-    font-family: "Arial", "Fira Sans" !important;
+    font-family: "Arial", "Open Sans", "Fira Mono" !important;
 }
 
 .designedby {
@@ -139,7 +170,7 @@ $cor-alerta: #904141;
     text-align: right;
     color: rgba(255, 255, 255, 0.2);
     padding-top: 10px;
-    font-family: "Arial", "Fira Sans" !important;
+    font-family: "Arial", "Open Sans", "Fira Mono" !important;
 
     a {
         color: #d2d59d;
@@ -152,7 +183,7 @@ $cor-alerta: #904141;
 
 // Toggle "mostrar/ocultar" (anotação pessoal etc.) — pattern/15.9.7.css:46-47.
 .pmo {
-    font-family: "Fira Mono", "Arial", "Fira Sans";
+    font-family: "Arial", "Open Sans", "Fira Mono" !important;
     width: 200px;
     color: #f8e1c3;
     font-size: 12px;

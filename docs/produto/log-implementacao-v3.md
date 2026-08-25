@@ -345,3 +345,94 @@ código de produto necessário:
 `sail test`: 196/196 verdes, 357 assertions (190→196, 348→357).
 
 ---
+
+## Fase 6 — Créditos e relatórios
+
+OpenSpec: `openspec/changes/rma-creditos-e-relatorios/{proposal,design,tasks}.md` (tudo
+`[x]`). Arquivo por arquivo detalhado em `INV-RMA-05` §11. Cobre `LEG-RMA-036` a `039` e
+`048` — reconstrói só a intenção do módulo de créditos quebrado em TEMA V2 (um fluxo
+único de crédito, não as 3 sub-rotas `pendentes/usados/disponíveis`, que estão
+quebradas mesmo em TEMA V2 e nunca existiram em TEMA V1). Não introduz entidade nova:
+consultas de leitura e um controle de flag sobre o agregado `Rma` já maduro depois da
+Fase 5, coerente com `INV-RMA-05` §3 ("Créditos"/"Relatórios" não são módulo próprio).
+
+**Migration e domínio:** `2026_08_30_000000_add_credito_fields_to_rmas_table.php`
+adiciona `credito_disponivel boolean default false`. `Dominio\Rma` ganhou a propriedade
+readonly `creditoDisponivel` (default `false`) como **último** parâmetro do
+construtor — decisão deliberada para não quebrar nenhum `new Rma(...)` já existente nas
+Fases 3-5 (`RegistrarSolucao`, `CriarRma`, `EditarRma` etc., todos com argumentos
+nomeados, mas o default evita qualquer regressão de call site que não passe o novo
+campo). Os dois métodos puros que reconstroem o objeto
+(`comNormalizacaoDeGravacao()`, `comSnretornoAutoPreenchido()`) foram atualizados para
+passar `creditoDisponivel: $this->creditoDisponivel` adiante explicitamente — sem essa
+linha, editar ou concluir um RMA que já tivesse crédito marcado disponível apagaria o
+flag silenciosamente (o default `false` do construtor venceria). `RmasEmBanco` e
+`Models\Rma` foram estendidos em conjunto (`paraArray()`/`paraDominio()`, `$fillable`,
+cast `boolean`), mesmo padrão das extensões incrementais das Fases 4-5.
+
+**`MarcarCreditoDisponivel`:** implementado literalmente como no `design.md` —
+`abort_unless($ator->papel->podeGravar(), 403)`,
+`abort_unless($rma->solucao === Solucao::GeradoCredito, 422)`, grava
+`credito_disponivel=true`. **Sem transição automática**
+`PendenteCredito`→`GeradoCredito`→`credito_disponivel=true`: confirmado que o legado
+também não automatiza (controle manual em duas camadas independentes, ver
+`modelo-dominio-rma-legado.md`); `EVO-AUT-002` já registra a automação como melhoria
+futura, deliberadamente não implementada nesta fase.
+
+**`AguardandoCredito`:** colocada em `app/Rma/Aplicacao/Alertas/` (não em
+`Relatorios/`), listando `solucao=PendenteCredito` — mesma família e disciplina de
+filtro inteiro no SQL das 10 regras de alerta da Fase 5, reforçando por construção que
+crédito não é um módulo próprio.
+
+**3 relatórios** (`app/Rma/Aplicacao/Relatorios/`):
+`RelatorioCreditosDisponiveis` (`credito_disponivel=true`, sem parâmetros);
+`RelatorioProdutosEmEstoqueParaContagem` (`marcarestoque=true` + filtro de `Status`
+opcional, configurável pelo usuário via query string — não hardcoded como no legado);
+`RelatorioProdutosEncaminhados` (`status=Encaminhado` + intervalo de datas real via
+dois parâmetros `\DateTimeInterface` obrigatórios). Este último **corrige** o intervalo
+hardcoded para "2014" do legado (`LEG-RMA-039`) — confirmado como bug de manutenção
+(nenhuma RN documenta "2014" como valor de negócio intencional), não uma regra a
+preservar; coberto por `RelatorioProdutosEncaminhadosTest::
+test_intervalo_nao_e_hardcoded_para_2014`, que prova o relatório funcionando fora do
+ano 2014.
+
+**Controllers, views e rotas:** `RelatorioController` (3 ações: `creditosDisponiveis`,
+`produtosEmEstoqueParaContagem`, `produtosEncaminhados`) e `CreditoController`
+(`index` lista `AguardandoCredito` + formulário de marcação; `marcar` invoca
+`MarcarCreditoDisponivel` recebendo `rma_id` no corpo do `POST`, não como parâmetro de
+rota — evita gerar uma rota por RMA e mantém a tela de crédito como uma única view de
+fluxo, coerente com "reconstruir só a intenção" de `LEG-RMA-048`). Views mínimas em
+`resources/views/rma/{relatorios/{rcd,rpec,rmpe},credito/index}.blade.php`, sem
+fidelidade visual (Fase 8). Rotas com segmento inicial próprio
+(`/rmas-credito`, `/rmas-relatorios/{rcd,rpec,rmpe}`), mesmo padrão de `/rmas-alertas`
+da Fase 5 — sem conflito com `rmas/{rma}`.
+
+**Testes:** 218/218 verdes, 390 assertions (`sail test`), mantendo os 196 das Fases
+1-5. `MarcarCreditoDisponivelTest` (feature, 5 casos: marca com sucesso, nega 422 para
+`solucao` diferente de `GeradoCredito`, nega 422 para `solucao=null`, nega 403 para
+papel `Leitura`, redireciona visitante não autenticado ao login).
+`RelatorioControllerTest` (feature, 5 casos incl. RMPE sem `data_inicio`/`data_fim` →
+erro de validação de sessão, RPEC filtrando por status). `AguardandoCreditoTest` e os 3
+testes unitários de relatório seguem o mesmo padrão de asserção por `contains('id', …)`
+das 10 regras da Fase 5.
+
+**Testes manuais confirmados via `tinker`:** RMA criado com `solucao=GeradoCredito`,
+`credito_disponivel=false` — `MarcarCreditoDisponivel::marcar()` devolve
+`creditoDisponivel=true` e o valor é confirmado persistido lendo
+`App\Models\Rma::find($id)->credito_disponivel` direto do banco (não só o objeto de
+domínio devolvido); RMA com `solucao=Reparo` — a mesma chamada lança
+`HttpException` com `getStatusCode()===422`, confirmando a negação.
+
+**Pendências que ficaram de fora:** fidelidade visual das views (Fase 8);
+`ConsolidarFretePorCidade`/`BoletinsRelacionados` (`LEG-RMA-040`/`041`, RN-16) —
+cobertos pela Fase 7 (`rma-logistica-e-historico`), não duplicados aqui apesar de
+também serem consultas de leitura sobre `Rma`; PDF real de relatório (`EVO-REL-001`,
+backlog evolutivo) — impressão via `Ctrl+P`, igual ao legado; automação de transição de
+crédito (`EVO-AUT-002`, backlog evolutivo); dashboard de recorrência de defeito
+(`EVO-REL-002`, backlog evolutivo). Todas já registradas como fora de escopo no
+`proposal.md`.
+
+**Commit:** `#F6 - Creditos e relatorios (fluxo de credito, RCD/RPEC/RMPE)` (ver hash
+abaixo, aplicado junto com este log).
+
+---

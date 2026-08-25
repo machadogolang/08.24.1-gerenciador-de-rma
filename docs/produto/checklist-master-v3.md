@@ -262,19 +262,31 @@ confirmada em `15.8.1/banco.php:777`. Tasks:
       via `tinker` (RMA `valor=100.00` disparado por `UrgenciaPorThreshold`,
       `valor=75.00` exato não disparado — operador estrito confirmado), commit `#F5`
 
-### Fase 6 — Créditos e relatórios — **EM ESPECIFICAÇÃO**
+### Fase 6 — Créditos e relatórios — **CONCLUÍDA**
 
-OpenSpec escrita: `openspec/changes/rma-creditos-e-relatorios/{proposal,design,tasks}.md`.
-Arquivo por arquivo detalhado em `INV-RMA-05` §11. Cobre `LEG-RMA-036` a `039` e `048`
-(reconstrói só a intenção do módulo de créditos quebrado em TEMA V2 — um fluxo único,
-não 3 sub-rotas). Tasks (resumido):
+OpenSpec: `openspec/changes/rma-creditos-e-relatorios/{proposal,design,tasks}.md` (tudo
+`[x]`). Arquivo por arquivo detalhado em `INV-RMA-05` §11. Cobre `LEG-RMA-036` a `039` e
+`048` (reconstrói só a intenção do módulo de créditos quebrado em TEMA V2 — um fluxo
+único, não 3 sub-rotas). **Decisão confirmada:** sem transição automática
+`PendenteCredito`→`GeradoCredito`→`credito_disponivel=true` — o legado também não
+automatiza (`EVO-AUT-002` fica como melhoria futura). RMPE usa intervalo de datas real
+(`data_inicio`/`data_fim` obrigatórios via validação de request), corrigindo o
+intervalo hardcoded para "2014" do legado (bug de manutenção, não RN documentada).
+Tasks:
 
-- [ ] Migration com `credito_disponivel`
-- [ ] `MarcarCreditoDisponivel`, `AguardandoCredito`
-- [ ] 3 relatórios (RCD/RPEC/RMPE) — RMPE corrige intervalo hardcoded para 2014
-- [ ] Controller + views + rotas
-- [ ] 4 arquivos de teste
-- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado, commit `#F6`
+- [x] Migration incremental (`credito_disponivel`)
+- [x] `MarcarCreditoDisponivel`, `AguardandoCredito` em `app/Rma/Aplicacao/`
+- [x] 3 relatórios (RCD/RPEC/RMPE) em `app/Rma/Aplicacao/Relatorios/` — RMPE corrige
+      intervalo hardcoded para 2014
+- [x] `RelatorioController`, `CreditoController` + views mínimas + rotas (sem
+      fidelidade visual — Fase 8)
+- [x] 6 arquivos de teste (feature: `MarcarCreditoDisponivelTest`,
+      `RelatorioControllerTest`; unit: `AguardandoCreditoTest` + 3 relatórios)
+- [x] `sail test` verde (218/218, mantendo os 196 das Fases 1-5),
+      `paridade-v2-v3.md` atualizado (`LEG-RMA-036/037/038/039/048` → PARIDADE), teste
+      manual via `tinker` (RMA `solucao=GeradoCredito` → `MarcarCreditoDisponivel`
+      grava `credito_disponivel=true`; RMA `solucao=Reparo` → negado com 422), commit
+      `#F6`
 
 ### Fase 7 — Auditoria — **EM ESPECIFICAÇÃO**
 

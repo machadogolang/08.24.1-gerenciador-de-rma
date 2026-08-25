@@ -49,6 +49,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
     'nfvenda_chave',
     'lancadoretorno',
     'valor',
+    'credito_disponivel',
 ])]
 class Rma extends Model
 {
@@ -82,6 +83,7 @@ class Rma extends Model
             'nfvenda_emissao' => 'date',
             'lancadoretorno' => StatusDeLancamento::class,
             'valor' => 'decimal:2',
+            'credito_disponivel' => 'boolean',
         ];
     }
 

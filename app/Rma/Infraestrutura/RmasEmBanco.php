@@ -105,6 +105,7 @@ final class RmasEmBanco implements RepositorioDeRmas
             'nfvenda_chave' => $rma->nfvendaChave,
             'lancadoretorno' => $rma->lancadoretorno,
             'valor' => $rma->valor,
+            'credito_disponivel' => $rma->creditoDisponivel,
         ];
     }
 
@@ -144,6 +145,7 @@ final class RmasEmBanco implements RepositorioDeRmas
             lancadoretorno: $model->lancadoretorno,
             valor: $model->valor !== null ? (float) $model->valor : null,
             createdAt: $model->created_at,
+            creditoDisponivel: $model->credito_disponivel,
         );
     }
 }

@@ -46,6 +46,11 @@ final class Rma
         public readonly ?StatusDeLancamento $lancadoretorno = null,
         public readonly ?float $valor = null,
         public readonly ?\DateTimeInterface $createdAt = null,
+        /**
+         * `LEG-RMA-036` — gravado só por `MarcarCreditoDisponivel`, nunca em cascata
+         * automática a partir de `solucao`. Ver Fase 6 (`rma-creditos-e-relatorios`).
+         */
+        public readonly bool $creditoDisponivel = false,
     ) {}
 
     /**
@@ -105,6 +110,7 @@ final class Rma
             lancadoretorno: $this->lancadoretorno,
             valor: $this->valor,
             createdAt: $this->createdAt,
+            creditoDisponivel: $this->creditoDisponivel,
         );
     }
 
@@ -157,6 +163,7 @@ final class Rma
             lancadoretorno: $this->lancadoretorno,
             valor: $this->valor,
             createdAt: $this->createdAt,
+            creditoDisponivel: $this->creditoDisponivel,
         );
     }
 

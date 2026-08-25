@@ -9,7 +9,9 @@ use App\Http\Controllers\Parceiros\ClienteController;
 use App\Http\Controllers\Parceiros\FabricanteController;
 use App\Http\Controllers\Parceiros\FornecedorController;
 use App\Http\Controllers\Rma\CicloDeVidaController;
+use App\Http\Controllers\Rma\CreditoController;
 use App\Http\Controllers\Rma\PainelDeAlertasController;
+use App\Http\Controllers\Rma\RelatorioController;
 use App\Http\Controllers\Rma\RmaController;
 use Illuminate\Support\Facades\Route;
 
@@ -73,4 +75,15 @@ Route::middleware('auth')->group(function () {
     // Painel de alertas (LEG-RMA-018 a 029) — Fase 5. Rota fixa antes de
     // `rmas/{rma}` não é necessária aqui pois usa outro segmento inicial.
     Route::get('/rmas-alertas', [PainelDeAlertasController::class, 'index'])->name('rmas.alertas');
+
+    // Fluxo de crédito (LEG-RMA-036, Fase 6) — fluxo único, não as 3 sub-rotas
+    // quebradas do legado (LEG-RMA-048). Outro segmento inicial, sem conflito com
+    // `rmas/{rma}`.
+    Route::get('/rmas-credito', [CreditoController::class, 'index'])->name('rmas.credito.index');
+    Route::post('/rmas-credito/marcar', [CreditoController::class, 'marcar'])->name('rmas.credito.marcar');
+
+    // Relatórios fiscais/contábeis (LEG-RMA-037/038/039, Fase 6) — RCD/RPEC/RMPE.
+    Route::get('/rmas-relatorios/rcd', [RelatorioController::class, 'creditosDisponiveis'])->name('rmas.relatorios.rcd');
+    Route::get('/rmas-relatorios/rpec', [RelatorioController::class, 'produtosEmEstoqueParaContagem'])->name('rmas.relatorios.rpec');
+    Route::get('/rmas-relatorios/rmpe', [RelatorioController::class, 'produtosEncaminhados'])->name('rmas.relatorios.rmpe');
 });

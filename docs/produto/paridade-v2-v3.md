@@ -1,6 +1,7 @@
 # Matriz de paridade V2 → V3
 
-Data: 2026-08-25 (atualizado 2026-08-25 — Fase 4 "Ciclo de vida" implementada e testada).
+Data: 2026-08-25 (atualizado 2026-08-25 — Fase 6 "Créditos e relatórios" implementada e
+testada).
 Índice de rastreamento: nenhuma funcionalidade relevante do RMA V2 pode "desaparecer"
 silenciosamente na V3. Atualizado a cada avanço de OpenSpec/implementação. **Fase 1
 (`autenticacao-usuarios`) concluída:** 7 itens (`LEG-RMA-001/003/004/005/006/042/043`)
@@ -21,8 +22,14 @@ atualizado — 7 passaram de `PENDENTE` para `PARIDADE` e `LEG-RMA-016` foi conf
 mantendo os 85 das Fases 1-3) e o ciclo receber→encaminhar→concluir confirmado por
 `tinker` de ponta a ponta, incluindo o auto-preenchimento de `snretorno` (RN-15).
 `LEG-RMA-014` (arquivar) usa TEMA V2 como especificação — TEMA V1 confirmado com
-`Fatal Error` incondicional nesse fluxo. Os demais itens aguardam as próximas fases
-(ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
+`Fatal Error` incondicional nesse fluxo. **Fase 6 (`rma-creditos-e-relatorios`)
+concluída:** 5 itens (`LEG-RMA-036/037/038/039/048`) passaram de `PENDENTE` para
+`PARIDADE`, com `sail test` verde (218/218, mantendo os 196 das Fases 1-5) e o fluxo de
+crédito confirmado por `tinker` de ponta a ponta (`MarcarCreditoDisponivel` grava
+`credito_disponivel=true` só quando `solucao=GeradoCredito`, nega com 422 para
+qualquer outra solução). `LEG-RMA-048` reconstrói só a intenção do módulo de créditos
+quebrado em TEMA V2 (fluxo único, não as 3 sub-rotas mortas). Os demais itens aguardam
+as próximas fases (ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
 
 Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 
@@ -63,10 +70,10 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-033 | Cadastro de assistências técnicas | confirmado | confirmado | `parceiros` | `AssistenciaTecnicaController` | `AssistenciaTecnicaCrudTest` | PARIDADE |
 | LEG-RMA-034 | "Autorizada" (alias morto) | n/a | código morto | — | — | — | NÃO RECONSTRUIR (morto) |
 | LEG-RMA-035 | Tabela unificada `assistencias(tipo)` | legado/abandonado | n/a | — | — | — | RETOMAR IDEIA (não o código) — ver EVO-DOM-001 |
-| LEG-RMA-036 | Fluxo de crédito | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-037 | Relatório RCD | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-038 | Relatório RPEC | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-039 | Relatório RMPE | confirmado | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-036 | Fluxo de crédito | confirmado | confirmado | `rma-creditos-e-relatorios` | `MarcarCreditoDisponivel`, `AguardandoCredito` | `MarcarCreditoDisponivelTest`, `AguardandoCreditoTest` | PARIDADE — sem transição automática `PendenteCredito`→`GeradoCredito` (o legado também não automatiza, `EVO-AUT-002` fica como melhoria futura) |
+| LEG-RMA-037 | Relatório RCD | confirmado | confirmado | `rma-creditos-e-relatorios` | `RelatorioCreditosDisponiveis` | `RelatorioCreditosDisponiveisTest` | PARIDADE |
+| LEG-RMA-038 | Relatório RPEC | confirmado | confirmado | `rma-creditos-e-relatorios` | `RelatorioProdutosEmEstoqueParaContagem` | `RelatorioProdutosEmEstoqueParaContagemTest` | PARIDADE — filtro de status configurável pelo usuário, não hardcoded |
+| LEG-RMA-039 | Relatório RMPE | confirmado | confirmado | `rma-creditos-e-relatorios` | `RelatorioProdutosEncaminhados` | `RelatorioProdutosEncaminhadosTest` | PARIDADE — corrige intervalo hardcoded para 2014 do legado (bug de manutenção, não RN documentada) |
 | LEG-RMA-040 | Consolidação de frete (Porto Alegre) | código morto/comentado | confirmado, ativo | — | — | — | PENDENTE |
 | LEG-RMA-041 | Boletins relacionados (histórico por contraparte) | dúvida | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-042 | Bloco de notas pessoal | confirmado | dúvida | `autenticacao-usuarios` | `AtualizarAnotacaoPessoal`, `AnotacaoPessoalController` | `AnotacaoPessoalTest` | PARIDADE |
@@ -75,7 +82,7 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-045 | Notificação por e-mail | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-046 | Normalização automática (HGST→Hitachi, origem) | confirmado (duplicado) | confirmado | `rma-cadastro-e-localizacao` | `Rma::comNormalizacaoDeGravacao()` | `RmaTest` (unit) + `CriarRmaTest`/`EditarRmaTest` (ponta a ponta) | PARIDADE |
 | LEG-RMA-047 | S/N de retorno auto-preenchido | ausente | confirmado | `rma-ciclo-de-vida` | `Rma::comSnretornoAutoPreenchido()`, `Solucao::implicaMesmoAparelhoDeRetorno()` (RN-15) | `ConcluirRmaTest` (16 valores de `Solucao`), `RegistrarSolucaoTest` | PARIDADE |
-| LEG-RMA-048 | Módulo Créditos pendentes/usados/disponíveis | N/A (nunca existiu) | quebrado | — | — | — | PENDENTE (reconstruir só a intenção: fluxo único de crédito) |
+| LEG-RMA-048 | Módulo Créditos pendentes/usados/disponíveis | N/A (nunca existiu) | quebrado | `rma-creditos-e-relatorios` | `MarcarCreditoDisponivel`, `AguardandoCredito` | `MarcarCreditoDisponivelTest`, `AguardandoCreditoTest` | PARIDADE — reconstruída só a intenção (fluxo único de crédito), não as 3 sub-rotas quebradas |
 
 **Legenda de Status:** `PENDENTE` (aguardando OpenSpec) · `EM ESPECIFICAÇÃO` ·
 `EM IMPLEMENTAÇÃO` · `PARIDADE` (implementado + QA aprovado) · `NÃO RECONSTRUIR`

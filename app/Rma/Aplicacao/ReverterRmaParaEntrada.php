@@ -3,6 +3,7 @@
 namespace App\Rma\Aplicacao;
 
 use App\Models\User;
+use App\Rma\Dominio\Eventos\RmaRevertido;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
 use App\Rma\Dominio\Status;
@@ -10,7 +11,8 @@ use App\Rma\Dominio\Status;
 /**
  * LEG-RMA-015. Reversão livre no mesmo dia do encaminhamento para quem `podeGravar()`;
  * fora da janela de "mesmo dia", só `Papel::podeReverterAlemDoMesmoDia()`
- * (equivalente a `permissao==4` do legado, único nível SuperAdministrador).
+ * (equivalente a `permissao==4` do legado, único nível SuperAdministrador). Fase 7:
+ * dispara `RmaRevertido` ao final.
  */
 final class ReverterRmaParaEntrada
 {
@@ -51,6 +53,10 @@ final class ReverterRmaParaEntrada
             destinatarioId: $rma->destinatarioId,
         );
 
-        return $this->repositorio->atualizar($atualizado);
+        $rmaAtualizado = $this->repositorio->atualizar($atualizado);
+
+        RmaRevertido::dispatch($ator, $rmaAtualizado);
+
+        return $rmaAtualizado;
     }
 }

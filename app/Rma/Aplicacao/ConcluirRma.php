@@ -52,7 +52,7 @@ final class ConcluirRma
 
         $atualizado = $this->repositorio->atualizar($comSolucao->comSnretornoAutoPreenchido());
 
-        RmaConcluido::dispatch($atualizado);
+        RmaConcluido::dispatch($ator, $atualizado);
 
         return $atualizado;
     }

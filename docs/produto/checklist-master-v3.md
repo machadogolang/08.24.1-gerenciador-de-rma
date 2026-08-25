@@ -288,26 +288,62 @@ Tasks:
       grava `credito_disponivel=true`; RMA `solucao=Reparo` → negado com 422), commit
       `#F6`
 
-### Fase 7 — Auditoria — **EM ESPECIFICAÇÃO**
+### Fase 7 — Auditoria — **CONCLUÍDA**
 
-OpenSpec escrita: `openspec/changes/rma-logistica-e-historico/{proposal,design,tasks}.md`
-(cobre também `LEG-RMA-040`/`041` — consolidação de frete Porto Alegre e boletins
-relacionados). Arquivo por arquivo detalhado em `INV-RMA-05` §12. **Decisão já tomada:**
+OpenSpec: `openspec/changes/rma-logistica-e-historico/{proposal,design,tasks}.md` (tudo
+`[x]`). Arquivo por arquivo detalhado em `INV-RMA-05` §12. Cobre `LEG-RMA-040`/`041`
+(consolidação de frete Porto Alegre e boletins relacionados) e `LEG-RMA-043`/`044`/`045`
+(auditoria de acesso, modificação de RMA e notificações).
+
+**Pré-requisito descoberto na revisão desta fase:** só o evento `RmaConcluido` existia
+(Fase 4). Os outros 7 eventos de domínio (`RmaCriado`, `RmaEditado`, `RmaRecebido`,
+`RmaEncaminhado`, `RmaArquivado`, `RmaRevertido`, `SolucaoRegistrada`) foram criados
+nesta fase em `app/Rma/Dominio/Eventos/` e `::dispatch()` foi adicionado ao final dos 7
+casos de uso já existentes das Fases 3/4 — extensão aditiva, `sail test` confirmado
+verde nas Fases 3/4 após cada arquivo tocado, nenhuma regressão. `RmaConcluido` também
+ganhou a propriedade `ator` (não existia na Fase 4), necessária para
+`RegistrarModificacaoDeRma` gravar `user_id`.
+
 `ConsolidarFretePorCidade` usa TEMA V2 como especificação (TEMA V1 tem o mesmo código,
-mas desativado/comentado). Log de modificação de RMA usa snapshot estruturado com ação
-nomeada (não diff campo-a-campo — `EVO-AUD-001` fica como pendência registrada, não
-decidida). Notificação por e-mail via Mailable, destinatário configurável (não
-hardcoded como o legado). Tasks (resumido):
+mas desativado/comentado), cidade "PORTO ALEGRE" hardcoded. Log de modificação de RMA
+usa snapshot estruturado com ação nomeada (`AcaoDeModificacao`), não diff campo-a-campo
+— `EVO-AUD-001` fica como pendência registrada, **aguardando decisão do usuário** (ver
+`proposal.md`). Notificação de conclusão via Mailable, destinatário configurável via
+`.env` (`RMA_NOTIFICACAO_CONCLUSAO`), não hardcoded como o legado. Notificação de
+tentativa negada (`naopermitido()`) registrada via log de aplicação, não e-mail — desvio
+de implementação porque `design.md`/`tasks.md` não listam um Mailable dedicado para
+esse caso (só o listener).
 
-- [ ] Migration `modificacoes_de_rma` (FK real para `rmas`/`users`)
-- [ ] `AcaoDeModificacao` (enum)
-- [ ] `RegistrarModificacaoDeRma`, `EnviarNotificacaoDeConclusao`,
-      `EnviarNotificacaoDeTentativaNaoPermitida` (listeners)
-- [ ] `ConsolidarFretePorCidade`, `BoletinsRelacionados`
-- [ ] Controllers de histórico (modificação de RMA + acesso) + views + rotas
-- [ ] 7 arquivos de teste
-- [ ] `sail test` verde, pendência de `EVO-AUD-001` registrada (perguntar ao usuário),
-      `paridade-v2-v3.md` atualizado (`LEG-RMA-040/041/044/045`), commit `#F7`
+**Desvio de implementação:** `BoletinsRelacionados` teve a query ajustada em relação ao
+pseudocódigo do `design.md` — condições por `destinatario_id`/`fabricante_id`/
+`fornecedor_id` só entram quando o campo correspondente do RMA de referência não é
+nulo, evitando que o `IS NULL` genérico do Query Builder do Laravel casasse RMAs sem
+nenhuma contraparte em comum (achado confirmado em teste automatizado durante esta
+fase). Tasks:
+
+- [x] `app/Rma/Dominio/Eventos/{RmaCriado,RmaEditado,RmaRecebido,RmaEncaminhado,RmaArquivado,RmaRevertido,SolucaoRegistrada,TentativaDeGravacaoNaoPermitida}.php`
+- [x] `::dispatch()` adicionado às Fases 3/4 (`CriarRma`, `EditarRma`, `ReceberRma`,
+      `EncaminharRma`, `ArquivarRma`, `ReverterRmaParaEntrada`, `RegistrarSolucao`) +
+      `RmaPolicy::update()` dispara `TentativaDeGravacaoNaoPermitida`
+- [x] Migration `modificacoes_de_rma` (FK real para `rmas`/`users`)
+- [x] `AcaoDeModificacao` (enum), `ModificacaoDeRma` (model)
+- [x] `RegistrarModificacaoDeRma`, `EnviarNotificacaoDeConclusao`,
+      `EnviarNotificacaoDeTentativaNaoPermitida` (listeners), `RmaConcluidoMailable`,
+      registrados em `AppServiceProvider::boot()` (projeto sem `EventServiceProvider`
+      explícito)
+- [x] `config/rma.php` (`notificacoes.conclusao` via `.env`)
+- [x] `ConsolidarFretePorCidade`, `BoletinsRelacionados`
+- [x] Controllers de histórico (modificação de RMA + acesso) + logística + views
+      mínimas + rotas (sem fidelidade visual — Fase 8)
+- [x] 8 arquivos de teste novos (27 testes: `RegistrarModificacaoDeRmaTest`,
+      `EnviarNotificacaoDeConclusaoTest`, `EnviarNotificacaoDeTentativaNaoPermitidaTest`,
+      `HistoricoDeModificacaoTest`, `HistoricoDeAcessoTest`,
+      `ConsolidarFretePorCidadeTest`, `BoletinsRelacionadosTest`)
+- [x] `sail test` verde (248/248, mantendo os 221 das Fases 1-6),
+      `paridade-v2-v3.md` atualizado (`LEG-RMA-040/041/043/044/045` → PARIDADE), teste
+      manual via `tinker` (RMA criado + recebido via `CriarRma`/`ReceberRma`, linha em
+      `modificacoes_de_rma` confirmada com `acao=Receber` e `estado_apos.status=
+      "Recebido"`), commit `#F7`
 
 ### Fase 8 — Apresentação (Temas V1/V2) — **EM ESPECIFICAÇÃO**
 

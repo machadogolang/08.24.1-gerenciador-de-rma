@@ -5,8 +5,10 @@ namespace App\Rma\Aplicacao;
 use App\Models\Fabricante;
 use App\Models\Fornecedor;
 use App\Parceiros\Aplicacao\EncontrarOuCriarCliente;
+use App\Rma\Dominio\Eventos\RmaCriado;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * LEG-RMA-007. Usa `EncontrarOuCriarCliente` (Fase 2, Parceiros) quando o cliente
@@ -14,6 +16,14 @@ use App\Rma\Dominio\Rma;
  * persistir. RN-17 (`marcarestoque`): dívida técnica do legado (calcula um valor por
  * `origem` e descarta o resultado, nunca grava — código morto) — não reproduzida; o
  * valor do formulário é gravado normalmente, sem cálculo adicional.
+ *
+ * **Fase 7:** dispara `RmaCriado` ao final, lido via `Auth::user()` em vez de um novo
+ * parâmetro `User $ator` no método — o controller (`RmaController::store()`) nunca
+ * passou o ator autenticado para este caso de uso, e mudar a assinatura quebraria os
+ * call sites das Fases 3 sem necessidade. `Auth::user()` é o mesmo usuário que
+ * `Gate::authorize('create', ...)` já validou no controller antes de chegar aqui. Sem
+ * sessão autenticada (ex.: chamada via `tinker`/console), o evento simplesmente não
+ * dispara — não há ator para registrar.
  */
 final class CriarRma
 {
@@ -73,6 +83,12 @@ final class CriarRma
             $rma->empresa,
         );
 
-        return $this->repositorio->criar($rmaNormalizado);
+        $criado = $this->repositorio->criar($rmaNormalizado);
+
+        if (Auth::user() !== null) {
+            RmaCriado::dispatch(Auth::user(), $criado);
+        }
+
+        return $criado;
     }
 }

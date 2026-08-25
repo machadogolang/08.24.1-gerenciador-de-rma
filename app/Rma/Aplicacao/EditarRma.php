@@ -5,13 +5,18 @@ namespace App\Rma\Aplicacao;
 use App\Models\Fabricante;
 use App\Models\Fornecedor;
 use App\Parceiros\Aplicacao\EncontrarOuCriarCliente;
+use App\Rma\Dominio\Eventos\RmaEditado;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
+use Illuminate\Support\Facades\Auth;
 use RuntimeException;
 
 /**
  * LEG-RMA-010 — ajuste da revisão (não tinha fase dona no plano original). Mesmas
  * normalizações RN-13/RN-14 da criação, reaplicadas a cada edição.
+ *
+ * **Fase 7:** dispara `RmaEditado` ao final, lido via `Auth::user()` — mesma
+ * justificativa de `CriarRma`.
  */
 final class EditarRma
 {
@@ -75,6 +80,12 @@ final class EditarRma
             $rma->empresa,
         );
 
-        return $this->repositorio->atualizar($rmaNormalizado);
+        $atualizado = $this->repositorio->atualizar($rmaNormalizado);
+
+        if (Auth::user() !== null) {
+            RmaEditado::dispatch(Auth::user(), $atualizado);
+        }
+
+        return $atualizado;
     }
 }

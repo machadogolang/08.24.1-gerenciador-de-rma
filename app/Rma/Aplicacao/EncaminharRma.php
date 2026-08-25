@@ -3,6 +3,7 @@
 namespace App\Rma\Aplicacao;
 
 use App\Models\User;
+use App\Rma\Dominio\Eventos\RmaEncaminhado;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
 use App\Rma\Dominio\Status;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Date;
 /**
  * LEG-RMA-012. Exige `destinatario` preenchido antes de aceitar — no legado essa
  * validação existe só em JS; aqui vira regra de domínio real (decisão registrada no
- * `proposal.md`).
+ * `proposal.md`). Fase 7: dispara `RmaEncaminhado` ao final.
  */
 final class EncaminharRma
 {
@@ -50,6 +51,10 @@ final class EncaminharRma
             destinatarioId: $destinatarioId,
         );
 
-        return $this->repositorio->atualizar($atualizado);
+        $rmaAtualizado = $this->repositorio->atualizar($atualizado);
+
+        RmaEncaminhado::dispatch($ator, $rmaAtualizado);
+
+        return $rmaAtualizado;
     }
 }

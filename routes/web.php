@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Identidade\AnotacaoPessoalController;
+use App\Http\Controllers\Identidade\HistoricoDeAcessoController;
 use App\Http\Controllers\Identidade\SessaoController;
 use App\Http\Controllers\Identidade\TemaPreferidoController;
 use App\Http\Controllers\Identidade\UsuarioController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\Parceiros\FabricanteController;
 use App\Http\Controllers\Parceiros\FornecedorController;
 use App\Http\Controllers\Rma\CicloDeVidaController;
 use App\Http\Controllers\Rma\CreditoController;
+use App\Http\Controllers\Rma\HistoricoDeModificacaoController;
+use App\Http\Controllers\Rma\LogisticaController;
 use App\Http\Controllers\Rma\PainelDeAlertasController;
 use App\Http\Controllers\Rma\RelatorioController;
 use App\Http\Controllers\Rma\RmaController;
@@ -86,4 +89,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/rmas-relatorios/rcd', [RelatorioController::class, 'creditosDisponiveis'])->name('rmas.relatorios.rcd');
     Route::get('/rmas-relatorios/rpec', [RelatorioController::class, 'produtosEmEstoqueParaContagem'])->name('rmas.relatorios.rpec');
     Route::get('/rmas-relatorios/rmpe', [RelatorioController::class, 'produtosEncaminhados'])->name('rmas.relatorios.rmpe');
+
+    // Auditoria (LEG-RMA-043/044, Fase 7) — histórico de modificação de RMA e
+    // histórico de acesso (dado já existe desde a Fase 1, só falta a tela). Mesma
+    // Gate `'gerenciar'` de `UsuarioController` (tela administrativa).
+    Route::get('/rmas-historico', [HistoricoDeModificacaoController::class, 'index'])->name('rmas.historico.index');
+    Route::get('/historico-de-acesso', [HistoricoDeAcessoController::class, 'index'])->name('identidade.historico-de-acesso.index');
+
+    // Logística (LEG-RMA-040/041, RN-16, Fase 7) — outro segmento inicial, sem
+    // conflito com `rmas/{rma}`.
+    Route::get('/rmas-logistica/frete-porto-alegre', [LogisticaController::class, 'fretePortoAlegre'])->name('rmas.logistica.frete-porto-alegre');
+    Route::get('/rmas/{rma}/boletins-relacionados', [LogisticaController::class, 'boletinsRelacionados'])->name('rmas.logistica.boletins-relacionados');
 });

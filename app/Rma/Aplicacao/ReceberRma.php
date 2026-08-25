@@ -3,13 +3,14 @@
 namespace App\Rma\Aplicacao;
 
 use App\Models\User;
+use App\Rma\Dominio\Eventos\RmaRecebido;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
 use App\Rma\Dominio\Status;
 use Illuminate\Support\Facades\Date;
 
 /**
- * LEG-RMA-011.
+ * LEG-RMA-011. Fase 7: dispara `RmaRecebido` ao final.
  */
 final class ReceberRma
 {
@@ -47,6 +48,10 @@ final class ReceberRma
             destinatarioId: $rma->destinatarioId,
         );
 
-        return $this->repositorio->atualizar($atualizado);
+        $rmaAtualizado = $this->repositorio->atualizar($atualizado);
+
+        RmaRecebido::dispatch($ator, $rmaAtualizado);
+
+        return $rmaAtualizado;
     }
 }

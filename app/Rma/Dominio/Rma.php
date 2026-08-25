@@ -208,4 +208,36 @@ final class Rma
             && $this->createdAt !== null
             && $this->prazoLegal()->isPast();
     }
+
+    /**
+     * Fase 7 (`RegistrarModificacaoDeRma`) — snapshot desnormalizado equivalente ao
+     * gravado pelo `modificacao` do legado (`estado_apos`): campos-chave suficientes
+     * para reconstruir "o que era o RMA no momento da ação" sem diff campo-a-campo
+     * (`EVO-AUD-001`, backlog evolutivo, pendência registrada em `proposal.md`).
+     *
+     * @return array<string, mixed>
+     */
+    public function paraSnapshot(): array
+    {
+        return [
+            'id' => $this->id,
+            'descricao' => $this->descricao,
+            'fabricante_id' => $this->fabricanteId,
+            'fornecedor_id' => $this->fornecedorId,
+            'modelo' => $this->modelo,
+            'sn' => $this->sn,
+            'os' => $this->os,
+            'origem' => $this->origem,
+            'empresa' => $this->empresa,
+            'cliente_id' => $this->clienteId,
+            'defeito' => $this->defeito,
+            'observacao' => $this->observacao,
+            'status' => $this->status->name,
+            'protocolo' => $this->protocolo,
+            'solucao' => $this->solucao?->value,
+            'snretorno' => $this->snretorno,
+            'destinatario_type' => $this->destinatarioType,
+            'destinatario_id' => $this->destinatarioId,
+        ];
+    }
 }

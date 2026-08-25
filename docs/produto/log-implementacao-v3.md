@@ -447,3 +447,118 @@ cobertura de teste HTTP, ambos fechados, nenhum ajuste de código de produto nec
 assertions (218→221, 390→396).
 
 ---
+
+## Fase 7 — Auditoria
+
+**Data:** 2026-08-25.
+
+**Pré-requisito descoberto na revisão desta fase:** o `design.md` original (redação
+anterior a esta sessão) pseudocodificava `RegistrarModificacaoDeRma` como se os 8
+eventos de domínio já existissem. Na prática, só `RmaConcluido` existia (disparado por
+`ConcluirRma`, Fase 4) — os outros 7 (`RmaCriado`, `RmaEditado`, `RmaRecebido`,
+`RmaEncaminhado`, `RmaArquivado`, `RmaRevertido`, `SolucaoRegistrada`) foram criados
+nesta fase em `app/Rma/Dominio/Eventos/`, cada um com `public readonly User $ator` e
+`public readonly Rma $rma`, e `::dispatch()` foi adicionado ao final dos 7 casos de uso
+já implementados (`CriarRma`, `EditarRma`, `ReceberRma`, `EncaminharRma`, `ArquivarRma`,
+`ReverterRmaParaEntrada`, `RegistrarSolucao`) — uma linha a mais em cada método, sem
+mudar assinatura nem comportamento. `sail test --filter=...` confirmado verde para cada
+arquivo tocado das Fases 3/4 antes de seguir adiante, e a suíte completa das Fases 3/4
+(40 testes) e Fase 4 (`ConcluirRmaTest`, 19 testes) confirmada verde depois. `CriarRma`
+e `EditarRma` não recebem `User $ator` como parâmetro (o controller nunca passou isso
+para eles nas Fases 3) — o ator é lido via `Auth::user()` dentro do próprio caso de
+uso, mesmo usuário que a `Gate` já validou no controller; sem sessão autenticada
+(ex. chamada via `tinker`), o evento simplesmente não dispara.
+
+**Implementado:** migration `2026_09_01_000000_create_modificacoes_de_rma_table` (FK
+real para `rmas`/`users`, `on delete cascade` — o legado grava `numero`/`email` sem
+constraint); enum `App\Rma\Dominio\AcaoDeModificacao` (8 cases, sem backing, mesmo
+princípio de `Status`); `App\Models\ModificacaoDeRma` (cast `acao` para o enum,
+`estado_apos` para `array`); `Dominio\Rma::paraSnapshot()` — método puro novo que
+devolve os campos-chave do RMA (não estava no `design.md` original, que só chamava
+`$evento->rma->paraSnapshot()` sem definir onde vive; adicionado ao final de
+`Dominio\Rma.php`, ao lado de `classeDeAlerta()`/`prazoLegal()`); listener
+`RegistrarModificacaoDeRma` — assina os 8 eventos (mapa `class-string => AcaoDeModificacao`
+interno), único ponto de verdade que substitui o `registra_modificacao()` manual do
+legado; `RmaPolicy::update()` — dispara `TentativaDeGravacaoNaoPermitida` explicitamente
+antes de devolver `false` (evento novo, sem `rma` no payload — a Policy decide por
+classe, não por instância); listener `EnviarNotificacaoDeTentativaNaoPermitida` — grava
+`Log::warning` (ver desvio abaixo); listener `EnviarNotificacaoDeConclusao` + Mailable
+`RmaConcluidoMailable` (markdown, `resources/views/emails/rma-concluido.blade.php`) —
+assina `RmaConcluido`, destinatário via `config('rma.notificacoes.conclusao')`
+(`RMA_NOTIFICACAO_CONCLUSAO` no `.env`), não envia nada se vazio; `RmaConcluido` ganhou
+a propriedade `ator` (não existia na Fase 4) — necessária para `RegistrarModificacaoDeRma`
+gravar `user_id`; `ConcluirRma::dispatch($ator, $atualizado)` atualizado de acordo (o
+caso de uso já recebia `$ator` como parâmetro, só passou a propagá-lo).
+`config/rma.php` (`notificacoes.conclusao`). `AppServiceProvider::boot()` — projeto sem
+`EventServiceProvider` explícito (Laravel 13), listeners registrados via
+`Event::listen()`. `ConsolidarFretePorCidade` (RN-16, TEMA V2 como especificação,
+"PORTO ALEGRE" hardcoded, JOINs via relação Eloquent real — sem os aliases mortos
+`FOD`/`FAD` do legado) e `BoletinsRelacionados` (paginado, exclui o próprio RMA) em
+`app/Rma/Aplicacao/`. Controllers `HistoricoDeModificacaoController`,
+`HistoricoDeAcessoController` (ambos exigem `Gate::authorize('gerenciar', User::class)`,
+mesma Policy/Gate de `UsuarioController`) e `LogisticaController` (não estava listado
+em `tasks.md` por nome, mas necessário para expor as duas rotas de `LEG-RMA-040`/`041`
+— `fretePortoAlegre`/`boletinsRelacionados`). 4 views mínimas + 1 view de e-mail, sem
+fidelidade visual (Fase 8). Rotas novas: `/rmas-historico`, `/historico-de-acesso`,
+`/rmas-logistica/frete-porto-alegre`, `/rmas/{rma}/boletins-relacionados`.
+
+**Desvios do OpenSpec (documentados no código):**
+- `EnviarNotificacaoDeTentativaNaoPermitida` não usa Mailable — `design.md`/`tasks.md`
+  listam um Mailable só para `EnviarNotificacaoDeConclusao` (`RmaConcluidoMailable`);
+  para a tentativa negada, o canal escolhido foi `Log::warning` (contexto: `user_id`,
+  `papel`). Justificativa: sem um template de e-mail especificado e sem destinatário
+  configurado para esse caso, logar é o equivalente funcional auditável mais simples;
+  trocar para `Mail::to(...)->send(...)` no futuro não exige mudar a assinatura do
+  listener nem o disparo do evento.
+- `BoletinsRelacionados`: o pseudocódigo do `design.md`
+  (`->where('destinatario_id', $rma->destinatarioId)->orWhere('fabricante_id', ...)
+  ->orWhere('fornecedor_id', ...)`) tem um efeito colateral não documentado — como o
+  Query Builder do Laravel traduz `where('coluna', null)` para `coluna IS NULL`, um RMA
+  de referência sem destinatário/fabricante/fornecedor casava com **todo** outro RMA
+  igualmente sem esses campos (confirmado via `tinker` durante esta fase, antes de
+  escrever o teste automatizado). Corrigido: cada condição só entra na query quando o
+  campo correspondente do RMA de referência não é nulo; se nenhum dos 3 campos existe,
+  a query devolve vazio (`whereRaw('1 = 0')`) em vez de "tudo que também não tem".
+  Coberto por `BoletinsRelacionadosTest`.
+- `RmaConcluido` (Fase 4) ganhou a propriedade `ator` nesta fase — não é uma mudança de
+  comportamento observável (`ConcluirRmaTest` só verifica `Event::assertDispatched
+  (RmaConcluido::class)`, sem inspecionar argumentos), mas é uma alteração de
+  assinatura de um evento já existente, registrada aqui por transparência.
+
+**Testes:** 248/248 verdes, 443 assertions (`sail test`), mantendo os 221 das Fases 1-6.
+27 testes novos em 7 arquivos: `RegistrarModificacaoDeRmaTest` (8 casos, um por valor de
+`AcaoDeModificacao`, via HTTP real em cada endpoint do ciclo de vida — não só disparo
+manual do evento), `EnviarNotificacaoDeConclusaoTest` (2 casos: envia com destinatário
+configurado, `Mail::assertNothingSent()` sem destinatário), `EnviarNotificacaoDeTentativaNaoPermitidaTest`
+(3 casos: evento disparado quando `Leitura` tenta editar, não disparado quando
+`Operador` edita, `Log::spy()` confirma o `Log::warning` com `user_id` correto),
+`HistoricoDeModificacaoTest`/`HistoricoDeAcessoTest` (3 casos cada: acesso autorizado,
+403 para quem não gerencia usuários, redirect ao login para visitante),
+`ConsolidarFretePorCidadeTest` (5 casos: fornecedor/fabricante/assistência técnica em
+Porto Alegre disparam, cidade diferente e status fora de Entrada/Recebido não disparam),
+`BoletinsRelacionadosTest` (3 casos: lista relacionado por fabricante e exclui o
+próprio, pagina 25 registros em páginas de 20, RMA de referência inexistente → 404).
+
+**Testes manuais confirmados via `tinker`:** `CriarRma::criar()` autenticado como
+Operador cria um RMA; `ReceberRma::receber()` no mesmo RMA confirma
+`App\Models\ModificacaoDeRma::where('rma_id', ...)->where('acao', AcaoDeModificacao::
+Receber)->first()` encontrado, com `estado_apos` contendo `status: "Recebido"` e os
+demais campos-chave corretos (descrição, defeito, ids de fabricante/fornecedor/cliente
+etc.) — confirma o listener rodando de ponta a ponta fora do contexto de teste
+automatizado, inclusive a leitura de `Auth::user()` dentro de `CriarRma` funcionando
+com login real via `Auth::login()`.
+
+**Pendência registrada — a decidir com o usuário (`EVO-AUD-001`):** `modificacoes_de_rma`
+grava snapshot estruturado (`estado_apos` json) com a ação nomeada (`AcaoDeModificacao`),
+não diff campo-a-campo (`de` → `para` por campo). Pergunta em aberto, repetida aqui por
+visibilidade: **isso já conta como ter adotado `EVO-AUD-001`, ou ainda falta o diff
+campo-a-campo de verdade?** Não decidido nesta sessão — ver `proposal.md`.
+
+**Pendências que ficaram de fora:** fidelidade visual das views (Fase 8); diff
+campo-a-campo (`EVO-AUD-001`, ver acima); e-mail de fato para tentativa de gravação não
+permitida (log por ora, ver desvio acima).
+
+**Commit:** `#F7 - Auditoria (historico de modificacao, notificacoes, frete PoA,
+boletins)` (ver hash abaixo, aplicado junto com este log).
+
+---

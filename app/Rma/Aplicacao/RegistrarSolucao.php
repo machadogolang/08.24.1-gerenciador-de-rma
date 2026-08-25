@@ -3,6 +3,7 @@
 namespace App\Rma\Aplicacao;
 
 use App\Models\User;
+use App\Rma\Dominio\Eventos\SolucaoRegistrada;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
 use App\Rma\Dominio\Solucao;
@@ -10,7 +11,8 @@ use App\Rma\Dominio\Solucao;
 /**
  * LEG-RMA-017. Atualiza `solucao` independente de transição de status (o legado
  * permite editar via `salvar_rma.php` a qualquer momento) e reaplica
- * `comSnretornoAutoPreenchido()` (RN-15).
+ * `comSnretornoAutoPreenchido()` (RN-15). Fase 7: dispara `SolucaoRegistrada` ao
+ * final.
  */
 final class RegistrarSolucao
 {
@@ -47,6 +49,10 @@ final class RegistrarSolucao
             destinatarioId: $rma->destinatarioId,
         );
 
-        return $this->repositorio->atualizar($comSolucao->comSnretornoAutoPreenchido());
+        $rmaAtualizado = $this->repositorio->atualizar($comSolucao->comSnretornoAutoPreenchido());
+
+        SolucaoRegistrada::dispatch($ator, $rmaAtualizado);
+
+        return $rmaAtualizado;
     }
 }

@@ -187,25 +187,38 @@ justificado (a Fase 9/migração vai usar essa fronteira). Tasks:
 - [x] `sail test` verde (85/85, mantendo os 61 das Fases 1-2), `paridade-v2-v3.md`
       atualizado (`LEG-RMA-007/008/009/010/046` → PARIDADE), commit `#F3`
 
-### Fase 4 — Ciclo de vida — **EM ESPECIFICAÇÃO**
+### Fase 4 — Ciclo de vida — **CONCLUÍDA**
 
-OpenSpec escrita: `openspec/changes/rma-ciclo-de-vida/{proposal,design,tasks}.md`.
-Arquivo por arquivo detalhado em `INV-RMA-05` §9. **Decisões já tomadas:** `ArquivarRma`
-usa TEMA V2 como especificação (TEMA V1 confirmado quebrado nesta revisão — `Fatal
-Error` incondicional, classe `controle` inexistente); `Solucao` enum com os 16 valores
-lidos diretamente de `15.8.1/page/rma.php:578-595`; datas por transição
+OpenSpec: `openspec/changes/rma-ciclo-de-vida/{proposal,design,tasks}.md` (tudo `[x]`).
+Estendeu `Dominio\Rma`/`RepositorioDeRmas`/`RmasEmBanco` da Fase 3, não recriou.
+**Decisões confirmadas:** `ArquivarRma` usa TEMA V2 como especificação (TEMA V1
+confirmado quebrado — `Fatal Error` incondicional, classe `controle` inexistente),
+provado por `ArquivarRmaTest` (arquiva `Recebido` com sucesso, o cenário que quebraria
+em TEMA V1); `Solucao` enum com os 16 valores lidos diretamente de
+`15.8.1/page/rma.php:578-595`; datas por transição
 (`recebido_em`/`encaminhado_em`/`concluido_em`/`arquivado_em`), não `updated_at`
-genérico. Tasks (resumido):
+genérico; `destinatario` como par `destinatario_type`/`destinatario_id` (relação
+polimórfica Eloquent) — no objeto de domínio puro, representado como
+`destinatarioType`/`destinatarioId` (string/int), mesmo padrão de `fabricanteId`/
+`fornecedorId` (sem acoplar o domínio a models Eloquent). Tasks:
 
-- [ ] Migration com `status`, datas por transição, `protocolo`, `solucao`, `snretorno`,
-      `destinatario` polimórfico
-- [ ] `Status`, `Solucao` (enums de domínio)
-- [ ] `ReceberRma`, `EncaminharRma`, `ConcluirRma`, `ArquivarRma`,
-      `ReverterRmaParaEntrada`, `RegistrarSolucao` (`LEG-RMA-011` a `017`, `047`)
-- [ ] `Papel::podeReverterAlemDoMesmoDia()` (novo método, Fase 1 estendida)
-- [ ] Controller + views mínimas + rotas
-- [ ] 6 arquivos de teste feature + 2 unit
-- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado, commit `#F4`
+- [x] Migration incremental de `rmas` (`status`, datas por transição, `protocolo`,
+      `solucao`, `snretorno`, `destinatario_type`/`destinatario_id` polimórficos)
+- [x] `Status`, `Solucao` (enums de domínio, sem backing numérico/case `Retornou`)
+- [x] `Dominio\Rma` estendido com os novos campos + `comSnretornoAutoPreenchido()` (RN-15)
+- [x] `Papel::podeReverterAlemDoMesmoDia()` (novo método, Fase 1 estendida)
+- [x] `ReceberRma`, `EncaminharRma`, `ConcluirRma` (+ evento `RmaConcluido`),
+      `ArquivarRma`, `ReverterRmaParaEntrada`, `RegistrarSolucao`
+      (`LEG-RMA-011` a `017`, `047`) — todos usando `RepositorioDeRmas::atualizar()`
+      já existente, sem método novo por transição
+- [x] `RmasEmBanco`/`Models\Rma` atualizados (casts de `Status`/`Solucao`,
+      `morphTo('destinatario')`)
+- [x] `CicloDeVidaController` + `_acoes_de_transicao.blade.php` + rotas
+- [x] 6 arquivos de teste feature + 2 unit (+ 1 unit em `PapelTest` já existente)
+- [x] `sail test` verde (131/131, mantendo os 85 das Fases 1-3),
+      `paridade-v2-v3.md` atualizado (`LEG-RMA-011/012/013/014/015/016/017/047`),
+      teste manual via `tinker` (receber→encaminhar→concluir, `snretorno`
+      auto-preenchido confirmado), commit `#F4`
 
 ### Fase 5 — Alertas e regras — **EM ESPECIFICAÇÃO**
 

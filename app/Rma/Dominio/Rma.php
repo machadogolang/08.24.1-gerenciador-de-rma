@@ -17,6 +17,22 @@ final class Rma
         public readonly ?int $clienteId,
         public readonly string $defeito,
         public readonly ?string $observacao,
+        public readonly Status $status = Status::Entrada,
+        public readonly ?\DateTimeInterface $recebidoEm = null,
+        public readonly ?\DateTimeInterface $encaminhadoEm = null,
+        public readonly ?\DateTimeInterface $concluidoEm = null,
+        public readonly ?\DateTimeInterface $arquivadoEm = null,
+        public readonly ?string $protocolo = null,
+        public readonly ?Solucao $solucao = null,
+        public readonly ?string $snretorno = null,
+        /**
+         * Relação polimórfica (Eloquent: `AssistenciaTecnica`/`Fornecedor`/
+         * `Fabricante`) representada aqui como par tipo/id, não como objeto Eloquent —
+         * o domínio permanece puro (mesmo padrão de `fabricanteId`/`fornecedorId`:
+         * ids resolvidos para exibição fora deste objeto).
+         */
+        public readonly ?string $destinatarioType = null,
+        public readonly ?int $destinatarioId = null,
     ) {}
 
     /**
@@ -43,9 +59,69 @@ final class Rma
         };
 
         return new self(
-            $this->id, $this->descricao, $this->fabricanteId, $this->fornecedorId,
-            $this->modelo, $this->sn, $this->os, $origem, $this->empresa,
-            $this->clienteId, $this->defeito, $this->observacao,
+            id: $this->id,
+            descricao: $this->descricao,
+            fabricanteId: $this->fabricanteId,
+            fornecedorId: $this->fornecedorId,
+            modelo: $this->modelo,
+            sn: $this->sn,
+            os: $this->os,
+            origem: $origem,
+            empresa: $this->empresa,
+            clienteId: $this->clienteId,
+            defeito: $this->defeito,
+            observacao: $this->observacao,
+            status: $this->status,
+            recebidoEm: $this->recebidoEm,
+            encaminhadoEm: $this->encaminhadoEm,
+            concluidoEm: $this->concluidoEm,
+            arquivadoEm: $this->arquivadoEm,
+            protocolo: $this->protocolo,
+            solucao: $this->solucao,
+            snretorno: $this->snretorno,
+            destinatarioType: $this->destinatarioType,
+            destinatarioId: $this->destinatarioId,
+        );
+    }
+
+    /**
+     * RN-15 — só copia `sn` → `snretorno` se estiver vazio E a solução implicar mesmo
+     * aparelho de retorno; caso contrário fica em branco para digitação manual. Ausente
+     * em TEMA V1 (regra nova nesta fase, sem regressão a corrigir). Método puro.
+     */
+    public function comSnretornoAutoPreenchido(): self
+    {
+        if ($this->snretorno !== null && $this->snretorno !== '') {
+            return $this;
+        }
+
+        if ($this->solucao?->implicaMesmoAparelhoDeRetorno() !== true) {
+            return $this;
+        }
+
+        return new self(
+            id: $this->id,
+            descricao: $this->descricao,
+            fabricanteId: $this->fabricanteId,
+            fornecedorId: $this->fornecedorId,
+            modelo: $this->modelo,
+            sn: $this->sn,
+            os: $this->os,
+            origem: $this->origem,
+            empresa: $this->empresa,
+            clienteId: $this->clienteId,
+            defeito: $this->defeito,
+            observacao: $this->observacao,
+            status: $this->status,
+            recebidoEm: $this->recebidoEm,
+            encaminhadoEm: $this->encaminhadoEm,
+            concluidoEm: $this->concluidoEm,
+            arquivadoEm: $this->arquivadoEm,
+            protocolo: $this->protocolo,
+            solucao: $this->solucao,
+            snretorno: $this->sn,
+            destinatarioType: $this->destinatarioType,
+            destinatarioId: $this->destinatarioId,
         );
     }
 }

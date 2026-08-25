@@ -35,4 +35,13 @@ enum Papel
     {
         return $this === self::SuperAdministrador;
     }
+
+    /**
+     * Equivalente a `permissao==4` do legado (`LEG-RMA-015`) — único nível que reverte
+     * um RMA para Entrada fora da janela de "mesmo dia" do encaminhamento.
+     */
+    public function podeReverterAlemDoMesmoDia(): bool
+    {
+        return $this === self::SuperAdministrador;
+    }
 }

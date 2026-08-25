@@ -85,6 +85,16 @@ final class RmasEmBanco implements RepositorioDeRmas
             'cliente_id' => $rma->clienteId,
             'defeito' => $rma->defeito,
             'observacao' => $rma->observacao,
+            'status' => $rma->status,
+            'recebido_em' => $rma->recebidoEm,
+            'encaminhado_em' => $rma->encaminhadoEm,
+            'concluido_em' => $rma->concluidoEm,
+            'arquivado_em' => $rma->arquivadoEm,
+            'protocolo' => $rma->protocolo,
+            'solucao' => $rma->solucao,
+            'snretorno' => $rma->snretorno,
+            'destinatario_type' => $rma->destinatarioType,
+            'destinatario_id' => $rma->destinatarioId,
         ];
     }
 
@@ -103,6 +113,16 @@ final class RmasEmBanco implements RepositorioDeRmas
             clienteId: $model->cliente_id,
             defeito: $model->defeito,
             observacao: $model->observacao,
+            status: $model->status,
+            recebidoEm: $model->recebido_em,
+            encaminhadoEm: $model->encaminhado_em,
+            concluidoEm: $model->concluido_em,
+            arquivadoEm: $model->arquivado_em,
+            protocolo: $model->protocolo,
+            solucao: $model->solucao,
+            snretorno: $model->snretorno,
+            destinatarioType: $model->destinatario_type,
+            destinatarioId: $model->destinatario_id,
         );
     }
 }

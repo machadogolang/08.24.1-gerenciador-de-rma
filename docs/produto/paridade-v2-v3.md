@@ -1,6 +1,6 @@
 # Matriz de paridade V2 → V3
 
-Data: 2026-08-24 (atualizado 2026-08-24 — Fase 2 "Parceiros" implementada e testada).
+Data: 2026-08-25 (atualizado 2026-08-25 — Fase 4 "Ciclo de vida" implementada e testada).
 Índice de rastreamento: nenhuma funcionalidade relevante do RMA V2 pode "desaparecer"
 silenciosamente na V3. Atualizado a cada avanço de OpenSpec/implementação. **Fase 1
 (`autenticacao-usuarios`) concluída:** 7 itens (`LEG-RMA-001/003/004/005/006/042/043`)
@@ -14,8 +14,15 @@ permanece `PENDENTE` — decisão de produto explicitamente não tomada nesta fa
 (`rma-cadastro-e-localizacao`) concluída:** 5 itens (`LEG-RMA-007/008/009/010/046`)
 passaram de `PENDENTE` para `PARIDADE`, com `sail test` verde (85/85, mantendo os 61
 das Fases 1-2). RN-13/RN-14 (normalização HGST→Hitachi/cascata de origem) confirmadas
-de ponta a ponta tanto na criação quanto na edição. Os demais itens aguardam as
-próximas fases (ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
+de ponta a ponta tanto na criação quanto na edição. **Fase 4 (`rma-ciclo-de-vida`)
+concluída:** 8 itens (`LEG-RMA-011/012/013/014/015/016/017/047`) tiveram seu status
+atualizado — 7 passaram de `PENDENTE` para `PARIDADE` e `LEG-RMA-016` foi confirmado
+`NÃO RECONSTRUIR` (código morto, sem mudança) —, com `sail test` verde (131/131,
+mantendo os 85 das Fases 1-3) e o ciclo receber→encaminhar→concluir confirmado por
+`tinker` de ponta a ponta, incluindo o auto-preenchimento de `snretorno` (RN-15).
+`LEG-RMA-014` (arquivar) usa TEMA V2 como especificação — TEMA V1 confirmado com
+`Fatal Error` incondicional nesse fluxo. Os demais itens aguardam as próximas fases
+(ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
 
 Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 
@@ -31,13 +38,13 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-008 | Localizar/pesquisar RMA | confirmado | confirmado | `rma-cadastro-e-localizacao` | `BuscarRmas`, `CriterioDeBusca` | `BuscarRmasTest`, `CriterioDeBuscaTest` | PARIDADE |
 | LEG-RMA-009 | Ver detalhes do RMA | confirmado | confirmado | `rma-cadastro-e-localizacao` | `VerDetalheDoRma` | `VerDetalheDoRmaTest` | PARIDADE |
 | LEG-RMA-010 | Editar/salvar RMA | confirmado | confirmado | `rma-cadastro-e-localizacao` | `EditarRma` | `EditarRmaTest` (3 testes) | PARIDADE |
-| LEG-RMA-011 | Receber RMA | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-012 | Encaminhar RMA | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-013 | Concluir RMA | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-014 | Arquivar RMA | quebrado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-015 | Retornar p/ entrada (rollback) | confirmado | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-011 | Receber RMA | confirmado | confirmado | `rma-ciclo-de-vida` | `ReceberRma`, `Status::podeReceber()` | `ReceberRmaTest` | PARIDADE |
+| LEG-RMA-012 | Encaminhar RMA | confirmado | confirmado | `rma-ciclo-de-vida` | `EncaminharRma`, `Status::podeEncaminhar()` | `EncaminharRmaTest` | PARIDADE |
+| LEG-RMA-013 | Concluir RMA | confirmado | confirmado | `rma-ciclo-de-vida` | `ConcluirRma`, evento `RmaConcluido` | `ConcluirRmaTest` | PARIDADE |
+| LEG-RMA-014 | Arquivar RMA | quebrado | confirmado | `rma-ciclo-de-vida` | `ArquivarRma` (TEMA V2 como especificação) | `ArquivarRmaTest` (prova TEMA V2, não reproduz Fatal Error de TEMA V1) | PARIDADE — V3 usa TEMA V2 como especificação |
+| LEG-RMA-015 | Retornar p/ entrada (rollback) | confirmado | confirmado | `rma-ciclo-de-vida` | `ReverterRmaParaEntrada`, `Papel::podeReverterAlemDoMesmoDia()` | `ReverterRmaParaEntradaTest` | PARIDADE |
 | LEG-RMA-016 | Estado "retornou" | código morto | código morto | — | — | — | NÃO RECONSTRUIR (morto em ambos) |
-| LEG-RMA-017 | Registrar solução/resolução | confirmado | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-017 | Registrar solução/resolução | confirmado | confirmado | `rma-ciclo-de-vida` | `RegistrarSolucao` | `RegistrarSolucaoTest` | PARIDADE |
 | LEG-RMA-018 | Alerta: recebido >30d não encaminhado | herdado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-019 | Alerta: não vai dar garantia (MARKVISION) | herdado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-020 | Alerta: NF pendente de lançamento | herdado | confirmado | — | — | — | PENDENTE |
@@ -67,7 +74,7 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-044 | Auditoria de modificação de RMA | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-045 | Notificação por e-mail | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-046 | Normalização automática (HGST→Hitachi, origem) | confirmado (duplicado) | confirmado | `rma-cadastro-e-localizacao` | `Rma::comNormalizacaoDeGravacao()` | `RmaTest` (unit) + `CriarRmaTest`/`EditarRmaTest` (ponta a ponta) | PARIDADE |
-| LEG-RMA-047 | S/N de retorno auto-preenchido | ausente | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-047 | S/N de retorno auto-preenchido | ausente | confirmado | `rma-ciclo-de-vida` | `Rma::comSnretornoAutoPreenchido()`, `Solucao::implicaMesmoAparelhoDeRetorno()` (RN-15) | `ConcluirRmaTest` (16 valores de `Solucao`), `RegistrarSolucaoTest` | PARIDADE |
 | LEG-RMA-048 | Módulo Créditos pendentes/usados/disponíveis | N/A (nunca existiu) | quebrado | — | — | — | PENDENTE (reconstruir só a intenção: fluxo único de crédito) |
 
 **Legenda de Status:** `PENDENTE` (aguardando OpenSpec) · `EM ESPECIFICAÇÃO` ·

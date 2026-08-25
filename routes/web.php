@@ -8,6 +8,7 @@ use App\Http\Controllers\Parceiros\AssistenciaTecnicaController;
 use App\Http\Controllers\Parceiros\ClienteController;
 use App\Http\Controllers\Parceiros\FabricanteController;
 use App\Http\Controllers\Parceiros\FornecedorController;
+use App\Http\Controllers\Rma\CicloDeVidaController;
 use App\Http\Controllers\Rma\RmaController;
 use Illuminate\Support\Facades\Route;
 
@@ -59,4 +60,12 @@ Route::middleware('auth')->group(function () {
     // domínio `Dominio\Rma` é puro e o Eloquent model interno nunca sai da
     // infraestrutura (ver `app/Rma/Infraestrutura/RmasEmBanco.php`).
     Route::resource('rmas', RmaController::class)->except(['destroy']);
+
+    // Ciclo de vida do RMA (LEG-RMA-011 a 015, LEG-RMA-017) — Fase 4.
+    Route::post('/rmas/{rma}/receber', [CicloDeVidaController::class, 'receber'])->name('rmas.receber');
+    Route::post('/rmas/{rma}/encaminhar', [CicloDeVidaController::class, 'encaminhar'])->name('rmas.encaminhar');
+    Route::post('/rmas/{rma}/concluir', [CicloDeVidaController::class, 'concluir'])->name('rmas.concluir');
+    Route::post('/rmas/{rma}/arquivar', [CicloDeVidaController::class, 'arquivar'])->name('rmas.arquivar');
+    Route::post('/rmas/{rma}/reverter', [CicloDeVidaController::class, 'reverter'])->name('rmas.reverter');
+    Route::post('/rmas/{rma}/solucao', [CicloDeVidaController::class, 'registrarSolucao'])->name('rmas.solucao');
 });

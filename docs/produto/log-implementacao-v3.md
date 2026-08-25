@@ -149,3 +149,73 @@ continuação (os 3 testes Feature restantes + atualização de `paridade-v2-v3.
 junto com este log).
 
 ---
+
+## Fase 4 — Ciclo de vida
+
+**Data:** 2026-08-25.
+
+**Implementado:** migration incremental `add_ciclo_de_vida_fields_to_rmas_table`
+(`status`, `recebido_em`/`encaminhado_em`/`concluido_em`/`arquivado_em`, `protocolo`,
+`solucao`, `snretorno`, `destinatario_type`/`destinatario_id` polimórficos);
+`App\Rma\Dominio\{Status,Solucao}` (enums sem número mágico — `Status` sem backing e
+sem case `Retornou`, `Solucao` backed string com os 16 valores confirmados de
+`15.8.1/page/rma.php:578-595`); `App\Rma\Dominio\Rma` estendido (Fase 3 → aqui) com as
+novas propriedades readonly e `comSnretornoAutoPreenchido()` (RN-15); `Papel`
+estendido com `podeReverterAlemDoMesmoDia()`; `RmasEmBanco`/`Models\Rma` atualizados
+para persistir/ler os novos campos (casts de `Status`/`Solucao`, `morphTo`); os 6 casos
+de uso `App\Rma\Aplicacao\{ReceberRma,EncaminharRma,ConcluirRma,ArquivarRma,
+ReverterRmaParaEntrada,RegistrarSolucao}` (todos usando `RepositorioDeRmas::atualizar()`
+já existente da Fase 3, sem método novo por transição); evento
+`App\Rma\Dominio\Eventos\RmaConcluido` (sem listener nesta fase — Fase 7 assina);
+`CicloDeVidaController` + rotas + `_acoes_de_transicao.blade.php` (view mínima, sem
+fidelidade visual); 8 arquivos de teste (6 feature + 2 unit) + 1 teste novo em
+`PapelTest` (já existente da Fase 1).
+
+**Decisão confirmada — `ArquivarRma` usa TEMA V2:** `LEG-RMA-014` já registrava TEMA
+V1 como quebrado; esta fase confirmou a causa por leitura de código-fonte
+(`14.6.1/post/arquivar.php` instancia `new controle()`, classe inexistente em
+`14.6.1/banco.oo.php`, `Fatal Error` incondicional). `ArquivarRmaTest` prova a decisão:
+arquiva um RMA em `Recebido` (o cenário que quebraria em TEMA V1) com sucesso, para os
+três status permitidos por `Status::podeArquivar()` (`Entrada`/`Recebido`/
+`Encaminhado`).
+
+**Desvios do OpenSpec (documentados no código):**
+- `Dominio\Rma::destinatario` (design.md descreve como "objeto polimórfico" único) foi
+  implementado como duas propriedades readonly, `destinatarioType`/`destinatarioId`
+  (string/int), em vez de um objeto Eloquent embutido — mantém o objeto de domínio
+  puro (mesmo padrão já usado em `fabricanteId`/`fornecedorId`/`clienteId`: ids
+  resolvidos para exibição fora do objeto de domínio). A relação Eloquent
+  `morphTo('destinatario')` real vive só em `App\Models\Rma` (infraestrutura), que
+  segue sendo interna a `RmasEmBanco`.
+- `CicloDeVidaController::TIPOS_DE_DESTINATARIO` mapeia um rótulo curto do formulário
+  (`assistencia_tecnica`/`fornecedor`/`fabricante`) para o FQCN do model Eloquent —
+  não estava no `design.md` (que não detalhava o controller), necessário para não expor
+  nomes de classe PHP no HTML.
+
+**Testes:** 131/131 verdes, 289 assertions (`sail test`), mantendo os 85 das Fases 1-3.
+`ConcluirRmaTest` cobre os 16 valores de `Solucao` via `#[DataProvider]` (6 que
+implicam mesmo aparelho de retorno auto-preenchem `snretorno`, 10 que não implicam
+ficam em branco). `ArquivarRmaTest` cobre os 3 status permitidos também via
+`#[DataProvider]`. `ReverterRmaParaEntradaTest` cobre mesmo-dia (qualquer papel com
+`podeGravar()`) e dia-anterior (só `SuperAdministrador`). Nota técnica: PHPUnit 12
+exige o atributo `#[DataProvider]` (`PHPUnit\Framework\Attributes\DataProvider`) — a
+anotação `@dataProvider` em docblock, usada no rascunho inicial destes dois arquivos,
+falha silenciosamente com "too few arguments"; corrigido antes do commit.
+
+Confirmado manualmente via `tinker`: RMA criado em `Entrada` → `ReceberRma` (status
+`Recebido`, `recebido_em` preenchido) → `EncaminharRma` para uma `AssistenciaTecnica`
+real (status `Encaminhado`, `destinatarioType`/`destinatarioId` preenchidos) →
+`ConcluirRma` com `Solucao::Reparo` (`implicaMesmoAparelhoDeRetorno() === true`):
+`snretorno` auto-preenchido com o valor de `sn` (`SN-MANUAL-123` nos dois campos),
+confirmando RN-15 de ponta a ponta.
+
+**Pendências que ficaram de fora:** nenhuma da Fase 4 propriamente dita. As 10 regras
+de alerta e a classificação visual (Fase 5), NF/`lancadoretorno`/`marcarestoque`/
+`prioridade` (Fase 5/6) e o envio real do e-mail de conclusão (Fase 7, que assina
+`RmaConcluido`) permanecem fora de escopo por decisão já registrada no `proposal.md`.
+Fidelidade visual das views fica para a Fase 8.
+
+**Commit:** `#F4 - Ciclo de vida (receber/encaminhar/concluir/arquivar/reverter)` (ver
+hash abaixo, aplicado junto com este log).
+
+---

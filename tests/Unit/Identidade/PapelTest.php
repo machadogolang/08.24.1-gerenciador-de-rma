@@ -42,4 +42,13 @@ class PapelTest extends TestCase
         $this->assertFalse(Papel::Supervisor->ocultoDaListagemDeUsuarios());
         $this->assertTrue(Papel::SuperAdministrador->ocultoDaListagemDeUsuarios());
     }
+
+    public function test_apenas_superadministrador_pode_reverter_alem_do_mesmo_dia(): void
+    {
+        $this->assertFalse(Papel::Bloqueado->podeReverterAlemDoMesmoDia());
+        $this->assertFalse(Papel::Leitura->podeReverterAlemDoMesmoDia());
+        $this->assertFalse(Papel::Operador->podeReverterAlemDoMesmoDia());
+        $this->assertFalse(Papel::Supervisor->podeReverterAlemDoMesmoDia());
+        $this->assertTrue(Papel::SuperAdministrador->podeReverterAlemDoMesmoDia());
+    }
 }

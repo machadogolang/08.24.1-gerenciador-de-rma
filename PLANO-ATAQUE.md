@@ -6,22 +6,44 @@ Handoff para nova sessão: `docs/produto/handoff-sessao-2026-08-25.md`.
 
 ## AGORA
 
-**Interrupção vigente — paridade estrutural do Tema V1.** Por determinação de
-2026-08-25, `F10-FUN-07` fica temporariamente pausado. Executar, em ordem, o checklist
-atômico e o diário de provas de
-`docs/produto/plano-execucao-paridade-estrutural-v1.md`:
+**Interrupção vigente — paridade visual do Tema V1, fase 2.** Por determinação de
+2026-08-25, `F10-FUN-07` fica temporariamente pausado.
+
+Fase 1 (`docs/produto/plano-execucao-paridade-estrutural-v1.md`) **fechada**:
 
 1. [x] CP1 — cascata/fontes, captura normalizada, inspeção visual e regressão CDP;
 2. [x] CP2 — primitivas reais de tabela;
-3. [ ] CP3A — composição completa de Concluído;
-4. [ ] CP3B/CP3C/CP3D — Entrada, Encaminhado e Aguardando crédito;
-5. [ ] CP4 — resumo inferior de Concluídos sem SQL no Blade;
-6. [ ] CP5 — propagação, regressões, três viewports e prova final.
+3. [x] CP3A — composição completa de Concluído;
+4. [x] CP3B/CP3C/CP3D — Entrada, Encaminhado e Aguardando crédito;
+5. [x] CP4 — resumo inferior de Concluídos sem SQL no Blade;
+6. [x] CP5 — propagação, regressões e prova final (1440×1000; 1562×1400/1700×1000
+   ficaram para a fase 2, ver CP15-04 abaixo).
+
+Percepção de que o Legacy "parece mais largo" mesmo a 100% de zoom: investigada e
+descartada como bug de CSS/DOM (`#BASE`/`#TOPO` idênticos, `devicePixelRatio`/`zoom`
+neutros nos dois lados) — ver seção 1 de
+`docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-encontrados.md`.
+
+**Fase 2** (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`, **não
+iniciada**) — restante da superfície do Tema V1 que a fase 1 não cobria. Executar em
+ordem, um checkpoint por vez, commit local a cada checkpoint fechado:
+
+1. [ ] CP6 — Página Inicial sem conteúdo artificial (remover "RMAs"/"Novo RMA");
+2. [ ] CP7 — Localizar como painel inline histórico (maior item da fase);
+3. [ ] CP8 — painel Novo: toggle de estoque, campo de data, fabricante, box-sizing;
+4. [ ] CP9 — Quadro de Anotações (rows=20, título, remover botão salvar);
+5. [ ] CP10 — sidebar de contadores (box model, links);
+6. [ ] CP11 — separador antes do Centro de Avisos (`separador2.png`);
+7. [ ] CP12 — Centro de Avisos (ordem histórica, composição por grupo, mostrar/ocultar);
+8. [ ] CP13 — fixture de QA com comprimento de dado realista;
+9. [ ] CP14 — investigação da máquina de estados `$TR1` (só corrigir com evidência);
+10. [ ] CP15 — gate final da fase 2 (três viewports, prova final, checklist).
 
 Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da
 alteração, gerar e abrir o novo par normalizado. Toda comparação entra no Diário do MD
-operacional. Parecer independente:
-`docs/pareceres/parecer-paridade-estrutural-v1-falhas-layout.md`.
+operacional de cada fase. Pareceres:
+`docs/pareceres/parecer-paridade-estrutural-v1-falhas-layout.md` (fase 1);
+`docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-encontrados.md` (fase 2).
 
 ### Lote anterior pausado, não descartado
 
@@ -66,7 +88,7 @@ logo locais, teste permanente de assets/geometria e matriz em
 `docs/produto/paridade-visual-tema-v1.md`, mas não detectou cascata invertida, H1/ícones,
 famílias de linha, colunas e resumo de Concluído. O gate visual permanece aberto.
 
-O lote funcional volta a `F10-FUN-07` somente depois de CP1–CP5.
+O lote funcional volta a `F10-FUN-07` somente depois de CP1–CP15 (fase 1 + fase 2).
 
 ## DEPOIS
 

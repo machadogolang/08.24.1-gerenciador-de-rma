@@ -645,13 +645,25 @@ PHP fonte antes de aplicar): `DT ENTRADA 9%`, `ORIGEM 8%`, `NF C 6%`, `NF V 6%`,
 
 ## CP24 — footer
 
-- [ ] CP24-01 — remover a linha "TEMA V2 — CellSystem RMA (reconstrução V3)" do
-      `layout.blade.php` (não existe no Legacy).
-- [ ] CP24-02 — preservar só "Designed by Scripting Studios Art" e "Cópia licenciada
-      para Cellsystem LTDA" com posição/`font-size`/cor/`letter-spacing`/alinhamento
-      históricos (medir, não assumir que o que já existe está certo).
-- [ ] CP24-03 — capturar/reabrir/comparar, registrar diário e commit (pode ser junto
-      de outro checkpoint pequeno).
+- [x] CP24-01 — já tinha sido removida no CP16/17 (efeito colateral da reescrita do
+      layout) — confirmado, não existe mais.
+- [x] CP24-02 — `.designedby` (`_compartilhado.scss`) já batia com
+      `pattern/15.9.7.css` (font-size/weight/text-shadow/clear/text-align/color/
+      padding-top/font-family, todos conferidos linha a linha). Achado: faltava
+      `letter-spacing:1px` inline só na 2ª linha ("Cópia licenciada..."), presente no
+      Legacy (`15.8.1/inc/footer.php`) mas não na classe compartilhada — corrigido.
+- [x] CP24-03 — capturado/comparado, registrado no diário abaixo; commit local.
+
+### CMP-V2-007 — CP24, rodapé
+
+- Fonte: `legacy-source/15.8.1/inc/footer.php` (mesmo rodapé do TEMA V1, já
+  compartilhado via `.designedby`). Achado único: `letter-spacing:1px` inline na 2ª
+  linha, ausente na classe — corrigido em `temas/v2/layout.blade.php`. Linha extra
+  "TEMA V2 — CellSystem RMA (reconstrução V3)" já tinha sumido no CP16/17.
+- Decisão: **CP24 APROVADO**.
+- Testes/build: `php artisan test` (363/818, verde); `npm run build` (ok).
+- Commit: a seguir (`#ARQ-RMA - Corrige o espacamento da segunda linha do rodape do
+  Tema V2`).
 
 ## CP25 — gate final da paridade V2
 

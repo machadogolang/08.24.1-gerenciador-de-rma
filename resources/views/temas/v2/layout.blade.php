@@ -100,7 +100,10 @@
         </aside>
     </div>
 
+    {{-- CP24 — fonte real `15.8.1/inc/footer.php` (rodapé compartilhado com o TEMA
+    V1, já correto por `.designedby`/`_compartilhado.scss`). A 2ª linha tem
+    `letter-spacing:1px` inline só nela, não na classe. --}}
     <p class="designedby container">Designed by <a href="http://scripting.com.br" target="_blank"><strong>Scripting Studios Art</strong></a></p>
-    <p class="designedby container">Cópia licenciada para <strong>Cellsystem LTDA</strong></p>
+    <p class="designedby container" style="letter-spacing:1px;">Cópia licenciada para <strong>Cellsystem LTDA</strong></p>
 </body>
 </html>

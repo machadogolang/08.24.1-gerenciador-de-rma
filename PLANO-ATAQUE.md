@@ -6,8 +6,19 @@ Handoff para nova sessão: `docs/produto/handoff-sessao-2026-08-25.md`.
 
 ## AGORA
 
-Executar o primeiro lote seguro da F10, sem depender de decisão de produto nem de
-mutação do banco histórico:
+Executar primeiro a correção P0 descoberta pela auditoria da nova frente, sem depender
+de decisão de produto nem de mutação do banco histórico:
+
+1. [ ] `ARQ-001`: provar por regressão e corrigir a perda de estado do agregado em
+   edição/transições;
+2. [ ] `ARQ-003`: impedir promoção indevida e operações do Supervisor sobre
+   SuperAdministrador;
+3. [ ] renovar a suíte completa e documentar o checkpoint;
+4. [ ] retomar `F10-FUN-07` pelos smokes somente leitura;
+5. [ ] concluir `ARQ-002` antes de `F10-DAD-04`, tornando dry-run e reconciliação
+   confiáveis.
+
+O lote anterior da F10 permanece incorporado e não foi descartado:
 
 1. [x] criar `docs/qa/roteiro-paridade-funcional.md`;
 2. [x] mapear os 48 `LEG-RMA-*` para teste automatizado, passo manual ou justificativa;
@@ -15,8 +26,15 @@ mutação do banco histórico:
 4. [x] corrigir o OpenSpec da F10 para a implementação real de Playwright (`.spec.ts`);
 5. [x] rodar a suíte completa e atualizar as evidências.
 
-Saída do lote: nenhuma linha funcional sem método de prova, suíte verde, checklist e
-OpenSpec coerentes e commit local próprio.
+Saída: P0 sem regressão, nenhuma linha funcional sem método de prova, suíte verde,
+checklist/OpenSpec coerentes e commits locais pequenos por checkpoint.
+
+## CHECKPOINT INCORPORADO — ARQUITETURA, FRONT-END E PARIDADE DE TEMAS
+
+Investigação consolidada em `INV-RMA-10` e matriz em
+`docs/produto/matriz-paridade-temas-v1-v2-v3.md`. A nova frente não libera código do
+Tema 3 e não substitui F10. Ela corrige a ordem quando um achado compromete integridade,
+segurança ou a validade do próprio gate de QA.
 
 ## CHECKPOINT INCORPORADO — PARIDADE VISUAL TEMA V1
 
@@ -31,13 +49,15 @@ sessão começa no item 3 (`F10-FUN-07`), pelos smokes somente leitura.
 
 ## DEPOIS
 
-1. **F10 visual:** fechar 2 temas × 3 breakpoints × telas principais, reutilizando
+1. **P0 dados:** fechar `ARQ-002` antes do dry-run histórico.
+2. **F10 visual:** fechar 2 temas × 3 breakpoints × telas principais, reutilizando
    evidências válidas da F8 e capturando somente o que falta.
-2. **F10 dados:** conectar a origem histórica de forma controlada, executar `--dry-run`,
+3. **F10 dados:** conectar a origem histórica de forma controlada, executar `--dry-run`,
    revisar anomalias e importar em base V3 descartável.
-3. **F10 fechamento:** decidir ou adiar questões residuais, produzir
+4. **F10 fechamento:** decidir ou adiar questões residuais, produzir
    `docs/qa/relatorio-paridade-final.md` e avaliar o gate da Trilha A.
-4. **Trilha B:** somente após o gate, seguir a ordem do checklist mestre.
+5. **Trilha B/Tema 3:** somente após o gate, seguir a seção H do checklist e nunca
+   expor Tema 3 antes da matriz integral.
 
 ## BLOQUEADOS / DECISÃO EXTERNA
 
@@ -51,6 +71,8 @@ sessão começa no item 3 (`F10-FUN-07`), pelos smokes somente leitura.
 - RN-12 no TEMA V1: fechar ausência/presença com evidência dirigida.
 - Lightbox2 e skin AdminLTE: uso real ou resíduo de template.
 - Datas inválidas e `status='retornou'`: decidir apenas se surgirem no dado real.
+- Campos históricos editáveis × somente leitura; criação/exclusão de usuários;
+  mutações nas rotas prefixadas de QA.
 
 ## TRILHA B
 

@@ -50,6 +50,27 @@ gate da Trilha A. Abrange SaaS/multiempresa, tema V3, arquivos, configuração, 
 automação, relatórios, segurança, auditoria, performance e IA. Decisões de
 `INV-RMA-07/08/09` não equivalem a autorização para codificar.
 
+## Frente — Arquitetura, Front-end e Paridade de Temas
+
+Aberta em 2026-08-25 e incorporada a este plano, sem criar roadmap principal paralelo.
+Parecer e evidências: `docs/investigacoes-pendente/
+INV-RMA-10-arquitetura-front-paridade-temas.md`; matriz viva: `docs/produto/
+matriz-paridade-temas-v1-v2-v3.md`; tarefas atômicas: checklist mestre, seção H.
+
+- **ARQ / CORREÇÃO de baseline:** preservar todo o estado do agregado nas edições e
+  transições; corrigir dry-run/reconciliação; impedir escalada de privilégio. Esses P0
+  pertencem à Trilha A e precedem o fechamento da F10.
+- **FRONT / PAR / LEG / UX:** fechar busca, filas, campos, navegação, módulos
+  secundários, ações e estados. Paridade deixa de significar apenas HTTP 200 ou
+  simetria V1×V2.
+- **Regra arquitetural:** temas podem divergir em identidade e composição, nunca em
+  regra, permissão, informação ou ação disponível.
+- **T3 — Console Operacional Adaptativa:** implementação permanece Trilha B, depois de
+  G-07/G-08. Pode nascer incrementalmente oculto, mas só entra no seletor com a matriz
+  funcional integral, E2E, acessibilidade e performance aprovadas.
+- **EVO:** pesquisa global, filtros pessoais e atividade recente foram registradas;
+  ações em lote continuam investigação, não feature presumida.
+
 ## Restrições permanentes
 
 - Não inventar comportamento histórico nem alterar fontes/backups históricos.

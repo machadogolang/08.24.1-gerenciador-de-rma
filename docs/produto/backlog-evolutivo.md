@@ -229,6 +229,10 @@ Benefício · Impacto · Complexidade · Risco · Dependências · Prioridade ·
 - **Prioridade sugerida:** média — não é bloqueante de nenhuma outra evolução
   registrada.
 - **Fase:** pós-reconstrução (Trilha B).
+- **Roadmap detalhado (arquivo-por-arquivo, OpenSpec completo):**
+  `docs/produto/roadmap-evolucao-admin-arquivos.md` (Fase B, depois da Fase A —
+  Configuração de admin) e
+  `openspec/changes/anexos-de-rma/{proposal,design,tasks}.md`.
 
 ## EVO-DOMINIO
 
@@ -336,6 +340,10 @@ Benefício · Impacto · Complexidade · Risco · Dependências · Prioridade ·
 - **Prioridade sugerida:** média — não é bloqueante de nenhuma outra evolução
   registrada; conecta-se a `EVO-DOM-003` quando este for especificado.
 - **Fase:** pós-reconstrução (Trilha B).
+- **Roadmap detalhado (arquivo-por-arquivo, OpenSpec completo):**
+  `docs/produto/roadmap-evolucao-admin-arquivos.md` (Fase A, primeira das duas
+  evoluções detalhadas nesse documento) e
+  `openspec/changes/configuracao-admin/{proposal,design,tasks}.md`.
 
 ## EVO-AUTOMACAO
 

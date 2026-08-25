@@ -33,7 +33,7 @@ class RmaController extends Controller
             default => CriterioDeBusca::porTexto($valor),
         };
 
-        return view('rma.index', [
+        return view_do_tema('rma.index', [
             'titulo' => 'RMAs',
             'rmas' => $valor !== '' ? $caso->buscar($criterio) : [],
             'tipo' => $tipo,
@@ -45,7 +45,7 @@ class RmaController extends Controller
     {
         Gate::authorize('create', RmaEloquent::class);
 
-        return view('rma.create', [
+        return view_do_tema('rma.create', [
             'titulo' => 'Novo RMA',
             'fabricantes' => Fabricante::query()->orderBy('nome')->get(),
             'fornecedores' => Fornecedor::query()->orderBy('nome')->get(),
@@ -60,7 +60,7 @@ class RmaController extends Controller
 
         $rma = $caso->criar($dados);
 
-        return redirect()->route('rmas.show', $rma->id)->with('status', 'RMA criado.');
+        return redirect(rota_tema('rmas.show', ['rma' => $rma->id]))->with('status', 'RMA criado.');
     }
 
     public function show(int $rma, VerDetalheDoRma $caso): View
@@ -71,7 +71,7 @@ class RmaController extends Controller
 
         abort_if($registro === null, Response::HTTP_NOT_FOUND);
 
-        return view('rma.show', [
+        return view_do_tema('rma.show', [
             'titulo' => 'RMA #' . $registro->id,
             'registro' => $registro,
             'fabricante' => $registro->fabricanteId ? Fabricante::find($registro->fabricanteId) : null,
@@ -88,7 +88,7 @@ class RmaController extends Controller
 
         abort_if($registro === null, Response::HTTP_NOT_FOUND);
 
-        return view('rma.edit', [
+        return view_do_tema('rma.edit', [
             'titulo' => 'Editar RMA #' . $registro->id,
             'registro' => $registro,
             'fabricantes' => Fabricante::query()->orderBy('nome')->get(),
@@ -104,7 +104,7 @@ class RmaController extends Controller
 
         $registro = $caso->editar($rma, $dados);
 
-        return redirect()->route('rmas.show', $registro->id)->with('status', 'RMA atualizado.');
+        return redirect(rota_tema('rmas.show', ['rma' => $registro->id]))->with('status', 'RMA atualizado.');
     }
 
     /**

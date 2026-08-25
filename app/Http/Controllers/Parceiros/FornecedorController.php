@@ -17,7 +17,7 @@ class FornecedorController extends Controller
     {
         Gate::authorize('viewAny', Fornecedor::class);
 
-        return view('parceiros.index', [
+        return view_do_tema('parceiros.index', [
             'tipo' => 'fornecedores',
             'titulo' => 'Fornecedores',
             'registros' => Fornecedor::query()->orderBy('nome')->get(),
@@ -28,7 +28,7 @@ class FornecedorController extends Controller
     {
         Gate::authorize('create', Fornecedor::class);
 
-        return view('parceiros._form', [
+        return view_do_tema('parceiros._form', [
             'tipo' => 'fornecedores',
             'titulo' => 'Novo fornecedor',
             'registro' => new Fornecedor(),
@@ -44,14 +44,14 @@ class FornecedorController extends Controller
 
         Fornecedor::create($dados);
 
-        return redirect()->route('parceiros.fornecedores.index')->with('status', 'Fornecedor criado.');
+        return redirect(rota_tema('parceiros.fornecedores.index'))->with('status', 'Fornecedor criado.');
     }
 
     public function edit(Fornecedor $fornecedor): View
     {
         Gate::authorize('update', $fornecedor);
 
-        return view('parceiros._form', [
+        return view_do_tema('parceiros._form', [
             'tipo' => 'fornecedores',
             'titulo' => 'Editar fornecedor',
             'registro' => $fornecedor,
@@ -67,7 +67,7 @@ class FornecedorController extends Controller
 
         $fornecedor->update($dados);
 
-        return redirect()->route('parceiros.fornecedores.index')->with('status', 'Fornecedor atualizado.');
+        return redirect(rota_tema('parceiros.fornecedores.index'))->with('status', 'Fornecedor atualizado.');
     }
 
     public function destroy(Fornecedor $fornecedor): RedirectResponse
@@ -76,7 +76,7 @@ class FornecedorController extends Controller
 
         $fornecedor->delete();
 
-        return redirect()->route('parceiros.fornecedores.index')->with('status', 'Fornecedor removido.');
+        return redirect(rota_tema('parceiros.fornecedores.index'))->with('status', 'Fornecedor removido.');
     }
 
     /**

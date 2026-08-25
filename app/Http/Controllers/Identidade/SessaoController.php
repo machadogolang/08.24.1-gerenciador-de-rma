@@ -13,7 +13,7 @@ class SessaoController extends Controller
 {
     public function create(): View
     {
-        return view('auth.login');
+        return view('identidade.login');
     }
 
     public function store(Request $request, AutenticarUsuario $autenticarUsuario): RedirectResponse

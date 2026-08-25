@@ -31,6 +31,22 @@ qualquer outra solução). `LEG-RMA-048` reconstrói só a intenção do módulo
 quebrado em TEMA V2 (fluxo único, não as 3 sub-rotas mortas). Os demais itens aguardam
 as próximas fases (ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
 
+**Fase 8 (`temas-v1-v2`) concluída:** paridade VISUAL confirmada (Blade fielmente
+estilizado por tema, `resources/views/temas/{v1,v2}/`, ver `openspec/changes/
+temas-v1-v2/`) para a árvore coberta pelo escopo explícito da fase — login-gateway
+compartilhado, RMA (`index`/`create`/`edit`/`show`, incluindo o painel único de 7
+tab-panes do TEMA V2), parceiros (`index`/`_form`, os 4 tipos), identidade
+(`usuarios`/`perfil`). Afeta diretamente `LEG-RMA-001/003/004/005/006/007/008/009/010/
+011..017/028/030/031/032/033/042`, todos já `PARIDADE` funcional — a paridade visual
+soma-se ao já registrado, sem mudar o status. **Fora do escopo explícito da Fase 8**
+(não coberto pela árvore de diretórios do `design.md`): telas de alertas
+(`rma._painel_de_alertas`), crédito, relatórios (RCD/RPEC/RMPE), histórico/auditoria e
+logística continuam com a view mínima das Fases 5-7, sem estilização por tema — pendência
+registrada, não bloqueia a Fase 8 (ver `log-implementacao-v3.md`). `sail test`
+263/263 verde (250 das Fases 1-7 + 13 novos smoke de tema); Playwright real (390/768/
+1440px) confirma TEMA V1 fixo/não-responsivo e TEMA V2 nos breakpoints próprios; 9
+screenshots PNG reais capturados em `docs/produto/screenshots-fase8/`.
+
 Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 
 | ID | Funcionalidade V2 | Tema V1 | Tema V2 | OpenSpec | V3 | QA | Status |

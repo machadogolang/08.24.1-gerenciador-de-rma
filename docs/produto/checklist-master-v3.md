@@ -345,7 +345,7 @@ fase). Tasks:
       `modificacoes_de_rma` confirmada com `acao=Receber` e `estado_apos.status=
       "Recebido"`), commit `#F7`
 
-### Fase 8 — Apresentação (Temas V1/V2) — **EM ESPECIFICAÇÃO**
+### Fase 8 — Apresentação (Temas V1/V2) — **CONCLUÍDA** (2026-08-25)
 
 OpenSpec escrita: `openspec/changes/temas-v1-v2/{proposal,design,tasks}.md`. Arquivo por
 arquivo detalhado em `INV-RMA-05` §13. **Investigação de granularidade (Parte 2)
@@ -361,33 +361,55 @@ HTML); (2) RN-11 em TEMA V1 está presente de verdade (`TrInconformidade`/`TrUrg
 `TrZebrada1/2`, via CSS compartilhado `pattern/15.9.7.css`, confirmado em 3 páginas
 reais do código-fonte). Detalhe completo em `design.md`/`proposal.md`.
 
-**4 achados/pendências NOVAS surgiram dessa mesma inspeção**, registradas em
-`design.md`/`proposal.md`:
-1. Existe uma terceira folha de estilo (`pattern/15.9.7.css`/`.js`) carregada pelos
-   DOIS temas — o `_compartilhado.scss` do plano precisa portar esse arquivo real.
-2. O fundo real de TEMA V2 é escuro (`#262626`), não branco como catalogado antes —
-   corrigido no inventário e no `design.md`.
-3. **Decisão de produto pendente:** fonte Open Sans do TEMA V2 nunca carrega de fato
-   (URL de produção morta) — reproduzir o fallback quebrado ou self-hostar corretamente.
-4. **Decisão de produto pendente:** comportamento pós-login assimétrico entre o
-   login-gateway compartilhado (respeita `tema_preferido`) e o login próprio de TEMA V1
-   (sempre fica em V1, ignora a preferência).
+**As 2 pendências de produto NOVAS foram RESOLVIDAS pelo usuário em 2026-08-25:** (3)
+fonte Open Sans do TEMA V2 — reproduzir o fallback real (`Arial`/`Fira Sans`), nunca
+self-hostar Open Sans de verdade; (4) comportamento pós-login — unificado, sempre
+respeita `tema_preferido`, sem login embutido de TEMA V1 separado do gateway. Ver
+`design.md`/`proposal.md`.
 
-Tasks (resumido, ver `tasks.md` completo):
+Tasks (resumido, ver `tasks.md` completo — marcado item a item):
 
 - [x] Resolver as 2 pendências reais originais (pré-requisito de implementação)
-- [ ] Decidir as 2 pendências novas de produto (fonte Open Sans; assimetria pós-login)
-      antes de escrever a view final
-- [ ] Sass por tema (`v1.scss`/`v2.scss`/`_compartilhado.scss` — este último porta o
-      CSS/JS compartilhado real, não só uma variável de cor)
-- [ ] `ResolverTemaAtivo` (middleware) + rotas por tema + `identidade/login.blade.php`
-      do gateway compartilhado (achado: não é nem V1 nem V2)
-- [ ] Árvore de Blade por tema (`resources/views/temas/{v1,v2}/`)
-- [ ] Testes de smoke por tema + Playwright (390/768/1440 — TEMA V1 confirma layout
-      fixo/não-responsivo, TEMA V2 tem breakpoints próprios em `css/media.php`)
-- [ ] Screenshots reais (PNG) — fecha a pendência da Parte 1/Parte 5
-- [ ] `sail test` verde, `checklist-master-v3.md`/`paridade-v2-v3.md` atualizados
-      (paridade visual), commit `#F8`
+- [x] Decidir as 2 pendências novas de produto (fonte Open Sans; assimetria pós-login)
+- [x] Sass por tema (`v1.scss`/`v2.scss`/`_compartilhado.scss` — porta de verdade
+      `pattern/15.9.7.css`: `TrInconformidade`/`TrUrgente`/`TrZebrada1/2`/
+      `TrSemGarantia1/2`, `.breadcrumb`, `.centrodeavisos`, `.formSelect`,
+      `.designedby`, `.pmo`); Fira Mono self-hostado via Vite; Bootstrap 3.3.5 real
+      (`node_modules/bootstrap` dist CSS/JS, `@import` escopado só a `v2.scss`)
+- [x] `ResolverTemaAtivo` (middleware, `app/Http/Middleware/`) + `view_do_tema()`/
+      `rota_tema()`/`classe_css_de_alerta()` (`app/Support/view_do_tema.php`) + rotas
+      por tema (`routes/tema-{v1,v2}.php`, prefixo `/v1`/`/v2`, mesmos Controllers) +
+      `identidade/login.blade.php` do gateway compartilhado (achado: não é nem V1 nem
+      V2)
+- [x] Árvore de Blade por tema (`resources/views/temas/{v1,v2}/`) — layout, `rma/
+      {index,create,edit,show}` (índice V2 com os 7 tab-panes reais via Bootstrap
+      tabs), `parceiros/{index,_form}`, `identidade/{usuarios,perfil}`
+- [x] Testes de smoke por tema (`tests/Feature/Temas/RenderizaTemaV{1,2}Test.php`, 13
+      testes) + Playwright REAL (`tests/Browser/ComparacaoVisualTemaV{1,2}Test.spec.ts`,
+      instalado com Chromium dentro do container `laravel.test` via
+      `npx playwright install --with-deps chromium`, roda de verdade contra
+      `http://localhost` interno ao container — 390/768/1440px: TEMA V1 confirma
+      largura computada fixa de 984px nos 3 breakpoints via `getComputedStyle`, TEMA V2
+      confirma a largura de `.container` esperada em 768/1440px por
+      `tests/Browser/Support/breakpoints-tema-v2.json` — 390px corretamente pulado por
+      estar abaixo do menor breakpoint do tema)
+- [x] Screenshots reais (PNG) — 9 capturas em `docs/produto/screenshots-fase8/` via
+      `tests/Browser/CapturarScreenshotsTemas.spec.ts` (login/perfil/RMAs/clientes dos
+      dois temas, incluindo a aba "Entrada" do painel V2) — fecha a pendência da
+      Parte 1/Parte 5
+- [x] `sail test` verde (263/263: 250 das Fases 1-7 + 13 novos smoke de tema),
+      `checklist-master-v3.md`/`paridade-v2-v3.md` atualizados (paridade visual),
+      commit `#F8`
+
+**Escopo real coberto** (árvore explícita do `design.md`): login-gateway, RMA
+(index/create/edit/show), parceiros (index/_form, 4 tipos), identidade
+(usuarios/perfil). **Fora do escopo desta fase** (não listado na árvore do
+`design.md`): alertas, crédito, relatórios, histórico/auditoria e logística continuam
+com view mínima das Fases 5-7, sem estilização por tema — não é regressão, é escopo já
+fechado no planejamento; registrado como próximo passo natural, não bloqueia a Fase 8.
+Ver `log-implementacao-v3.md` (Fase 8) para os desvios de implementação registrados
+(bootstrap@3.3.5 só publica LESS/CSS pré-compilado, não SCSS — `@import` do CSS de
+distribuição real em vez de `@import` de um SCSS que não existe).
 
 ### Fase 9 — Migração V2→V3 — **EM ESPECIFICAÇÃO**
 
@@ -444,8 +466,8 @@ objetivo por eixo + gate de conclusão do projeto detalhados em `INV-RMA-05` §1
 - [ ] Confirmar/trocar `machadogolang/08.24.1-gerenciador-de-rma` para privado — não
       re-verificado nesta sessão desde a última checagem (público); `git push` também
       confirmado funcionando, mas isso não confirma visibilidade
-- [ ] Capturar screenshots reais (PNG) dos dois temas autenticados, para
-      `inventario-visual-tema-v1.md`/`-v2.md`
+- [x] Capturar screenshots reais (PNG) dos dois temas autenticados — feito na Fase 8,
+      `docs/produto/screenshots-fase8/` (9 capturas via Playwright real)
 
 ---
 

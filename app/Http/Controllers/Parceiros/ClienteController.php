@@ -17,7 +17,7 @@ class ClienteController extends Controller
     {
         Gate::authorize('viewAny', Cliente::class);
 
-        return view('parceiros.index', [
+        return view_do_tema('parceiros.index', [
             'tipo' => 'clientes',
             'titulo' => 'Clientes',
             'registros' => Cliente::query()->orderBy('nome')->get(),
@@ -28,7 +28,7 @@ class ClienteController extends Controller
     {
         Gate::authorize('create', Cliente::class);
 
-        return view('parceiros._form', [
+        return view_do_tema('parceiros._form', [
             'tipo' => 'clientes',
             'titulo' => 'Novo cliente',
             'registro' => new Cliente(),
@@ -44,14 +44,14 @@ class ClienteController extends Controller
 
         Cliente::create($dados);
 
-        return redirect()->route('parceiros.clientes.index')->with('status', 'Cliente criado.');
+        return redirect(rota_tema('parceiros.clientes.index'))->with('status', 'Cliente criado.');
     }
 
     public function edit(Cliente $cliente): View
     {
         Gate::authorize('update', $cliente);
 
-        return view('parceiros._form', [
+        return view_do_tema('parceiros._form', [
             'tipo' => 'clientes',
             'titulo' => 'Editar cliente',
             'registro' => $cliente,
@@ -67,7 +67,7 @@ class ClienteController extends Controller
 
         $cliente->update($dados);
 
-        return redirect()->route('parceiros.clientes.index')->with('status', 'Cliente atualizado.');
+        return redirect(rota_tema('parceiros.clientes.index'))->with('status', 'Cliente atualizado.');
     }
 
     public function destroy(Cliente $cliente): RedirectResponse
@@ -76,7 +76,7 @@ class ClienteController extends Controller
 
         $cliente->delete();
 
-        return redirect()->route('parceiros.clientes.index')->with('status', 'Cliente removido.');
+        return redirect(rota_tema('parceiros.clientes.index'))->with('status', 'Cliente removido.');
     }
 
     /**

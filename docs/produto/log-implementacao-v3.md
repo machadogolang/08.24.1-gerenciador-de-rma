@@ -573,3 +573,147 @@ sem teste próprio até então — só fabricante e destinatário tinham caso de
 `sail test`: 250/250 verdes, 447 assertions (248→250, 443→447).
 
 ---
+
+## Fase 8 — Apresentação (Temas V1/V2)
+
+**Data:** 2026-08-25.
+
+**Pré-requisito confirmado no início desta fase:** as 2 pendências reais originais
+(mecanismo de âncoras de TEMA V2; RN-11 em TEMA V1) e as 2 pendências de produto novas
+(fonte Open Sans; assimetria pós-login) já estavam resolvidas em `design.md`/
+`proposal.md` antes da implementação começar — ver esses arquivos para o detalhe
+completo da investigação. Esta fase implementou o plano já fechado, sem reabrir nenhuma
+das 4 decisões.
+
+**Implementado:**
+- **Vite/Sass:** `sass` e `bootstrap@3.3.5` instalados via `npm` (Vite 8 compila Sass
+  nativamente, sem plugin extra — só precisa da dependência `sass` presente). 2 `input`
+  novos em `vite.config.js` (`resources/js/temas/{v1,v2}.js`, cada um importando seu
+  `.scss`), mantendo o `input` Tailwind do scaffold original intocado (não usado por
+  nenhuma view desta fase).
+- **`resources/sass/temas/_compartilhado.scss`** — porta de verdade `pattern/15.9.7.css`
+  (296 linhas do legado): `TrInconformidade`/`TrUrgente`/`TrZebrada1/2`/
+  `TrSemGarantia1/2`, `.breadcrumb`, `.centrodeavisos`, `.formSelect`, `.designedby`,
+  `.pmo`, `@font-face` de Fira Mono (self-hostado, `.ttf` copiado do repo Legacy —
+  read-only, só leitura/cópia, nada editado lá).
+- **`resources/sass/temas/v1.scss`** — paleta (`$fundo`/`$acento`/`$texto`), fallback de
+  fonte real (`"Arial","Fira Sans"`, NUNCA Open Sans), `$largura-fixa-tema-v1: 984px`
+  nomeada (usada em `#BASE`/`#TOPO`/`#CONTEUDO`, sem NENHUM `@media`), seletores
+  autorais (`.tablenovo`, `.novo_formInput`, `.buttonSave`) — zero framework CSS.
+- **`resources/sass/temas/v2.scss`** — `$breakpoints-tema-v2`/`$larguras-container-tema-v2`
+  nomeados (fonte real: `15.8.1/css/media.php`), `@each` sobre o mapa (nenhum dos 6
+  valores redigitado), fallback de fonte real, Bootstrap 3.3.5 self-hostado.
+- **`resources/js/temas/{v1,v2}.js`** — `v1.js` sem framework (toggle `.pmo` autoral);
+  `v2.js` importa `jquery` + `bootstrap/js/tab` (plugin isolado, não o bundle inteiro) —
+  reproduz a troca de aba client-side sem AJAX/reload confirmada no LEGACY-RUNTIME.
+- **`app/Http/Middleware/ResolverTemaAtivo.php`** — resolve o tema por prefixo de rota
+  (`v1.`/`v2.`, rotas de QA) ou por `tema_preferido` do usuário autenticado (fluxo
+  normal), fallback `V2`; `View::share('temaAtivo', ...)`.
+- **`app/Support/view_do_tema.php`** (arquivo de funções globais, registrado em
+  `composer.json` → `autoload.files`) — 3 helpers: `view_do_tema($view, $data)` resolve
+  `temas.{tema}.{$view}`; `rota_tema($nome, $parametros)` gera a URL respeitando o
+  prefixo da rota ATUAL (permite que a MESMA Blade funcione tanto acessada via
+  `/v1/...`/`/v2/...` quanto pelo fluxo normal sem prefixo); `classe_css_de_alerta()`
+  mapeia o enum `ClasseDeAlerta` (Fase 5, puro) para a classe CSS real por tema (RN-11).
+- **`routes/tema-{v1,v2}.php`** — prefixo `/v1`/`/v2`, MESMOS Controllers das rotas sem
+  prefixo em `routes/web.php` (nenhuma lógica duplicada), registrados via `then:` em
+  `bootstrap/app.php` (Laravel 13 não usa `Kernel.php` para isso).
+  `ResolverTemaAtivo::class` registrado como `appendToGroup('web', ...)`.
+- **Árvore de Blade por tema** (`resources/views/temas/{v1,v2}/`) — layout, `rma/
+  {index,create,edit,show}`, `parceiros/{index,_form}`, `identidade/{usuarios,perfil}`.
+  `identidade/login.blade.php` existe uma única vez (gateway compartilhado, visual
+  próprio — Bootstrap `.login-box`/`.form-control`, reaproveitando o bundle V2 só
+  porque é ele que carrega o Bootstrap self-hostado, não porque a tela "é" TEMA V2).
+- **`temas/v2/rma/index.blade.php`** — painel único com os 7 tab-panes (`#inicio`,
+  `#pesquisar`, `#novo_rma`, `#entrada`, `#recebido`, `#encaminhado`, `#concluido`),
+  confirmado via `curl`/Playwright que os 7 aparecem todos no mesmo HTML e a troca é
+  `data-toggle="tab"` puro.
+
+**Desvios do OpenSpec (documentados no código/aqui):**
+- **Bootstrap 3.3.5 sem SCSS:** `design.md` previa `@import` do "SCSS do Bootstrap"
+  escopado a `v2.scss`. O pacote npm `bootstrap@3.3.5` só publica LESS e CSS
+  pré-compilado, não SCSS. Resolvido importando o CSS de distribuição REAL
+  (`node_modules/bootstrap/dist/css/bootstrap.css`) como CSS puro (Sass repassa
+  `@import` de arquivo `.css` sem processar) — mesmos bytes que o legado carregava via
+  CDN, agora self-hostado. Efeito prático idêntico ao pretendido (grid/`.form-control`/
+  tabs reais, escopados só ao bundle v2), só o mecanismo de import muda.
+- **Painel V2 (`#início`/`#novo_rma`) usa dados já resolvidos, sem caso de uso novo:**
+  o `design.md` não especifica a fonte de dados exata de cada um dos 7 tab-panes além
+  de "já resolvidos pelos Controllers/casos de uso existentes". Não existe um caso de
+  uso "listar RMAs por status" na Fase 3-7 (só `BuscarRmas` por texto/serial/NF). Em vez
+  de criar lógica de negócio nova (fora do escopo "puramente apresentação" desta fase),
+  os painéis `entrada`/`recebido`/`encaminhado`/`concluido` particionam o MESMO
+  resultado já buscado por `RmaController@index` (`$rmas`) por `$registro->status` —
+  presentação pura, sem query nova. Consequência aceita: os 4 painéis só mostram
+  resultado quando há um termo de busca ativo (mesma limitação que o painel
+  `#pesquisar`); a aba `#início` é um texto de boas-vindas e `#novo_rma` é um
+  call-to-action para a tela de criação, não o formulário embutido. Se o produto quiser
+  os 4 painéis por status sempre populados independente de busca, isso é um caso de uso
+  novo (fora do escopo desta fase) — registrado aqui, não decidido no escuro.
+- **Nome dos arquivos Playwright:** `tasks.md` original listava
+  `tests/Browser/ComparacaoVisualTemaV{1,2}Test.php`. Um arquivo `.php` nunca seria
+  descoberto por `npx playwright test` (runner Node/TS) nem por `sail test`
+  (PHPUnit não teria classe/namespace válidos para um `.spec` Playwright) — a extensão
+  `.php` no nome original era inconsistente com "Playwright" já dito no mesmo item.
+  Renomeado para `ComparacaoVisualTemaV{1,2}Test.spec.ts` (convenção Playwright real).
+- **`tests/Browser/Support/breakpoints-tema-v2.json` mantido manualmente:** `design.md`
+  sugere "gerado a partir do mesmo mapa Sass". Não foi escrito um gerador automático
+  nesta fase (escopo/tempo) — o JSON é escrito à mão em sincronia com
+  `$breakpoints-tema-v2`/`$larguras-container-tema-v2` de `v2.scss`, com comentário
+  `_fonte` explicando a relação. Ainda cumpre o objetivo central (nenhum literal
+  redigitado dentro dos arquivos `.spec.ts`), só não há verificação automática de que
+  os dois arquivos não divirjam — pendência menor, registrada.
+
+**Testes:**
+- `tests/Feature/Temas/RenderizaTemaV1Test.php` (7 testes) e `RenderizaTemaV2Test.php`
+  (6 testes) — smoke real via HTTP (`assertViewIs`/`assertSeeText`), cobrindo
+  login-gateway, redirect pós-login por `tema_preferido`, RMA index/create/show,
+  clientes, perfil, e — só no V2 — confirmação dos 7 `id="..."` de tab-pane no HTML.
+- `sail test`: **263/263 verdes, 488 assertions** (250 das Fases 1-7 + 13 novos).
+  1 falha intermitente pré-existente e não relacionada a esta fase foi observada numa
+  execução (`HistoricoDeModificacaoTest`, nome Faker aleatório com apóstrofo
+  HTML-escapado batendo contra `assertSee` — Fase 7, não tocada aqui) e não se repetiu
+  na reexecução; não é causada por nenhuma mudança desta fase.
+- **Playwright REAL, não simulado:** `@playwright/test` instalado via `npm`; Chromium
+  instalado com `npx playwright install --with-deps chromium` DENTRO do container
+  `laravel.test` (Sail) — funcionou de primeira, sem bloqueio de ambiente (headless
+  shell + dependências X/fontes já presentes na imagem). `playwright.config.ts` aponta
+  para `http://localhost` (porta 80 interna ao container — `:8095` é só o mapeamento
+  externo do host, `.env`/`APP_PORT`). Rodado via
+  `sail exec laravel.test npx playwright test tests/Browser/`:
+  - `ComparacaoVisualTemaV1Test.spec.ts` — 3/3 passam: em 390/768/1440px, a largura
+    COMPUTADA de `#BASE` (`getComputedStyle`, não `getBoundingClientRect` — esse
+    inclui os 20px de padding lateral, dando 1004px, achado durante a execução, teste
+    corrigido) é 984px nos 3 breakpoints, confirmando o layout fixo/não-responsivo.
+  - `ComparacaoVisualTemaV2Test.spec.ts` — 2/3 passam, 1 pulado corretamente: 768px→
+    largura de `.container` = 730px, 1440px→990px (ambos batendo com
+    `breakpoints-tema-v2.json`); 390px pulado via `test.skip` por estar abaixo do menor
+    breakpoint do tema (568px) — comportamento esperado, não falha.
+- **Screenshots reais (PNG), não simulados:** `tests/Browser/CapturarScreenshotsTemas.spec.ts`
+  gravou 9 arquivos em `docs/produto/screenshots-fase8/` (login/perfil/RMAs/clientes
+  dos 2 temas + a aba "Entrada" do painel V2), confirmados abertos e com conteúdo
+  visualmente coerente com a paleta/estrutura pretendida (V1 escuro/tabela, V2 nav
+  escura + painel branco + abas Bootstrap).
+
+**Teste manual confirmado (fora do Playwright):** usuários reais criados via `tinker`
+com `tema_preferido=v1`/`v2`, login via `curl` de ponta a ponta (POST com token CSRF
+real, cookies de sessão), `GET /perfil` autenticado confirmando o bundle certo
+(`v1-*.js`/`v2-*.js`, `TEMA V1`/`TEMA V2` no HTML) para cada usuário; `GET /rmas` do
+usuário V2 confirmado com os 7 `id="..."` de tab-pane e `data-toggle="tab"` × 7. Usuários
+de teste removidos ao final (`tinker` delete).
+
+**Pendências que ficaram de fora (não bloqueiam a Fase 8, escopo já fechado no
+`design.md`):**
+- Telas fora da árvore explícita do `design.md` (alertas, crédito, relatórios,
+  histórico/auditoria, logística) continuam com a view mínima das Fases 5-7, sem
+  estilização por tema.
+- Gerador automático de `breakpoints-tema-v2.json` a partir do Sass (mantido manual
+  por ora, ver desvio acima).
+- Painéis por status do dashboard V2 só populados quando há busca ativa (ver desvio
+  acima) — se o produto quiser diferente, é um caso de uso novo, fora do escopo desta
+  fase.
+
+**Commit:** `#F8 - Apresentacao (Tema V1 + Tema V2 fieis)` (ver hash abaixo, aplicado
+junto com este log).
+
+---

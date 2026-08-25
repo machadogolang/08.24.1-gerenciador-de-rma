@@ -17,7 +17,7 @@ class AssistenciaTecnicaController extends Controller
     {
         Gate::authorize('viewAny', AssistenciaTecnica::class);
 
-        return view('parceiros.index', [
+        return view_do_tema('parceiros.index', [
             'tipo' => 'assistencias-tecnicas',
             'titulo' => 'Assistências técnicas',
             'registros' => AssistenciaTecnica::query()->orderBy('nome')->get(),
@@ -28,7 +28,7 @@ class AssistenciaTecnicaController extends Controller
     {
         Gate::authorize('create', AssistenciaTecnica::class);
 
-        return view('parceiros._form', [
+        return view_do_tema('parceiros._form', [
             'tipo' => 'assistencias-tecnicas',
             'titulo' => 'Nova assistência técnica',
             'registro' => new AssistenciaTecnica(),
@@ -44,14 +44,14 @@ class AssistenciaTecnicaController extends Controller
 
         AssistenciaTecnica::create($dados);
 
-        return redirect()->route('parceiros.assistencias-tecnicas.index')->with('status', 'Assistência técnica criada.');
+        return redirect(rota_tema('parceiros.assistencias-tecnicas.index'))->with('status', 'Assistência técnica criada.');
     }
 
     public function edit(AssistenciaTecnica $assistenciaTecnica): View
     {
         Gate::authorize('update', $assistenciaTecnica);
 
-        return view('parceiros._form', [
+        return view_do_tema('parceiros._form', [
             'tipo' => 'assistencias-tecnicas',
             'titulo' => 'Editar assistência técnica',
             'registro' => $assistenciaTecnica,
@@ -67,7 +67,7 @@ class AssistenciaTecnicaController extends Controller
 
         $assistenciaTecnica->update($dados);
 
-        return redirect()->route('parceiros.assistencias-tecnicas.index')->with('status', 'Assistência técnica atualizada.');
+        return redirect(rota_tema('parceiros.assistencias-tecnicas.index'))->with('status', 'Assistência técnica atualizada.');
     }
 
     public function destroy(AssistenciaTecnica $assistenciaTecnica): RedirectResponse
@@ -76,7 +76,7 @@ class AssistenciaTecnicaController extends Controller
 
         $assistenciaTecnica->delete();
 
-        return redirect()->route('parceiros.assistencias-tecnicas.index')->with('status', 'Assistência técnica removida.');
+        return redirect(rota_tema('parceiros.assistencias-tecnicas.index'))->with('status', 'Assistência técnica removida.');
     }
 
     /**

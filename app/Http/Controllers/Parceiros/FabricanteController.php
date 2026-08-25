@@ -17,7 +17,7 @@ class FabricanteController extends Controller
     {
         Gate::authorize('viewAny', Fabricante::class);
 
-        return view('parceiros.index', [
+        return view_do_tema('parceiros.index', [
             'tipo' => 'fabricantes',
             'titulo' => 'Fabricantes',
             'registros' => Fabricante::query()->orderBy('nome')->get(),
@@ -28,7 +28,7 @@ class FabricanteController extends Controller
     {
         Gate::authorize('create', Fabricante::class);
 
-        return view('parceiros._form', [
+        return view_do_tema('parceiros._form', [
             'tipo' => 'fabricantes',
             'titulo' => 'Novo fabricante',
             'registro' => new Fabricante(),
@@ -44,14 +44,14 @@ class FabricanteController extends Controller
 
         Fabricante::create($dados);
 
-        return redirect()->route('parceiros.fabricantes.index')->with('status', 'Fabricante criado.');
+        return redirect(rota_tema('parceiros.fabricantes.index'))->with('status', 'Fabricante criado.');
     }
 
     public function edit(Fabricante $fabricante): View
     {
         Gate::authorize('update', $fabricante);
 
-        return view('parceiros._form', [
+        return view_do_tema('parceiros._form', [
             'tipo' => 'fabricantes',
             'titulo' => 'Editar fabricante',
             'registro' => $fabricante,
@@ -67,7 +67,7 @@ class FabricanteController extends Controller
 
         $fabricante->update($dados);
 
-        return redirect()->route('parceiros.fabricantes.index')->with('status', 'Fabricante atualizado.');
+        return redirect(rota_tema('parceiros.fabricantes.index'))->with('status', 'Fabricante atualizado.');
     }
 
     public function destroy(Fabricante $fabricante): RedirectResponse
@@ -76,7 +76,7 @@ class FabricanteController extends Controller
 
         $fabricante->delete();
 
-        return redirect()->route('parceiros.fabricantes.index')->with('status', 'Fabricante removido.');
+        return redirect(rota_tema('parceiros.fabricantes.index'))->with('status', 'Fabricante removido.');
     }
 
     /**

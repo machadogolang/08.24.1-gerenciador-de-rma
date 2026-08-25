@@ -32,7 +32,7 @@ class UsuarioController extends Controller
                 fn ($usuarios) => $usuarios->reject(fn (User $u) => $u->papel->ocultoDaListagemDeUsuarios())
             );
 
-        return view('identidade.usuarios.index', ['usuarios' => $usuarios]);
+        return view_do_tema('identidade.usuarios', ['titulo' => 'Usuários', 'usuarios' => $usuarios]);
     }
 
     /**
@@ -74,7 +74,7 @@ class UsuarioController extends Controller
      */
     public function perfil(Request $request): View
     {
-        return view('identidade.perfil.senha', ['usuario' => $request->user()]);
+        return view_do_tema('identidade.perfil', ['titulo' => 'Meu perfil', 'usuario' => $request->user()]);
     }
 
     /**

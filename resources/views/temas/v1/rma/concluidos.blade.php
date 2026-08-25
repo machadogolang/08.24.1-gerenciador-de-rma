@@ -64,4 +64,13 @@
             @endforeach
         </tbody>
     </table>
+    <hr style="clear:both;">
+    {{-- CP4 — fonte real `legacy-source/14.6.1/page/concluidos.php:66-69`. Texto e
+    grafia históricos preservados literalmente ("a cima", "monetario" sem acento não
+    são erros de digitação desta correção — são do legado, ver achado 8). --}}
+    <h3 style="float:right;font-family:Arial;margin-top:0px;letter-spacing:2px;">VALOR TOTAL: R$ {{ number_format($resumo['valorTotal'], 2, '.', '') }}</h3>
+    <p style="font-size:15px;">DATA DO PROCESSAMENTO: {{ $resumo['dataProcessamento'] }}</p>
+    <p style="font-size:15px;">Quantidade Total de produtos: {{ $resumo['quantidadeTotal'] }}</p>
+    <p style="font-size:15px;">Quantidade dos produtos a cima que nao participaram da contagem monetario: {{ $resumo['quantidadeSemValor'] }}</p>
+    <hr style="margin-top:20px;">
 @endsection

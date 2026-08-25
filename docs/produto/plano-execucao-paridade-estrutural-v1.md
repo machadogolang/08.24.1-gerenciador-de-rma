@@ -109,14 +109,14 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
 
 ## CP4 — resumo completo de Concluídos
 
-- [ ] CP4-01 — definir DTO/read model do resumo sem SQL no Blade.
-- [ ] CP4-02 — calcular soma, quantidade total e quantidade com valor zero.
-- [ ] CP4-03 — entregar data de processamento; congelar relógio no teste.
-- [ ] CP4-04 — renderizar quatro textos na ordem e grafia históricas.
-- [ ] CP4-05 — portar float/margens/tamanho/letter-spacing do resumo.
-- [ ] CP4-06 — formatar total com ponto decimal e sem agrupamento.
-- [ ] CP4-07 — capturar/reabrir/comparar seção inferior e registrar diário.
-- [ ] CP4-08 — testes focados/build e commit local.
+- [x] CP4-01 — definir DTO/read model do resumo sem SQL no Blade.
+- [x] CP4-02 — calcular soma, quantidade total e quantidade com valor zero.
+- [x] CP4-03 — entregar data de processamento; congelar relógio no teste.
+- [x] CP4-04 — renderizar quatro textos na ordem e grafia históricas.
+- [x] CP4-05 — portar float/margens/tamanho/letter-spacing do resumo.
+- [x] CP4-06 — formatar total com ponto decimal e sem agrupamento.
+- [x] CP4-07 — capturar/reabrir/comparar seção inferior e registrar diário.
+- [x] CP4-08 — testes focados/build e commit local.
 
 ## CP5 — propagação e gate final
 
@@ -285,6 +285,40 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
   para Entrada e Encaminhado; zebra exclusiva TR1/TR2 para Aguardando crédito).
 - Commit: a seguir (`#ARQ-RMA - Restaurada a aparencia original das telas de Entrada
   Encaminhado e Aguardando Credito do Tema V1`).
+
+### CMP-V1-006 — CP4, resumo inferior de Concluídos
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1400 (a
+  seção fica abaixo da tabela — no Legacy com 1219 registros reais isso é ~y=37676, só
+  medido via `getBoundingClientRect`/computed style, não por screenshot).
+- Fonte: `legacy-source/14.6.1/page/concluidos.php:19-27,66-69` (lido por inteiro).
+  `$soma`/`$quantidadetotal`/`$quantidadesemvalor` são acumulados durante o `while` que
+  lista a tabela. Implementado como `ListagensPorStatusController::resumoDeConcluidos()`
+  — agregação em memória sobre os `$registros` (já vêm do caso de uso), sem query nova
+  e sem cálculo no Blade.
+- Medidas (Legacy × V3, computed style do `<h3>`/`<p>`):
+
+  | Propriedade | Legacy | V3 | Resultado |
+  |---|---|---|---|
+  | texto `h3` (formato) | `VALOR TOTAL: R$ 146762.81` | `VALOR TOTAL: R$ 0.00` (seed QA sem valor) | OK (mesmo formato, ponto decimal, sem agrupamento) |
+  | `float` | right | right | OK |
+  | `margin-top` | 0px | 0px | OK |
+  | `letter-spacing` | 2px | 2px | OK |
+  | `font-family` | Arial, "Open Sans", "Fira mono" | Arial, "Open Sans", "Fira Mono" | OK |
+  | `font-size` (herdado, sem declaração própria em nenhum dos dois) | 14px | 14.04px | diferença de 0.04px, imperceptível — nenhum dos dois lados declara `font-size` no `h3`, é herança do UA; não há número da fonte para reproduzir literalmente aqui |
+  | ordem dos 4 textos | DATA→Qtd total→Qtd sem valor→(VALOR TOTAL flutua à direita, renderizado antes no DOM) | idêntica | OK |
+  | grafia | "a cima", "monetario" sem acento (histórico) | preservada literalmente | OK |
+- Diferença perceptível restante: nenhuma (a de 0.04px não é visível).
+- Decisão: **CP4 APROVADO**.
+- Testes/build: `php artisan test` (363 testes/818 assertions, verde); `npm run build`
+  (Vite ok). Teste novo `test_concluidos_mostra_resumo_com_total_data_e_quantidades`
+  com `Date::setTestNow()` (relógio congelado em 2026-03-10) e 3 registros (2 com valor,
+  1 zerado) provando soma `200.00`, contagem `3`/`1`.
+- Commit: a seguir (`#ARQ-RMA - Adicionado o resumo final da tela de Concluidos do
+  Tema V1`).
+
+**Estado do plano após CMP-V1-006: CP0 a CP4 completos. Falta só CP5 (propagação e
+gate final) para encerrar esta frente.**
 
 ## Modelo para próximas entradas
 

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Rma\Dominio\Solucao;
 use App\Rma\Dominio\Status;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Date;
 use Tests\TestCase;
 
 /**
@@ -228,6 +229,32 @@ class ListagensPorStatusTest extends TestCase
         $inicio = strpos($conteudo, 'id="CONTEUDO"');
         $fim = strpos($conteudo, '<table', $inicio) ?: strpos($conteudo, '</div>', $inicio);
         $this->assertStringNotContainsString('<h1', substr($conteudo, $inicio, $fim - $inicio));
+    }
+
+    /**
+     * VIS-V1-001/CP4 — fonte real `legacy-source/14.6.1/page/concluidos.php:66-69`:
+     * resumo abaixo da tabela com valor total, data de processamento e as duas
+     * contagens, calculado sem SQL no Blade (`ListagensPorStatusController::
+     * resumoDeConcluidos()`).
+     */
+    public function test_concluidos_mostra_resumo_com_total_data_e_quantidades(): void
+    {
+        Date::setTestNow(Date::create(2026, 3, 10));
+
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create(['status' => Status::Concluido, 'valor' => 150.5]);
+        Rma::factory()->create(['status' => Status::Concluido, 'valor' => 49.5]);
+        Rma::factory()->create(['status' => Status::Concluido, 'valor' => 0]);
+
+        $response = $this->actingAs($usuario)->get(route('rmas.concluidos'));
+
+        $response->assertOk();
+        $response->assertSee('VALOR TOTAL: R$ 200.00', false);
+        $response->assertSee('DATA DO PROCESSAMENTO: 10/03/2026', false);
+        $response->assertSee('Quantidade Total de produtos: 3', false);
+        $response->assertSee('Quantidade dos produtos a cima que nao participaram da contagem monetario: 1', false);
+
+        Date::setTestNow();
     }
 
     public function test_header_do_tema_v1_mostra_os_4_atalhos(): void

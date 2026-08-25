@@ -9,6 +9,7 @@ use App\Rma\Aplicacao\ListarRmasDoPainel;
 use App\Rma\Dominio\PainelDeStatus;
 use App\Rma\Dominio\Rma;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
 
 /**
@@ -42,7 +43,37 @@ class ListagensPorStatusController extends Controller
 
     public function concluidos(): View
     {
-        return $this->render(PainelDeStatus::Concluidos, 'Concluido');
+        Gate::authorize('viewAny', RmaEloquent::class);
+
+        $registros = $this->caso->listar(PainelDeStatus::Concluidos);
+
+        return view('temas.v1.rma.concluidos', [
+            'titulo' => 'Concluido',
+            'registros' => $registros,
+            'descricao' => PainelDeStatus::Concluidos->descricao(),
+            'fabricantes' => $this->mapaDeFabricantes($registros),
+            'destinatarios' => $this->mapaDeDestinatarios($registros),
+            'resumo' => $this->resumoDeConcluidos($registros),
+        ]);
+    }
+
+    /**
+     * VIS-V1-001/CP4 — fonte real `legacy-source/14.6.1/page/concluidos.php:20-27,66-69`:
+     * o legado soma `valor` e conta registros durante o mesmo `while` que lista a
+     * tabela. Aqui os `$registros` já vêm carregados pelo caso de uso, então a soma é
+     * só agregação em memória — sem SQL nem cálculo no Blade.
+     *
+     * @param  Rma[]  $registros
+     * @return array{valorTotal: float, quantidadeTotal: int, quantidadeSemValor: int, dataProcessamento: string}
+     */
+    private function resumoDeConcluidos(array $registros): array
+    {
+        return [
+            'valorTotal' => array_sum(array_map(fn (Rma $r) => $r->valor, $registros)),
+            'quantidadeTotal' => count($registros),
+            'quantidadeSemValor' => count(array_filter($registros, fn (Rma $r) => $r->valor == 0)),
+            'dataProcessamento' => Date::now()->format('d/m/Y'),
+        ];
     }
 
     private function render(PainelDeStatus $painel, string $titulo): View

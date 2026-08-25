@@ -21,6 +21,10 @@
         // aqui — não é uma auditoria tela-a-tela de VIS-V1-007, só o impacto direto
         // encontrado nesta correção.
         $ocultarTituloVisual = request()->routeIs('rmas.create', 'v1.rmas.create');
+        // As quatro listagens históricas começam pelo próprio ícone/título interno.
+        // A seção permite omitir só o H1 artificial de #CONTEUDO sem retirar o painel
+        // "Novo" permanente do DOM.
+        $omitirTituloPadrao = $__env->hasSection('omitirTituloPadrao');
     @endphp
 
     <div id="FIXADO">
@@ -107,7 +111,9 @@
 
             @unless ($painelSessao)
                 <div id="CONTEUDO">
-                    <h1 class="titulo-v1 {{ $ocultarTituloVisual ? 'sr-only' : '' }}">{{ $titulo ?? '' }}</h1>
+                    @unless ($omitirTituloPadrao)
+                        <h1 class="titulo-v1 {{ $ocultarTituloVisual ? 'sr-only' : '' }}">{{ $titulo ?? '' }}</h1>
+                    @endunless
                     @if (session('status'))
                         <p class="centrodeavisos">{{ session('status') }}</p>
                     @endif

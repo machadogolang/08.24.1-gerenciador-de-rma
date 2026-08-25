@@ -95,6 +95,62 @@ class ListagensPorStatusTest extends TestCase
         $response->assertSee('TrInconformidade');
     }
 
+    public function test_concluidos_marca_sem_garantia_como_tabelinha_tr3_e_demais_como_tr1_tr2(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create([
+            'descricao' => 'RMA concluido sem garantia',
+            'status' => Status::Concluido,
+            'solucao' => Solucao::SemGarantia,
+        ]);
+        Rma::factory()->create([
+            'descricao' => 'RMA concluido normal um',
+            'status' => Status::Concluido,
+            'solucao' => Solucao::GeradoCredito,
+        ]);
+        Rma::factory()->create([
+            'descricao' => 'RMA concluido normal dois',
+            'status' => Status::Concluido,
+            'solucao' => Solucao::GeradoCredito,
+        ]);
+
+        $response = $this->actingAs($usuario)->get(route('rmas.concluidos'));
+
+        $response->assertOk();
+        $response->assertSee('Tabelinha-TR3', false);
+        $response->assertSee('Tabelinha-TR1', false);
+        $response->assertSee('Tabelinha-TR2', false);
+        $response->assertDontSee('TrZebrada', false);
+    }
+
+    /**
+     * VIS-V1-001/CP3A-01/CP3A-03 — `Concluido` reproduz a composição histórica
+     * (`legacy-source/14.6.1/page/concluidos.php`): ícone 50×50 + texto de contexto,
+     * sem o `<h1>` artificial que o layout do TEMA V1 injeta por padrão nas demais telas.
+     */
+    public function test_concluidos_nao_tem_h1_artificial_e_reproduz_cabecalho_historico(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create(['descricao' => 'RMA concluido', 'status' => Status::Concluido]);
+
+        $response = $this->actingAs($usuario)->get(route('rmas.concluidos'));
+
+        $response->assertOk();
+        $response->assertSee('images/tema-v1/concluido.png', false);
+        $response->assertSee('title-comicone', false);
+        $response->assertSee('colgroup', false);
+
+        // #CONTEUDO é o miolo histórico da tela (o layout também injeta um
+        // <h1 class="titulo-v1"> sempre presente no DOM, mas fora de #CONTEUDO,
+        // para o painel de sessão oculto por CSS — isso não é o H1 artificial do
+        // achado 7). Isolamos #CONTEUDO até a tabela para confirmar que nenhum
+        // <h1> foi injetado ali.
+        $conteudo = $response->getContent();
+        $inicio = strpos($conteudo, 'id="CONTEUDO"');
+        $fimTabela = strpos($conteudo, '<table', $inicio);
+        $this->assertStringNotContainsString('<h1', substr($conteudo, $inicio, $fimTabela - $inicio));
+    }
+
     public function test_header_do_tema_v1_mostra_os_4_atalhos(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Leitura]);

@@ -63,18 +63,18 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
 
 ## CP3A — Concluído
 
-- [ ] CP3A-01 — permitir opt-out visual do H1 por superfície.
-- [ ] CP3A-02 — portar `concluido.png` byte a byte e validar hash/50×50.
-- [ ] CP3A-03 — montar `title-icone fl`, `title-comicone fl`, `hr.both`.
-- [ ] CP3A-04 — declarar colunas 8/5/5/12/14/10/18/17/6/4 sem normalizar soma.
-- [ ] CP3A-05 — resolver linha próprio: Sem Garantia→TR3; demais TR1/TR2.
-- [ ] CP3A-06 — tornar alternância determinística e registrar a dúvida `$TR1`.
-- [ ] CP3A-07 — não usar `classe_css_de_alerta()` nesta superfície.
-- [ ] CP3A-08 — restaurar wrappers e área clicável por célula.
-- [ ] CP3A-09 — NF zero→vazio; moeda com ponto decimal; origem abreviada.
-- [ ] CP3A-10 — testar ausência visual do H1, ícone, classes e colunas.
-- [ ] CP3A-11 — capturar/reabrir/comparar Concluído e registrar diário.
-- [ ] CP3A-12 — testes/build e commit local.
+- [x] CP3A-01 — permitir opt-out visual do H1 por superfície.
+- [x] CP3A-02 — portar `concluido.png` byte a byte e validar hash/50×50.
+- [x] CP3A-03 — montar `title-icone fl`, `title-comicone fl`, `hr.both`.
+- [x] CP3A-04 — declarar colunas 8/5/5/12/14/10/18/17/6/4 sem normalizar soma.
+- [x] CP3A-05 — resolver linha próprio: Sem Garantia→TR3; demais TR1/TR2.
+- [x] CP3A-06 — tornar alternância determinística e registrar a dúvida `$TR1`.
+- [x] CP3A-07 — não usar `classe_css_de_alerta()` nesta superfície.
+- [x] CP3A-08 — restaurar wrappers e área clicável por célula.
+- [x] CP3A-09 — NF zero→vazio; moeda com ponto decimal; origem abreviada.
+- [x] CP3A-10 — testar ausência visual do H1, ícone, classes e colunas.
+- [x] CP3A-11 — capturar/reabrir/comparar Concluído e registrar diário.
+- [x] CP3A-12 — testes/build e commit local.
 
 ## CP3B — Entrada
 
@@ -174,6 +174,61 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
 - Diferença restante: Concluído ainda escolhe família compacta; aplicação por superfície
   pertence ao CP3A, não à primitiva.
 - Estado: **CP2 APROVADO** por teste e inspeção visual.
+
+### CMP-V1-004 — CP3A, Concluído completo (H1/ícone/colunas/zebra/formatação)
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000.
+- Fonte PHP/CSS: `legacy-source/14.6.1/page/concluidos.php` (lida por inteiro nesta
+  sessão — confirma literalmente as larguras 8/5/5/12/14/10/18/17/6/4, o `style`
+  inline `margin-top:8px;margin-left:0px` do `.title-icone` e o resumo inferior, que
+  fica para `CP4`).
+- **Bug corrigido nesta sessão, achado durante a validação (não estava no plano
+  original):** `concluidos.blade.php` tinha um `@section('omitirTituloPadrao')` sem
+  `@endsection`, e a segunda linha usava `@php($indiceZebra = 0)` (forma inline sem
+  `@endphp` próprio) antes de um bloco `@php ... @endphp` mais abaixo. O compilador
+  Blade pareia `@php`/`@endphp` pelo **primeiro** `@endphp` encontrado no arquivo
+  inteiro (`storePhpBlocks`), não pelo par mais próximo semanticamente — isso
+  transformou `@foreach`, comentários e o `@php` do loop em texto literal dentro de um
+  único bloco `<?php ?>`, deixando um `@endforeach` órfão (`syntax error, unexpected
+  token "endforeach"`, view quebrada, `ListagensPorStatusTest` todo vermelho). Corrigido
+  fechando a seção vazia e trocando a forma inline por um bloco `@php $indiceZebra = 0;
+  @endphp` dedicado. Suíte completa voltou a verde (357→359 depois dos 2 testes novos).
+- Screenshots abertos: `{legacy,v3}-cp3a-concluidos-1440x1000.png` (viewport, não
+  full-page — o Legacy tem 1219 RMAs concluídos reais e full-page gerava ~37000px de
+  altura; locais/ignorados pelo Git).
+- **Achado de metodologia:** a primeira rodada bloqueava `fonts.googleapis.com` no
+  Legacy (prática herdada do teste antigo) e isso mascarava a fonte real — o Legacy caía
+  para `Liberation Sans` (fallback), dando `.title-comicone` 602×16 contra 612×19 do V3.
+  Sem bloquear (ambiente tem rede), o Legacy carrega Open Sans real do Google e bate
+  **exatamente** 612×19 com o V3, provando que a Open Sans local vendorizada no CP1 é
+  metricamente idêntica à oficial. Decisão: comparações futuras não devem bloquear fontes
+  do Legacy — isso testa uma condição (offline) que o Legacy real nunca está.
+- Tabela de medidas (Legacy × V3):
+
+  | Elemento | Legacy | V3 | Resultado |
+  |---|---|---|---|
+  | `#BASE` width | 1004px (CSS 984+padding) | 1004px | OK |
+  | `#CONTEUDO` width | 984px | 984px | OK |
+  | `.title-icone` (ícone 50×50) | 50×54 (wrapper), img 50×50 | 50×54 (wrapper), img 50×50 | OK |
+  | `.title-comicone` | 612×19 | 612×19 | OK |
+  | `.Tabelinha-Table` width | 984px | 984px | OK |
+  | `.TableListarFPEF-TR` (header) | 983×35, x=229 y=140 | 983×35, x=229 y=140 | OK |
+  | fonte do menu (CDP) | Open Sans (custom) | Open Sans (custom) | OK |
+  | fonte do header/td | Arial, "Open Sans", "Fira mono"/"Fira Mono" | idem | OK |
+  | H1 artificial em `#CONTEUDO` | ausente | ausente (testado) | OK |
+  | colunas (% de 984, via `<colgroup>`) | declaradas via `style="width:X%"` nos `<th>` (8/5/5/12/14/10/18/17/6/4) | `<colgroup>` com os mesmos 10 valores | OK (fonte idêntica; pixel renderizado diverge só porque `table-layout` é `auto` nos dois e o conteúdo real (1219 registros históricos) difere do seed de QA — não é defeito de CSS) |
+
+- Diferença perceptível restante: nenhuma nas primitivas testadas. `CP4` (resumo
+  "VALOR TOTAL"/"DATA DO PROCESSAMENTO"/quantidades, presente em
+  `concluidos.php:65-70`, mesmo arquivo) continua **não implementado** no Blade — não é
+  regressão desta rodada, é o próximo checkpoint do plano.
+- Decisão: **CP3A APROVADO** para H1/ícone/colunas/zebra/wrappers/formatação. `CP4`
+  (resumo inferior) permanece aberto e é o próximo passo.
+- Testes/build: `php artisan test` (359 testes/796 assertions, verde, dentro do
+  container `laravel.test`); `npm run build` (Vite ok). 2 testes novos em
+  `ListagensPorStatusTest` (Sem Garantia→`Tabelinha-TR3`/demais→TR1/TR2; ausência de
+  `<h1>` dentro de `#CONTEUDO` + presença do ícone/`title-comicone`/`colgroup`).
+- Commit: a seguir (`#ARQ-RMA - Corrige bug de secao/php no Blade e fecha CP3A do Tema V1`).
 
 ## Modelo para próximas entradas
 

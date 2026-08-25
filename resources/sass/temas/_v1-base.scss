@@ -263,8 +263,14 @@ hr {
 // Usado pelo painel "Novo" e pelas 4 listagens por status (VIS-V1-001) — texto de
 // contexto acima da tabela/formulário, sem heading `<h1>` (fonte real: `14.6.1.css`).
 .title-comicone {
-    margin: 20px 0 0 15px;
+    margin-top: 20px;
+    margin-left: 15px;
     font-size: 14px;
+}
+
+.title-icone-status-v1 {
+    margin-top: 8px;
+    margin-left: 0;
 }
 
 .buttonSave {

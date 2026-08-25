@@ -194,8 +194,151 @@ Gate comum: F10-GATE-07. Investigação/especificação pode avançar; código n
 - [ ] **GATE G-07 — Trilha A encerrada.** Fechamento e relatório aprovados.
 - [ ] **GATE G-08 — Trilha B liberada.** Somente após G-07.
 
+## H. Frente — Arquitetura, Front-end e Paridade de Temas
+
+Aberta em 2026-08-25 (`INV-RMA-10`), incorporada ao plano existente. Detalhe e
+evidências: `docs/investigacoes-pendente/INV-RMA-10-arquitetura-front-paridade-temas.md`;
+matriz viva: `docs/produto/matriz-paridade-temas-v1-v2-v3.md`. Gate: exposição pública do
+Tema 3 exige H.4 fechado e G-04…G-06 aprovados; investigação/especificação de Tema 3 pode
+avançar antes, código não sai do seletor.
+
+- [x] **DOC H-000 — investigação e matriz consolidadas.** Três agentes, achados
+  reconciliados, `docs/investigacoes-pendente/INV-RMA-10-…md` e
+  `docs/produto/matriz-paridade-temas-v1-v2-v3.md`.
+
+### H.1 Correção de baseline (P0 — precede a retomada da F10)
+
+- [ ] **ARQ H-001 (`ARQ-001`) — corrigir perda de estado do agregado.** `EditarRma`,
+  `ReceberRma`, `EncaminharRma`, `ConcluirRma`, `ArquivarRma`, `ReverterRmaParaEntrada` e
+  `RegistrarSolucao` reconstroem a entidade só com os campos do núcleo; provar por
+  regressão antes e depois da correção.
+- [ ] **ARQ H-002 (`ARQ-002`) — corrigir dry-run e reconciliação do migrador.**
+  `ImportarRmas` precisa executar `traduzirLinha()` em `--dry-run` e separar `origem`,
+  `planejado`, `criado`, `atualizado`, `ignorado` e total real no destino. Bloqueia
+  `F10-DAD-04…09`.
+- [ ] **ARQ H-003 (`ARQ-003`) — impedir escalada de privilégio do Supervisor.**
+  `UsuarioController::update`, `ResetarSenhaDeUsuario` e `UserPolicy` devem impedir
+  Supervisor de atribuir papel acima de Supervisor ou operar sobre SuperAdministrador,
+  mesmo por URL direta.
+- [ ] **QA H-004 — renovar suíte completa e documentar o checkpoint.** Depende de
+  H-001…H-003; commit local próprio antes de retomar `F10-FUN-07`.
+
+### H.2 Arquitetura (importante, pós-P0)
+
+- [ ] **ARQ H-005 (`ARQ-004`) — corrigir busca por nota fiscal.** Trocar a consulta em
+  `os` pelos campos fiscais reais já existentes no schema.
+- [ ] **ARQ H-006 (`ARQ-005`) — validar destinatário e tratar erros esperados.** ID
+  dependente do tipo, `Solucao::from` sem 500 e RMA ausente sem `RuntimeException` cru.
+- [ ] **ARQ H-007 (`ARQ-006`) — unificar mutação, auditoria e notificação.** Remover
+  dependência implícita de `Auth` em criar/editar.
+- [ ] **ARQ H-008 (`ARQ-007`) — reduzir custo da home.** ~27 consultas e 16 contadores
+  hoje recalculados também no Tema 2.
+- [ ] **DOC H-009 (`ARQ-008`) — corrigir docblock incorreto.** `App\Models\Rma` não é
+  exclusivo da infraestrutura; documentar o híbrido repositório/read model real.
+- [ ] **ARQ H-010 (`ARQ-009`) — resolver duplicação/órfãos de parceiros.** Sem criar
+  abstração CRUD genérica sem justificativa.
+
+### H.3 Front-end
+
+- [ ] **DEV H-011 (`FRONT-001`) — corrigir `Rma::classeDeAlerta()`.** Retornar
+  `Urgente`/`SemGarantia`, hoje inalcançáveis apesar do CSS existente.
+- [ ] **DEV H-012 (`FRONT-002`/`PAR-V2-001`) — corrigir abas por status do Tema 2.** Não
+  podem depender de haver termo de busca preenchido.
+- [ ] **DEV H-013 (`FRONT-003`) — dar shell/navegação comuns.** Alertas, crédito,
+  relatórios, histórico e logística hoje são documentos isolados; ações de ciclo também
+  precisam de contrato visual.
+- [ ] **DEV H-014 (`FRONT-004`) — remover scaffold `welcome`.** `/` ainda retorna o
+  placeholder do Laravel; revisar `ExampleTest` junto (relacionado a `D-06`).
+- [ ] **DEV H-015 (`FRONT-005`) — unificar disclosure `.pmo`.** Hoje duplicado em V1/V2,
+  sem teclado nem `aria-expanded`, manipulando `style.display` direto.
+- [ ] **ARQ H-016 (`FRONT-006`) — remover views genéricas órfãs.** Só após prova de
+  ausência de consumidores pós-`view_do_tema()`.
+
+### H.4 Paridade funcional Tema 1 × Tema 2
+
+Gate por linha definido na matriz. Código `PAR-*` de cada item está na coluna
+"Situação/tarefa" de `docs/produto/matriz-paridade-temas-v1-v2-v3.md`.
+
+- [ ] **PAR H-017 (`PAR-USR-001`) — fechar usuários/papéis/reset nos dois temas;**
+  investigar criação/exclusão de usuário (depende de `ARQ-003`/`C-01`).
+- [ ] **PAR H-018 (`PAR-V1-001`) — repor no Tema 1 itens de menu/filas e filtro por
+  status como ação**, hoje ausente.
+- [ ] **PAR H-019 (`PAR-V1-002`) — repor no Tema 1 filas acionáveis no dashboard e
+  reavaliar o filtro por solução do legado.**
+- [ ] **PAR H-020 (`PAR-V2-003`) — repor no Tema 2 o painel lateral do dashboard.**
+- [ ] **PAR H-021 (`PAR-RMA-001`/`ARQ-004`) — corrigir busca por NF nos dois temas.**
+- [ ] **PAR H-022 (`PAR-RMA-002`/`PAR-RMA-004`) — implementar busca por número** nos dois
+  temas, hoje ausente.
+- [ ] **PAR H-023 (`PAR-RMA-003`) — ampliar busca por texto** além dos 6 campos atuais
+  (legado tinha ~23), com contrato e testes.
+- [ ] **PAR H-024 (`PAR-RMA-005`/`007`/`PAR-V2-002`) — completar novo RMA** nos dois
+  temas; aba do Tema 2 hoje só linka a página.
+- [ ] **PAR H-025 (`PAR-RMA-004`/`005`/`006`/`009`) — completar campos/detalhe do RMA**
+  nos dois temas.
+- [ ] **PAR H-026 (`PAR-RMA-008`) — confirmar regra de conclusão por versão histórica**
+  (solução + lançamento/estoque) antes de decidir paridade.
+- [ ] **PAR H-027 (`PAR-RMA-010`) — tornar boletins relacionados descobríveis** no
+  detalhe do RMA.
+- [ ] **PAR H-028 (`PAR-VIS-SEC-001`) — integrar alertas ao shell**, hoje tela isolada
+  nos dois temas (relacionado a `FRONT-001`/`003`).
+- [ ] **PAR H-029 (`PAR-NAV-001`) — tornar módulos secundários descobríveis:** crédito,
+  RCD/RPEC/RMPE, histórico de RMA, histórico de acesso e frete Porto Alegre, hoje rotas
+  isoladas nos dois temas.
+- [ ] **PAR H-030 (`PAR-PARCEIRO-001`) — criar detalhe/RMAs do parceiro**, ausente nos
+  dois temas.
+- [ ] **PAR H-031 (`PAR-V1-MSG-001`) — corrigir flash/validação do Tema 1**, sucesso pode
+  ficar oculto.
+- [ ] **PAR H-032 (`PAR-V2-004`) — implementar breadcrumb/contexto real no Tema 2**, hoje
+  apenas classe visual sem trilha.
+- [ ] **PAR H-033 (`PAR-QA-003`) — cobrir responsividade real (390/768/1440)** nos dois
+  temas; 390 hoje é ignorado em teste.
+
+### H.5 UX transversal
+
+- [ ] **DEV H-034 (`UX-001`) — apresentação consciente de policy.** Ocultar/desabilitar
+  ações que resultariam em 403, sem mover autorização para o browser.
+- [ ] **DEV H-035 (`UX-002`) — exigir confirmação para remoção de parceiro.**
+- [ ] **DEV H-036 (`UX-003`) — substituir tipo+ID cru do encaminhamento** por seleção
+  validada, sem mudar a regra de negócio (relacionado a `ARQ-005`).
+- [ ] **DEV H-037 (`UX-004`) — contrato transversal de flash/validação/estado vazio/
+  403/404/500** e prevenção de duplo envio.
+
+### H.6 Tema 3 — Console Operacional Adaptativa
+
+Trilha B. Nasce oculto e só entra no seletor de tema depois de H.4 fechado e `G-04…G-06`
+aprovados; nunca por mudança de cor sobre o Tema 1/2.
+
+- [x] **ARQ H-038 (T3-01) — conceito definido.** Mesa de trabalho por fila/exceção/
+  status/próxima ação em `INV-RMA-10`; densidade desktop-first adaptável.
+- [ ] **ARQ H-039 (T3-02) — spike Tailwind 4 × CSS semântico** para a fundação
+  compartilhada dos 3 temas antes de decidir a stack visual do Tema 3.
+- [ ] **DEV H-040 (T3-03) — criar shell/layout base do Tema 3**, oculto e fora do
+  seletor.
+- [ ] **DEV H-041 (T3-04) — implementar navegação** (rail recolhível no desktop,
+  cabeçalho/drawer no telefone).
+- [ ] **DEV H-042 (T3-05) — seleção explícita de tema N-ária**, hoje alternância binária
+  V1/V2.
+- [ ] **DEV H-043 — quebrar telas do Tema 3 em tarefas pequenas** (dashboard, listagem,
+  formulário, detalhe, pesquisa/filtros, modal, alertas, vazio, erro, paginação) só após
+  H-039…H-042 e com a matriz funcional integral desde o nascimento de cada tela.
+- [ ] **QA H-044 (T3-09) — responsividade real do Tema 3** nos três breakpoints.
+- [ ] **QA H-045 (T3-20) — acessibilidade do Tema 3** (teclado, foco, ARIA, alvo mínimo,
+  cor nunca como único indicador).
+
+### H.7 Evoluções justificadas
+
+- [ ] **EVO H-046 (`EVO-UX-002`) — pesquisa global/lançador** (número, SN, NF, descrição,
+  contraparte, sob as mesmas policies).
+- [ ] **EVO H-047 (`EVO-UX-003`) — filtros e vistas pessoais persistentes.**
+- [ ] **EVO H-048 (`EVO-UX-004`) — atividade operacional recente** (read model paginado
+  e autorizado; não substitui `EVO-AUD-001`).
+- [ ] **EVO H-049 (`INV-UX-005`) — investigar volume/repetição** antes de especificar
+  ações em lote.
+
 ## Próxima tarefa segura
 
-`F10-FUN-07`: executar e registrar os seis smokes cruzados M-01…M-06 sem alterar
-dados históricos fora de cenário descartável.
-É QA controlado; qualquer etapa mutável exige registro descartável e evidência explícita.
+`ARQ H-001` (`ARQ-001`): provar por regressão a perda de estado do agregado em
+edição/transições e corrigi-la. É o P0 que antecede tudo — inclusive `F10-FUN-07` — por
+já causar perda de dado real, conforme `PLANO-ATAQUE.md` (seção AGORA) e `INV-RMA-10`.
+Depois de `ARQ H-001…H-003` e da suíte renovada (`QA H-004`), retomar `F10-FUN-07` pelos
+smokes somente leitura antes de qualquer mutação.

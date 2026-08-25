@@ -6,6 +6,16 @@ Este documento permite iniciar uma nova sessão sem depender do histórico da co
 A fonte granular continua sendo `docs/produto/checklist-master-v3.md`; este handoff
 registra o contexto operacional, o que foi efetivamente concluído e a ordem de retomada.
 
+> **Atualização (mesmo dia, sessão seguinte):** depois deste handoff foi aberta e
+> incorporada a frente `INV-RMA-10` (arquitetura, front-end, paridade de temas — ver
+> `docs/investigacoes-pendente/INV-RMA-10-arquitetura-front-paridade-temas.md`,
+> `docs/produto/matriz-paridade-temas-v1-v2-v3.md` e a seção H do checklist mestre). Ela
+> encontrou 3 achados P0 (`ARQ-001` perda de estado do agregado, `ARQ-002` dry-run que
+> não valida migração, `ARQ-003` escalada de privilégio do Supervisor) que **passam a
+> preceder** o passo 4 abaixo (`F10-FUN-07`). A ordem de retomada correta é `ARQ H-001…
+> H-004` (seção H.1 do checklist) antes de qualquer outro item deste handoff. O restante
+> deste documento permanece válido para o que vem depois do P0.
+
 ## Estado exato no encerramento
 
 - Repositório V3: `/home/legionario/github/08.24.1-gerenciador-de-rma`.
@@ -224,12 +234,17 @@ Nunca usar a base V3 corrente como alvo por inferência.
 1. Executar `git status --short`, `git branch --show-current` e `git log --oneline -8`.
 2. Confirmar `:8094` e `:8095` sem resetar dados automaticamente.
 3. Ler, nesta ordem:
-   - este handoff;
+   - este handoff (nota de atualização no topo);
    - `PLANO-ATAQUE.md`;
-   - `docs/produto/checklist-master-v3.md`;
+   - `docs/investigacoes-pendente/INV-RMA-10-arquitetura-front-paridade-temas.md`;
+   - `docs/produto/matriz-paridade-temas-v1-v2-v3.md`;
+   - `docs/produto/checklist-master-v3.md` (seção H.1 primeiro);
    - `docs/qa/roteiro-paridade-funcional.md`;
    - `docs/produto/paridade-visual-tema-v1.md`.
-4. Começar em `F10-FUN-07`, primeiro pelos passos somente leitura.
+4. Começar em `ARQ H-001` (`ARQ-001`, perda de estado do agregado): provar por
+   regressão e corrigir. Depois `H-003` (`ARQ-003`, segurança) e `H-002` (`ARQ-002`,
+   dry-run) na ordem do `PLANO-ATAQUE.md`. Só então retomar `F10-FUN-07`, pelos passos
+   somente leitura.
 5. Registrar imediatamente esperado, observado, data, ambiente e evidência no roteiro.
 6. Criar commit local pequeno ao concluir o checkpoint; não fazer push.
 

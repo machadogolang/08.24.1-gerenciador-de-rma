@@ -146,24 +146,26 @@ ponta (Operador → `/perfil`, Supervisor → `/usuarios`, senha errada/usuário
 - [x] Atualizar `paridade-v2-v3.md` (`LEG-RMA-001`, `003`, `004`, `005`, `006`, `042`, `043` → PARIDADE)
 - [x] Commit `#F1 - Identidade`
 
-### Fase 2 — Parceiros — **EM ESPECIFICAÇÃO**
+### Fase 2 — Parceiros — **CONCLUÍDA (2026-08-24)**
 
 OpenSpec escrita: `openspec/changes/parceiros/{proposal,design,tasks}.md`. Arquivo por
 arquivo detalhado em `INV-RMA-05` §7. **Decisão já tomada:** FK real desde a baseline
 (não string), sem unificar os 4 tipos num `Parceiro` só (ideia fica em `EVO-DOM-001`).
-Tasks (resumido):
+Implementação completa, `sail test` 100% verde (61/61 testes, 143 assertions — 36 da
+Fase 1 + 25 novos) e dedup de `EncontrarOuCriarCliente` confirmada por `tinker` de ponta
+a ponta. Tasks (resumido):
 
-- [ ] 4 migrations (`clientes`/`fabricantes`/`fornecedores`/`assistencias_tecnicas`)
-- [ ] **Ajuste da revisão (`docs/arquitetura/revisao-fases-1-2-3.md`):**
+- [x] 4 migrations (`clientes`/`fabricantes`/`fornecedores`/`assistencias_tecnicas`)
+- [x] **Ajuste da revisão (`docs/arquitetura/revisao-fases-1-2-3.md`):**
       `app/Compartilhado/Uf.php` (enum das 27 UFs, prometido em `INV-RMA-05` §3 mas
       ausente do desenho original — campo `uf` era string solta)
-- [ ] `trait TemEnderecoEContato` + 4 Eloquent models
-- [ ] `EncontrarOuCriarCliente` (único caso de uso real — corrige dedup do legado)
-- [ ] 4 Policies (delegam a `Papel::podeGravar()` da Fase 1)
-- [ ] 4 Controllers (resource padrão) + rotas
-- [ ] Views genéricas (`_form.blade.php` compartilhada + `index.blade.php`)
-- [ ] 4 Factories + 5 arquivos de teste (CRUD ×4 + dedup)
-- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado, commit `#F2`
+- [x] `trait TemEnderecoEContato` + 4 Eloquent models
+- [x] `EncontrarOuCriarCliente` (único caso de uso real — corrige dedup do legado)
+- [x] 4 Policies (delegam a `Papel::podeGravar()` da Fase 1)
+- [x] 4 Controllers (resource padrão) + rotas
+- [x] Views genéricas (`_form.blade.php` compartilhada + `index.blade.php`)
+- [x] 4 Factories + 5 arquivos de teste (CRUD ×4 + dedup)
+- [x] `sail test` verde, `paridade-v2-v3.md` atualizado, commit `#F2`
 
 ### Fase 3 — Rma núcleo — **EM ESPECIFICAÇÃO**
 

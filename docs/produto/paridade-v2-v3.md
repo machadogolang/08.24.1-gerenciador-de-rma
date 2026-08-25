@@ -1,14 +1,17 @@
 # Matriz de paridade V2 → V3
 
-Data: 2026-08-24 (atualizado 2026-08-24 — Fase 1 "Identidade" implementada e testada).
+Data: 2026-08-24 (atualizado 2026-08-24 — Fase 2 "Parceiros" implementada e testada).
 Índice de rastreamento: nenhuma funcionalidade relevante do RMA V2 pode "desaparecer"
 silenciosamente na V3. Atualizado a cada avanço de OpenSpec/implementação. **Fase 1
 (`autenticacao-usuarios`) concluída:** 7 itens (`LEG-RMA-001/003/004/005/006/042/043`)
 passaram de `PENDENTE` para `PARIDADE`, com `sail test` verde (36/36) e login real
 confirmado por `curl` de ponta a ponta. `LEG-RMA-002` (autocadastro com convite)
 permanece `PENDENTE` — decisão de produto explicitamente não tomada nesta fase, ver
-`openspec/changes/autenticacao-usuarios/proposal.md`. Os demais itens aguardam as
-próximas fases (ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
+`openspec/changes/autenticacao-usuarios/proposal.md`. **Fase 2 (`parceiros`) concluída:**
+4 itens (`LEG-RMA-030/031/032/033`) passaram de `PENDENTE` para `PARIDADE`, com
+`sail test` verde (61/61, mantendo os 36 da Fase 1) e a deduplicação de
+`EncontrarOuCriarCliente` confirmada por `tinker` de ponta a ponta. Os demais itens
+aguardam as próximas fases (ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
 
 Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 
@@ -43,10 +46,10 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-027 | Alerta: sem número de série | herdado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-028 | Classificação visual de inconformidade | dúvida | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-029 | Urgência por threshold R$75 | dúvida | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-030 | Cadastro de clientes | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-031 | Cadastro de fabricantes | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-032 | Cadastro de fornecedores | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-033 | Cadastro de assistências técnicas | confirmado | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-030 | Cadastro de clientes | confirmado | confirmado | `parceiros` | `ClienteController`, `EncontrarOuCriarCliente` (dedup corrigida) | `ClienteCrudTest`, `EncontrarOuCriarClienteTest` | PARIDADE |
+| LEG-RMA-031 | Cadastro de fabricantes | confirmado | confirmado | `parceiros` | `FabricanteController` | `FabricanteCrudTest` | PARIDADE |
+| LEG-RMA-032 | Cadastro de fornecedores | confirmado | confirmado | `parceiros` | `FornecedorController` | `FornecedorCrudTest` | PARIDADE |
+| LEG-RMA-033 | Cadastro de assistências técnicas | confirmado | confirmado | `parceiros` | `AssistenciaTecnicaController` | `AssistenciaTecnicaCrudTest` | PARIDADE |
 | LEG-RMA-034 | "Autorizada" (alias morto) | n/a | código morto | — | — | — | NÃO RECONSTRUIR (morto) |
 | LEG-RMA-035 | Tabela unificada `assistencias(tipo)` | legado/abandonado | n/a | — | — | — | RETOMAR IDEIA (não o código) — ver EVO-DOM-001 |
 | LEG-RMA-036 | Fluxo de crédito | confirmado | confirmado | — | — | — | PENDENTE |

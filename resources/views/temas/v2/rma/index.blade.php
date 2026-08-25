@@ -26,8 +26,26 @@
 
     <div class="tab-content">
         <div id="inicio" class="tab-pane fade in active">
-            <p class="centrodeavisos">Bem-vindo(a), {{ auth()->user()?->name }}. Use as abas acima para pesquisar
-                ou abrir um novo RMA.</p>
+            <div class="painel-inicio-fundo-escuro">
+                <p class="centrodeavisos">Bem-vindo(a), {{ auth()->user()?->name }}.</p>
+
+                {{-- Busca simplificada da aba "Início" — fonte real: `15.8.1/index.php`
+                (campo único "Pesquisar:"/"Enviar pesquisa", sem o seletor de tipo da aba
+                "Pesquisar"). MESMA rota/Controller da aba #pesquisar — só um subconjunto
+                da UI, nenhuma regra de negócio nova. --}}
+                <form method="GET" action="{{ rota_tema('rmas.index') }}" class="form-inline">
+                    <input type="hidden" name="tipo" value="texto">
+                    <label for="inicio-pesquisar" class="control-label" style="margin-right:10px;">Pesquisar:</label>
+                    <div class="form-group">
+                        <input id="inicio-pesquisar" type="text" name="valor" class="form-control" placeholder="Search" value="{{ $valor }}">
+                    </div>
+                    <button type="submit" class="btn formSubmit">Enviar pesquisa</button>
+                </form>
+
+                <img src="{{ asset('images/rma/separador2.png') }}" alt="Separador" class="separador-alerta">
+
+                @include('rma._centro_de_avisos', ['grupos' => $grupos])
+            </div>
         </div>
 
         <div id="pesquisar" class="tab-pane fade">

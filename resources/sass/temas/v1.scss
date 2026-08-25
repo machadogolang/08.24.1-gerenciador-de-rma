@@ -177,3 +177,69 @@ hr {
 .acento {
     color: $acento;
 }
+
+// "QUADRO DE ANOTACOES" + sidebar de contadores (correção Fase 8, 2026-08-25) — fonte
+// real `14.6.1/index.php`: anotação flutua à esquerda (largura fixa), contadores à
+// direita, mesmo padrão de layout fixo (sem framework) do resto do TEMA V1.
+$largura-quadro-de-anotacoes: 675px;
+$largura-sidebar-contadores: 280px;
+
+.painel-inicial-v1 {
+    margin-top: 15px;
+}
+
+.quadro-de-anotacoes {
+    float: left;
+    width: $largura-quadro-de-anotacoes;
+
+    .quadro-de-anotacoes-titulo {
+        font-weight: 300;
+    }
+}
+
+.textareaanotacao {
+    display: block;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: #26251f;
+    color: $texto;
+}
+
+// Fonte real: `14.6.1.css:74-76` (`.formInputStats`/`.formLabelStats`) — rótulo com
+// largura fixa alinhado à direita + valor em caixa própria à direita dele, mesmo
+// padrão visual dos outros inputs "readonly" do TEMA V1.
+$largura-rotulo-stats: 198px;
+$largura-valor-stats: 45px;
+$cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scss (14.6.1.css:76)
+
+.contadores-do-painel {
+    float: right;
+    width: $largura-sidebar-contadores;
+
+    .formLabelStats {
+        margin: 0 5px 0 0;
+        font-size: 11px;
+        text-align: right;
+        width: $largura-rotulo-stats;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        background-color: #26251f;
+        padding: 5px;
+        box-sizing: border-box;
+
+        &:hover {
+            background-color: $cor-hover-stats;
+            color: $texto;
+        }
+    }
+
+    .formValorStats {
+        width: $largura-valor-stats;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        background-color: #26251f;
+        font-size: 11px;
+        padding: 5px;
+        margin: 0;
+        text-align: center;
+        box-sizing: border-box;
+    }
+}

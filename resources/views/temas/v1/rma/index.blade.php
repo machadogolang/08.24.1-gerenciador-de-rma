@@ -47,4 +47,35 @@
             </tbody>
         </table>
     @endif
+
+    {{-- "QUADRO DE ANOTACOES" + sidebar de contadores por solução — correção de
+    fidelidade Fase 8 (2026-08-25), fonte real: `14.6.1/index.php`. Anotação reusa a
+    MESMA rota/caso de uso já existente desde a Fase 1 (`AtualizarAnotacaoPessoal`, ver
+    `temas/v1/identidade/perfil.blade.php`) — nenhuma lógica nova, só um segundo lugar
+    na UI editando o mesmo dado. Contadores vêm de `RmaController::contadoresDoPainel()`
+    (consulta de composição, não regra de negócio nova). --}}
+    <div class="painel-inicial-v1">
+        <form method="POST" action="{{ route('identidade.perfil.anotacao.update') }}" class="quadro-de-anotacoes">
+            @csrf
+            @method('PUT')
+
+            <p class="quadro-de-anotacoes-titulo">
+                <img src="{{ asset('images/rma/notas.png') }}" width="20" alt="">
+                QUADRO DE ANOTACOES
+            </p>
+            <textarea name="anotacao" rows="14" class="textareaanotacao">{{ old('anotacao', auth()->user()?->anotacao) }}</textarea>
+            <button type="submit" class="buttonSave">Salvar anotação</button>
+        </form>
+
+        <div class="contadores-do-painel">
+            @foreach ($contadores as $rotulo => $quantidade)
+                <p class="formLabelStats fl">{{ $rotulo }}</p>
+                <p class="formValorStats fl">{{ $quantidade }}</p>
+                <div class="both"></div>
+            @endforeach
+        </div>
+    </div>
+    <div class="both"></div>
+
+    @include('rma._centro_de_avisos', ['grupos' => $grupos])
 @endsection

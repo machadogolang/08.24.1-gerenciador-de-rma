@@ -49,6 +49,10 @@
 
         <div id="RODAPE">
             <p class="designedby">TEMA V1 — CellSystem RMA (reconstrução V3)</p>
+            {{-- Rodapé real do legado (`14.6.1/index.php`) — texto estático de
+            identidade visual, reproduzido como está (não é dado dinâmico). --}}
+            <p class="designedby">Designed by <a href="http://scripting.com.br" target="_blank"><strong>Scripting Studios Art</strong></a></p>
+            <p class="designedby">Cópia licenciada para <strong>Cellsystem LTDA</strong></p>
         </div>
     </div>
 </body>

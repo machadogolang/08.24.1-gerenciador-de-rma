@@ -75,6 +75,29 @@ hr {
     color: #222;
 }
 
+// Achado real (correção Fase 8, 2026-08-25): a aba "Início" NÃO fica dentro do painel
+// branco `.box-content` no legado — o "CENTRO DE AVISOS" e a busca simplificada
+// aparecem direto sobre o fundo escuro (`15.8.1/index.php`). `.box-content` é sempre
+// branco (usado pelas outras abas com tabela), então esta classe "estoura" de volta
+// para o fundo escuro só dentro da aba início, com o mesmo padding do container ao
+// redor para não deslocar o conteúdo.
+$largura-padding-box-content: 15px; // mesmo valor do `padding:15px` inline em `temas/v2/layout.blade.php`
+
+.painel-inicio-fundo-escuro {
+    background-color: $fundo;
+    color: #fff;
+    margin: (-$largura-padding-box-content) (-$largura-padding-box-content) 0;
+    padding: $largura-padding-box-content;
+
+    a {
+        color: #fff;
+
+        &:hover {
+            color: #ddd;
+        }
+    }
+}
+
 .formSubmit {
     border-radius: 0px !important;
     width: 88px !important;

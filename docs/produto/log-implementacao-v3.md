@@ -897,3 +897,98 @@ rodando o comando completo com `--dry-run` de verdade — está feita e verde.
 abaixo, aplicado junto com este log).
 
 ---
+
+## Correção pós-Fase 8 — Fidelidade visual real (login-gateway + "CENTRO DE AVISOS") — 2026-08-25
+
+**Não é uma fase nova.** A Fase 8 ("Apresentação — Temas V1/V2") já estava commitada,
+mas uma comparação de verdade contra o LEGACY-RUNTIME (`08.24.4-legacy-gerenciador-de-rma`,
+`:8094`) — feita nesta sessão via Playwright rodando no HOST (o container Sail não
+alcança `:8094`, rede Docker isolada por design; ver `tests/Browser/Support/
+legacy-cdn-cache/README.md`) — encontrou divergências grandes e reais, não sutis.
+Rotas/Controllers/casos de uso das Fases 1-9 **não mudaram**; só Blade/Sass/JS.
+
+**Achado sobre o próprio processo de comparação (registrar para não repetir):** a
+primeira tentativa de capturar as referências do legado bloqueou o CDN externo do
+Bootstrap (`maxcdn.bootstrapcdn.com`) para evitar um hang de carregamento de fonte —
+isso quebrou o PRÓPRIO layout de referência (Bootstrap nunca carregou) e gerou uma
+comparação inicialmente enganosa (dava a impressão de que o legado também era "simples
+sem framework", o que é falso). Corrigido interceptando a requisição e SERVINDO os
+bytes reais do Bootstrap 3.3.5 vendorizados localmente (`tests/Browser/Support/
+legacy-cdn-cache/bootstrap-3.3.5/`) em vez de bloquear — assim reproduz o resultado
+visual real sem depender de internet disponível na sessão. As 3 capturas válidas (com
+Bootstrap carregado corretamente) ficaram em `docs/produto/screenshots-fase8-legacy-ref/`
+(`ref-gateway-login.png`, `ref-v1-dashboard.png`, `ref-v2-dashboard.png`).
+
+**Gap 1 (prioridade máxima, concluído) — Login-gateway completamente diferente.**
+`identidade/login.blade.php` era um card genérico de fundo escuro ("CellSystem RMA",
+labels separadas, botão largo "Entrar"). O real, confirmado por `curl` autenticado em
+`http://localhost:8094/` (AdminLTE 2.2.0 `login-page`/`login-box`): fundo `#d2d6de`
+claro (gateway não pertence a nenhum tema), card branco pequeno, logo (`images/
+logomark.png`, vendorizado em `public/images/identidade/logomark.png`, mesmos bytes),
+campos com placeholder + glyphicon (envelope/cadeado) dentro do campo, botão pequeno
+"Iniciar" alinhado à direita, link "Eu esqueci minha senha", e um banner laranja/
+azul-marinho ("NÃO É O QUE PROCURA? CLIQUE AQUI PARA ABRIR A FERRAMENTA 14.6.1 DE RMA").
+Reconstruído com bundle Vite PRÓPRIO (`resources/js/identidade/login.js` +
+`resources/sass/identidade/login.scss`, registrado em `vite.config.js`) — não reaproveita
+o bundle de nenhum tema, porque o gateway não é TEMA V1 nem TEMA V2 (decisão já
+registrada em `openspec/changes/temas-v1-v2/design.md`). O banner linka de volta para
+`route('login')`: a V3 já decidiu unificar o pós-login (sempre respeita
+`tema_preferido`), então não existe (nem deveria existir) uma segunda tela de login
+exclusiva de TEMA V1 como no legado — o banner é reproduzido como elemento visual +
+atalho de navegação pré-login, documentado inline no Blade.
+
+**Gap 2 (concluído) — "CENTRO DE AVISOS E RELATORIOS" ausente na home dos dois temas.**
+As 11 regras de leitura da Fase 5 (`app/Rma/Aplicacao/Alertas/`) já existiam e já
+tinham uma tela dedicada (`PainelDeAlertasController`/`rmas.alertas`), mas a aba
+"Início" (TEMA V2) e a página "RMAs" (TEMA V1, mais próxima do "Pág. Inicial" do
+legado na arquitetura unificada da V3) não mostravam nada disso — confirmado contra
+`ref-v1-dashboard.png`/`ref-v2-dashboard.png` e HTML autenticado capturado via
+Playwright (`15.8.1/`/`14.6.1/`, login por formulário, não por API — usadas as
+credenciais de laboratório). Extraída `App\Rma\Aplicacao\Alertas\
+ListarGruposDeAlertas` (composição das 11 chamadas, elimina a duplicação que existiria
+entre `PainelDeAlertasController` e `RmaController::index`) e um novo partial
+compartilhado `resources/views/rma/_centro_de_avisos.blade.php` (usado pelos DOIS
+temas — ícones vendorizados de `legacy-source/images/` para `public/images/rma/`:
+`lembrete.png`, `retornou.png`, `separador.png`, `separador2.png`, `notas.png`, mesmos
+bytes do legado). TEMA V2: aba "Início" ganhou busca simplificada ("Pesquisar:" +
+"Enviar pesquisa", mesma rota/Controller da aba "Pesquisar") + divisor + Centro de
+Avisos, tudo "estourando" do `.box-content` branco de volta para o fundo escuro
+(`.painel-inicio-fundo-escuro` em `v2.scss`, achado real: a aba início do legado não
+fica dentro de nenhum card branco). TEMA V1: página "RMAs" ganhou "QUADRO DE
+ANOTACOES" (reusa a MESMA rota/caso de uso `AtualizarAnotacaoPessoal` da Fase 1, só um
+segundo lugar na UI para o mesmo dado — nenhuma lógica nova) + sidebar de contadores
+por status/solução (`RmaController::contadoresDoPainel()`, consulta de composição
+direta, valores/larguras reais de `14.6.1.css:74-76`) + Centro de Avisos.
+
+**Testes:** `sail test` — 308/308 verdes, 593 assertions (mesmo total da Fase 9, nenhum
+teste quebrado). Nota: uma execução intermediária durante esta correção mostrou 8-11
+falhas/erros, todas em `Tests\Feature\Migracao\*` (ex.: `Table 'usuario' already
+exists`, `Table 'testing.rmas' doesn't exist`) — investigado e confirmado, via `git
+stash` isolando o diff desta correção, que essas falhas já existiam ANTES de qualquer
+mudança desta sessão (reproduzidas também com o código stashado) e são contenção de
+estado de banco entre execuções concorrentes do trabalho em andamento da Fase 9
+(migrador rodando em paralelo nesta mesma janela de tempo) — nenhuma delas toca
+`identidade/login`, `RmaController`, ou os temas. Reconfirmado depois com a suíte
+completa isolada: 308/308 verdes.
+
+**Pendências explícitas (não deu tempo, documentado em vez de fingir que terminou):**
+- Sidebar de contadores do TEMA V1 e nav do TEMA V2 ficaram fiéis ao CONTEÚDO real
+  (mesmos rótulos/estrutura), mas a nav superior do TEMA V2 no legado real é uma barra
+  de abas colorida de ponta a ponta ("Inicio | Pesquisar | ... | Menu | Logout"),
+  estruturalmente diferente do breadcrumb + `nav-tabs` atual da V3 (dois níveis
+  separados). Reconstruir isso exigiria reformular a navegação de TODAS as telas do
+  TEMA V2 (não só a home) — risco/escopo maior que o tempo desta correção permitia,
+  fora de escopo aqui.
+- Divisor `separador2.png`/`.hrup` e outros detalhes finos de espaçamento do legado não
+  foram replicados pixel a pixel (a diretriz da tarefa era "parar de ser obviamente
+  diferente", não pixel-perfect).
+
+**Commits:**
+- `#F8-CORRECAO - Login-gateway fiel ao legado real (fundo claro, glyphicons, banner
+  14.6.1) + bundle Vite proprio`
+- `#F8-CORRECAO - Centro de Avisos e Relatorios na home dos dois temas (V1: + quadro de
+  anotacoes e sidebar de contadores)`
+
+(hashes registrados após os commits, ver `git log`).
+
+---

@@ -7,11 +7,14 @@ use App\Models\Cliente;
 use App\Models\Fabricante;
 use App\Models\Fornecedor;
 use App\Models\Rma as RmaEloquent;
+use App\Rma\Aplicacao\Alertas\ListarGruposDeAlertas;
 use App\Rma\Aplicacao\BuscarRmas;
 use App\Rma\Aplicacao\CriarRma;
 use App\Rma\Aplicacao\EditarRma;
 use App\Rma\Aplicacao\VerDetalheDoRma;
 use App\Rma\Dominio\CriterioDeBusca;
+use App\Rma\Dominio\Solucao;
+use App\Rma\Dominio\Status;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -20,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RmaController extends Controller
 {
-    public function index(Request $request, BuscarRmas $caso): View
+    public function index(Request $request, BuscarRmas $caso, ListarGruposDeAlertas $listarGruposDeAlertas): View
     {
         Gate::authorize('viewAny', RmaEloquent::class);
 
@@ -38,7 +41,45 @@ class RmaController extends Controller
             'rmas' => $valor !== '' ? $caso->buscar($criterio) : [],
             'tipo' => $tipo,
             'valor' => $valor,
+            // "CENTRO DE AVISOS E RELATORIOS" (correção de fidelidade Fase 8,
+            // 2026-08-25) — a aba "Início"/"Pág. Inicial" dos dois temas mostra as
+            // mesmas 11 regras da Fase 5 (`PainelDeAlertasController`), sempre
+            // presente no HTML (mesmo mecanismo de abas client-side documentado no
+            // design.md). `ListarGruposDeAlertas` é a mesma composição usada por
+            // `PainelDeAlertasController` — nenhuma regra de negócio nova, nenhuma
+            // duplicação de lógica entre as duas telas.
+            'grupos' => $listarGruposDeAlertas->listar(),
+            // Sidebar "contadores por solução" — só consumida pelo TEMA V1
+            // (`14.6.1/index.php`, achado confirmado por captura de referência),
+            // fonte real: contagem de RMAs por `status`/`solucao`. Consulta de
+            // composição direta (não é caso de uso/regra de negócio nova).
+            'contadores' => $this->contadoresDoPainel(),
         ]);
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private function contadoresDoPainel(): array
+    {
+        return [
+            'ENTRADA' => RmaEloquent::query()->where('status', Status::Entrada)->count(),
+            'PENDENTE CREDITO' => RmaEloquent::query()->where('solucao', Solucao::PendenteCredito)->count(),
+            'ENCAMINHADO' => RmaEloquent::query()->where('status', Status::Encaminhado)->count(),
+            'CONCLUIDO' => RmaEloquent::query()->where('status', Status::Concluido)->count(),
+            'SEM GARANTIA' => RmaEloquent::query()->where('solucao', Solucao::SemGarantia)->count(),
+            'GERADO CREDITO' => RmaEloquent::query()->where('solucao', Solucao::GeradoCredito)->count(),
+            'REPARO' => RmaEloquent::query()->where('solucao', Solucao::Reparo)->count(),
+            'TROCA DO PRODUTO' => RmaEloquent::query()->where('solucao', Solucao::TrocaDoProduto)->count(),
+            'TROCA DE PECA INTERNA' => RmaEloquent::query()->where('solucao', Solucao::TrocaDePecaInterna)->count(),
+            'DEVOLUCAO DO PRODUTO' => RmaEloquent::query()->where('solucao', Solucao::DevolucaoDoProduto)->count(),
+            'REEMBOLSO DO DINHEIRO' => RmaEloquent::query()->where('solucao', Solucao::ReembolsoDoDinheiro)->count(),
+            'REPARO PELO RMA' => RmaEloquent::query()->where('solucao', Solucao::ReparoPeloRma)->count(),
+            'TESTADO TUDO OK' => RmaEloquent::query()->where('solucao', Solucao::TestadoTudoOk)->count(),
+            'ORCAMENTO PAGO' => RmaEloquent::query()->where('solucao', Solucao::OrcamentoPago)->count(),
+            'PROCON' => RmaEloquent::query()->where('solucao', Solucao::Procon)->count(),
+            'QUANTIDADE TOTAL DE ITENS' => RmaEloquent::query()->count(),
+        ];
     }
 
     public function create(): View

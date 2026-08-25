@@ -45,6 +45,22 @@ operacional de cada fase. Pareceres:
 `docs/pareceres/parecer-paridade-estrutural-v1-falhas-layout.md` (fase 1);
 `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-encontrados.md` (fase 2).
 
+**Frente paralela — paridade visual do Tema V2**
+(`docs/produto/plano-execucao-paridade-v2.md`, **em execução**). Matriz:
+`LEGADO 15.8.1 <-> V3 /v2/rma` (nunca `/rmas`, nunca `14.6.1`). Independente da fase 2
+do Tema V1 acima — não reabrir V1 aqui.
+
+1. [ ] CP16 — shell global (wrapper 1190px / `.container` 990px / sidebar 195px);
+2. [ ] CP17 — header e navegação reais (9 itens históricos, dropdown Menu);
+3. [ ] CP18 — cascata e fontes do V2;
+4. [ ] CP19 — menu lateral direito (`rightmenu.php`, 14 seções);
+5. [ ] CP20 — Home e Pesquisar;
+6. [ ] CP21 — separador antes do Centro de Avisos;
+7. [ ] CP22 — Centro de Avisos;
+8. [ ] CP23 — tabelas das 5 abas (Pesquisar/Entrada/Recebido/Encaminhado/Concluído);
+9. [ ] CP24 — footer;
+10. [ ] CP25 — gate final (3+1 viewports, prova final, checklist).
+
 ### Lote anterior pausado, não descartado
 
 Executar primeiro a correção P0 descoberta pela auditoria da nova frente, sem depender

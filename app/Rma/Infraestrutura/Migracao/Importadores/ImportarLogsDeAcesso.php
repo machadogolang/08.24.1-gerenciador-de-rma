@@ -5,9 +5,9 @@ namespace App\Rma\Infraestrutura\Migracao\Importadores;
 use App\Identidade\Dominio\ResultadoDeAcesso;
 use App\Models\TentativaDeAcesso;
 use App\Models\User;
+use App\Rma\Infraestrutura\Migracao\Concerns\ExecutaComRollbackEmDryRun;
 use App\Rma\Infraestrutura\Migracao\ConexaoLegado;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
-use Illuminate\Support\Facades\DB;
 
 /**
  * `log` → `tentativas_de_acesso` (`INV-RMA-06` §12, Fase 1 já implementada). `nome`/
@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\DB;
  */
 final class ImportarLogsDeAcesso
 {
+    use ExecutaComRollbackEmDryRun;
+
     public function __construct(
         private readonly ConexaoLegado $conexao = new ConexaoLegado,
     ) {}
@@ -31,13 +33,9 @@ final class ImportarLogsDeAcesso
         $total = 0;
         $processados = 0;
 
-        DB::transaction(function () use ($origem, $relatorio, $dryRun, &$total, &$processados) {
+        $this->executarComRollbackSeDryRun($dryRun, function () use ($origem, $relatorio, &$total, &$processados) {
             foreach ($origem as $linha) {
                 $total++;
-
-                if ($dryRun) {
-                    continue;
-                }
 
                 $resultado = match ($linha->retorno) {
                     'permitido' => ResultadoDeAcesso::Permitido,

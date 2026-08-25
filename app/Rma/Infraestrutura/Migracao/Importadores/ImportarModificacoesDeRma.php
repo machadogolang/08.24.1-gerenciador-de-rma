@@ -6,9 +6,9 @@ use App\Models\ModificacaoDeRma;
 use App\Models\Rma as RmaEloquent;
 use App\Models\User;
 use App\Rma\Dominio\AcaoDeModificacao;
+use App\Rma\Infraestrutura\Migracao\Concerns\ExecutaComRollbackEmDryRun;
 use App\Rma\Infraestrutura\Migracao\ConexaoLegado;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Schema;
  */
 final class ImportarModificacoesDeRma
 {
+    use ExecutaComRollbackEmDryRun;
+
     public function __construct(
         private readonly ConexaoLegado $conexao = new ConexaoLegado,
     ) {}
@@ -45,13 +47,9 @@ final class ImportarModificacoesDeRma
         $total = 0;
         $processados = 0;
 
-        DB::transaction(function () use ($origem, $relatorio, $dryRun, &$total, &$processados) {
+        $this->executarComRollbackSeDryRun($dryRun, function () use ($origem, $relatorio, &$total, &$processados) {
             foreach ($origem as $linha) {
                 $total++;
-
-                if ($dryRun) {
-                    continue;
-                }
 
                 $rma = $linha->numero !== null
                     ? RmaEloquent::query()->where('numero_legado', $linha->numero)->first()

@@ -4,11 +4,11 @@ namespace App\Rma\Infraestrutura\Migracao\Importadores;
 
 use App\Identidade\Dominio\Papel;
 use App\Models\User;
+use App\Rma\Infraestrutura\Migracao\Concerns\ExecutaComRollbackEmDryRun;
 use App\Rma\Infraestrutura\Migracao\ConexaoLegado;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
 use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
 use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -26,6 +26,8 @@ use Illuminate\Support\Str;
  */
 final class ImportarUsuarios
 {
+    use ExecutaComRollbackEmDryRun;
+
     public function __construct(
         private readonly ConexaoLegado $conexao = new ConexaoLegado,
     ) {}
@@ -46,7 +48,7 @@ final class ImportarUsuarios
         $total = 0;
         $processados = 0;
 
-        DB::transaction(function () use ($origem, $relatorio, $dryRun, &$total, &$processados) {
+        $this->executarComRollbackSeDryRun($dryRun, function () use ($origem, $relatorio, $dryRun, &$total, &$processados) {
             foreach ($origem as $linha) {
                 $total++;
 
@@ -62,10 +64,6 @@ final class ImportarUsuarios
                 }
 
                 $temaPreferido = TabelaDeTraducao::temaPreferido($linha->app);
-
-                if ($dryRun) {
-                    continue;
-                }
 
                 $user = User::query()->firstOrNew(['email' => $linha->email]);
                 $novo = ! $user->exists;
@@ -88,7 +86,11 @@ final class ImportarUsuarios
 
                 $user->save();
 
-                if ($novo) {
+                // ARQ-002 (`INV-RMA-10`): dry-run roda a tradução/gravação inteira para
+                // detectar anomalia e contar corretamente (a transação é desfeita no
+                // fim), mas o e-mail de redefinição de senha não é transacional — nunca
+                // pode ser disparado de verdade num dry-run.
+                if ($novo && ! $dryRun) {
                     Password::sendResetLink(['email' => $user->email]);
                 }
 

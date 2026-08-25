@@ -25,6 +25,19 @@ final class RelatorioDeReconciliacao
     /** @var array<int, array{tabela: string, chave: mixed, detalhe: string}> */
     private array $conversoesAssistidas = [];
 
+    private bool $dryRun = false;
+
+    /**
+     * ARQ-002 (`INV-RMA-10`): marca o relatório como resultado de `--dry-run` — as
+     * contagens abaixo passam a refletir o que SERIA gravado (tradução completa rodou,
+     * mas cada importador desfez sua transação), nunca escrita real. `resumo()` rotula
+     * a coluna de destino de acordo, para não ser confundida com uma migração real.
+     */
+    public function marcarComoDryRun(): void
+    {
+        $this->dryRun = true;
+    }
+
     public function contarOrigem(string $tabela, int $n): void
     {
         $this->origem[$tabela] = ($this->origem[$tabela] ?? 0) + $n;
@@ -73,8 +86,16 @@ final class RelatorioDeReconciliacao
     {
         $linhas = [];
         $linhas[] = '=== Relatório de reconciliação — migração V2→V3 ===';
+
+        if ($this->dryRun) {
+            $linhas[] = '';
+            $linhas[] = '*** MODO --dry-run: NENHUMA ESCRITA FOI PERSISTIDA. ***';
+            $linhas[] = "*** \"planejado\" abaixo é o que SERIA gravado — tradução completa rodou, cada ***";
+            $linhas[] = '*** importador desfez sua própria transação ao final.                        ***';
+        }
+
         $linhas[] = '';
-        $linhas[] = '-- Contagem origem × destino --';
+        $linhas[] = $this->dryRun ? '-- Contagem origem × planejado --' : '-- Contagem origem × destino --';
 
         $tabelas = array_unique([...array_keys($this->origem), ...array_keys($this->destino)]);
         sort($tabelas);
@@ -84,7 +105,7 @@ final class RelatorioDeReconciliacao
             $destino = $this->destino[$tabela] ?? 0;
             $diferenca = $origem - $destino;
             $linhas[] = sprintf(
-                '%-24s origem=%-6d destino=%-6d diferença=%d',
+                $this->dryRun ? '%-24s origem=%-6d planejado=%-6d diferença=%d' : '%-24s origem=%-6d destino=%-6d diferença=%d',
                 $tabela,
                 $origem,
                 $destino,

@@ -7,6 +7,7 @@ use App\Identidade\Dominio\TemaPreferido;
 use App\Models\User;
 use App\Rma\Infraestrutura\Migracao\Importadores\ImportarUsuarios;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Tests\Feature\Migracao\Suporte\MigracaoTestCase;
 
 class ImportarUsuariosTest extends MigracaoTestCase
@@ -87,5 +88,50 @@ class ImportarUsuariosTest extends MigracaoTestCase
         (new ImportarUsuarios)->executar($this->novoRelatorio());
 
         $this->assertSame(1, User::query()->where('email', 'ana@example.com')->count());
+    }
+
+    /**
+     * ARQ-002 (`INV-RMA-10`) — dry-run roda a tradução inteira (inclusive detecção de
+     * anomalia), mas nunca pode gravar usuário nem disparar e-mail real de redefinição
+     * de senha (efeito não-transacional, não desfeito pelo rollback da transação).
+     */
+    public function test_dry_run_nao_grava_usuario_nem_envia_email_de_redefinicao(): void
+    {
+        Notification::fake();
+
+        DB::connection('rma_legacy')->table('usuario')->insert([
+            'nome' => 'Ana Operadora',
+            'email' => 'ana@example.com',
+            'anotacao' => '',
+            'permissao' => 2,
+            'app' => '15.8.1',
+            'data_de_cadastro' => '2019-05-01',
+        ]);
+
+        $relatorio = $this->novoRelatorio();
+        (new ImportarUsuarios)->executar($relatorio, dryRun: true);
+
+        $this->assertSame(0, User::query()->count());
+        $this->assertSame(1, $relatorio->contagemDestino()['users']);
+        Notification::assertNothingSent();
+    }
+
+    /** ARQ-002 — dry-run também detecta anomalia de permissão sem gravar nada. */
+    public function test_dry_run_detecta_anomalia_de_permissao_sem_gravar(): void
+    {
+        DB::connection('rma_legacy')->table('usuario')->insert([
+            'nome' => 'Fulano',
+            'email' => 'fulano@example.com',
+            'anotacao' => '',
+            'permissao' => 99,
+            'app' => '14.6.1',
+            'data_de_cadastro' => '2019-05-01',
+        ]);
+
+        $relatorio = $this->novoRelatorio();
+        (new ImportarUsuarios)->executar($relatorio, dryRun: true);
+
+        $this->assertCount(1, $relatorio->anomalias());
+        $this->assertSame(0, User::query()->count());
     }
 }

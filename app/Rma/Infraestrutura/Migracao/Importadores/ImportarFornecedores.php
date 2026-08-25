@@ -5,9 +5,9 @@ namespace App\Rma\Infraestrutura\Migracao\Importadores;
 use App\Models\Fornecedor;
 use App\Rma\Infraestrutura\Migracao\Concerns\AtualizaOuCriaPorNomeNormalizado;
 use App\Rma\Infraestrutura\Migracao\Concerns\ConcatenaObservacaoSgvFr;
+use App\Rma\Infraestrutura\Migracao\Concerns\ExecutaComRollbackEmDryRun;
 use App\Rma\Infraestrutura\Migracao\ConexaoLegado;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
-use Illuminate\Support\Facades\DB;
 
 /**
  * `fornecedor` → `fornecedores` (`INV-RMA-06` §16). Dedup por nome normalizado.
@@ -18,6 +18,7 @@ final class ImportarFornecedores
 {
     use AtualizaOuCriaPorNomeNormalizado;
     use ConcatenaObservacaoSgvFr;
+    use ExecutaComRollbackEmDryRun;
 
     public function __construct(
         private readonly ConexaoLegado $conexao = new ConexaoLegado,
@@ -29,13 +30,9 @@ final class ImportarFornecedores
         $total = 0;
         $processados = 0;
 
-        DB::transaction(function () use ($origem, $dryRun, &$total, &$processados) {
+        $this->executarComRollbackSeDryRun($dryRun, function () use ($origem, &$total, &$processados) {
             foreach ($origem as $linha) {
                 $total++;
-
-                if ($dryRun) {
-                    continue;
-                }
 
                 $observacao = $this->concatenarObservacaoSgvFr($linha->observacaoSGV ?? null, $linha->observacaoFR ?? null);
 

@@ -4,9 +4,9 @@ namespace App\Rma\Infraestrutura\Migracao\Importadores;
 
 use App\Models\AssistenciaTecnica;
 use App\Rma\Infraestrutura\Migracao\Concerns\AtualizaOuCriaPorNomeNormalizado;
+use App\Rma\Infraestrutura\Migracao\Concerns\ExecutaComRollbackEmDryRun;
 use App\Rma\Infraestrutura\Migracao\ConexaoLegado;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
-use Illuminate\Support\Facades\DB;
 
 /**
  * `assistencia_tecnica` → `assistencias_tecnicas` (`INV-RMA-06` §16). Dedup por nome
@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 final class ImportarAssistenciasTecnicas
 {
     use AtualizaOuCriaPorNomeNormalizado;
+    use ExecutaComRollbackEmDryRun;
 
     public function __construct(
         private readonly ConexaoLegado $conexao = new ConexaoLegado,
@@ -27,13 +28,9 @@ final class ImportarAssistenciasTecnicas
         $total = 0;
         $processados = 0;
 
-        DB::transaction(function () use ($origem, $dryRun, &$total, &$processados) {
+        $this->executarComRollbackSeDryRun($dryRun, function () use ($origem, &$total, &$processados) {
             foreach ($origem as $linha) {
                 $total++;
-
-                if ($dryRun) {
-                    continue;
-                }
 
                 $this->atualizarOuCriarPorNome(
                     AssistenciaTecnica::class,

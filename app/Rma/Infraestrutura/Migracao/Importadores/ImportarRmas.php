@@ -8,12 +8,12 @@ use App\Parceiros\Aplicacao\EncontrarOuCriarCliente;
 use App\Parceiros\Aplicacao\EncontrarOuCriarFabricante;
 use App\Parceiros\Aplicacao\EncontrarOuCriarFornecedor;
 use App\Rma\Dominio\Prioridade;
+use App\Rma\Infraestrutura\Migracao\Concerns\ExecutaComRollbackEmDryRun;
 use App\Rma\Infraestrutura\Migracao\ConexaoLegado;
 use App\Rma\Infraestrutura\Migracao\ParserDeDataLegado;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
 use App\Rma\Infraestrutura\Migracao\ResolverDestinatario;
 use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
-use Illuminate\Support\Facades\DB;
 
 /**
  * `bd` → `rmas` (`INV-RMA-06` §1) — entidade central, campo a campo. Idempotência via
@@ -30,6 +30,8 @@ use Illuminate\Support\Facades\DB;
  */
 final class ImportarRmas
 {
+    use ExecutaComRollbackEmDryRun;
+
     public function __construct(
         private readonly ConexaoLegado $conexao = new ConexaoLegado,
         private readonly EncontrarOuCriarFabricante $fabricantes = new EncontrarOuCriarFabricante,
@@ -44,7 +46,7 @@ final class ImportarRmas
         $total = 0;
         $processados = 0;
 
-        DB::transaction(function () use ($origem, $relatorio, $dryRun, $forcar, &$total, &$processados) {
+        $this->executarComRollbackSeDryRun($dryRun, function () use ($origem, $relatorio, $forcar, &$total, &$processados) {
             foreach ($origem as $linha) {
                 $total++;
                 $numero = (int) $linha->numero;
@@ -52,10 +54,6 @@ final class ImportarRmas
                 $jaMigrado = RmaEloquent::query()->where('numero_legado', $numero)->exists();
 
                 if ($jaMigrado && ! $forcar) {
-                    continue;
-                }
-
-                if ($dryRun) {
                     continue;
                 }
 

@@ -214,18 +214,30 @@ avançar antes, código não sai do seletor.
   `RegistrarSolucao`, que reconstruíam a entidade só com os campos do núcleo. Regressão
   em `tests/Feature/Rma/PreservacaoDeEstadoDoAgregadoTest.php` (falha comprovada contra
   o código anterior, 7 cenários verdes contra o corrigido).
-- [ ] **ARQ H-002 (`ARQ-002`) — corrigir dry-run e reconciliação do migrador.**
-  `ImportarRmas` precisa executar `traduzirLinha()` em `--dry-run` e separar `origem`,
-  `planejado`, `criado`, `atualizado`, `ignorado` e total real no destino. Bloqueia
-  `F10-DAD-04…09`.
+- [x] **ARQ H-002 (`ARQ-002`) — corrigir dry-run e reconciliação do migrador.** Os 8
+  importadores pulavam a tradução inteira em `--dry-run` (`if ($dryRun) continue;` antes
+  de traduzir), então nunca detectavam anomalia e sempre reportavam zero. Novo trait
+  `ExecutaComRollbackEmDryRun`: roda tradução + gravação sempre da mesma forma, mas
+  embrulhada numa transação só confirmada quando não é dry-run (uma exceção marcadora
+  força rollback ao final) — cobre inclusive efeitos colaterais indiretos como
+  `EncontrarOuCriarFabricante` criando parceiro por cascata. `ImportarUsuarios` guarda à
+  parte o e-mail de redefinição de senha (não-transacional), nunca disparado em
+  dry-run. `RelatorioDeReconciliacao::marcarComoDryRun()` rotula a coluna de destino
+  como "planejado" no resumo, para não ser lida como escrita real. 10 regressões novas
+  (`ImportarRmasTest`, `ImportarUsuariosTest`, `RelatorioDeReconciliacaoTest`): dry-run
+  detecta anomalia, conta quantas linhas seriam processadas, não conta linha já migrada
+  como planejada, não envia e-mail. Escopo deliberadamente não incluído: distinção fina
+  `criado`/`atualizado`/`ignorado` por linha (hoje só origem×planejado/destino) — não
+  bloqueia `F10-DAD-04…09`, pode ser refinado depois se a reconciliação real pedir.
 - [x] **ARQ H-003 (`ARQ-003`) — impedir escalada de privilégio do Supervisor.** Novo
   `Papel::podeOperarSobrePapel()`, usado em `UsuarioController::update` (papel atual do
   alvo via `UserPolicy::gerenciarUsuario` + papel pretendido) e `ResetarSenhaDeUsuario`.
   8 regressões novas (`GerenciarUsuariosTest`, `ResetarSenhaDeUsuarioTest`): Supervisor
   bloqueado contra SuperAdministrador (autopromoção, promoção de terceiro, alterar papel
   existente, resetar senha), SuperAdministrador continua liberado.
-- [ ] **QA H-004 — renovar suíte completa e documentar o checkpoint.** `ARQ-001` e
-  `ARQ-003` concluídos (324 testes/678 assertions, sem falha); falta `ARQ-002`.
+- [x] **QA H-004 — renovar suíte completa e documentar o checkpoint.** `ARQ-001`,
+  `ARQ-002` e `ARQ-003` concluídos — os 3 P0 da frente `INV-RMA-10` estão corrigidos e
+  testados. Suíte completa: 331 testes / 696 assertions, sem falha.
 
 ### H.2 Arquitetura (importante, pós-P0)
 
@@ -341,9 +353,8 @@ aprovados; nunca por mudança de cor sobre o Tema 1/2.
 
 ## Próxima tarefa segura
 
-`ARQ H-002` (`ARQ-002`): corrigir o dry-run do migrador (`ImportarRmas` não executa
-`traduzirLinha()` em `--dry-run`, e o relatório confunde `processados` de origem com
-destino). `ARQ H-001` e `ARQ H-003` já foram corrigidos e cobertos por regressão — ver
-histórico do checklist. `ARQ H-002` bloqueia `F10-DAD-04…09` e é o último P0 antes de
-`QA H-004` (renovar suíte/checkpoint) e da retomada de `F10-FUN-07` pelos smokes
-somente leitura.
+Os 3 P0 da frente `INV-RMA-10` (`ARQ-001`, `ARQ-002`, `ARQ-003`) estão corrigidos,
+testados e commitados — ver histórico das seções H.1/H acima. Retomar `F10-FUN-07`:
+executar e registrar os seis smokes cruzados M-01…M-06 sem alterar dados históricos
+fora de cenário descartável. É QA controlado; qualquer etapa mutável exige registro
+descartável e evidência explícita.

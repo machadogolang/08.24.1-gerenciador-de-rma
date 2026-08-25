@@ -41,6 +41,10 @@ final class MigrarLegado extends Command
 
         $relatorio = new RelatorioDeReconciliacao;
 
+        if ($dryRun) {
+            $relatorio->marcarComoDryRun();
+        }
+
         $passos = [
             'usuarios' => fn () => (new ImportarUsuarios)->executar($relatorio, $dryRun),
             'clientes' => fn () => (new ImportarClientes)->executar($relatorio, $dryRun),

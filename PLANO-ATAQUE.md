@@ -14,10 +14,11 @@ de decisão de produto nem de mutação do banco histórico:
    `docs/produto/checklist-master-v3.md` H-001);
 2. [x] `ARQ-003`: impedir promoção indevida e operações do Supervisor sobre
    SuperAdministrador (`Papel::podeOperarSobrePapel()`; ver checklist H-003);
-3. [ ] renovar a suíte completa e documentar o checkpoint;
+3. [x] renovar a suíte completa e documentar o checkpoint (331 testes/696 assertions,
+   sem falha; ver checklist H-004);
 4. [ ] retomar `F10-FUN-07` pelos smokes somente leitura;
-5. [ ] concluir `ARQ-002` antes de `F10-DAD-04`, tornando dry-run e reconciliação
-   confiáveis.
+5. [x] concluir `ARQ-002` antes de `F10-DAD-04`, tornando dry-run e reconciliação
+   confiáveis (trait `ExecutaComRollbackEmDryRun`; ver checklist H-002).
 
 O lote anterior da F10 permanece incorporado e não foi descartado:
 

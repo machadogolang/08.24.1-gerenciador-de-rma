@@ -269,4 +269,54 @@ class ImportarRmasTest extends MigracaoTestCase
         $this->assertSame(0, Cliente::query()->count());
         $this->assertSame(0, Fabricante::query()->count());
     }
+
+    /**
+     * ARQ-002 (`INV-RMA-10`) — antes desta correção, `if ($dryRun) { continue; }`
+     * pulava a tradução inteira, então dry-run nunca detectava anomalia nenhuma. Agora
+     * a tradução roda por completo (e é desfeita depois), então a anomalia aparece.
+     */
+    public function test_dry_run_detecta_anomalias_sem_gravar(): void
+    {
+        $this->inserirLinhaBase(['status' => 'lixo']);
+
+        $relatorio = $this->novoRelatorio();
+        (new ImportarRmas)->executar($relatorio, dryRun: true);
+
+        $this->assertNotEmpty($relatorio->anomalias());
+        $this->assertSame(0, Rma::query()->count());
+    }
+
+    /**
+     * ARQ-002 — antes, `$processados` (destino) sempre era 0 em dry-run, escondendo o
+     * que de fato seria migrado. Agora reflete quantas linhas passariam pela tradução.
+     */
+    public function test_dry_run_conta_quantas_linhas_seriam_processadas(): void
+    {
+        $this->inserirLinhaBase();
+
+        $relatorio = $this->novoRelatorio();
+        (new ImportarRmas)->executar($relatorio, dryRun: true);
+
+        $this->assertSame(1, $relatorio->contagemOrigem()['bd']);
+        $this->assertSame(1, $relatorio->contagemDestino()['rmas']);
+        $this->assertSame(0, Rma::query()->count());
+    }
+
+    /**
+     * ARQ-002 — a checagem de idempotência (`numero_legado` já migrado) roda dentro da
+     * mesma transação desfeita, então dry-run continua reportando "seria ignorado" para
+     * uma linha já migrada de verdade, sem contá-la de novo como planejada.
+     */
+    public function test_dry_run_nao_conta_linha_ja_migrada_como_planejada(): void
+    {
+        $this->inserirLinhaBase();
+        (new ImportarRmas)->executar($this->novoRelatorio());
+
+        $relatorio = $this->novoRelatorio();
+        (new ImportarRmas)->executar($relatorio, dryRun: true);
+
+        $this->assertSame(1, $relatorio->contagemOrigem()['bd']);
+        $this->assertSame(0, $relatorio->contagemDestino()['rmas']);
+        $this->assertSame(1, Rma::query()->count());
+    }
 }

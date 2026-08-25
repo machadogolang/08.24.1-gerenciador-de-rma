@@ -1,5 +1,16 @@
 # Tasks — Auditoria
 
+**Pré-requisito descoberto na revisão desta fase (não estava listado antes):** só o
+evento `RmaConcluido` existe hoje. Os outros 7 precisam ser criados e dispatados a
+partir dos casos de uso já implementados nas Fases 3/4 — sem isso,
+`RegistrarModificacaoDeRma` não tem o que assinar.
+
+- [ ] `app/Rma/Dominio/Eventos/{RmaCriado,RmaEditado,RmaRecebido,RmaEncaminhado,RmaArquivado,RmaRevertido,SolucaoRegistrada}.php`
+- [ ] Adicionar `::dispatch()` ao final de `CriarRma`/`EditarRma`/`ReceberRma`/
+      `EncaminharRma`/`ArquivarRma`/`ReverterRmaParaEntrada`/`RegistrarSolucao` (Fases
+      3/4) — extensão aditiva, não muda o comportamento já testado
+- [ ] `app/Rma/Dominio/Eventos/TentativaDeGravacaoNaoPermitida.php` — disparado por
+      `RmaPolicy::update()` (Fase 3) antes de devolver `false`
 - [ ] `database/migrations/2026_08_31_000000_create_modificacoes_de_rma_table.php`
 - [ ] `app/Rma/Dominio/AcaoDeModificacao.php`
 - [ ] `app/Models/ModificacaoDeRma.php`

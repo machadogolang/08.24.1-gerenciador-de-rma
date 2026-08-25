@@ -46,14 +46,7 @@
                         ? 'Tabelinha-TR3'
                         : ($indiceZebra++ % 2 === 0 ? 'Tabelinha-TR1' : 'Tabelinha-TR2');
 
-                    // [CONFIRMADO-14.6.1] Abreviações feitas só nesta apresentação.
-                    $origemNormalizada = mb_strtoupper((string) $registro->origem);
-                    $origemExibida = match ($origemNormalizada) {
-                        'MERCADO LIVRE' => 'M LIVRE',
-                        'LEILÃO', 'LEILAO' => 'LEILAO',
-                        'LICITAÇÃO', 'LICITACAO' => 'LICITACAO',
-                        default => $registro->origem,
-                    };
+                    $origemExibida = origem_abreviada_v1($registro->origem);
                     $urlDetalhe = route('rmas.show', ['rma' => $registro->id]);
                 @endphp
                 <tr class="{{ $classeLinha }}">

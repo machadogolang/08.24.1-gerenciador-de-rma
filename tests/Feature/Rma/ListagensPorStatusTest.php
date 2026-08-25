@@ -145,10 +145,89 @@ class ListagensPorStatusTest extends TestCase
         // para o painel de sessão oculto por CSS — isso não é o H1 artificial do
         // achado 7). Isolamos #CONTEUDO até a tabela para confirmar que nenhum
         // <h1> foi injetado ali.
-        $conteudo = $response->getContent();
+        $this->assertSemH1ArtificialEmConteudo($response->getContent());
+    }
+
+    /**
+     * VIS-V1-001/CP3B — `Entrada` reproduz a composição histórica
+     * (`legacy-source/14.6.1/page/entrada.php`): ícone 50×50 próprio, colunas
+     * declaradas e sem o `<h1>` artificial. Continua usando a família
+     * `TrZebrada`/`TrInconformidade`/`TrUrgente` (achado 5 — não é uma zebra simples).
+     */
+    public function test_entrada_tem_icone_colunas_e_nenhum_h1_artificial(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create(['descricao' => 'RMA entrada', 'status' => Status::Entrada]);
+
+        $response = $this->actingAs($usuario)->get(route('rmas.entrada'));
+
+        $response->assertOk();
+        $response->assertSee('images/tema-v1/entrada.png', false);
+        $response->assertSee('colgroup', false);
+        $response->assertSee('TrZebrada', false);
+        $this->assertSemH1ArtificialEmConteudo($response->getContent());
+    }
+
+    /**
+     * VIS-V1-001/CP3C — mesma composição histórica de `Entrada`, fonte
+     * `legacy-source/14.6.1/page/encaminhados.php`.
+     */
+    public function test_encaminhados_tem_icone_colunas_e_nenhum_h1_artificial(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create(['descricao' => 'RMA encaminhado', 'status' => Status::Encaminhado]);
+
+        $response = $this->actingAs($usuario)->get(route('rmas.encaminhados'));
+
+        $response->assertOk();
+        $response->assertSee('images/tema-v1/encaminhado.png', false);
+        $response->assertSee('colgroup', false);
+        $response->assertSee('TrZebrada', false);
+        $this->assertSemH1ArtificialEmConteudo($response->getContent());
+    }
+
+    /**
+     * VIS-V1-001/CP3D/achado 4 — `Aguardando credito` usa só
+     * `Tabelinha-TR1`/`Tabelinha-TR2` (zebra de 30px), nunca a família `TrZebrada`
+     * usada por Entrada/Encaminhado — o legado não tem regra de destaque aqui.
+     */
+    public function test_aguardando_credito_usa_apenas_zebra_tr1_tr2(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create([
+            'descricao' => 'RMA pendente credito um',
+            'status' => Status::Concluido,
+            'solucao' => Solucao::PendenteCredito,
+        ]);
+        Rma::factory()->create([
+            'descricao' => 'RMA pendente credito dois',
+            'status' => Status::Concluido,
+            'solucao' => Solucao::PendenteCredito,
+        ]);
+
+        $response = $this->actingAs($usuario)->get(route('rmas.aguardando-credito'));
+
+        $response->assertOk();
+        $response->assertSee('images/tema-v1/pendente.png', false);
+        $response->assertSee('colgroup', false);
+        $response->assertSee('Tabelinha-TR1', false);
+        $response->assertSee('Tabelinha-TR2', false);
+        $response->assertDontSee('TrZebrada', false);
+        $this->assertSemH1ArtificialEmConteudo($response->getContent());
+    }
+
+    /**
+     * #CONTEUDO é o miolo histórico das telas de listagem (o layout também injeta um
+     * <h1 class="titulo-v1"> sempre presente no DOM, mas fora de #CONTEUDO, para o
+     * painel de sessão oculto por CSS — isso não é o H1 artificial do achado 7).
+     * Isolamos #CONTEUDO até a tabela/mensagem de vazio para confirmar que nenhum
+     * <h1> foi injetado ali.
+     */
+    private function assertSemH1ArtificialEmConteudo(string $conteudo): void
+    {
         $inicio = strpos($conteudo, 'id="CONTEUDO"');
-        $fimTabela = strpos($conteudo, '<table', $inicio);
-        $this->assertStringNotContainsString('<h1', substr($conteudo, $inicio, $fimTabela - $inicio));
+        $fim = strpos($conteudo, '<table', $inicio) ?: strpos($conteudo, '</div>', $inicio);
+        $this->assertStringNotContainsString('<h1', substr($conteudo, $inicio, $fim - $inicio));
     }
 
     public function test_header_do_tema_v1_mostra_os_4_atalhos(): void

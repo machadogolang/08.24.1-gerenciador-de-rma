@@ -78,34 +78,34 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
 
 ## CP3B — Entrada
 
-- [ ] CP3B-01 — portar `entrada.png`, validar hash/50×50.
-- [ ] CP3B-02 — montar cabeçalho interno e ocultar H1 artificial.
-- [ ] CP3B-03 — declarar colunas 8/10/6/6/13/12/18/17/6/4.
-- [ ] CP3B-04 — preservar família compacta e alternância determinística.
-- [ ] CP3B-05 — decidir/documentar `[BUG-LEGADO]` dos estados inalcançáveis.
-- [ ] CP3B-06 — corrigir wrappers, área clicável, NF/moeda/origem/data.
-- [ ] CP3B-07 — capturar/reabrir/comparar, registrar diário, testes/build e commit.
+- [x] CP3B-01 — portar `entrada.png`, validar hash/50×50.
+- [x] CP3B-02 — montar cabeçalho interno e ocultar H1 artificial.
+- [x] CP3B-03 — declarar colunas 8/10/6/6/13/12/18/17/6/4.
+- [x] CP3B-04 — preservar família compacta e alternância determinística.
+- [x] CP3B-05 — decidir/documentar `[BUG-LEGADO]` dos estados inalcançáveis.
+- [x] CP3B-06 — corrigir wrappers, área clicável, NF/moeda/origem/data.
+- [x] CP3B-07 — capturar/reabrir/comparar, registrar diário, testes/build e commit.
 
 ## CP3C — Encaminhado
 
-- [ ] CP3C-01 — portar `encaminhado.png`, validar hash/50×50.
-- [ ] CP3C-02 — montar cabeçalho interno e ocultar H1 artificial.
-- [ ] CP3C-03 — expor `NF R` pelo read model/objeto de apresentação.
-- [ ] CP3C-04 — declarar colunas 8/10/6/13/13/18/6/8/14/4.
-- [ ] CP3C-05 — preservar família compacta e decisão dos estados `[BUG-LEGADO]`.
-- [ ] CP3C-06 — corrigir wrappers, área clicável e formatação.
-- [ ] CP3C-07 — capturar/reabrir/comparar, registrar diário, testes/build e commit.
+- [x] CP3C-01 — portar `encaminhado.png`, validar hash/50×50.
+- [x] CP3C-02 — montar cabeçalho interno e ocultar H1 artificial.
+- [x] CP3C-03 — expor `NF R` pelo read model/objeto de apresentação.
+- [x] CP3C-04 — declarar colunas 8/10/6/13/13/18/6/8/14/4.
+- [x] CP3C-05 — preservar família compacta e decisão dos estados `[BUG-LEGADO]`.
+- [x] CP3C-06 — corrigir wrappers, área clicável e formatação.
+- [x] CP3C-07 — capturar/reabrir/comparar, registrar diário, testes/build e commit.
 
 ## CP3D — Aguardando crédito
 
-- [ ] CP3D-01 — portar `pendente.png`, validar hash/50×50.
-- [ ] CP3D-02 — montar cabeçalho interno e ocultar H1 artificial.
-- [ ] CP3D-03 — expor `NF R` pelo read model/objeto de apresentação.
-- [ ] CP3D-04 — declarar colunas 8/5/12/13/9/18/5/8/6/12/4.
-- [ ] CP3D-05 — usar somente TR1/TR2; remover helper genérico desta superfície.
-- [ ] CP3D-06 — reproduzir conscientemente o vazio “Nenhum encontrado”.
-- [ ] CP3D-07 — corrigir wrappers, área clicável e formatação.
-- [ ] CP3D-08 — capturar/reabrir/comparar, registrar diário, testes/build e commit.
+- [x] CP3D-01 — portar `pendente.png`, validar hash/50×50.
+- [x] CP3D-02 — montar cabeçalho interno e ocultar H1 artificial.
+- [x] CP3D-03 — expor `NF R` pelo read model/objeto de apresentação.
+- [x] CP3D-04 — declarar colunas 8/5/12/13/9/18/5/8/6/12/4.
+- [x] CP3D-05 — usar somente TR1/TR2; remover helper genérico desta superfície.
+- [x] CP3D-06 — reproduzir conscientemente o vazio “Nenhum encontrado”.
+- [x] CP3D-07 — corrigir wrappers, área clicável e formatação.
+- [x] CP3D-08 — capturar/reabrir/comparar, registrar diário, testes/build e commit.
 
 ## CP4 — resumo completo de Concluídos
 
@@ -229,6 +229,62 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
   `ListagensPorStatusTest` (Sem Garantia→`Tabelinha-TR3`/demais→TR1/TR2; ausência de
   `<h1>` dentro de `#CONTEUDO` + presença do ícone/`title-comicone`/`colgroup`).
 - Commit: a seguir (`#ARQ-RMA - Corrige bug de secao/php no Blade e fecha CP3A do Tema V1`).
+
+### CMP-V1-005 — CP3B/CP3C/CP3D, Entrada/Encaminhado/Aguardando crédito
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear `fonts.googleapis.com` (decisão registrada em CMP-V1-004).
+- Fonte PHP/CSS lida por inteiro: `legacy-source/14.6.1/page/{entrada,encaminhados,
+  aguardandocredito}.php`. Confirma literalmente larguras, wrappers `<a><div>` por
+  coluna (variam por tela — `MODELO`/`S/N` de `Entrada` não são clicáveis, diferente de
+  `Concluido`) e o `style="margin-top:8px"` do ícone de `Aguardando credito` (sem
+  `margin-left`, mas equivalente ao `margin-top:8px;margin-left:0px` das outras 3 telas
+  porque `<p>` tem `margin-left:0` por padrão do navegador — sem CSS `.title-icone` base
+  no legado, só `.fl` + o `style` inline).
+- **Achado de estrutura (não é bug, é decisão preservada):** `Aguardando credito` no
+  legado tem uma tag `<table>` desbalanceada — só abre dentro do `if
+  ($sql->num_rows>0)`, mas o `</table>` fica fora do `if/else`, então a página quebra o
+  HTML quando não há registro. Reproduzido de forma válida: mensagem "Nenhum encontrado"
+  sem abrir tabela nenhuma (mesmo texto visível, HTML correto).
+- **Extração de duplicação:** a abreviação de origem (`MERCADO LIVRE`/`Leilão`/
+  `Licitação`) estava sendo escrita inline em `concluidos.blade.php` e ia se repetir
+  mais 3x — extraído para `origem_abreviada_v1()` em `app/Support/view_do_tema.php`
+  (mesmo arquivo de `classe_css_de_alerta()`), usado pelas 4 telas agora.
+- **Decisão sobre "NF R" (Encaminhado/Aguardando crédito):** o checklist original
+  (`CP3C-03`/`CP3D-03`) previa "expor NF R pelo read model". Na prática o domínio atual
+  (`App\Rma\Dominio\Rma`) não tem propriedade `nfremessa` — só existe como coluna
+  histórica do migrador (Fase 9), sem dono na camada de aplicação. Adicionar o campo ao
+  domínio é mudança de modelo, fora do escopo desta correção visual. **Decisão: coluna
+  `NF R` mantida na posição/largura exata do legado (preserva geometria), célula sempre
+  vazia** — não é dado inventado, é ausência honesta. Print do Legacy nesta sessão
+  confirma que o campo tem dado real em produção (`23948`, `*002`) — item pendente para
+  uma frente de domínio futura, registrado aqui, não implementado agora.
+- Screenshots abertos: `{legacy,v3}-cp3-{entrada,encaminhados,aguardando-credito}-1440x1000.png`
+  (viewport, locais/ignorados pelo Git).
+- Tabela de medidas (Legacy × V3), as três telas:
+
+  | Elemento | Entrada | Encaminhado | Aguardando crédito |
+  |---|---|---|---|
+  | `.title-icone` (50×50 img) | 50×54 = 50×54 OK | 50×54 = 50×54 OK | 50×54 = 50×54 OK |
+  | `.title-comicone` | 530×19 = 530×19 OK | 452×19 = 452×19 OK | 414×19 = 414×19 OK |
+  | header da tabela | 983×35 = 983×35 OK | 983×35 = 983×35 OK | sem registro no seed de QA no momento da captura — estrutura provada via `ListagensPorStatusTest` (dado controlado) |
+  | largura da tabela | 984 = 984 OK | 984 = 984 OK | 984 (provada por teste) |
+  | colunas (px, `<colgroup>` vs `<th style>`) | `[79,98,59,59,128,118,177,167,59,39]` iguais | `[79,98,59,127~128,128,176,59,81,137,39]` (1px de diferença na coluna FABRICANTE, arredondamento) | `[79,49,118,127,88,176,49,81,59,118,39]` só Legacy (V3 sem registro no seed) |
+  | H1 artificial | ausente (testado) | ausente (testado) | ausente (testado) |
+  | zebra | `TrZebrada1/2`/`TrInconformidade` (achado 5, preservado) | idem | `Tabelinha-TR1/TR2` só (achado 4, corrigido — antes usava `classe_css_de_alerta()` por engano) |
+- Diferença perceptível restante: nenhuma. `Aguardando credito` não pôde ser comparada
+  pixel a pixel em runtime porque o seed de QA atual não tem nenhum RMA com
+  `solucao=PENDENTE CREDITO`; a estrutura (colgroup, TR1/TR2, ausência de H1, ícone) foi
+  confirmada por `ListagensPorStatusTest::test_aguardando_credito_usa_apenas_zebra_tr1_tr2`
+  com dado controlado (`RefreshDatabase` + factory).
+- Decisão: **CP3B e CP3C APROVADOS** por medição direta. **CP3D APROVADO** por medição
+  parcial (ícone/título idênticos) + teste automatizado para a tabela (sem par de
+  screenshot com dado real disponível nesta sessão).
+- Testes/build: `php artisan test` (362 testes/813 assertions, verde); `npm run build`
+  (Vite ok). 3 testes novos em `ListagensPorStatusTest` (ícone/colgroup/ausência de H1
+  para Entrada e Encaminhado; zebra exclusiva TR1/TR2 para Aguardando crédito).
+- Commit: a seguir (`#ARQ-RMA - Restaurada a aparencia original das telas de Entrada
+  Encaminhado e Aguardando Credito do Tema V1`).
 
 ## Modelo para próximas entradas
 

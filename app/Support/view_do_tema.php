@@ -71,3 +71,23 @@ if (! function_exists('classe_css_de_alerta')) {
         };
     }
 }
+
+if (! function_exists('origem_abreviada_v1')) {
+    /**
+     * VIS-V1-001 — abreviação de apresentação confirmada em
+     * `legacy-source/14.6.1/page/{entrada,encaminhados,aguardandocredito,concluidos}.php`:
+     * as 4 listagens abreviam "Mercado Livre"/"Leilão"/"Licitação" só nesta camada, sem
+     * alterar o valor gravado. Normaliza maiúsculas/acentos antes de comparar — os 4
+     * arquivos legados tratam variações de caixa (`"MERCADO LIVRE"` e `"Mercado Livre"`)
+     * e de encoding (`Leil�o`/`Licita��o`) como o mesmo caso.
+     */
+    function origem_abreviada_v1(?string $origem): string
+    {
+        return match (mb_strtoupper((string) $origem)) {
+            'MERCADO LIVRE' => 'M LIVRE',
+            'LEILÃO', 'LEILAO' => 'LEILAO',
+            'LICITAÇÃO', 'LICITACAO' => 'LICITACAO',
+            default => (string) $origem,
+        };
+    }
+}

@@ -24,30 +24,7 @@ final class RegistrarSolucao
     {
         abort_unless($ator->papel->podeGravar(), 403);
 
-        $comSolucao = new Rma(
-            id: $rma->id,
-            descricao: $rma->descricao,
-            fabricanteId: $rma->fabricanteId,
-            fornecedorId: $rma->fornecedorId,
-            modelo: $rma->modelo,
-            sn: $rma->sn,
-            os: $rma->os,
-            origem: $rma->origem,
-            empresa: $rma->empresa,
-            clienteId: $rma->clienteId,
-            defeito: $rma->defeito,
-            observacao: $rma->observacao,
-            status: $rma->status,
-            recebidoEm: $rma->recebidoEm,
-            encaminhadoEm: $rma->encaminhadoEm,
-            concluidoEm: $rma->concluidoEm,
-            arquivadoEm: $rma->arquivadoEm,
-            protocolo: $rma->protocolo,
-            solucao: $solucao,
-            snretorno: $rma->snretorno,
-            destinatarioType: $rma->destinatarioType,
-            destinatarioId: $rma->destinatarioId,
-        );
+        $comSolucao = $rma->comAlteracoes(['solucao' => $solucao]);
 
         $rmaAtualizado = $this->repositorio->atualizar($comSolucao->comSnretornoAutoPreenchido());
 

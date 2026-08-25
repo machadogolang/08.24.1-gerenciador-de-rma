@@ -27,30 +27,10 @@ final class ArquivarRma
         abort_unless($ator->papel->podeGerenciarUsuarios(), 403);
         abort_unless($rma->status->podeArquivar(), 422);
 
-        $atualizado = new Rma(
-            id: $rma->id,
-            descricao: $rma->descricao,
-            fabricanteId: $rma->fabricanteId,
-            fornecedorId: $rma->fornecedorId,
-            modelo: $rma->modelo,
-            sn: $rma->sn,
-            os: $rma->os,
-            origem: $rma->origem,
-            empresa: $rma->empresa,
-            clienteId: $rma->clienteId,
-            defeito: $rma->defeito,
-            observacao: $rma->observacao,
-            status: Status::Arquivado,
-            recebidoEm: $rma->recebidoEm,
-            encaminhadoEm: $rma->encaminhadoEm,
-            concluidoEm: $rma->concluidoEm,
-            arquivadoEm: Date::now(),
-            protocolo: $rma->protocolo,
-            solucao: $rma->solucao,
-            snretorno: $rma->snretorno,
-            destinatarioType: $rma->destinatarioType,
-            destinatarioId: $rma->destinatarioId,
-        );
+        $atualizado = $rma->comAlteracoes([
+            'status' => Status::Arquivado,
+            'arquivadoEm' => Date::now(),
+        ]);
 
         $rmaAtualizado = $this->repositorio->atualizar($atualizado);
 

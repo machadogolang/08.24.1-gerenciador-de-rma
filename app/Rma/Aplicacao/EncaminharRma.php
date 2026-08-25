@@ -26,30 +26,12 @@ final class EncaminharRma
         abort_unless($rma->status->podeEncaminhar(), 422);
         abort_unless($destinatarioType !== '' && $destinatarioId > 0, 422);
 
-        $atualizado = new Rma(
-            id: $rma->id,
-            descricao: $rma->descricao,
-            fabricanteId: $rma->fabricanteId,
-            fornecedorId: $rma->fornecedorId,
-            modelo: $rma->modelo,
-            sn: $rma->sn,
-            os: $rma->os,
-            origem: $rma->origem,
-            empresa: $rma->empresa,
-            clienteId: $rma->clienteId,
-            defeito: $rma->defeito,
-            observacao: $rma->observacao,
-            status: Status::Encaminhado,
-            recebidoEm: $rma->recebidoEm,
-            encaminhadoEm: Date::now(),
-            concluidoEm: $rma->concluidoEm,
-            arquivadoEm: $rma->arquivadoEm,
-            protocolo: $rma->protocolo,
-            solucao: $rma->solucao,
-            snretorno: $rma->snretorno,
-            destinatarioType: $destinatarioType,
-            destinatarioId: $destinatarioId,
-        );
+        $atualizado = $rma->comAlteracoes([
+            'status' => Status::Encaminhado,
+            'encaminhadoEm' => Date::now(),
+            'destinatarioType' => $destinatarioType,
+            'destinatarioId' => $destinatarioId,
+        ]);
 
         $rmaAtualizado = $this->repositorio->atualizar($atualizado);
 

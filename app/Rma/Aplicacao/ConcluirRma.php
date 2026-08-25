@@ -25,30 +25,11 @@ final class ConcluirRma
         abort_unless($ator->papel->podeGravar(), 403);
         abort_unless($rma->status->podeConcluir(), 422);
 
-        $comSolucao = new Rma(
-            id: $rma->id,
-            descricao: $rma->descricao,
-            fabricanteId: $rma->fabricanteId,
-            fornecedorId: $rma->fornecedorId,
-            modelo: $rma->modelo,
-            sn: $rma->sn,
-            os: $rma->os,
-            origem: $rma->origem,
-            empresa: $rma->empresa,
-            clienteId: $rma->clienteId,
-            defeito: $rma->defeito,
-            observacao: $rma->observacao,
-            status: Status::Concluido,
-            recebidoEm: $rma->recebidoEm,
-            encaminhadoEm: $rma->encaminhadoEm,
-            concluidoEm: Date::now(),
-            arquivadoEm: $rma->arquivadoEm,
-            protocolo: $rma->protocolo,
-            solucao: $solucao,
-            snretorno: $rma->snretorno,
-            destinatarioType: $rma->destinatarioType,
-            destinatarioId: $rma->destinatarioId,
-        );
+        $comSolucao = $rma->comAlteracoes([
+            'status' => Status::Concluido,
+            'concluidoEm' => Date::now(),
+            'solucao' => $solucao,
+        ]);
 
         $atualizado = $this->repositorio->atualizar($comSolucao->comSnretornoAutoPreenchido());
 

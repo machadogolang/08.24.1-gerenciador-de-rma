@@ -42,7 +42,9 @@ final class EditarRma
      */
     public function editar(int $id, array $dados): Rma
     {
-        if ($this->repositorio->buscarPorId($id) === null) {
+        $existente = $this->repositorio->buscarPorId($id);
+
+        if ($existente === null) {
             throw new RuntimeException("Rma {$id} não encontrado.");
         }
 
@@ -58,20 +60,22 @@ final class EditarRma
             ? Fornecedor::query()->find($dados['fornecedor_id'])
             : null;
 
-        $rma = new Rma(
-            id: $id,
-            descricao: $dados['descricao'],
-            fabricanteId: $fabricante?->id,
-            fornecedorId: $fornecedor?->id,
-            modelo: $dados['modelo'] ?? null,
-            sn: $dados['sn'] ?? null,
-            os: $dados['os'] ?? null,
-            origem: $dados['origem'] ?? null,
-            empresa: $dados['empresa'] ?? null,
-            clienteId: $cliente?->id,
-            defeito: $dados['defeito'],
-            observacao: $dados['observacao'] ?? null,
-        );
+        // ARQ-001 (`INV-RMA-10`): parte do agregado existente e altera só os campos do
+        // núcleo editável pelo formulário — status, datas de ciclo de vida, solução,
+        // prioridade, notas fiscais, valor e crédito permanecem como já estavam.
+        $rma = $existente->comAlteracoes([
+            'descricao' => $dados['descricao'],
+            'fabricanteId' => $fabricante?->id,
+            'fornecedorId' => $fornecedor?->id,
+            'modelo' => $dados['modelo'] ?? null,
+            'sn' => $dados['sn'] ?? null,
+            'os' => $dados['os'] ?? null,
+            'origem' => $dados['origem'] ?? null,
+            'empresa' => $dados['empresa'] ?? null,
+            'clienteId' => $cliente?->id,
+            'defeito' => $dados['defeito'],
+            'observacao' => $dados['observacao'] ?? null,
+        ]);
 
         $rmaNormalizado = $rma->comNormalizacaoDeGravacao(
             $fabricante?->nome,

@@ -28,30 +28,11 @@ final class ReverterRmaParaEntrada
         $mesmoDia = $rma->encaminhadoEm?->isToday() ?? true;
         abort_unless($mesmoDia || $ator->papel->podeReverterAlemDoMesmoDia(), 403);
 
-        $atualizado = new Rma(
-            id: $rma->id,
-            descricao: $rma->descricao,
-            fabricanteId: $rma->fabricanteId,
-            fornecedorId: $rma->fornecedorId,
-            modelo: $rma->modelo,
-            sn: $rma->sn,
-            os: $rma->os,
-            origem: $rma->origem,
-            empresa: $rma->empresa,
-            clienteId: $rma->clienteId,
-            defeito: $rma->defeito,
-            observacao: $rma->observacao,
-            status: Status::Entrada,
-            recebidoEm: null,
-            encaminhadoEm: null,
-            concluidoEm: $rma->concluidoEm,
-            arquivadoEm: $rma->arquivadoEm,
-            protocolo: $rma->protocolo,
-            solucao: $rma->solucao,
-            snretorno: $rma->snretorno,
-            destinatarioType: $rma->destinatarioType,
-            destinatarioId: $rma->destinatarioId,
-        );
+        $atualizado = $rma->comAlteracoes([
+            'status' => Status::Entrada,
+            'recebidoEm' => null,
+            'encaminhadoEm' => null,
+        ]);
 
         $rmaAtualizado = $this->repositorio->atualizar($atualizado);
 

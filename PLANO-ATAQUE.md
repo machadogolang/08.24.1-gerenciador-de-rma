@@ -9,8 +9,9 @@ Handoff para nova sessão: `docs/produto/handoff-sessao-2026-08-25.md`.
 Executar primeiro a correção P0 descoberta pela auditoria da nova frente, sem depender
 de decisão de produto nem de mutação do banco histórico:
 
-1. [ ] `ARQ-001`: provar por regressão e corrigir a perda de estado do agregado em
-   edição/transições;
+1. [x] `ARQ-001`: provar por regressão e corrigir a perda de estado do agregado em
+   edição/transições (`Rma::comAlteracoes()` + 7 casos de uso migrados; ver
+   `docs/produto/checklist-master-v3.md` H-001);
 2. [ ] `ARQ-003`: impedir promoção indevida e operações do Supervisor sobre
    SuperAdministrador;
 3. [ ] renovar a suíte completa e documentar o checkpoint;

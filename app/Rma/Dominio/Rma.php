@@ -76,42 +76,7 @@ final class Rma
             default => $this->origem,
         };
 
-        return new self(
-            id: $this->id,
-            descricao: $this->descricao,
-            fabricanteId: $this->fabricanteId,
-            fornecedorId: $this->fornecedorId,
-            modelo: $this->modelo,
-            sn: $this->sn,
-            os: $this->os,
-            origem: $origem,
-            empresa: $this->empresa,
-            clienteId: $this->clienteId,
-            defeito: $this->defeito,
-            observacao: $this->observacao,
-            status: $this->status,
-            recebidoEm: $this->recebidoEm,
-            encaminhadoEm: $this->encaminhadoEm,
-            concluidoEm: $this->concluidoEm,
-            arquivadoEm: $this->arquivadoEm,
-            protocolo: $this->protocolo,
-            solucao: $this->solucao,
-            snretorno: $this->snretorno,
-            destinatarioType: $this->destinatarioType,
-            destinatarioId: $this->destinatarioId,
-            prioridade: $this->prioridade,
-            marcarestoque: $this->marcarestoque,
-            nfcompra: $this->nfcompra,
-            nfcompraEmissao: $this->nfcompraEmissao,
-            nfcompraChave: $this->nfcompraChave,
-            nfvenda: $this->nfvenda,
-            nfvendaEmissao: $this->nfvendaEmissao,
-            nfvendaChave: $this->nfvendaChave,
-            lancadoretorno: $this->lancadoretorno,
-            valor: $this->valor,
-            createdAt: $this->createdAt,
-            creditoDisponivel: $this->creditoDisponivel,
-        );
+        return $this->comAlteracoes(['origem' => $origem]);
     }
 
     /**
@@ -129,42 +94,65 @@ final class Rma
             return $this;
         }
 
-        return new self(
-            id: $this->id,
-            descricao: $this->descricao,
-            fabricanteId: $this->fabricanteId,
-            fornecedorId: $this->fornecedorId,
-            modelo: $this->modelo,
-            sn: $this->sn,
-            os: $this->os,
-            origem: $this->origem,
-            empresa: $this->empresa,
-            clienteId: $this->clienteId,
-            defeito: $this->defeito,
-            observacao: $this->observacao,
-            status: $this->status,
-            recebidoEm: $this->recebidoEm,
-            encaminhadoEm: $this->encaminhadoEm,
-            concluidoEm: $this->concluidoEm,
-            arquivadoEm: $this->arquivadoEm,
-            protocolo: $this->protocolo,
-            solucao: $this->solucao,
-            snretorno: $this->sn,
-            destinatarioType: $this->destinatarioType,
-            destinatarioId: $this->destinatarioId,
-            prioridade: $this->prioridade,
-            marcarestoque: $this->marcarestoque,
-            nfcompra: $this->nfcompra,
-            nfcompraEmissao: $this->nfcompraEmissao,
-            nfcompraChave: $this->nfcompraChave,
-            nfvenda: $this->nfvenda,
-            nfvendaEmissao: $this->nfvendaEmissao,
-            nfvendaChave: $this->nfvendaChave,
-            lancadoretorno: $this->lancadoretorno,
-            valor: $this->valor,
-            createdAt: $this->createdAt,
-            creditoDisponivel: $this->creditoDisponivel,
-        );
+        return $this->comAlteracoes(['snretorno' => $this->sn]);
+    }
+
+    /**
+     * ARQ-001 (`INV-RMA-10`) — cópia segura centralizada: preserva todo o estado atual
+     * do agregado e sobrescreve só os campos informados. Único ponto de reconstrução do
+     * objeto; os casos de uso de edição/transição de ciclo de vida devem usar este
+     * método em vez de `new Rma(...)` campo a campo, que apagava silenciosamente todo
+     * campo omitido (prioridade, notas fiscais, valor, crédito etc.) sempre que um
+     * campo novo era introduzido no domínio sem que cada chamador fosse revisado.
+     *
+     * @param array<string, mixed> $alteracoes chaves = nomes dos parâmetros do construtor
+     */
+    public function comAlteracoes(array $alteracoes): self
+    {
+        return new self(...[...$this->paraConstrucao(), ...$alteracoes]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function paraConstrucao(): array
+    {
+        return [
+            'id' => $this->id,
+            'descricao' => $this->descricao,
+            'fabricanteId' => $this->fabricanteId,
+            'fornecedorId' => $this->fornecedorId,
+            'modelo' => $this->modelo,
+            'sn' => $this->sn,
+            'os' => $this->os,
+            'origem' => $this->origem,
+            'empresa' => $this->empresa,
+            'clienteId' => $this->clienteId,
+            'defeito' => $this->defeito,
+            'observacao' => $this->observacao,
+            'status' => $this->status,
+            'recebidoEm' => $this->recebidoEm,
+            'encaminhadoEm' => $this->encaminhadoEm,
+            'concluidoEm' => $this->concluidoEm,
+            'arquivadoEm' => $this->arquivadoEm,
+            'protocolo' => $this->protocolo,
+            'solucao' => $this->solucao,
+            'snretorno' => $this->snretorno,
+            'destinatarioType' => $this->destinatarioType,
+            'destinatarioId' => $this->destinatarioId,
+            'prioridade' => $this->prioridade,
+            'marcarestoque' => $this->marcarestoque,
+            'nfcompra' => $this->nfcompra,
+            'nfcompraEmissao' => $this->nfcompraEmissao,
+            'nfcompraChave' => $this->nfcompraChave,
+            'nfvenda' => $this->nfvenda,
+            'nfvendaEmissao' => $this->nfvendaEmissao,
+            'nfvendaChave' => $this->nfvendaChave,
+            'lancadoretorno' => $this->lancadoretorno,
+            'valor' => $this->valor,
+            'createdAt' => $this->createdAt,
+            'creditoDisponivel' => $this->creditoDisponivel,
+        ];
     }
 
     /**

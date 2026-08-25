@@ -208,10 +208,12 @@ avançar antes, código não sai do seletor.
 
 ### H.1 Correção de baseline (P0 — precede a retomada da F10)
 
-- [ ] **ARQ H-001 (`ARQ-001`) — corrigir perda de estado do agregado.** `EditarRma`,
+- [x] **ARQ H-001 (`ARQ-001`) — corrigir perda de estado do agregado.** Adicionado
+  `Rma::comAlteracoes()` (cópia segura centralizada) e migrados `EditarRma`,
   `ReceberRma`, `EncaminharRma`, `ConcluirRma`, `ArquivarRma`, `ReverterRmaParaEntrada` e
-  `RegistrarSolucao` reconstroem a entidade só com os campos do núcleo; provar por
-  regressão antes e depois da correção.
+  `RegistrarSolucao`, que reconstruíam a entidade só com os campos do núcleo. Regressão
+  em `tests/Feature/Rma/PreservacaoDeEstadoDoAgregadoTest.php` (falha comprovada contra
+  o código anterior, 7 cenários verdes contra o corrigido).
 - [ ] **ARQ H-002 (`ARQ-002`) — corrigir dry-run e reconciliação do migrador.**
   `ImportarRmas` precisa executar `traduzirLinha()` em `--dry-run` e separar `origem`,
   `planejado`, `criado`, `atualizado`, `ignorado` e total real no destino. Bloqueia
@@ -337,8 +339,10 @@ aprovados; nunca por mudança de cor sobre o Tema 1/2.
 
 ## Próxima tarefa segura
 
-`ARQ H-001` (`ARQ-001`): provar por regressão a perda de estado do agregado em
-edição/transições e corrigi-la. É o P0 que antecede tudo — inclusive `F10-FUN-07` — por
-já causar perda de dado real, conforme `PLANO-ATAQUE.md` (seção AGORA) e `INV-RMA-10`.
-Depois de `ARQ H-001…H-003` e da suíte renovada (`QA H-004`), retomar `F10-FUN-07` pelos
-smokes somente leitura antes de qualquer mutação.
+`ARQ H-003` (`ARQ-003`): impedir a escalada de privilégio do Supervisor
+(`UsuarioController::update`, `ResetarSenhaDeUsuario`, `UserPolicy`). `ARQ H-001`
+(perda de estado do agregado) já foi corrigido e coberto por regressão — ver histórico
+do checklist. `ARQ H-003` é o próximo P0 de segurança que antecede `F10-FUN-07`,
+conforme `PLANO-ATAQUE.md` (seção AGORA) e `INV-RMA-10`. Depois de `H-002`/`H-003` e da
+suíte renovada (`QA H-004`), retomar `F10-FUN-07` pelos smokes somente leitura antes de
+qualquer mutação.

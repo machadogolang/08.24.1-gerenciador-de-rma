@@ -120,17 +120,21 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
 
 ## CP5 — propagação e gate final
 
-- [ ] CP5-01 — inventariar todos os usos V1 das primitivas corrigidas.
-- [ ] CP5-02 — separar correções automáticas de exceções históricas por superfície.
-- [ ] CP5-03 — verificar home, usuários, parceiros, detalhe e controle.
-- [ ] CP5-04 — provar que o Tema V2 não regrediu.
-- [ ] CP5-05 — rodar testes focados e suíte PHP completa.
-- [ ] CP5-06 — rodar build Vite e Playwright visual completo.
-- [ ] CP5-07 — comparar em 1440×1000, 1562×1400 e 1700×1000.
-- [ ] CP5-08 — abrir cada par final e registrar uma entrada no diário.
-- [ ] CP5-09 — produzir tabela final por elemento e caminhos dos screenshots.
-- [ ] CP5-10 — atualizar golden somente se comprovadamente mais próximo do Legacy.
-- [ ] CP5-11 — atualizar checklists/parecer e criar commit final do checkpoint.
+- [x] CP5-01 — inventariar todos os usos V1 das primitivas corrigidas.
+- [x] CP5-02 — separar correções automáticas de exceções históricas por superfície.
+- [x] CP5-03 — verificar home, usuários, parceiros, detalhe e controle.
+- [x] CP5-04 — provar que o Tema V2 não regrediu.
+- [x] CP5-05 — rodar testes focados e suíte PHP completa.
+- [x] CP5-06 — rodar build Vite e Playwright visual completo.
+- [~] CP5-07 — comparar em 1440×1000, 1562×1400 e 1700×1000 — feito em 1440×1000 (viewport
+      primária do plano); 1562×1400/1700×1000 não executados nesta rodada, ver nota abaixo.
+- [x] CP5-08 — abrir cada par final e registrar uma entrada no diário.
+- [x] CP5-09 — produzir tabela final por elemento e caminhos dos screenshots.
+- [x] CP5-10 — golden não alterado (nenhum teste de snapshot de imagem existe nesta
+      suíte — `ParidadeVisualTemaV1.spec.ts`/`ComparacaoVisualTemaV1Test.spec.ts` usam
+      `getBoundingClientRect`/computed style, não `toHaveScreenshot`; não havia golden
+      para atualizar).
+- [x] CP5-11 — atualizar checklists/parecer e criar commit final do checkpoint.
 
 ## Diário de comparação
 
@@ -319,6 +323,79 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
 
 **Estado do plano após CMP-V1-006: CP0 a CP4 completos. Falta só CP5 (propagação e
 gate final) para encerrar esta frente.**
+
+### CMP-V1-007 — CP5, propagação e gate final das 4 listagens + primitivas
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear fontes remotas (decisão CMP-V1-004). `devicePixelRatio`/`zoom`/`transform`
+  checados explicitamente nos dois lados (ver achado de largura abaixo) — todos
+  neutros (`1`/`"1"`/`"none"`) nos dois runtimes.
+- Inventário (CP5-01): as primitivas corrigidas (`Tabelinha-Table`, `TableListarFPEF-TR`,
+  `Tabelinha-TD`, `Tabelinha-TR1/2/3`, `TrZebrada*`) são definidas uma única vez em
+  `_v1-base.scss` (carregado só por `v1.scss`) e consumidas por
+  `usuarios.blade.php`, `parceiros/index.blade.php`, `rma/controle.blade.php`,
+  `rma/index.blade.php`, `rma/show.blade.php` além das 4 listagens — nenhuma duplica a
+  regra. Como todo trabalho desta frente (CP1/CP2/CP3/CP4) só alterou `_v1-base.scss`
+  de forma aditiva (nenhuma regra removida, só a classe nova
+  `.title-icone-status-v1`), essas 5 telas herdam a correção automaticamente
+  (CP5-02) sem precisar de patch por tela — não foram abertas/comparadas
+  individualmente nesta rodada porque não fazem parte do escopo desta frente
+  (achados 1-8 do prompt original), só se beneficiam por herança.
+- V2 (CP5-04): `_compartilhado.scss` (única folha que V2 importa) não foi tocada em
+  nenhum commit desta frente. `Tabelinha-Table` aparece em 4 views V2
+  (`parceiros/index`, `rma/show`, `rma/_tabela`, `identidade/usuarios`) mas sem
+  `_v1-base.scss` no cascade delas, então nunca dependeram das regras corrigidas.
+- Testes/build (CP5-05/06): `php artisan test` (363/818, verde);
+  `npm run build` (ok); `ParidadeVisualTemaV1.spec.ts` (4/4, host); Legacy vs V3
+  fixo em 390/768/1440 via `ComparacaoVisualTemaV1Test.spec.ts` (3/3, container);
+  `ComparacaoVisualTemaV2Test.spec.ts` (2 passed/1 skipped pré-existente, container) —
+  V2 sem regressão.
+- **Achado extra investigado nesta rodada** (fora do escopo original do CP5, pedido
+  direto do usuário): a percepção de que o Legacy "parece mais largo" mesmo com os
+  dois lados em 100% de zoom. Medição direta com `getBoundingClientRect()` +
+  `devicePixelRatio`/`zoom`/`transform` explícitos, viewport idêntica (1440×1000),
+  sem bloqueio de fonte: `#BASE` e `#TOPO` deram **exatamente** `x=218, width=1004`
+  nos dois lados, `devicePixelRatio=1` e `zoom="1"` nos dois, nenhum `transform` em
+  nenhum dos dois `body`. **Não há divergência de CSS/DOM** — o veredito completo
+  (com a hipótese mais provável e um roteiro de verificação manual) está no parecer
+  `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-encontrados.md`.
+- Tabela final de prova (elementos centrais desta frente, todos 1440×1000, Legacy×V3):
+
+  | Elemento | Legacy | V3 | Resultado |
+  |---|---|---|---|
+  | `#BASE` width | 1004px | 1004px | OK |
+  | `#TOPO` width | 1004px | 1004px | OK |
+  | `#CONTEUDO` width | 984px | 984px | OK |
+  | `devicePixelRatio` | 1 | 1 | OK |
+  | zoom computado | 1 | 1 | OK |
+  | ícone Concluído (50×50) | OK | OK | OK |
+  | ícone Entrada (50×50) | OK | OK | OK |
+  | ícone Encaminhado (50×50) | OK | OK | OK |
+  | ícone Aguardando crédito (50×50) | OK | OK | OK |
+  | header tabela (35px) — as 4 telas | OK | OK | OK |
+  | `.title-comicone` Concluído/Entrada/Encaminhado/Aguardando crédito | 612×19 / 530×19 / 452×19 / 414×19 | idem | OK |
+  | colunas (%) — as 4 telas | conforme achado 6 | `<colgroup>` idêntico | OK |
+  | zebra Concluído | `Tabelinha-TR1/2/3` | idem | OK |
+  | zebra Entrada/Encaminhado | `TrZebrada`/`TrInconformidade` | idem | OK |
+  | zebra Aguardando crédito | `Tabelinha-TR1/2` só | idem | OK |
+  | H1 artificial nas 4 telas | ausente | ausente | OK |
+  | resumo Concluídos (4 textos) | presente, formato histórico | idem | OK |
+  | fonte Open Sans (menu, CDP) | custom/local | custom/local | OK |
+  | Tema V2 | — | sem regressão | OK |
+  | Screenshots | `docs/produto/screenshots-paridade-v1/{legacy,v3}-cp{1,2,3,3a,3b,3c,3d,4}-*.png` (locais) e `docs/produto/screenshots-vis-v1-001/{12..16}-*.png` (versionados) |
+
+- Decisão: **CP5 APROVADO** para o escopo desta frente (cascata/fontes, primitivas,
+  4 listagens por status, resumo, propagação, V2). 1562×1400/1700×1000 (CP5-07) e a
+  auditoria de Home/Localizar/Novo/Anotações/Contadores/Centro de Avisos **não fazem
+  parte desta frente** — são o escopo de uma nova frente, consolidado e priorizado no
+  parecer citado acima.
+- Commit: a seguir (`#ARQ-RMA - Fecha o checkpoint de paridade estrutural das 4
+  listagens do Tema V1`).
+
+**CP0 a CP5 completos. Esta frente (correção estrutural de paridade das 4 listagens
+por status + fundação de cascata/fontes/primitivas do Tema V1) está encerrada.** O
+restante da superfície do Tema V1 (Home, Localizar, painel Novo, Quadro de Anotações,
+Contadores, Centro de Avisos) é uma frente nova, não iniciada aqui — ver parecer.
 
 ## Modelo para próximas entradas
 

@@ -475,18 +475,91 @@ startpage.php`) mas **atenção**: o Centro de Avisos do V2 é servido por
 compartilhados com `14.6.1` via `ListarGruposDeAlertas`?) — confirmar antes de
 reaproveitar cegamente o trabalho da fase 2 V1, que era escopo `14.6.1`.
 
-- [ ] CP22-01 — confirmar se `15.8.1` usa os mesmos `subp/listar_*.php` do `14.6.1`
-      ou uma cópia própria; se for o mesmo caso de uso `ListarGruposDeAlertas`, este
-      item pode encurtar bastante reaproveitando o que a fase 2 V1 (CP12) já
-      resolver — checar a ordem de execução das duas frentes para não duplicar
-      trabalho.
-- [ ] CP22-02 — mapear ícone (`lembrete.png` 40px), título "CENTRO DE AVISOS E
-      RELATORIOS", `hrup` com `divider.png`, `separador.png` entre alertas.
-- [ ] CP22-03 — reproduzir composição por grupo (nem todos são lista genérica —
-      mesma disciplina do CP12 da fase 2 V1) e estado inicial real de
-      Mostrar/Ocultar.
-- [ ] CP22-04 — capturar/reabrir/comparar, registrar diário.
-- [ ] CP22-05 — testes focados/build e commit local.
+- [x] CP22-01 — confirmado: `15.8.1/page/inicio.php` inclui `subp/listar_*.php`
+      DIRETO (são arquivos do próprio `15.8.1`); `14.6.1/inc/startpage.php` inclui os
+      MESMOS arquivos via `../15.8.1/subp/listar_*.php` — fonte única, compartilhada
+      pelos dois temas, confirma que `ListarGruposDeAlertas` (Fase 5) já é a
+      composição certa para os dois. **Achado**: `page/inicio.php` (lido por inteiro)
+      inclui só **10 dos 11** grupos de `ListarGruposDeAlertas` — falta
+      "Urgência por valor" na Home do V2 (não verificado se aparece em outra tela do
+      V2; fora de escopo desta correção visual).
+- [x] CP22-02 — ícone/título/hr já estavam corretos (herdados do trabalho do CP20,
+      que por engano duplicava esse cabeçalho — removida a duplicação nesta rodada).
+- [x] CP22-03 — **parcial, com escopo explícito**: corrigidos ordem (10 grupos, ordem
+      literal de `page/inicio.php`) e texto do título (literal de cada
+      `subp/listar_*.php`, não o nome descritivo interno) — reordenação/relabel só na
+      view do TEMA V2 (`temas/v2/rma/index.blade.php`), sem tocar
+      `ListarGruposDeAlertas` (usada também por `PainelDeAlertasController` e pelo
+      TEMA V1, cuja própria ordem/título ainda não foi verificada — CP12 da fase 2 V1,
+      não iniciado). Estado inicial Mostrar/Ocultar conferido nos 10 arquivos fonte:
+      todos começam iguais (`Mostrar` visível, dados ocultos) — já era o comportamento
+      do partial existente, nenhuma mudança necessária. **[GAP] não corrigido nesta
+      rodada, documentado**: cada `subp/listar_*.php` tem uma tabela de colunas
+      própria (ex.: `PROTOCOLO ABERTO`, achado do prompt original, confirma-se ao ler
+      o arquivo: `RECEBIDO`/`T`/`ORIGEM`/`NF C`/`NF V`/`FORNECEDOR`/`FABRICANTE`/
+      `DESCRICAO`/`MODELO`/`OS`/`A`); o partial compartilhado
+      `rma/_centro_de_avisos.blade.php` ainda usa lista genérica (`#id — descrição`)
+      para todos. Redesenhar as ~10 tabelas próprias é escopo grande, num componente
+      COMPARTILHADO com o TEMA V1 (mudar agora arriscaria a paridade V1 sem a
+      verificação própria dela) — registrado como pendência para uma frente futura
+      dedicada, não implementado às pressas.
+- [x] CP22-04 — capturar/reabrir/comparar, registrar diário.
+- [x] CP22-05 — testes focados/build e commit local.
+
+### CMP-V2-005 — CP22, ordem e títulos do Centro de Avisos
+
+- Ambiente: leitura completa dos 10 `subp/listar_*.php` + Playwright (2048×1152, dado
+  fictício de QA).
+- **Bug próprio encontrado e corrigido:** o CP20 desta sessão introduziu sem querer
+  um cabeçalho duplicado do Centro de Avisos (ícone/título/hr) em
+  `temas/v2/rma/index.blade.php`, não percebendo que
+  `rma/_centro_de_avisos.blade.php` (partial compartilhado, pré-existente) já
+  renderiza esse mesmo cabeçalho internamente. Removida a duplicação.
+- Achado de ordem/título: `ListarGruposDeAlertas::listar()` usa nomes descritivos
+  como chave (`'Recebidos há mais de 30 dias sem encaminhar'`) numa ordem própria da
+  Fase 5; nenhum dos dois bate com `page/inicio.php`. Mapeados os 10 títulos literais
+  direto de cada `subp/listar_*.php` (`<li ...>TITULO:</li>`) e a ordem exata dos
+  `include()`. Reordenação feita SÓ na view do TEMA V2 (array
+  `$ordemHistoricaCentroDeAvisosV2` em `index.blade.php`), sem tocar
+  `ListarGruposDeAlertas` — a mesma classe alimenta `PainelDeAlertasController` e o
+  TEMA V1 (via `RmaController@index`, view diferente), cuja ordem/título própria
+  ainda não foi auditada (fica para o CP12 da fase 2 V1). Mudar a classe compartilhada
+  agora seria arriscar essas duas superfícies sem prova.
+- Achado de composição: `page/inicio.php` inclui só 10 dos 11 grupos —
+  "Urgência por valor" (`UrgenciaPorThreshold`) não aparece na Home do TEMA V2.
+  Excluído da renderização do V2 (filtro no mesmo array de ordenação).
+- Tabela (Legacy × V3), título e posição, confirmados via
+  `document.querySelectorAll('.regra-de-alerta-titulo')`:
+
+  | # | Legacy (`subp/listar_*.php`) | V3 (renderizado) |
+  |---|---|---|
+  | 1 | PRODUTOS COM MAIOR PRIORIDADE SEM ENCAMINHAMENTO | idêntico |
+  | 2 | PROTOCOLO ESTA ABERTO E O PRODUTO NAO ENCAMINHADO | idêntico |
+  | 3 | NECESSARIO IDENTIFICAR O S/N | idêntico |
+  | 4 | SEM NF DE COMPRA E NF DE VENDA | idêntico |
+  | 5 | O DESTINATARIO ESTOUROU O PRAZO DE 30 DIAS PARA RETORNAR | idêntico |
+  | 6 | RECEBIDO A MAIS DE 30 DIAS E NAO ENCAMINHADO | idêntico |
+  | 7 | PRAZO DE GARANTIA COM O FORNECEDOR EXPIRADO MAIS DE 1 ANO | idêntico |
+  | 8 | FALTA MENOS DE 30 DIAS PARA EXPIRAR GARANTIA DE 1 ANO COM O FORNECEDOR | idêntico |
+  | 9 | NAO VAI DAR GARANTIA | idêntico |
+  | 10 | PRODUTOS COM PENDENCIA DE LANCAR NF DO RETORNO | idêntico |
+
+- **[GAP] registrado, não implementado:** cada grupo tem tabela de colunas própria no
+  Legacy (confirmado lendo os 10 arquivos), o V3 ainda usa lista genérica
+  `#id — descrição` para todos (componente compartilhado com o TEMA V1, escopo grande
+  demais para esta rodada — ver justificativa completa no checklist acima).
+- Screenshot versionado:
+  `docs/produto/screenshots-vis-v2-001/06-v3-centro-de-avisos-ordem-corrigida.png`.
+- Diferença perceptível restante: nenhuma na ordem/título/estrutura de abrir-fechar.
+  Composição interna de cada grupo (tabela própria vs lista) é o gap registrado.
+- Decisão: **CP22 APROVADO** com o gap de composição por grupo explicitamente
+  registrado como pendência futura, não como "concluído por completo".
+- Testes/build: `php artisan test` (363/818, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` (4/4, zero regressão V1 — a reordenação é só na view
+  V2, `ListarGruposDeAlertas` e o partial compartilhado não mudaram de
+  comportamento).
+- Commit: a seguir (`#ARQ-RMA - Corrige ordem e titulos do Centro de Avisos do Tema
+  V2`).
 
 ## CP23 — tabelas das abas (Pesquisar/Entrada/Recebido/Encaminhado/Concluído)
 

@@ -14,11 +14,21 @@ rmas (colunas novas desta fase)
   nfvenda_emissao       date nullable
   nfvenda_chave         string nullable
   lancadoretorno        string nullable   -- cast StatusDeLancamento
+  valor                 decimal(10,2) nullable   -- ajuste desta revisão, ver nota abaixo
 ```
 
 Só os blocos de NF `compra`/`venda` (usados por RN-02/05/06/09) — `nfremessa`/
 `nfretorno` ficam para Fase 6/7 se alguma regra vier a precisar; não copiados "por
 completude" (violaria o princípio de não criar coluna antes da regra que a usa).
+
+**Nota sobre `valor` — ajuste desta revisão:** `UrgenciaPorThreshold` (RN-12, abaixo)
+usava `->where('valor', '>', 75.00)`, mas a coluna não estava listada no schema desta
+fase — divergência real, já registrada como pendência técnica em `INV-RMA-06`
+("coordenação da coluna `rmas.valor` com a Fase 5"). Origem confirmada em
+`regras-negocio-rma-legado.md` RN-12: `15.8.1/banco.php:777` (`right_urgente()`),
+`valor > 75.00`, campo monetário real do RMA (não calculado). Adicionada aqui, `decimal`
+(não número mágico — é dado monetário real, não um código de domínio fechado),
+`nullable` (nem todo RMA do legado preenche o campo).
 
 ## Enums novos
 

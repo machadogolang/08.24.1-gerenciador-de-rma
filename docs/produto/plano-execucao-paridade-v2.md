@@ -571,23 +571,77 @@ Achado confirmado pelo prompt original (larguras da busca geral, a conferir cont
 PHP fonte antes de aplicar): `DT ENTRADA 9%`, `ORIGEM 8%`, `NF C 6%`, `NF V 6%`,
 `FABRICANTE 12%`, `DESCRICAO 13%`, `MODELO 20%`, `S/N 16%`, `OS 5%`, `S 2%`, `A 2%`.
 
-- [ ] CP23-01 — ler os 5 arquivos fonte por completo.
-- [ ] CP23-02 — para cada aba: extrair colunas/larguras/ordem/ícones/formatação/
-      classe de linha/wrappers de link, mesmo processo já usado em CP3A-D da fase 1
-      V1 (não reusar 1:1 os valores do Tema V1 — são temas/telas diferentes, mesmo
-      que o padrão de trabalho seja o mesmo).
-- [ ] CP23-03 — **não forçar as 5 abas para o `_tabela.blade.php` genérico atual**
-      (hoje só tem `#`/Descrição/Defeito/Origem/Ações) se as tabelas históricas
-      realmente divergem entre si — decidir por aba, com evidência, como já decidido
-      no achado 22 do prompt original. Pode compartilhar células/presenters/
-      formatadores/classes de zebra sem compartilhar a tabela inteira.
-- [ ] CP23-04 — reaproveitar a regra de destaque de linha já existente
-      (`TrZebrada1/2`, `TrSemGarantia1/2`, `TrInconformidade`) sem reescrever a regra
-      de negócio — comparar só a classe final/cor/altura/hover para os mesmos
-      cenários.
-- [ ] CP23-05 — capturar/reabrir/comparar as 5 abas, registrar diário.
-- [ ] CP23-06 — testes focados/build e commit local (um commit por aba é aceitável
-      dado o volume).
+- [x] CP23-01 — ler os 5 arquivos fonte por completo. Pesquisar já foi lida e
+      implementada no CP20 (`subp/pesquisar_rma.php`); os outros 4
+      (`page/{entrada,recebido,encaminhado,concluido}.php`) lidos nesta rodada.
+- [x] CP23-02 — para cada aba: colunas/larguras/ordem/ícones/formatação/classe de
+      linha/wrappers extraídos e portados em 4 partials dedicados
+      (`_tabela_{entrada,recebido,encaminhado,concluido}.blade.php`). Achado comum às
+      4 (e à de Pesquisa): todas têm coluna "T" (tempo em dias, `Diferenca_de_dias()`)
+      entre ORIGEM e NF C, e ícone de ação (`ver.png`) na última coluna — não
+      existiam na implementação anterior.
+- [x] CP23-03 — não forçado para `_tabela.blade.php` genérico — 4 partials próprios,
+      cada um com sua largura/coluna real (Encaminhado tem NF R/PROTOCOLO/
+      DESTINATARIO no lugar de NF V; Concluído tem "T" = giro entrada→conclusão, não
+      dias até hoje).
+- [x] CP23-04 — reaproveitado `classe_css_de_alerta()`/`classeDeAlerta()` para
+      Entrada/Recebido/Encaminhado (mesma decisão do CP20 para Pesquisa — 3
+      divergências finas registradas como `[INVESTIGAR]` no código: Entrada não usa
+      `TrUrgente` nem checa prazo de 30 dias, Recebido tem uma condição extra de
+      "sem NF" que a regra atual não tem). Concluído usa zebra PRÓPRIA
+      (`TrSemGarantia1/2`/`TrZebrada1/2`, sem `classe_css_de_alerta()`) — mesma
+      decisão já tomada para `concluidos.blade.php` do TEMA V1 (achado 3), porque
+      `Rma::classeDeAlerta()` nunca devolve o caso `SemGarantia` puro e considera
+      critérios que esta tela não usa.
+- [x] CP23-05 — capturar/reabrir/comparar as 5 abas, registrar diário.
+- [x] CP23-06 — **bug real encontrado e corrigido, fora do escopo original do
+      CP23**: as 4 abas por status usavam um recorte do resultado de BUSCA
+      (`$rmas`), que só tem conteúdo quando há termo digitado — ficavam vazias por
+      padrão sempre que ninguém buscava nada, diferente do Legacy (páginas próprias,
+      sempre cheias). Corrigido: `RmaController@index` agora injeta
+      `RepositorioDeRmas` e usa `PainelDeStatus::EntradaSomente`/`RecebidoSomente`
+      (2 casos novos, adicionados ao enum e a `RmasEmBanco::listarPorPainel()` —
+      só usados pelo TEMA V2, zero risco ao TEMA V1) + os já existentes
+      `Encaminhados`/`Concluidos`. Testes focados/build e commit local.
+
+### CMP-V2-006 — CP23, tabelas de Entrada/Recebido/Encaminhado/Concluído
+
+- Ambiente: Chromium headless (Playwright), 2048×1152, dado fictício de QA (linhas
+  reais verificadas: Entrada 13, Encaminhado 12, Concluído 12).
+- Lidos por inteiro `15.8.1/page/{entrada,recebido,encaminhado,concluido}.php`.
+  Confirma larguras/colunas usadas nos 4 partials novos
+  (`resources/views/temas/v2/rma/_tabela_{entrada,recebido,encaminhado,concluido}
+  .blade.php`), todas com coluna "T" (tempo em dias) e ícone de ação (`ver.png`) que
+  a implementação anterior (`_tabela.blade.php` genérico) não tinha.
+- **Bug real encontrado e corrigido, mais significativo que o achado original do
+  CP23:** as 4 abas usavam `$porStatus($rmas, Status::X)` — um FILTRO do resultado de
+  busca (`$rmas`), que só é preenchido quando há um termo de busca digitado. Sem
+  busca ativa, as 4 abas ficavam **sempre vazias**, mesmo com RMAs reais no banco —
+  diferente do Legacy, onde `page/{entrada,recebido,encaminhado,concluido}.php`
+  chamam sua própria consulta (`listar_entradas()` etc.), sempre cheia. Corrigido:
+  `RmaController@index` agora injeta `RepositorioDeRmas` e monta `$porStatusV2` com 4
+  listagens reais. Dois casos novos em `PainelDeStatus`
+  (`EntradaSomente`/`RecebidoSomente`) porque o caso `Entrada` existente combina
+  Entrada+Recebido (desenho do TEMA V1, que tem só 1 atalho para os dois status) —
+  o TEMA V2 tem abas separadas, precisa dos status isolados. Só usados por
+  `RmasEmBanco::listarPorPainel()`/`RmaController` — nenhuma mudança de
+  comportamento para `ListagensPorStatusController`/TEMA V1.
+- Zebra: reaproveitado `classe_css_de_alerta()` para Entrada/Recebido/Encaminhado
+  (3 divergências finas com a regra exata do Legacy documentadas como
+  `[INVESTIGAR]` no código, não corrigidas às cegas). Concluído usa zebra própria
+  (mesma decisão já tomada para o TEMA V1) porque `Rma::classeDeAlerta()` não
+  reproduz a regra binária simples desta tela.
+- Screenshot versionado:
+  `docs/produto/screenshots-vis-v2-001/07-v3-aba-entrada-tabela-historica.png`.
+- Diferença perceptível restante: nenhuma na estrutura/colunas/dados reais das 4
+  tabelas. As divergências de zebra ficam com o mesmo status `[INVESTIGAR]` já usado
+  no restante da frente.
+- Decisão: **CP23 APROVADO**.
+- Testes/build: `php artisan test` (363/818, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` (4/4, zero regressão V1 — `PainelDeStatus` ganhou
+  casos novos aditivos, nenhum caso existente mudou de comportamento).
+- Commit: a seguir (`#ARQ-RMA - Restaura as tabelas historicas de Entrada Recebido
+  Encaminhado e Concluido do Tema V2`).
 
 ## CP24 — footer
 

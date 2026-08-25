@@ -94,6 +94,12 @@ final class RmasEmBanco implements RepositorioDeRmas
             PainelDeStatus::Concluidos => RmaEloquent::query()
                 ->where('status', Status::Concluido)
                 ->orderByDesc('concluido_em'),
+            PainelDeStatus::EntradaSomente => RmaEloquent::query()
+                ->where('status', Status::Entrada)
+                ->orderByDesc('created_at'),
+            PainelDeStatus::RecebidoSomente => RmaEloquent::query()
+                ->where('status', Status::Recebido)
+                ->orderByDesc('recebido_em'),
         };
 
         return $consulta->get()

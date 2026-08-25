@@ -13,6 +13,9 @@ use App\Rma\Aplicacao\CriarRma;
 use App\Rma\Aplicacao\EditarRma;
 use App\Rma\Aplicacao\VerDetalheDoRma;
 use App\Rma\Dominio\CriterioDeBusca;
+use App\Rma\Dominio\PainelDeStatus;
+use App\Rma\Dominio\RepositorioDeRmas;
+use App\Rma\Dominio\Rma;
 use App\Rma\Dominio\Solucao;
 use App\Rma\Dominio\Status;
 use Illuminate\Http\RedirectResponse;
@@ -23,8 +26,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RmaController extends Controller
 {
-    public function index(Request $request, BuscarRmas $caso, ListarGruposDeAlertas $listarGruposDeAlertas): View
-    {
+    public function index(
+        Request $request,
+        BuscarRmas $caso,
+        ListarGruposDeAlertas $listarGruposDeAlertas,
+        RepositorioDeRmas $repositorio,
+    ): View {
         Gate::authorize('viewAny', RmaEloquent::class);
 
         $tipo = $request->query('tipo', 'texto');
@@ -38,16 +45,31 @@ class RmaController extends Controller
 
         $rmas = $valor !== '' ? $caso->buscar($criterio) : [];
 
+        // CP23 (paridade visual V2) — as abas Entrada/Recebido/Encaminhado/Concluído
+        // (`15.8.1/page/{entrada,recebido,encaminhado,concluido}.php`) são listagens
+        // próprias por status, sempre cheias — NÃO um recorte do resultado de busca
+        // (achado: a implementação anterior filtrava `$rmas`, que só tem conteúdo
+        // quando há termo de busca, deixando essas 4 abas vazias por padrão).
+        $porStatusV2 = [
+            'entrada' => $repositorio->listarPorPainel(PainelDeStatus::EntradaSomente),
+            'recebido' => $repositorio->listarPorPainel(PainelDeStatus::RecebidoSomente),
+            'encaminhado' => $repositorio->listarPorPainel(PainelDeStatus::Encaminhados),
+            'concluido' => $repositorio->listarPorPainel(PainelDeStatus::Concluidos),
+        ];
+        $todosOsRegistrosDasAbas = array_merge($rmas, ...array_values($porStatusV2));
+
         return view_do_tema('rma.index', [
             'titulo' => 'RMAs',
             'rmas' => $rmas,
             'tipo' => $tipo,
             'valor' => $valor,
-            // CP20 (paridade visual V2) — a tabela de resultados histórica
-            // (`15.8.1/subp/pesquisar_rma.php`) mostra o nome do fabricante, não
-            // só o id; mesmo padrão de
-            // `ListagensPorStatusController::mapaDeFabricantes()`.
-            'fabricantes' => $this->mapaDeFabricantes($rmas),
+            'porStatusV2' => $porStatusV2,
+            // CP20/CP23 (paridade visual V2) — as tabelas históricas mostram nome de
+            // fabricante/destinatário, não só o id; mesmo padrão de
+            // `ListagensPorStatusController::mapaDeFabricantes()`/
+            // `mapaDeDestinatarios()`, agora cobrindo busca + as 4 abas por status.
+            'fabricantes' => $this->mapaDeFabricantes($todosOsRegistrosDasAbas),
+            'destinatarios' => $this->mapaDeDestinatarios($todosOsRegistrosDasAbas),
             // "CENTRO DE AVISOS E RELATORIOS" (correção de fidelidade Fase 8,
             // 2026-08-25) — a aba "Início"/"Pág. Inicial" dos dois temas mostra as
             // mesmas 11 regras da Fase 5 (`PainelDeAlertasController`), sempre
@@ -73,6 +95,36 @@ class RmaController extends Controller
         $ids = array_unique(array_filter(array_map(fn ($r) => $r->fabricanteId, $registros)));
 
         return $ids === [] ? [] : Fabricante::query()->whereIn('id', $ids)->pluck('nome', 'id')->all();
+    }
+
+    /**
+     * `destinatarioType`/`destinatarioId` são polimórficos, sem `morphMap` — mesmo
+     * padrão de `ListagensPorStatusController::mapaDeDestinatarios()`.
+     *
+     * @param  Rma[]  $registros
+     * @return array<string, string>
+     */
+    private function mapaDeDestinatarios(array $registros): array
+    {
+        $idsPorTipo = [];
+        foreach ($registros as $registro) {
+            if ($registro->destinatarioType !== null && $registro->destinatarioId !== null) {
+                $idsPorTipo[$registro->destinatarioType][] = $registro->destinatarioId;
+            }
+        }
+
+        $mapa = [];
+        foreach ($idsPorTipo as $tipo => $ids) {
+            if (! class_exists($tipo)) {
+                continue;
+            }
+
+            foreach ($tipo::query()->whereIn('id', array_unique($ids))->get(['id', 'nome']) as $model) {
+                $mapa[$tipo.'#'.$model->id] = $model->nome;
+            }
+        }
+
+        return $mapa;
     }
 
     /**

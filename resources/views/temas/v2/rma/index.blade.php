@@ -5,12 +5,13 @@
     // tema"): os 7 painéis (#inicio, #pesquisar, #novo_rma, #entrada, #recebido,
     // #encaminhado, #concluido) vêm TODOS renderizados no mesmo HTML; a troca é o
     // plugin de abas nativo do Bootstrap 3 (`data-toggle="tab"`), sem AJAX/reload.
-    // Fonte de dados: a MESMA busca já resolvida pelo `RmaController@index` (Fase 3) —
-    // nenhuma regra de negócio nova. Os painéis por status particionam o resultado já
-    // buscado (`$rmas`) por `$registro->status`; quando não há termo de busca (`$rmas`
-    // vazio), os painéis mostram o estado "nenhum encontrado", mesmo comportamento do
-    // painel #pesquisar.
-    $porStatus = fn (\App\Rma\Dominio\Status $status) => array_values(array_filter($rmas, fn ($r) => $r->status === $status));
+    //
+    // CP23 — achado que corrige um bug real: as 4 abas por status eram um recorte do
+    // resultado de BUSCA (`$rmas`), que só tem conteúdo quando há termo digitado —
+    // ficavam vazias por padrão, diferente do Legacy (`page/{entrada,recebido,
+    // encaminhado,concluido}.php` são listagens próprias, sempre cheias). Corrigido:
+    // `RmaController@index` agora entrega `$porStatusV2` com as 4 listagens reais
+    // (`PainelDeStatus::EntradaSomente/RecebidoSomente/Encaminhados/Concluidos`).
 
     // CP22 (paridade visual V2) — `15.8.1/page/inicio.php` inclui só 10 dos 11
     // `subp/listar_*.php` que `ListarGruposDeAlertas` compõe (lido por inteiro nesta
@@ -74,19 +75,19 @@
         </div>
 
         <div id="entrada" class="tab-pane fade">
-            @include('temas.v2.rma._tabela', ['registros' => $porStatus(\App\Rma\Dominio\Status::Entrada)])
+            @include('temas.v2.rma._tabela_entrada', ['registros' => $porStatusV2['entrada']])
         </div>
 
         <div id="recebido" class="tab-pane fade">
-            @include('temas.v2.rma._tabela', ['registros' => $porStatus(\App\Rma\Dominio\Status::Recebido)])
+            @include('temas.v2.rma._tabela_recebido', ['registros' => $porStatusV2['recebido']])
         </div>
 
         <div id="encaminhado" class="tab-pane fade">
-            @include('temas.v2.rma._tabela', ['registros' => $porStatus(\App\Rma\Dominio\Status::Encaminhado)])
+            @include('temas.v2.rma._tabela_encaminhado', ['registros' => $porStatusV2['encaminhado']])
         </div>
 
         <div id="concluido" class="tab-pane fade">
-            @include('temas.v2.rma._tabela', ['registros' => $porStatus(\App\Rma\Dominio\Status::Concluido)])
+            @include('temas.v2.rma._tabela_concluido', ['registros' => $porStatusV2['concluido']])
         </div>
     </div>
 @endsection

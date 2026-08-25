@@ -133,6 +133,8 @@ Gate: migração real em alvo descartável e reconciliação sem diferença inex
 - [ ] **DOC D-05 — atualizar contagens em resumos correntes.** Preservar logs históricos.
 - [ ] **QA D-06 — auditar `ExampleTest`.** Remover/substituir placeholders sem valor.
 - [ ] **DOC D-07 — fechar OpenSpec F10 por evidência.** Nunca por intenção.
+- [x] **DOC D-08 — registrar handoff da sessão.** Estado, evidências, riscos, pendências
+  e ordem de retomada em `docs/produto/handoff-sessao-2026-08-25.md`.
 
 ## E. Trilha B — backlog ordenado
 

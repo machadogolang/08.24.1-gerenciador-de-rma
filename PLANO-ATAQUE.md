@@ -2,6 +2,7 @@
 
 Última atualização: 2026-08-25. Fonte granular:
 `docs/produto/checklist-master-v3.md`.
+Handoff para nova sessão: `docs/produto/handoff-sessao-2026-08-25.md`.
 
 ## AGORA
 
@@ -25,7 +26,8 @@ logo locais, teste permanente de assets/geometria e matriz em
 `docs/produto/paridade-visual-tema-v1.md`. O gate visual F10 permanece aberto para TEMA
 V2, demais superfícies e breakpoints previstos no checklist mestre.
 
-Após este checkpoint, retomar o item 1 de AGORA e concluir o lote funcional em curso.
+O lote funcional foi retomado: itens 1, 2, 4 e 5 de AGORA estão concluídos. A próxima
+sessão começa no item 3 (`F10-FUN-07`), pelos smokes somente leitura.
 
 ## DEPOIS
 

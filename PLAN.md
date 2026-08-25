@@ -14,6 +14,7 @@ sobre Git, OpenSpec, investigações e documentos de planejamento.
 - V3 em `:8095`, com base local determinística de QA.
 - Ambientes simultâneos documentados em `docs/produto/ambientes-locais-v2-v3.md`.
 - Baseline auditada em `main`, commit `0b3f72d`.
+- Handoff completo da sessão: `docs/produto/handoff-sessao-2026-08-25.md`.
 
 ## Trilha A — reconstrução fiel
 
@@ -31,8 +32,8 @@ sobre Git, OpenSpec, investigações e documentos de planejamento.
 | F10 | QA de paridade | em execução |
 
 A matriz funcional tem 48 itens: 44 `PARIDADE`, 2 `NÃO RECONSTRUIR`, 1 `RETOMAR
-IDEIA` e 1 (`LEG-RMA-002`) aguardando decisão. A última suíte confirmada antes desta
-consolidação tem 310 testes/608 assertions.
+IDEIA` e 1 (`LEG-RMA-002`) aguardando decisão. A suíte completa renovada nesta sessão
+tem 310 testes/608 assertions; o recorte Playwright V1 tem 6 testes aprovados.
 
 ### Gate da Trilha A
 

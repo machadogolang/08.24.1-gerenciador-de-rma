@@ -1,16 +1,24 @@
 # Checklist mestre — CellSystem RMA V3
 
-Data: 2026-08-24. Documento único de acompanhamento: tudo que já foi investigado
-(indexado, com onde encontrar o detalhe) e todo o trabalho que falta, quebrado em
-tarefas pequenas e organizado por fase de implementação. `PLAN.md` continua sendo o
-estado macro; `PLANO-ATAQUE.md` continua sendo o operacional (AGORA/DEPOIS/
-DEPENDÊNCIAS); este documento é o **checklist granular** dos dois, para não perder
-nenhum item pequeno entre uma sessão e outra.
+Data: 2026-08-24, última reconciliação 2026-08-25. Documento único de acompanhamento:
+tudo que já foi investigado (indexado, com onde encontrar o detalhe) e todo o trabalho
+que falta, quebrado em tarefas pequenas e organizado por fase de implementação.
+`PLAN.md` continua sendo o estado macro; `PLANO-ATAQUE.md` continua sendo o operacional
+(AGORA/DEPOIS/DEPENDÊNCIAS, com o detalhe do que falta em cada fase espelhado deste
+documento); este documento é o **checklist granular** dos dois, para não perder nenhum
+item pequeno entre uma sessão e outra.
 
 **Sumário:** Parte 1 — tudo já investigado (índice) · Parte 2 — arquitetura decidida e
-inventário de tecnologia · Parte 3 — as 10 fases de implementação, Fases 1-8 já em
-especificação (Fases 9/10 em esqueleto, `INV-RMA-05` §14/§15) · Parte 4 — estratégia de
-migração em detalhe · Parte 5 — pendências operacionais menores.
+inventário de tecnologia · Parte 3 — as 10 fases de implementação, todas com OpenSpec
+completo (`proposal`/`design`/`tasks`); Fases 1-4 implementadas e testadas, Fase 5 em
+implementação, Fases 6-10 especificadas arquivo-por-arquivo (`INV-RMA-05` §11-§15,
+`INV-RMA-06` para a Fase 9) · Parte 4 — estratégia de migração em detalhe (`INV-RMA-06`
+escrito) · Parte 5 — pendências operacionais menores.
+
+**Trilha B:** `docs/arquitetura/INV-RMA-07-evolucao-saas-multiempresa.md` — investigação
+de evolução SaaS multiempresa aberta e concluída (2026-08-25). Arquitetura decidida,
+implementação propositalmente não iniciada (só depois da baseline de paridade da Trilha
+A). Ver `docs/produto/backlog-evolutivo.md` (`EVO-SAAS-001`).
 
 ---
 
@@ -50,7 +58,8 @@ migração em detalhe · Parte 5 — pendências operacionais menores.
 - [x] `docs/produto/backlog-evolutivo.md` — Trilha B (EVO-SAAS, EVO-DOM, EVO-AUT,
       EVO-REL, EVO-SEG, EVO-PERF, EVO-IA), separada da reconstrução fiel
 - [x] `docs/produto/paridade-v2-v3.md` — matriz de rastreamento V2→V3 por
-      `LEG-RMA-NNN` (todos `PENDENTE` ainda — nenhuma OpenSpec/implementação começou)
+      `LEG-RMA-NNN` (atualizada a cada fase concluída — Fases 1-4 já em `PARIDADE`;
+      demais itens `PENDENTE` até a fase correspondente ser implementada)
 - [x] `docs/desenvolvimento/ambiente-v2-v3.md` — como subir os dois ambientes,
       isolamento Docker, smoke test completo executado (login, banco compartilhado
       entre temas, troca de tema, Mailpit)
@@ -344,41 +353,34 @@ objetivo por eixo + gate de conclusão do projeto detalhados em `INV-RMA-05` §1
 
 ---
 
-## Parte 4 — Estratégia de migração em detalhe (`INV-RMA-06` + `MIG-V3`, ainda não escritos)
+## Parte 4 — Estratégia de migração em detalhe (`INV-RMA-06` — escrito 2026-08-24)
 
-- [ ] Criar `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`
-- [ ] Mapa completo legado → V3, tabela por tabela:
-  - [ ] `bd` → entidade `Rma` (mapear as ~56 colunas uma a uma)
-  - [ ] `cliente` → `Cliente`/`Parceiro`
-  - [ ] `fabricante` → `Fabricante`/`Parceiro`
-  - [ ] `fornecedor` → `Fornecedor`/`Parceiro`
-  - [ ] `assistencia_tecnica` → `AssistenciaTecnica`/`Parceiro`
-  - [ ] `usuario` → `User` + papel/permissão
-  - [ ] `log` → auditoria de autenticação
-  - [ ] `modificacao` → auditoria de RMA (decidir: manter snapshot ou virar diff
-        estruturado — ver regra de evolução do banco)
-  - [ ] `relatorio` → decidir se vira config genérica ou é descartado
-  - [ ] `assistencias` (tabela órfã) → **não migrar dados**, só usar a ideia (parceiro
-        com papel) na modelagem nova
-- [ ] Desenhar o migrador oficial (`php artisan rma:migrate-legacy` ou nome melhor)
-  - [ ] Definir contrato de entrada (aponta para `rma_legacy` via conexão secundária?)
-  - [ ] Implementar deduplicação de parceiro por nome (com relatório de ambiguidade)
-  - [ ] Implementar relatório de reconciliação (contagem por entidade, avisos,
-        não-reconhecidos)
-  - [ ] Implementar idempotência (rodar duas vezes não duplica dados)
-  - [ ] Escrever teste de migração determinístico (banco V2 conhecido → V3 → validação)
-- [ ] Definir estratégia para valores legados fora do domínio moderno (`origem=Rolo`,
-      `prioridade=urgente`, `status=retornou`, `empresa=R A`) — normalizar, enum legado,
-      campo original preservado, ou warning? (decidir caso a caso, não em bloco)
+- [x] `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md` escrito — mapa completo
+      campo-a-campo das 9 tabelas legadas, com 4 pendências reais registradas (formato
+      de data ambíguo; ocorrência real de `status='retornou'`; destino de
+      `relatorio.informacaoadicional`; coordenação de `rmas.valor` — resolvida em
+      2026-08-25, coluna adicionada ao schema da Fase 5)
+- [x] OpenSpec do migrador escrita: `openspec/changes/migracao-v2-v3/
+      {proposal,design,tasks}.md` — arquitetura completa (8 importadores, ordem de
+      dependência, `TabelaDeTraducao`, `RelatorioDeReconciliacao`, idempotência via
+      `numero_legado`/dedup por nome)
+- [ ] **Bloqueado para codificar até as Fases 4/5 existirem em código** (Fase 4 já
+      existe; Fase 5 em implementação) — os enums que o migrador traduz precisam ser
+      reais, não só especificados
+- [ ] Migrador codificado + 8 importadores + relatório de reconciliação + idempotência
+      + testes de migração determinísticos (ver `openspec/changes/migracao-v2-v3/
+      tasks.md` para a lista arquivo-por-arquivo)
+- [ ] Resolver ou registrar decisão do usuário para as 4 pendências de `INV-RMA-06`
 
 ## Parte 5 — Pendências operacionais menores
 
 - [ ] `scripts/legacy-reset.sh` (Legacy) — escrito, ainda não testado de fato
       (`./scripts/legacy-reset.sh` rodar do zero e confirmar que reimporta o schema)
-- [ ] Confirmar se `machadogolang/08.24.4-legacy-gerenciador-de-rma` foi mesmo
-      publicado no GitHub (checado nesta sessão: **HTTP 404**, ainda não existe)
-- [ ] Confirmar/trocar `machadogolang/08.24.1-gerenciador-de-rma` para privado (checado
-      nesta sessão: **ainda público**)
+- [x] `machadogolang/08.24.4-legacy-gerenciador-de-rma` publicado no GitHub — `git push`
+      confirmado com sucesso nesta sessão (commits `#L0`/`#L1` no remoto)
+- [ ] Confirmar/trocar `machadogolang/08.24.1-gerenciador-de-rma` para privado — não
+      re-verificado nesta sessão desde a última checagem (público); `git push` também
+      confirmado funcionando, mas isso não confirma visibilidade
 - [ ] Capturar screenshots reais (PNG) dos dois temas autenticados, para
       `inventario-visual-tema-v1.md`/`-v2.md`
 

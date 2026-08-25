@@ -4,8 +4,11 @@ namespace App\Rma\Infraestrutura;
 
 use App\Models\Rma as RmaEloquent;
 use App\Rma\Dominio\CriterioDeBusca;
+use App\Rma\Dominio\PainelDeStatus;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
+use App\Rma\Dominio\Solucao;
+use App\Rma\Dominio\Status;
 
 /**
  * Implementação Eloquent de `RepositorioDeRmas`. `App\Models\Rma` é uso interno desta
@@ -64,6 +67,36 @@ final class RmasEmBanco implements RepositorioDeRmas
         };
 
         return $consulta->orderByDesc('id')->get()
+            ->map(fn (RmaEloquent $model) => $this->paraDominio($model))
+            ->all();
+    }
+
+    /**
+     * VIS-V1-001 — os 4 atalhos de navegação superior do TEMA V1 legado, cada um com
+     * seu próprio filtro (`page/{entrada,encaminhados,aguardandocredito,concluidos}.php`).
+     * "Entrada" reúne `status='entrada' OR status='recebido'` (mesmo critério do
+     * legado); "Aguardando credito" filtra por `solucao`, não por `status`.
+     *
+     * @return Rma[]
+     */
+    public function listarPorPainel(PainelDeStatus $painel): array
+    {
+        $consulta = match ($painel) {
+            PainelDeStatus::Entrada => RmaEloquent::query()
+                ->whereIn('status', [Status::Entrada, Status::Recebido])
+                ->orderByDesc('created_at'),
+            PainelDeStatus::Encaminhados => RmaEloquent::query()
+                ->where('status', Status::Encaminhado)
+                ->orderByDesc('encaminhado_em'),
+            PainelDeStatus::AguardandoCredito => RmaEloquent::query()
+                ->where('solucao', Solucao::PendenteCredito)
+                ->orderByDesc('created_at'),
+            PainelDeStatus::Concluidos => RmaEloquent::query()
+                ->where('status', Status::Concluido)
+                ->orderByDesc('concluido_em'),
+        };
+
+        return $consulta->get()
             ->map(fn (RmaEloquent $model) => $this->paraDominio($model))
             ->all();
     }

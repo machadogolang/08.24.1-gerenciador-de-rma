@@ -17,4 +17,7 @@ interface RepositorioDeRmas
 
     /** @return Rma[] */
     public function buscar(CriterioDeBusca $criterio): array;
+
+    /** @return Rma[] */
+    public function listarPorPainel(PainelDeStatus $painel): array;
 }

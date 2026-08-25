@@ -29,6 +29,18 @@
                     <a href="{{ rota_tema('rmas.create') }}">Novo</a>
                 </li>
                 <li class="menu-up"><a href="{{ rota_tema('rmas.index') }}#localizar">Localizar</a></li>
+                <li class="menu-up {{ request()->routeIs('rmas.entrada') ? 'active' : '' }}">
+                    <a href="{{ route('rmas.entrada') }}">Entrada</a>
+                </li>
+                <li class="menu-up {{ request()->routeIs('rmas.encaminhados') ? 'active' : '' }}">
+                    <a href="{{ route('rmas.encaminhados') }}">Encaminhado</a>
+                </li>
+                <li class="menu-up {{ request()->routeIs('rmas.aguardando-credito') ? 'active' : '' }}">
+                    <a href="{{ route('rmas.aguardando-credito') }}">Aguardando credito</a>
+                </li>
+                <li class="menu-up {{ request()->routeIs('rmas.concluidos') ? 'active' : '' }}">
+                    <a href="{{ route('rmas.concluidos') }}">Concluido</a>
+                </li>
             </ul>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

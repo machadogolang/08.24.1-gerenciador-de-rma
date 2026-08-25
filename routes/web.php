@@ -12,6 +12,7 @@ use App\Http\Controllers\Parceiros\FornecedorController;
 use App\Http\Controllers\Rma\CicloDeVidaController;
 use App\Http\Controllers\Rma\CreditoController;
 use App\Http\Controllers\Rma\HistoricoDeModificacaoController;
+use App\Http\Controllers\Rma\ListagensPorStatusController;
 use App\Http\Controllers\Rma\LogisticaController;
 use App\Http\Controllers\Rma\PainelDeAlertasController;
 use App\Http\Controllers\Rma\RelatorioController;
@@ -78,6 +79,14 @@ Route::middleware('auth')->group(function () {
     // Painel de alertas (LEG-RMA-018 a 029) — Fase 5. Rota fixa antes de
     // `rmas/{rma}` não é necessária aqui pois usa outro segmento inicial.
     Route::get('/rmas-alertas', [PainelDeAlertasController::class, 'index'])->name('rmas.alertas');
+
+    // VIS-V1-001 — as 4 listagens por status do menu superior do TEMA V1 (Entrada/
+    // Encaminhado/Aguardando credito/Concluido), fonte real `14.6.1/page/*.php`.
+    // Outro segmento inicial, sem conflito com `rmas/{rma}`.
+    Route::get('/rmas-entrada', [ListagensPorStatusController::class, 'entrada'])->name('rmas.entrada');
+    Route::get('/rmas-encaminhados', [ListagensPorStatusController::class, 'encaminhados'])->name('rmas.encaminhados');
+    Route::get('/rmas-aguardando-credito', [ListagensPorStatusController::class, 'aguardandoCredito'])->name('rmas.aguardando-credito');
+    Route::get('/rmas-concluidos', [ListagensPorStatusController::class, 'concluidos'])->name('rmas.concluidos');
 
     // Fluxo de crédito (LEG-RMA-036, Fase 6) — fluxo único, não as 3 sub-rotas
     // quebradas do legado (LEG-RMA-048). Outro segmento inicial, sem conflito com

@@ -43,18 +43,27 @@ delas existir, mas **não pode rodar de verdade** até essas fases estarem imple
   migrador testado contra fixture pequena; a execução real fica para quando o usuário
   decidir (ação irreversível de dado, fora do escopo de "implementar o código").
 
-## Pendências herdadas de `INV-RMA-06`, não decididas aqui
+## Pendências herdadas de `INV-RMA-06` — resolvidas na implementação (2026-08-25)
 
-1. Formato de data ambíguo em campos `varchar` do legado (extensão real do problema só
-   conhecida ao rodar contra o banco real).
-2. Ocorrência real de `bd.status = 'retornou'`/`bd.retornou IS NOT NULL` — `LEG-RMA-016`
-   afirma código morto por leitura de código, não de dado; decisão só quando/se
-   ocorrência real aparecer no relatório de reconciliação.
-3. Destino de `relatorio.informacaoadicional` — decisão de produto explícita necessária
-   (opção A: preservar num campo; opção B: descartar, dado recuperável no backup do
-   repositório Legacy) antes do migrador rodar sobre essa tabela.
-4. Coordenação de `rmas.valor` (ausente da migration listada na Fase 5) — bloqueador
-   técnico, não decisão de produto, a resolver antes do migrador rodar.
+1. **Formato de data ambíguo em campos `varchar` do legado** — resolvido com o parser de
+   3 tentativas descrito em `INV-RMA-06` (`d/m/Y` → `Y-m-d` → `NULL` + anomalia com o
+   valor bruto), implementado em `App\Rma\Infraestrutura\Migracao\ParserDeDataLegado`.
+   Nunca lança exceção. A extensão real do problema (quantas linhas caem no caso `NULL`)
+   só é conhecida ao rodar contra o banco real — não foi possível nesta sessão (ver
+   `log-implementacao-v3.md`, Fase 9, bloqueio de rede documentado).
+2. **Ocorrência real de `bd.status = 'retornou'`/`bd.retornou IS NOT NULL`** — o
+   migrador **detecta e registra como anomalia** se ocorrer (`ImportarRmas`), sem
+   inventar case novo no enum `Status`. Não foi possível confirmar contra dado real
+   nesta sessão (mesmo bloqueio de rede); os testes automatizados (fixture) cobrem os
+   dois casos (`status='retornou'` e `retornou` preenchido) como anomalia esperada.
+3. **Destino de `relatorio.informacaoadicional`** — **decisão tomada por omissão, não
+   silenciosa**: opção B aplicada (descartar). A tabela `relatorio` nunca é lida —
+   `App\Rma\Infraestrutura\Migracao\ConexaoLegado` não tem (nem nunca terá, a menos que
+   revisitado) um método `relatorio()`. O dado permanece recuperável no backup do
+   repositório Legacy caso o financeiro precise reconstituí-lo depois.
+4. Coordenação de `rmas.valor` — já resolvida antes desta fase começar a ser codificada
+   (Fase 5, coluna `valor decimal(10,2) nullable` adicionada). O migrador mapeia
+   `bd.valor` → `rmas.valor` sem bloqueio.
 
 ## Rastreabilidade
 

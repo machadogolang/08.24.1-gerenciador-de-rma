@@ -47,6 +47,25 @@ registrada, não bloqueia a Fase 8 (ver `log-implementacao-v3.md`). `sail test`
 1440px) confirma TEMA V1 fixo/não-responsivo e TEMA V2 nos breakpoints próprios; 9
 screenshots PNG reais capturados em `docs/produto/screenshots-fase8/`.
 
+**Fase 9 (`migracao-v2-v3`) concluída:** paridade de DADOS (origem, não comportamento —
+os itens de comportamento já fecham nas Fases 1-8) — migrador oficial
+(`php artisan rma:migrar-legado`, `app/Rma/Infraestrutura/Migracao/`) carrega as 7
+tabelas legadas com destino real (`usuario`/`cliente`/`fabricante`/`fornecedor`/
+`assistencia_tecnica`/`bd`/`log`/`modificacao`) para o schema V3, com relatório de
+reconciliação (contagem origem×destino, anomalias, conversões assistidas) e idempotência
+real (`numero_legado` para `rmas`, dedup por e-mail/nome normalizado para as demais).
+`sail test` 308/308 (265 das Fases 1-8 + 43 novos: 8 testes de importador + comando).
+**`relatorio.informacaoadicional` não é migrada** — decisão tomada por omissão, não
+silenciosa (opção B de `INV-RMA-06` §14, dado recuperável no backup do repositório
+Legacy se precisar depois; ver `proposal.md`/`log-implementacao-v3.md`). Dry-run real
+contra o banco Legacy (`rma-legacy-mariadb-1`) foi tentado nesta sessão e bloqueado por
+rede — a porta `3309` do Legacy é publicada só em `127.0.0.1` do host
+(`127.0.0.1:3309:3306` no `compose.yaml` do repositório Legacy), inacessível a partir do
+container V3 mesmo via `host.docker.internal` (que resolve para o gateway Docker do
+host, não para `127.0.0.1`) — confirmado com um teste de conectividade TCP direto
+(`FAIL` de dentro do container, `OK` a partir do host). Não é um problema do migrador; a
+evidência que conta é a fixture automatizada (`tests/Feature/Migracao/`).
+
 Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 
 | ID | Funcionalidade V2 | Tema V1 | Tema V2 | OpenSpec | V3 | QA | Status |

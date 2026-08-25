@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * classe de infra (o objeto de domínio puro é `App\Rma\Dominio\Rma`).
  */
 #[Fillable([
+    'numero_legado',
     'descricao',
     'fabricante_id',
     'fornecedor_id',
@@ -50,6 +51,31 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
     'lancadoretorno',
     'valor',
     'credito_disponivel',
+    // Fase 9 — colunas históricas de preservação (`INV-RMA-06` §1.2, §5, §7, §10),
+    // preenchidas só pelo migrador, sem regra de negócio dona.
+    'nf_devolucao_de_venda',
+    'nf_entrada_cliente_legado',
+    'nf_retorno_cliente_legado',
+    'nf_remessa',
+    'nf_remessa_emissao',
+    'nf_remessa_chave',
+    'nf_retorno_numero',
+    'nf_retorno_emissao',
+    'nf_retorno_chave',
+    'pn',
+    'snid',
+    'rastreio_ida',
+    'rastreio_retorno',
+    'cliente_email_legado',
+    'destinatario_email_legado',
+    'destinatario_fone_legado',
+    'descricao_final_legado',
+    'solucao_legado_bruto',
+    'destinatario_nome_legado',
+    'operador_email_legado',
+    'operador_id',
+    'created_at',
+    'updated_at',
 ])]
 class Rma extends Model
 {

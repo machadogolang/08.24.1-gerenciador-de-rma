@@ -411,20 +411,27 @@ Ver `log-implementacao-v3.md` (Fase 8) para os desvios de implementação regist
 (bootstrap@3.3.5 só publica LESS/CSS pré-compilado, não SCSS — `@import` do CSS de
 distribuição real em vez de `@import` de um SCSS que não existe).
 
-### Fase 9 — Migração V2→V3 — **EM ESPECIFICAÇÃO**
+### Fase 9 — Migração V2→V3 — **CONCLUÍDA** (2026-08-25)
 
 OpenSpec escrita: `openspec/changes/migracao-v2-v3/{proposal,design,tasks}.md`. Mapa
 campo-a-campo completo: `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`.
-Arquivo por arquivo detalhado em `INV-RMA-05` §14. **Bloqueador para codificar:**
-depende das Fases 4/5 (enums `Status`/`Solucao`/`Origem`/`Prioridade`/
-`StatusDeLancamento`) estarem implementadas em código, não só especificadas.
+Arquivo por arquivo detalhado em `INV-RMA-05` §14.
 
 - [x] Escrever `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`
 - [x] Escrever `openspec/changes/migracao-v2-v3/{proposal,design,tasks}.md`
 - [x] Mapa completo legado → V3 por tabela/campo
-- [ ] Migrador oficial + relatório de reconciliação + idempotência (bloqueado até
-      Fases 4/5 estarem implementadas em código)
-- [ ] Teste de migração determinístico
+- [x] Migrador oficial + relatório de reconciliação + idempotência —
+      `app/Rma/Infraestrutura/Migracao/` (`TabelaDeTraducao`, `ConexaoLegado`,
+      `RelatorioDeReconciliacao`, `ResolverDestinatario`, `ParserDeDataLegado` + 8
+      importadores), comando `php artisan rma:migrar-legado`
+      (`--somente`/`--dry-run`/`--forcar`)
+- [x] Teste de migração determinístico — 8 testes de importador +
+      `MigrarLegadoComandoTest`, fixture pequena via schema reproduzido
+      (`tests/Feature/Migracao/Suporte/ComBancoLegadoDeTeste.php`), `sail test`
+      308/308 (265 das Fases 1-8 + 43 novos)
+- [x] Dry-run real contra o Legacy tentado, bloqueado por rede (porta `3309` do Legacy
+      só em `127.0.0.1` do host — ver `log-implementacao-v3.md`, Fase 9); dry-run
+      automatizado contra fixture (`MigrarLegadoComandoTest`) é a evidência que conta
 
 ### Fase 10 — QA de paridade — **EM ESPECIFICAÇÃO, contínua, fecha por último**
 
@@ -449,13 +456,13 @@ objetivo por eixo + gate de conclusão do projeto detalhados em `INV-RMA-05` §1
       {proposal,design,tasks}.md` — arquitetura completa (8 importadores, ordem de
       dependência, `TabelaDeTraducao`, `RelatorioDeReconciliacao`, idempotência via
       `numero_legado`/dedup por nome)
-- [ ] **Bloqueado para codificar até as Fases 4/5 existirem em código** (Fase 4 já
-      existe; Fase 5 em implementação) — os enums que o migrador traduz precisam ser
-      reais, não só especificados
-- [ ] Migrador codificado + 8 importadores + relatório de reconciliação + idempotência
+- [x] Fases 4/5 existiam em código antes desta fase começar a ser codificada
+- [x] Migrador codificado + 8 importadores + relatório de reconciliação + idempotência
       + testes de migração determinísticos (ver `openspec/changes/migracao-v2-v3/
       tasks.md` para a lista arquivo-por-arquivo)
-- [ ] Resolver ou registrar decisão do usuário para as 4 pendências de `INV-RMA-06`
+- [x] Resolver ou registrar decisão do usuário para as 4 pendências de `INV-RMA-06` (3
+      resolvidas na implementação — parser de 3 tentativas, anomalia sem case novo,
+      opção B por omissão — e `rmas.valor` já resolvida na Fase 5; ver `proposal.md`)
 
 ## Parte 5 — Pendências operacionais menores
 

@@ -735,3 +735,165 @@ junto com este log).
 `sail test`: 265/265 verdes, 492 assertions (263→265, 488→492).
 
 ---
+
+## Fase 9 — Migração V2→V3
+
+**Data:** 2026-08-25.
+
+**Pré-requisito confirmado no início desta fase:** Fases 4/5 (enums `Status`/`Solucao`/
+`Origem`/`Prioridade`/`StatusDeLancamento`) já estavam implementadas em código antes
+desta fase começar a ser codificada (confirmado lendo `app/Rma/Dominio/*.php`
+diretamente) — o bloqueador registrado em `tasks.md`/`checklist-master-v3.md` já não se
+aplicava.
+
+**Implementado:**
+- **`config/database.php`** — conexão nomeada `rma_legacy` (driver `mysql`), variáveis
+  `LEGACY_DB_*` documentadas em `.env.example` (`LEGACY_DB_HOST=host.docker.internal`,
+  `LEGACY_DB_PORT=3309` — as redes Docker dos 2 projetos são isoladas, ver
+  `docs/desenvolvimento/ambiente-v2-v3.md`).
+- **`app/Rma/Infraestrutura/Migracao/TabelaDeTraducao.php`** — 8 métodos estáticos
+  (`status`/`origem`/`prioridade`/`prioridadeEhResiduoUrgente`/`solucao`/
+  `statusDeLancamento`/`papel`/`temaPreferido`/`empresa`), único lugar do código que
+  compara um valor cru do legado por igualdade, implementando `INV-RMA-06` §2-§6, §9,
+  §11 completos.
+- **`ParserDeDataLegado`/`ResultadoDeParseDeData`** — PENDÊNCIA-1 resolvida: parser de 3
+  tentativas (`d/m/Y` → `Y-m-d` → não-parseável), nunca lança exceção (Carbon lança
+  `InvalidFormatException`/similar para entrada fora do formato tentado em vez de
+  devolver `false` como o `design.md` original presumia — capturado com `try/catch`,
+  achado só durante a implementação/teste). Formatos de data pura zeram a hora
+  (`startOfDay()`) para não herdar o horário-corrente do momento em que o migrador roda.
+- **`ConexaoLegado`** — 1 método por tabela (`LazyCollection`/`cursor()`), 7 tabelas lidas
+  (`usuario`/`cliente`/`fabricante`/`fornecedor`/`assistencia_tecnica`/`bd`/`log`/
+  `modificacao` — 8 no total; `relatorio`, a 9ª, nunca tem método correspondente,
+  PENDÊNCIA-3 resolvida por omissão).
+- **`RelatorioDeReconciliacao`** — contagem origem×destino por tabela, anomalias,
+  conversões assistidas; `resumo()` monta o relatório final, `salvar()` grava em
+  `storage/app/migracao/relatorio-{timestamp}.txt`.
+- **`ResolverDestinatario`** — cascata `assistencia_tecnica → fornecedor → fabricante`,
+  comparação normalizada (trim + case-insensitive), sem auto-criação.
+- **2 migrations** — `numero_legado` (unique, nullable) em `rmas`; colunas históricas de
+  preservação (`INV-RMA-06` §1.2/§5/§7/§10: `nf_*_legado`, `pn`, `snid`,
+  `rastreio_ida/retorno`, `*_email_legado`, `solucao_legado_bruto`,
+  `destinatario_nome_legado`, `operador_email_legado`/`operador_id`). **Datas
+  deslocadas** de `2026_09_01_00000{0,1}` para `2026_09_02_00000{0,1}` — a data original
+  do `design.md` já estava ocupada por `create_modificacoes_de_rma_table.php` (Fase 7,
+  commitada antes desta fase começar).
+- **`app/Parceiros/Aplicacao/EncontrarOuCriar{Fabricante,Fornecedor,
+  AssistenciaTecnica}.php`** — generalização de `EncontrarOuCriarCliente` (Fase 2), uso
+  exclusivo do migrador (Fase 3/`CriarRma`/`EditarRma` não mudam de comportamento).
+- **8 importadores** em `app/Rma/Infraestrutura/Migracao/Importadores/`, ordem de
+  dependência de FK (Usuarios → Clientes → Fabricantes → Fornecedores →
+  AssistenciasTecnicas → Rmas → LogsDeAcesso → ModificacoesDeRma), transação por
+  importador (`DB::transaction()`), cada um com `contarOrigem`/`contarDestino` próprios.
+  `ImportarModificacoesDeRma::disponivel()` checa `Schema::hasTable('modificacoes_de_rma')`
+  de verdade antes de rodar — checagem defensiva real, não assumida implicitamente só
+  porque a Fase 7 está commitada.
+- **`php artisan rma:migrar-legado`** — opções `--somente=<tabela>`/`--dry-run`/
+  `--forcar`, imprime e salva o relatório de reconciliação ao final.
+
+**As 3 pendências reais de `INV-RMA-06` — como foram tratadas:**
+1. **Formato de data ambíguo** — `ParserDeDataLegado`, ver acima. Testado com `d/m/Y`,
+   `Y-m-d` e valor não-parseável (`'31 de maio'`) nos 3 casos em `ImportarRmasTest`.
+2. **`status='retornou'`** — `ImportarRmas` registra anomalia específica se o valor
+   aparecer (`status`) e também faz um segundo cross-check independente sobre
+   `bd.retornou IS NOT NULL` (coluna própria, preservada só para esse cross-check, nunca
+   migrada como coluna V3) — os 2 casos têm teste dedicado. Nenhum case novo foi
+   adicionado ao enum `Status`.
+3. **`relatorio.informacaoadicional`** — opção B aplicada por omissão (decisão
+   registrada, não silenciosa — ver `proposal.md`). A tabela nunca é lida.
+
+**Desvios do OpenSpec (documentados no código/aqui):**
+- **Migrations deslocadas de data** (`2026_09_01_00000{0,1}` → `2026_09_02_00000{0,1}`)
+  — colisão com a migration da Fase 7, ver acima.
+- **`rmas.status` precisou virar `nullable`** — bloqueador técnico descoberto ao
+  codificar `ImportarRmas`: `INV-RMA-06` §2 exige "RMA importado sem status resolvido"
+  para valor fora do domínio (anomalia), mas a coluna (Fase 3) era `NOT NULL`. Resolvido
+  na mesma migration que já mexe em `rmas` nesta fase, mantendo `default('Entrada')`
+  (usado implicitamente por `RmaFactory`) — só deixou de ser `NOT NULL`. Mesma categoria
+  do ajuste já feito para `rmas.valor` na Fase 5 (bloqueador técnico, não decisão de
+  produto).
+- **Dedup de parceiro precisou de um helper novo** (`AtualizaOuCriaPorNomeNormalizado`)
+  — a 1ª versão dos 4 importadores de parceiro (`Clientes`/`Fabricantes`/`Fornecedores`/
+  `AssistenciasTecnicas`) usava `Model::updateOrCreate(['nome' => $normalizado], ...)`
+  diretamente, que casa por igualdade EXATA — duas grafias do mesmo nome
+  (`'seagate'`/`'Seagate'`) criariam 2 linhas em vez de 1 (bug pego pelo teste
+  `test_dedup_por_nome_normalizado_case_insensitive`, que falhou até a correção). O
+  helper novo busca por `LOWER(nome)` primeiro (mesma regra de
+  `EncontrarOuCriarCliente`), só cai para `create()` se realmente não existir.
+- **Senha de usuário migrado — fluxo "esqueci minha senha" sem rota nomeada.**
+  `INV-RMA-06` §11 já fixava "dispara o fluxo nativo de esqueci minha senha do Laravel"
+  para todo usuário migrado (nunca preserva `Key1461`/`Key1581`, SHA1 sem salt,
+  irreversível para bcrypt). A V3 (`LEG-RMA-003`) só tem reset de senha feito pelo
+  ADMINISTRADOR (`ResetarSenhaDeUsuario`) — não existe UI de autosserviço com rota
+  nomeada `password.reset`, então `Password::sendResetLink()` (broker nativo) falhava
+  com `RouteNotFoundException` ao montar a notificação `ResetPassword`. Resolvido com
+  `ResetPassword::createUrlUsing()` (registrado em `ImportarUsuarios::executar()`),
+  construindo a URL do e-mail sem depender da rota nomeada — o broker/token/e-mail
+  continuam 100% nativos do Laravel (`password_reset_tokens`, `Password::sendResetLink`),
+  só a montagem do link não depende de uma tela de reset que está fora do escopo desta
+  fase criar. Enviado só na criação do usuário (`$novo`), nunca em updates subsequentes
+  (idempotência não deve reenviar e-mail nem trocar a senha de quem já trocou desde a
+  migração).
+- **Banco `rma_legacy` de TESTE não é um banco separado no sentido literal de
+  servidor** — aponta para o MESMO servidor MySQL do container Sail
+  (`rma-v3-mysql-1`), banco físico próprio (`testing_legacy`, criado sob demanda pelo
+  trait `ComBancoLegadoDeTeste` via um `\PDO` cru — **não** pela conexão Laravel padrão,
+  porque `CREATE DATABASE` é DDL e um DDL rodado dentro da transação que
+  `RefreshDatabase` já abriu na conexão padrão causa commit implícito do MySQL,
+  quebrando os `SAVEPOINT`s internos do Laravel — achado só durante a 1ª tentativa de
+  implementação, `SQLSTATE[42000]: SAVEPOINT trans3 does not exist`). O usuário
+  `rma_v3` já tem `GRANT ALL PRIVILEGES ON \`testing%\`.*` (script padrão do Sail,
+  `create-testing-database.sh`), então `testing_legacy` casa no padrão sem precisar de
+  usuário `root`.
+
+**Testes:**
+- `tests/Feature/Migracao/Suporte/{ComBancoLegadoDeTeste,MigracaoTestCase}.php` —
+  schema legado reproduzido (8 tabelas, colunas fiéis a `INV-RMA-06`/
+  `inventario-banco-rma-v2.md`), fixture pequena por teste, não o dump de produção.
+- 8 arquivos de teste de importador (`Importar{Usuarios,Clientes,Fabricantes,
+  Fornecedores,AssistenciasTecnicas,Rmas,LogsDeAcesso,ModificacoesDeRma}Test.php`) — 39
+  testes: caso feliz, anomalia (valor fora do domínio), idempotência (rodar 2x não
+  duplica), soft-match de e-mail/dedup case-insensitive.
+  `ImportarRmasTest` é o mais completo (14 testes): status/solução/prioridade/
+  lançamento traduzidos, HGST→Hitachi (RN-13), `status='retornou'`, `retornou`
+  preenchido, solução não reconhecida preserva `solucao_legado_bruto`, `urgente`→`Alta`
+  como conversão assistida, data não-parseável com valor bruto no relatório, data
+  `Y-m-d` aceita, destinatário resolvido/não resolvido (cascata sem auto-criação),
+  operador soft-match, idempotência, `--dry-run`.
+- `MigrarLegadoComandoTest.php` (4 testes) — os 8 passos em ordem contra fixture
+  completa, `--somente`, `--dry-run` (nada gravado, relatório não salvo), idempotência
+  ponta a ponta rodando o comando 2x.
+- `sail test`: **308/308 verdes, 593 assertions** (265 das Fases 1-8 + 43 novos).
+
+**Dry-run real contra o Legacy — tentado, bloqueado por rede (não fabricado):**
+`docker ps` confirmou `rma-legacy-mariadb-1`/`rma-legacy-php-legacy-1` ativos nesta
+sessão. Configurar `LEGACY_DB_HOST=host.docker.internal`/`LEGACY_DB_PORT=3309` e rodar
+`php artisan rma:migrar-legado --dry-run` de dentro do container `laravel.test` falhou
+por timeout de conexão. Diagnóstico: `compose.yaml` do repositório Legacy publica a
+porta com `127.0.0.1:${DB_PORT:-3309}:3306` (bind só no loopback do HOST) — um teste de
+conectividade TCP direto confirmou `FAIL` (`Connection refused`) de dentro do container
+V3 contra `host.docker.internal:3309`, e `OK` rodando o mesmo teste a partir do host.
+`host.docker.internal` resolve para o gateway Docker do host, não para `127.0.0.1` —
+uma porta publicada só em loopback nunca é alcançável por esse caminho, é uma limitação
+de rede do Docker, não um bug do migrador. Corrigir exigiria editar o `compose.yaml` do
+repositório Legacy (trocar o bind para `0.0.0.0`/publicar sem IP) — fora de escopo desta
+sessão (regra dura: nunca escrever no repositório Legacy). A evidência que importa mais
+— os testes automatizados contra a fixture pequena, incluindo `MigrarLegadoComandoTest`
+rodando o comando completo com `--dry-run` de verdade — está feita e verde.
+
+**Pendências que ficaram de fora (não bloqueiam a Fase 9, fora do escopo desta sessão):**
+- Provisionar de fato o usuário MySQL `GRANT SELECT`-only no banco Legacy real (a
+  variável `LEGACY_DB_USERNAME` já está documentada em `.env.example`, mas criar o
+  usuário no servidor Legacy é uma ação de infraestrutura fora do escopo de "implementar
+  o código").
+- Corrigir o bind de porta do Legacy (`compose.yaml` daquele repositório) para permitir
+  dry-run real a partir do container V3 — decisão do usuário, envolve editar o
+  repositório Legacy.
+- Confirmar contra dado real quantas linhas caem no caso "data não-parseável" e se
+  `status='retornou'`/`retornou` realmente ocorre — só possível rodando contra o banco
+  real (bloqueado nesta sessão, ver acima).
+
+**Commit:** `#F9 - Migracao V2-V3 (migrador, relatorio de reconciliacao)` (ver hash
+abaixo, aplicado junto com este log).
+
+---

@@ -25,6 +25,19 @@
         <env name="CACHE_STORE" value="array"/>
         <env name="DB_DATABASE" value="testing"/>
         <env name="DB_URL" value=""/>
+        <!--
+            Fase 9 — conexão `rma_legacy` de TESTE: mesmo servidor/usuário do banco de
+            teste padrão (container `mysql` do Sail, GRANT ALL do usuário da app cobre
+            qualquer banco `testing%`, ver `vendor/laravel/sail/database/mysql/
+            create-testing-database.sh`), banco físico separado (`testing_legacy`) para
+            nunca colidir com `migrate:fresh` do banco `testing` — não é o Legacy real
+            nem depende do container `rma-legacy-*` estar de pé.
+        -->
+        <env name="LEGACY_DB_HOST" value="mysql"/>
+        <env name="LEGACY_DB_PORT" value="3306"/>
+        <env name="LEGACY_DB_DATABASE" value="testing_legacy"/>
+        <env name="LEGACY_DB_USERNAME" value="rma_v3"/>
+        <env name="LEGACY_DB_PASSWORD" value="rma_v3_local_only"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

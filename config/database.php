@@ -84,6 +84,44 @@ return [
             ]) : [],
         ],
 
+        /*
+        |----------------------------------------------------------------------
+        | rma_legacy — conexão só-leitura para o migrador (Fase 9)
+        |----------------------------------------------------------------------
+        |
+        | Aponta para o banco histórico do CellSystem RMA V2 (repositório
+        | `08.24.4-legacy-gerenciador-de-rma`). As redes Docker dos dois projetos são
+        | isoladas (`rma-v3_rma-v3` / `rma-legacy_legacy-lab`, ver
+        | `docs/desenvolvimento/ambiente-v2-v3.md`), então o acesso de verdade sai pela
+        | porta publicada no host (`host.docker.internal:3309`, `extra_hosts` já
+        | configurado em `compose.yaml`), nunca por nome de container/rede.
+        |
+        | Reforço em nível de banco (não só disciplina de código): `LEGACY_DB_USERNAME`
+        | deve apontar para um usuário MySQL com `GRANT SELECT` apenas no banco
+        | `rma_legacy` real — o migrador nunca escreve nessa conexão.
+        |
+        */
+
+        'rma_legacy' => [
+            'driver' => 'mysql',
+            'url' => env('LEGACY_DB_URL'),
+            'host' => env('LEGACY_DB_HOST', 'host.docker.internal'),
+            'port' => env('LEGACY_DB_PORT', '3309'),
+            'database' => env('LEGACY_DB_DATABASE', 'rma_legacy'),
+            'username' => env('LEGACY_DB_USERNAME', 'rma_legacy_readonly'),
+            'password' => env('LEGACY_DB_PASSWORD', ''),
+            'unix_socket' => env('LEGACY_DB_SOCKET', ''),
+            'charset' => env('LEGACY_DB_CHARSET', 'utf8mb4'),
+            'collation' => env('LEGACY_DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),

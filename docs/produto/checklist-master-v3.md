@@ -1,6 +1,7 @@
 # Checklist mestre — CellSystem RMA V3
 
-Data: 2026-08-24, última reconciliação 2026-08-25. Documento único de acompanhamento:
+Data: 2026-08-24, última reconciliação 2026-08-25 (comparação viva V3×Legado completa,
+`docs/produto/comparacao-v3-legado-final.md`). Documento único de acompanhamento:
 tudo que já foi investigado (indexado, com onde encontrar o detalhe) e todo o trabalho
 que falta, quebrado em tarefas pequenas e organizado por fase de implementação.
 `PLAN.md` continua sendo o estado macro; `PLANO-ATAQUE.md` continua sendo o operacional
@@ -15,10 +16,19 @@ especificadas arquivo-por-arquivo (`INV-RMA-05` §11-§15,
 `INV-RMA-06` para a Fase 9) · Parte 4 — estratégia de migração em detalhe (`INV-RMA-06`
 escrito) · Parte 5 — pendências operacionais menores.
 
-**Trilha B:** `docs/arquitetura/INV-RMA-07-evolucao-saas-multiempresa.md` — investigação
-de evolução SaaS multiempresa aberta e concluída (2026-08-25). Arquitetura decidida,
-implementação propositalmente não iniciada (só depois da baseline de paridade da Trilha
-A). Ver `docs/produto/backlog-evolutivo.md` (`EVO-SAAS-001`).
+**Trilha B:** três investigações de arquitetura abertas e concluídas nesta sessão,
+implementação propositalmente **não iniciada** em nenhuma delas (só depois da baseline
+de paridade da Trilha A ser fechada pela Fase 10) — registrado aqui, não implementado:
+- `docs/arquitetura/INV-RMA-07-evolucao-saas-multiempresa.md` — SaaS multiempresa
+  (`EVO-SAAS-001`/`002`), fronteira de tenant/banco/isolamento decidida.
+- `docs/arquitetura/INV-RMA-08-tema-v3-mobile-first.md` — tema V3 mobile-first (novo
+  design, sem fidelidade ao Bootstrap 3 de V1/V2), decisões em `backlog-evolutivo.md`
+  §`EVO-*` (linhas 116-171).
+- `docs/arquitetura/INV-RMA-09-arquivos-e-configuracao-admin.md` — anexos de RMA
+  (`AnexoDoRma` dentro do módulo `Rma` existente) e hub de configuração administrativa,
+  decisões em `backlog-evolutivo.md` §A/§B (linhas 182-337).
+
+Ver `docs/produto/backlog-evolutivo.md` para o backlog completo por `EVO-*`.
 
 ---
 
@@ -433,6 +443,14 @@ Arquivo por arquivo detalhado em `INV-RMA-05` §14.
       só em `127.0.0.1` do host — ver `log-implementacao-v3.md`, Fase 9); dry-run
       automatizado contra fixture (`MigrarLegadoComandoTest`) é a evidência que conta
 
+**Nuance de roadmap (reconfirmada nesta sessão, 2026-08-25):** "CONCLUÍDA" aqui
+significa *o migrador existe, está codificado, testado e determinístico* — não que a
+migração já rodou operacionalmente contra o banco real do Legacy. Isso nunca aconteceu,
+por bloqueio de rede ainda não contornado (não é um problema do código do migrador). Rodar
+o migrador de verdade contra `rma-legacy-mariadb-1` continua sendo trabalho real
+pendente, hoje enquadrado dentro do escopo de "Paridade de dados" da Fase 10 (ver
+`qa-paridade/tasks.md`), não uma tarefa à parte.
+
 ### Fase 10 — QA de paridade — **EM ESPECIFICAÇÃO, contínua, fecha por último**
 
 OpenSpec escrita: `openspec/changes/qa-paridade/{proposal,design,tasks}.md`. Critério
@@ -466,15 +484,32 @@ objetivo por eixo + gate de conclusão do projeto detalhados em `INV-RMA-05` §1
 
 ## Parte 5 — Pendências operacionais menores
 
-- [ ] `scripts/legacy-reset.sh` (Legacy) — escrito, ainda não testado de fato
-      (`./scripts/legacy-reset.sh` rodar do zero e confirmar que reimporta o schema)
+- [x] `scripts/legacy-reset.sh` (Legacy) — **testado de verdade nesta sessão**
+      (2026-08-25): rodado do zero (`docker compose down -v` + `up -d`), reimportou
+      `db/schema-only.sql`, `:8094` voltou a responder `200` e o banco ficou saudável
+      (`mysqladmin ping` → `mysqld is alive`) — o reset em si **funciona**. **Bug real
+      encontrado, não corrigido** (regra desta sessão: não alterar o repositório
+      Legacy): o loop de espera do script chama `mariadb-admin ping`, binário que **não
+      existe** na imagem `mariadb:10.3` usada pelo `compose.yaml` (só `mysqladmin`
+      existe) — `exec: "mariadb-admin": executable file not found in $PATH`. O script
+      trava indefinidamente nesse loop mesmo com o banco já pronto (precisou ser
+      interrompido por timeout de 180s nesta verificação). Correção trivial de uma
+      linha (`mariadb-admin` → `mysqladmin`), mas fica registrada como achado
+      pendente de decisão/aplicação pelo usuário no repositório Legacy, não aplicada
+      aqui.
 - [x] `machadogolang/08.24.4-legacy-gerenciador-de-rma` publicado no GitHub — `git push`
-      confirmado com sucesso nesta sessão (commits `#L0`/`#L1` no remoto)
-- [ ] Confirmar/trocar `machadogolang/08.24.1-gerenciador-de-rma` para privado — não
-      re-verificado nesta sessão desde a última checagem (público); `git push` também
-      confirmado funcionando, mas isso não confirma visibilidade
+      confirmado com sucesso nesta sessão (commits `#L0`/`#L1` no remoto). **Visibilidade
+      reconfirmada nesta sessão** (2026-08-25): `curl` não-autenticado à API do GitHub
+      devolve `404 Not Found` para este repositório — consistente com **privado**
+      (repositório inexistente devolveria a mesma resposta para um não-autenticado, mas
+      o push já documentado confirma que ele existe) — fechado.
+- [ ] `machadogolang/08.24.1-gerenciador-de-rma` (este repo) segue **público** —
+      reconfirmado nesta sessão via API do GitHub (`"private": false`,
+      `"visibility": "public"`). Decisão de trocar para privado continua **pendente do
+      usuário**, não decidida por este agente.
 - [x] Capturar screenshots reais (PNG) dos dois temas autenticados — feito na Fase 8,
-      `docs/produto/screenshots-fase8/` (9 capturas via Playwright real)
+      `docs/produto/screenshots-fase8/` (9 capturas via Playwright real) — confirmado
+      presente nesta sessão.
 
 ---
 

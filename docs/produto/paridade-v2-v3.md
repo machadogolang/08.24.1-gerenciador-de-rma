@@ -1,7 +1,8 @@
 # Matriz de paridade V2 → V3
 
-Data: 2026-08-25 (atualizado 2026-08-25 — Fase 6 "Créditos e relatórios" implementada e
-testada).
+Data: 2026-08-25 (atualizado 2026-08-25 — Fases 1-9 concluídas e testadas; `sail test`
+308/308; comparação viva V3×Legado registrada em
+`docs/produto/comparacao-v3-legado-final.md`).
 Índice de rastreamento: nenhuma funcionalidade relevante do RMA V2 pode "desaparecer"
 silenciosamente na V3. Atualizado a cada avanço de OpenSpec/implementação. **Fase 1
 (`autenticacao-usuarios`) concluída:** 7 itens (`LEG-RMA-001/003/004/005/006/042/043`)
@@ -125,7 +126,13 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 o código legado não é a base — ver backlog/decisão de arquitetura).
 
 **2 itens já decididos como não-reconstrução** (LEG-RMA-016, LEG-RMA-034 — código morto
-em ambos os temas) e **1 item como "retomar ideia, não código"** (LEG-RMA-035). **7 itens
-em PARIDADE** (Fase 1, `LEG-RMA-001/003/004/005/006/042/043`). **1 item PENDENTE por
-decisão de produto não tomada** (LEG-RMA-002). Os demais 37 itens aguardam as próximas
-fases.
+em ambos os temas) e **1 item como "retomar ideia, não código"** (LEG-RMA-035). **44
+itens em PARIDADE** (todas as Fases 1-9 implementadas e testadas — `sail test` 308/308,
+verificado por amostragem viva em `docs/produto/comparacao-v3-legado-final.md`). **1
+item PENDENTE por decisão de produto não tomada** (LEG-RMA-002, autocadastro com
+convite). Nenhum item aguarda fase de implementação — só a Fase 10 (QA de paridade,
+verificação formal, não implementação) resta para fechar a Trilha A. **Correção desta
+revisão (2026-08-25):** este parágrafo estava desatualizado (falava em "7 itens em
+PARIDADE"/"37 aguardam") mesmo com a tabela acima já refletindo as Fases 6-9 concluídas
+— divergência de documentação, não de comportamento (a tabela linha-a-linha sempre
+esteve correta; só este resumo textual estava obsoleto).

@@ -8,12 +8,12 @@
       novas surgiram dessa inspeção** (fonte Open Sans nunca carrega; comportamento
       pós-login assimétrico) — ver task de decisão de produto abaixo, antes de
       implementar view final.
-- [ ] **Decisão de produto pendente (perguntar ao usuário antes de implementar):**
-      (a) fonte Open Sans do TEMA V2 — reproduzir o fallback quebrado (Arial/Fira Sans,
-      o que renderiza hoje) ou self-hostar corretamente (arquivos já existem em
-      `framework/fonts/OpenSans/` no legado); (b) comportamento pós-login — reproduzir a
-      assimetria real (login-gateway respeita `tema_preferido`, login próprio de V1
-      ignora) ou unificar.
+- [x] **Decisões de produto RESOLVIDAS pelo usuário em 2026-08-25 (ver `design.md`/
+      `proposal.md`):** (a) fonte Open Sans do TEMA V2 — **reproduzir o fallback**
+      (`Arial`/`Fira Sans`, o que renderiza hoje), NUNCA self-hostar Open Sans de
+      verdade (mudaria a tipografia percebida); (b) comportamento pós-login —
+      **unificado, sempre respeita `tema_preferido`**, sem exceção. Não existe login
+      próprio de TEMA V1 separado do gateway na V3.
 - [ ] `resources/sass/temas/_compartilhado.scss` — portar de verdade `pattern/15.9.7.css`
       (classes `TrInconformidade`/`TrUrgente`/`TrZebrada1/2`/`TrSemGarantia1/2`,
       `.breadcrumb`, `.centrodeavisos`, `.formSelect`, `.designedby`, `.pmo`), não só a
@@ -27,20 +27,22 @@
       `data-toggle="tab"`, para reproduzir a troca client-side sem reload do dashboard)
 - [ ] `vite.config.js` com 2 `input` distintos (`temas/v1.js`, `temas/v2.js`) gerando 2
       bundles CSS/JS separados
-- [ ] Self-hostar fontes via Vite (Fira Mono/Fira Sans hoje vêm de CDN externo —
-      Google Fonts + `code.cdn.mozilla.net` — trocar por asset local, arquivo `.ttf` já
-      existe em `framework/fonts/Fira_Mono/`; Open Sans depende da decisão de produto
-      acima)
+- [ ] Self-hostar Fira Mono/Fira Sans via Vite (hoje vêm de CDN externo — Google Fonts +
+      `code.cdn.mozilla.net` — trocar por asset local, arquivo `.ttf` já existe em
+      `framework/fonts/Fira_Mono/`). **Open Sans NÃO é self-hostada** — decisão
+      resolvida é reproduzir o fallback (`Arial`/`Fira Sans`), nenhum arquivo/CSS de
+      Open Sans é portado para a V3.
 - [ ] `app/Http/Middleware/ResolverTemaAtivo.php` — reproduzir o redirecionamento
       pós-login por `tema_preferido` (equivalente a `usuario.app` no legado)
 - [ ] Helper `view_do_tema()` (ou equivalente) para resolução de view por tema
-- [ ] `resources/views/identidade/login.blade.php` — login-gateway COMPARTILHADO (não é
-      nem V1 nem V2 — visual próprio, achado desta revisão)
+- [ ] `resources/views/identidade/login.blade.php` — **único ponto de login** (não é
+      nem V1 nem V2 — visual próprio), usado por qualquer usuário; redirect pós-login
+      sempre respeita `tema_preferido` (decisão resolvida)
 - [ ] `resources/views/temas/v1/layout.blade.php` + árvore completa (rma/parceiros/
-      identidade, incluindo `identidade/login.blade.php` PRÓPRIO de V1 — achado: V1 tem
-      login embutido redundante ao gateway)
+      identidade) — **SEM** `identidade/login.blade.php` próprio (decisão resolvida:
+      não existe login embutido separado do gateway na V3)
 - [ ] `resources/views/temas/v2/layout.blade.php` + árvore completa (rma/parceiros/
-      identidade — SEM `identidade/login.blade.php` próprio, usa o gateway)
+      identidade) — SEM `identidade/login.blade.php` próprio, usa o gateway
 - [ ] `resources/views/temas/v2/rma/index.blade.php` — um único painel com os 7
       "tab-panes" (início/pesquisar/novo_rma/entrada/recebido/encaminhado/concluído),
       dados de todas as abas já resolvidos pelos Controllers/casos de uso existentes

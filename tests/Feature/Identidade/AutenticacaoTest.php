@@ -36,6 +36,49 @@ class AutenticacaoTest extends TestCase
         ]);
     }
 
+    public function test_login_real_de_usuario_v1_renderiza_view_do_tema_v1_apos_seguir_redirect(): void
+    {
+        // Prova de ponta a ponta da decisao de produto de 2026-08-25 (Fase 8): o
+        // redirect pos-login SEMPRE respeita tema_preferido, sem excecao - nao existe
+        // mais "login proprio de TEMA V1" que ignore essa preferencia. O fluxo real
+        // (POST /login, nao actingAs()+GET direto) e o unico jeito de provar que
+        // SessaoController::store() + ResolverTemaAtivo realmente convergem, ja que os
+        // testes de Fase 8 (RenderizaTemaV1Test/V2Test) so testam a resolucao de tema
+        // com o usuario ja autenticado via actingAs().
+        $usuario = User::factory()->create([
+            'email' => 'usuario-v1@rma.local',
+            'password' => Hash::make('senha-correta'),
+            'papel' => Papel::Operador,
+            'tema_preferido' => \App\Identidade\Dominio\TemaPreferido::V1,
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'usuario-v1@rma.local',
+            'password' => 'senha-correta',
+        ]);
+
+        $response->assertRedirect();
+        $this->get($response->headers->get('Location'))->assertViewIs('temas.v1.identidade.perfil');
+    }
+
+    public function test_login_real_de_usuario_v2_renderiza_view_do_tema_v2_apos_seguir_redirect(): void
+    {
+        $usuario = User::factory()->create([
+            'email' => 'usuario-v2@rma.local',
+            'password' => Hash::make('senha-correta'),
+            'papel' => Papel::Operador,
+            'tema_preferido' => \App\Identidade\Dominio\TemaPreferido::V2,
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'usuario-v2@rma.local',
+            'password' => 'senha-correta',
+        ]);
+
+        $response->assertRedirect();
+        $this->get($response->headers->get('Location'))->assertViewIs('temas.v2.identidade.perfil');
+    }
+
     public function test_papel_bloqueado_nega_antes_de_checar_senha_e_registra_bloqueado(): void
     {
         $usuario = User::factory()->create([

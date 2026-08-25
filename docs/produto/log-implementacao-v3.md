@@ -716,4 +716,22 @@ de teste removidos ao final (`tinker` delete).
 **Commit:** `#F8 - Apresentacao (Tema V1 + Tema V2 fieis)` (ver hash abaixo, aplicado
 junto com este log).
 
+**Revisão pós-fase (sessão principal, 2026-08-25):**
+- Verificados manualmente 2 screenshots reais (`v1-rmas.png`, `v2-rmas-inicio.png`) —
+  cor de header de TEMA V1 confirmada contra o CSS real do legado
+  (`#AE0D3A`, `legacy-source/pattern/14.6.1.css:45`, `#FIXADO`), não estava nem na
+  lista de paleta documentada em `inventario-visual-tema-v1.md` — a implementação
+  buscou a cor real na fonte primária em vez de confiar só no inventário secundário.
+  Confirma que os screenshots são genuínos, não fabricados.
+- **Gap real encontrado:** os testes de tema (`RenderizaTemaV1Test`/`V2Test`) provam
+  que a resolução de tema funciona com o usuário já autenticado via `actingAs()`, mas
+  nenhum teste exercitava a decisão central da Fase 8 (redirect pós-login sempre
+  respeita `tema_preferido`) através do fluxo real `POST /login` — exatamente o
+  comportamento que motivou a decisão do usuário em 2026-08-25. Adicionados 2 testes em
+  `AutenticacaoTest.php`: login real de usuário V1/V2, seguindo o redirect e
+  confirmando a view renderizada (`temas.v1.identidade.perfil`/
+  `temas.v2.identidade.perfil`).
+
+`sail test`: 265/265 verdes, 492 assertions (263→265, 488→492).
+
 ---

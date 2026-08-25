@@ -1,9 +1,15 @@
 # Parecer de cobertura de telas — Legado (14.6.1 + 15.8.1) × V3
 
 Data: 2026-08-25. Documento complementar a
-`INV-RMA-BUG-LAYOUT-problemas-no-layout.md` e ao checklist
+`docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-no-layout.md` e ao checklist
 `docs/produto/checklist-paridade-visual-v1-runtime.md` (achados `VIS-V1-001` a
 `VIS-V1-008`). **Não edita esses documentos** — só estende a numeração.
+
+Investigação de origem (sub-frente concluída, resumo rastreável):
+`docs/investigacoes-pendente/concluido/INV-RMA-BUG-LAYOUT-cobertura-telas-concluido-2026-08-25.md`.
+O documento-mãe `INV-RMA-BUG-LAYOUT-problemas-no-layout.md` continua em
+`docs/investigacoes-pendente/` — outras frentes que ele abriu (correção estrutural de
+CSS/tipografia, telas ainda sem rota) seguem em aberto.
 
 ## Objetivo e método
 

@@ -992,38 +992,75 @@ Controller/rota". Evidência já reunida por esta revisão e pelas fases anterio
   Controllers/casos de uso das Fases 1-7, e sua própria árvore de Blade
   (`resources/views/temas/{v1,v2}/`). Isso é a aplicação direta do princípio "fidelidade
   é do resultado percebido, não da implementação" ao caso mais delicado do projeto.
-- **Pendência real, ainda não resolvida (não decidida aqui):** o mecanismo exato das
-  âncoras de TEMA V2 (`#entrada` etc.) — AJAX real ou só âncora de scroll com tudo
-  pré-renderizado — continua `[DÚVIDA]` (`inventario-visual-tema-v2.md`). Isso muda a
-  escolha técnica desta fase (endpoint JSON + fetch, vs. só uma página longa com
-  `id="entrada"`) mas não muda nenhuma regra de negócio. Registrado como bloqueio real
-  de implementação (não de planejamento) — a Fase 8, ao virar fase corrente, precisa
-  rodar o LEGACY-RUNTIME e inspecionar o Network tab do navegador antes de escolher.
+- **Pendência RESOLVIDA em 2026-08-24 por inspeção direta do LEGACY-RUNTIME** (sessão
+  autenticada real via `curl`, não só leitura estática): o mecanismo das âncoras de
+  TEMA V2 é o plugin de abas NATIVO do Bootstrap 3.3.5 (`data-toggle="tab"` +
+  `.tab-pane`) — os 7 painéis principais (início/pesquisar/novo_rma/entrada/recebido/
+  encaminhado/concluído) vêm todos pré-renderizados no MESMO HTML da página inicial;
+  a troca é JS client-side puro, sem fetch/AJAX, sem reload. Só páginas de detalhe/CRUD
+  (`/info/{id}` etc.) são reload completo, via URLs limpas já mapeadas em
+  `15.8.1/.htaccess`. Detalhe completo em `openspec/changes/temas-v1-v2/design.md`.
 
-### Fidelidade visual (fonte: `inventario-visual-tema-{v1,v2}.md`)
+### Fidelidade visual (fonte: `inventario-visual-tema-{v1,v2}.md`, ATUALIZADA 2026-08-24)
 
 - TEMA V1: fundo `#262626`, acento `#C3FF00`, tipografia "Open Sans"/"Fira Sans" 12px,
-  branco sobre escuro; sem estados de linha (`TrInconformidade` etc.) confirmados —
-  **pendência herdada, não resolvida aqui:** `[DÚVIDA]` se existe equivalente exato
-  (CSS 4× menor que TEMA V2). Fase 8, ao virar corrente, precisa renderizar as telas
-  internas reais (não só login/dashboard, já capturados) antes de decidir se
-  `ClasseDeAlerta` (Fase 5) tem 4 cores distintas em TEMA V1 ou uma versão simplificada.
+  branco sobre escuro; **layout fixo, confirmado sem NENHUM `@media` query**
+  (`#BASE{width:984px}`) — não-responsivo de verdade, fidelidade correta é reproduzir
+  isso, não "consertar". Estados de linha (`TrInconformidade`/`TrUrgente`/`TrZebrada1/2`)
+  **CONFIRMADOS presentes** — pendência anterior **RESOLVIDA**: TEMA V1 carrega
+  `pattern/15.9.7.css` (CSS compartilhado com TEMA V2) ALÉM do seu próprio
+  `14.6.1.css`, e usa essas classes de fato em `page/entrada.php`/`encaminhados.php`/
+  `localizar.php`. Única diferença real: não usa `TrSemGarantia1/2` como classe própria
+  (mapeia "SEM GARANTIA" para `TrInconformidade`).
 - TEMA V2: azul petróleo `#224A5D`/`#18354B`, vermelho de alerta `#904141` (mesmo tom
-  do TEMA V1), estados de linha completos e já capturados em CSS
-  (`.TrInconformidade`, `.TrUrgente`, `.TrSemGarantia1/2`).
+  do TEMA V1). **Fundo real da página é `#262626` (escuro), CORRIGIDO** — achado
+  anterior ("fundo branco") estava errado; `#FFF`/`#EEE` são os painéis de conteúdo
+  (`.box-content` etc.) sobre o fundo escuro, confirmado em `pattern/15.8.1.css:12-18`.
+  Estados de linha completos, confirmados em CSS — mas o CSS-fonte real é o
+  COMPARTILHADO `pattern/15.9.7.css`, não `pattern/15.8.1.css` como catalogado antes.
+  **Breakpoints responsivos reais existem** (achado novo): 568/800/992/1080/1280/1366px
+  via `15.8.1/css/media.php`, um `<style>` injetado inline, escalando um `.container`
+  de largura fixa por faixa (não fluido) — não batem exatamente com os 3 breakpoints de
+  QA do projeto (390/768/1440); a comparação visual precisa mapear pra regra mais
+  próxima abaixo.
 - Paleta comum aos dois: mesmo vermelho de alerta (`#904141`/`#9B3949`/`#cd5c5c`
-  variações) — sugere que `ClasseDeAlerta::Inconformidade`/`Urgente`/`SemGarantia`
-  devem convergir para uma variável Sass compartilhada (`$cor-alerta`) entre os dois
-  temas, só a cor de base/acento diverge.
+  variações) — confirma que `ClasseDeAlerta::Inconformidade`/`Urgente`/`SemGarantia`
+  convergem para uma variável Sass compartilhada (`$cor-alerta`) entre os dois temas.
+  **Achado adicional:** o compartilhamento vai muito além dessa variável — os dois
+  temas literalmente carregam o MESMO arquivo `pattern/15.9.7.css`/`.js` em produção
+  (296/181 linhas), com `.breadcrumb`, `.centrodeavisos`, `.formSelect`, `.designedby`
+  (rodapé), as 6 classes `Tr*` de alerta. O `_compartilhado.scss` da Fase 8 precisa
+  portar esse arquivo real, não só uma variável de cor.
+- **Divergência estrutural real (não só cor) entre temas:** TEMA V1 usa formulários
+  HTML `<table>` autoral, sem framework CSS nenhum; TEMA V2 usa grid genuíno do
+  Bootstrap 3.3.5 (`col-md-4`, `.form-group`, `.form-control`). Os bundles Vite por tema
+  precisam de dependências NPM diferentes (Bootstrap só no entry point de V2), não só
+  paleta diferente.
+- **2 pendências novas, registradas nesta inspeção, não decididas:** (1) a fonte "Open
+  Sans" do TEMA V2 nunca carrega de fato — `@font-face` aponta pra URL de produção
+  morta (`cellsystem.com.br`) — decisão de produto: reproduzir o fallback quebrado ou
+  self-hostar corretamente (arquivos já existem no repo legado); (2) comportamento
+  pós-login assimétrico — existe um login-gateway COMPARTILHADO (porta de entrada
+  padrão, `pattern/15.9.7.css` isolado, nem V1 nem V2) que respeita `tema_preferido`, e
+  um login PRÓPRIO de TEMA V1 (embutido, tabela HTML) que sempre mantém o usuário em V1
+  independente da preferência salva — decidir se a V3 reproduz essa assimetria.
 
 ### Arquivos
 
-- `resources/sass/temas/_v1.scss`, `_v2.scss`, `_compartilhado.scss` (variáveis de
-  alerta comuns)
+- `resources/sass/temas/v1.scss`, `v2.scss`, `_compartilhado.scss` (porta de verdade
+  `pattern/15.9.7.css` — classes de alerta, `.breadcrumb`, `.centrodeavisos`,
+  `.designedby`; `v2.scss` importa Bootstrap 3 SCSS, `v1.scss` não importa framework
+  nenhum, achado desta revisão)
+- `resources/js/temas/v1.js`, `v2.js` (`v2.js` importa o plugin de abas do Bootstrap 3
+  para reproduzir a troca client-side dos 7 painéis do dashboard sem reload)
+- `resources/views/identidade/login.blade.php` — login-gateway COMPARTILHADO (achado:
+  não pertence a nenhum tema, é a porta de entrada padrão do legado)
 - `resources/views/layouts/tema-v1.blade.php`, `tema-v2.blade.php`
 - `resources/views/temas/v1/{rma,parceiros,identidade}/*.blade.php` — reimplementa as
-  views mínimas das Fases 1-7 com fidelidade real ao TEMA V1
-- `resources/views/temas/v2/{rma,parceiros,identidade}/*.blade.php` — idem, TEMA V2
+  views mínimas das Fases 1-7 com fidelidade real ao TEMA V1; `identidade/login.blade.php`
+  PRÓPRIO de V1 também entra aqui (achado: V1 tem login embutido redundante ao gateway)
+- `resources/views/temas/v2/{rma,parceiros,identidade}/*.blade.php` — idem, TEMA V2, SEM
+  `identidade/login.blade.php` próprio (usa o gateway)
 - `app/Http/Middleware/ResolverTemaAtivo.php` — lê `tema_preferido` do usuário (Fase 1),
   decide qual árvore de views/rotas usar; equivalente a `trocarapp.php` já persistir a
   escolha, aqui só aplica a escolha já persistida a cada request
@@ -1032,7 +1069,10 @@ Controller/rota". Evidência já reunida por esta revisão e pelas fases anterio
   tela principal renderiza sem erro, no tema certo)
 - `tests/Browser/` (Playwright, conforme `INV-RMA-05` §4) — comparação visual lado a
   lado com o LEGACY-RUNTIME (`:8094`) nos 3 breakpoints já definidos em
-  `checklist-master-v3.md` Parte 3/Fase 10 (390/768/1440)
+  `checklist-master-v3.md` Parte 3/Fase 10 (390/768/1440); TEMA V1 deve confirmar
+  layout FIXO/não-responsivo nos 3 (é o comportamento real, sem `@media` no legado);
+  TEMA V2 tem breakpoints próprios (568/800/992/1080/1280/1366px via `css/media.php`) —
+  mapear cada breakpoint de QA para a regra `min-width` mais próxima abaixo
 
 ### O que NÃO entra na Fase 8
 

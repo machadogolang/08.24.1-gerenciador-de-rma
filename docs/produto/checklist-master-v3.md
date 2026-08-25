@@ -267,16 +267,40 @@ OpenSpec escrita: `openspec/changes/temas-v1-v2/{proposal,design,tasks}.md`. Arq
 arquivo detalhado em `INV-RMA-05` §13. **Investigação de granularidade (Parte 2)
 resolvida por evidência já reunida nas Fases 1-7:** Controllers/casos de uso únicos
 (nenhuma regra de negócio diverge por tema, exceto RN-15/RN-21 já tratadas por
-presença/ausência), views e rotas por tema. **2 pendências reais permanecem, bloqueiam
-só a implementação, não o planejamento:** mecanismo exato das âncoras de TEMA V2
-(AJAX vs. scroll — exige inspecionar o LEGACY-RUNTIME) e RN-11 em TEMA V1 (exige
-renderizar telas internas reais, ainda não capturadas). Tasks (resumido):
+presença/ausência), views e rotas por tema.
 
-- [ ] Resolver as 2 pendências reais (pré-requisito de implementação)
-- [ ] Sass por tema (`_v1.scss`/`_v2.scss`/`_compartilhado.scss`)
-- [ ] `ResolverTemaAtivo` (middleware) + rotas por tema
+**As 2 pendências reais originais foram RESOLVIDAS em 2026-08-24** por inspeção direta
+do LEGACY-RUNTIME (`:8094`, sessão autenticada, HTML/CSS/PHP reais — não só os
+inventários estáticos): (1) as âncoras de TEMA V2 são o plugin de abas nativo do
+Bootstrap 3.3.5 (`data-toggle="tab"`, sem AJAX, 7 painéis pré-renderizados no mesmo
+HTML); (2) RN-11 em TEMA V1 está presente de verdade (`TrInconformidade`/`TrUrgente`/
+`TrZebrada1/2`, via CSS compartilhado `pattern/15.9.7.css`, confirmado em 3 páginas
+reais do código-fonte). Detalhe completo em `design.md`/`proposal.md`.
+
+**4 achados/pendências NOVAS surgiram dessa mesma inspeção**, registradas em
+`design.md`/`proposal.md`:
+1. Existe uma terceira folha de estilo (`pattern/15.9.7.css`/`.js`) carregada pelos
+   DOIS temas — o `_compartilhado.scss` do plano precisa portar esse arquivo real.
+2. O fundo real de TEMA V2 é escuro (`#262626`), não branco como catalogado antes —
+   corrigido no inventário e no `design.md`.
+3. **Decisão de produto pendente:** fonte Open Sans do TEMA V2 nunca carrega de fato
+   (URL de produção morta) — reproduzir o fallback quebrado ou self-hostar corretamente.
+4. **Decisão de produto pendente:** comportamento pós-login assimétrico entre o
+   login-gateway compartilhado (respeita `tema_preferido`) e o login próprio de TEMA V1
+   (sempre fica em V1, ignora a preferência).
+
+Tasks (resumido, ver `tasks.md` completo):
+
+- [x] Resolver as 2 pendências reais originais (pré-requisito de implementação)
+- [ ] Decidir as 2 pendências novas de produto (fonte Open Sans; assimetria pós-login)
+      antes de escrever a view final
+- [ ] Sass por tema (`v1.scss`/`v2.scss`/`_compartilhado.scss` — este último porta o
+      CSS/JS compartilhado real, não só uma variável de cor)
+- [ ] `ResolverTemaAtivo` (middleware) + rotas por tema + `identidade/login.blade.php`
+      do gateway compartilhado (achado: não é nem V1 nem V2)
 - [ ] Árvore de Blade por tema (`resources/views/temas/{v1,v2}/`)
-- [ ] Testes de smoke por tema + Playwright (390/768/1440)
+- [ ] Testes de smoke por tema + Playwright (390/768/1440 — TEMA V1 confirma layout
+      fixo/não-responsivo, TEMA V2 tem breakpoints próprios em `css/media.php`)
 - [ ] Screenshots reais (PNG) — fecha a pendência da Parte 1/Parte 5
 - [ ] `sail test` verde, `checklist-master-v3.md`/`paridade-v2-v3.md` atualizados
       (paridade visual), commit `#F8`

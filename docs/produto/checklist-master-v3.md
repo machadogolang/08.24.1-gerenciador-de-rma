@@ -41,17 +41,17 @@ Convenção: apenas `[ ]` e `[x]`. Classes: `ARQ`, `DEV`, `QA`, `DOC`, `DECISAO`
 
 Gate: os 48 IDs têm prova explícita ou justificativa de exclusão.
 
-- [ ] **DOC F10-FUN-01 — criar roteiro funcional.** Arquivo
+- [x] **DOC F10-FUN-01 — criar roteiro funcional.** Arquivo
   `docs/qa/roteiro-paridade-funcional.md`, com ambiente, dados, esperado/observado.
-- [ ] **QA F10-FUN-02 — mapear `LEG-RMA-001…010`.** Teste, passo manual ou decisão.
-- [ ] **QA F10-FUN-03 — mapear `LEG-RMA-011…020`.** Mesmo critério.
-- [ ] **QA F10-FUN-04 — mapear `LEG-RMA-021…030`.** Mesmo critério.
-- [ ] **QA F10-FUN-05 — mapear `LEG-RMA-031…040`.** Mesmo critério.
-- [ ] **QA F10-FUN-06 — mapear `LEG-RMA-041…048`.** Mesmo critério.
+- [x] **QA F10-FUN-02 — mapear `LEG-RMA-001…010`.** Teste, passo manual ou decisão.
+- [x] **QA F10-FUN-03 — mapear `LEG-RMA-011…020`.** Mesmo critério.
+- [x] **QA F10-FUN-04 — mapear `LEG-RMA-021…030`.** Mesmo critério.
+- [x] **QA F10-FUN-05 — mapear `LEG-RMA-031…040`.** Mesmo critério.
+- [x] **QA F10-FUN-06 — mapear `LEG-RMA-041…048`.** Mesmo critério.
 - [ ] **QA F10-FUN-07 — executar passos manuais V2×V3.** Registrar observado/data.
 - [ ] **QA F10-FUN-08 — reconciliar matriz.** 44 paridade, 2 não reconstruir, 1
   retomar ideia; `LEG-RMA-002` decidido/deferido.
-- [ ] **DOC F10-FUN-09 — corrigir F10 para Playwright `.spec.ts`.** Proposal/design/tasks.
+- [x] **DOC F10-FUN-09 — corrigir F10 para Playwright `.spec.ts`.** Proposal/design/tasks.
 
 ### F10 — visual
 
@@ -194,5 +194,6 @@ Gate comum: F10-GATE-07. Investigação/especificação pode avançar; código n
 
 ## Próxima tarefa segura
 
-`F10-FUN-01`: criar o roteiro funcional e o mapa de evidências dos 48 `LEG-RMA-*`.
-É documental/QA, reversível, não depende de decisão e não altera o Legacy.
+`F10-FUN-07`: executar e registrar os seis smokes cruzados M-01…M-06 sem alterar
+dados históricos fora de cenário descartável.
+É QA controlado; qualquer etapa mutável exige registro descartável e evidência explícita.

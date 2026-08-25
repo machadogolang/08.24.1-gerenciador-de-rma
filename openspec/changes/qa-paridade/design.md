@@ -42,4 +42,4 @@ linha correspondente rastreável até a chave de origem.
 
 - `docs/qa/roteiro-paridade-funcional.md`
 - `docs/qa/relatorio-paridade-final.md`
-- `tests/Browser/ParidadeVisualTest.php`
+- `tests/Browser/*.spec.ts`

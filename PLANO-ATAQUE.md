@@ -8,11 +8,11 @@
 Executar o primeiro lote seguro da F10, sem depender de decisão de produto nem de
 mutação do banco histórico:
 
-1. criar `docs/qa/roteiro-paridade-funcional.md`;
-2. mapear os 48 `LEG-RMA-*` para teste automatizado, passo manual ou justificativa;
-3. executar os passos manuais possíveis nos ambientes locais `:8094` e `:8095`;
-4. corrigir o OpenSpec da F10 para a implementação real de Playwright (`.spec.ts`);
-5. rodar a suíte completa e atualizar as evidências.
+1. [x] criar `docs/qa/roteiro-paridade-funcional.md`;
+2. [x] mapear os 48 `LEG-RMA-*` para teste automatizado, passo manual ou justificativa;
+3. [ ] executar os passos manuais possíveis nos ambientes locais `:8094` e `:8095`;
+4. [x] corrigir o OpenSpec da F10 para a implementação real de Playwright (`.spec.ts`);
+5. [x] rodar a suíte completa e atualizar as evidências.
 
 Saída do lote: nenhuma linha funcional sem método de prova, suíte verde, checklist e
 OpenSpec coerentes e commit local próprio.

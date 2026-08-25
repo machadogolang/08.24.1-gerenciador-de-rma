@@ -18,7 +18,7 @@ antes de evolução é regra fixa do projeto desde o início).
 - `docs/qa/roteiro-paridade-funcional.md` — passos manuais para os `LEG-RMA-NNN` sem
   teste automatizável direto.
 - `docs/qa/relatorio-paridade-final.md` — relatório final consolidando os 3 eixos.
-- `tests/Browser/ParidadeVisualTest.php` (Playwright) — 3 breakpoints × 2 temas ×
+- `tests/Browser/*.spec.ts` (Playwright) — 3 breakpoints × 2 temas ×
   telas principais, screenshot diff contra o LEGACY-RUNTIME (`:8094`).
 - O checklist de "critério de conclusão do projeto" (5 itens, `INV-RMA-05` §15) como
   gate formal antes de a Trilha B começar.

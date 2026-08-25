@@ -2,9 +2,9 @@
 
 **Pré-requisito:** Fases 1-9 concluídas (esta fase verifica, não implementa).
 
-- [ ] `docs/qa/roteiro-paridade-funcional.md` (passos manuais para itens sem teste
+- [x] `docs/qa/roteiro-paridade-funcional.md` (passos manuais para itens sem teste
       automatizável)
-- [ ] `tests/Browser/ParidadeVisualTest.php` (Playwright, 3 breakpoints × 2 temas ×
+- [ ] `tests/Browser/*.spec.ts` (Playwright, 3 breakpoints × 2 temas ×
       telas principais, screenshot diff contra `:8094`)
 - [ ] Rodar full-regression `sail test`
 - [ ] Confirmar `paridade-v2-v3.md` 100% `PARIDADE` (exceto `NÃO RECONSTRUIR`/

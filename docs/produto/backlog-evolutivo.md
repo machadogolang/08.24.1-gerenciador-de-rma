@@ -104,6 +104,75 @@ Benefício · Impacto · Complexidade · Risco · Dependências · Prioridade ·
   "usuários de empresas diferentes" fazer sentido).
 - **Fase:** pós-reconstrução (Trilha B), evolução distante — sem prioridade definida.
 
+## EVO-UX
+
+### EVO-UX-001 — Tema V3 mobile-first
+
+- **Origem:** pedido do usuário nesta sessão (2026-08-25) — um terceiro tema visual,
+  além de TEMA V1/V2 (que reproduzem fielmente o legado), pensado desde o início para
+  telas pequenas mas funcionando bem também em desktop, inspirado na abordagem
+  mobile-first real do projeto irmão CONAHOM (`~/github/online-conahom-laravel`).
+  Investigação/decisão de arquitetura completa em
+  `docs/arquitetura/INV-RMA-08-tema-v3-mobile-first.md`.
+- **Problema observado:** nenhum dos dois temas legados (V1 = layout fixo 984px sem
+  nenhum `@media`; V2 = breakpoints próprios não-fluidos, largura fixa por faixa) é
+  mobile-first em nenhuma leitura razoável do termo — ambos foram desenhados para
+  desktop, e são fielmente reproduzidos assim de propósito (V1/V2 existem para
+  preservar, não para evoluir).
+- **Legado:** nenhuma superfície do sistema legado (`14.6.1`/`15.8.1`) foi desenhada
+  mobile-first — não há equivalente a reproduzir.
+- **Evolução:** um terceiro tema (`TemaPreferido::V3`), estruturado como diretório
+  irmão `resources/views/temas/v3/` (mesma convenção de `v1/`/`v2/`, mecanismo
+  `ResolverTemaAtivo`/`view_do_tema()` já é N-ário e não precisa mudar de forma), mas
+  com stack interna diferente: Tailwind CSS 4 (já presente no scaffold do projeto,
+  `@tailwindcss/vite`, mas não usado por nenhuma view hoje — confirmado por leitura de
+  `package.json`/`vite.config.js`/`resources/css/app.css`) em vez do Sass autoral/
+  Bootstrap 3 de V1/V2. Metodologia mobile-first real (`INV-RMA-08` §1/§7): CSS base
+  escrito para telefone, `min-width` para ampliar, nunca `max-width` para reduzir —
+  breakpoints nomeados propostos (`quebra-xs/sm/md/lg/xl`, reaproveitando os valores já
+  validados em produção pelo CONAHOM), alvo de toque mínimo de 44px em todo elemento
+  acionável, mesmo em desktop. **Mudança de natureza registrada explicitamente
+  (`INV-RMA-08` §5): V3 é design novo e moderno, não busca nenhuma fidelidade ao
+  legado** — V1/V2 existem para preservar, V3 existe para evoluir; o processo de QA de
+  paridade da Fase 10 não se aplica a ele. Escopo inicial recomendado: o mesmo escopo
+  que a Fase 8 original cobriu para V1/V2 (RMA, parceiros, identidade) — não todas as
+  rotas das Fases 1-9 de uma vez (`INV-RMA-08` §6). Consequência sobre o enum
+  `TemaPreferido` (Fase 1): o método `alternar()` (toggle binário V1↔V2, `match`
+  exaustivo sobre 2 casos) deixa de fazer sentido com 3 valores — vira um mecanismo de
+  seleção explícita (`DefinirTemaPreferido` no lugar de `AlternarTemaPreferido`,
+  `TemaPreferidoController::update` passa a receber o tema alvo do request) —
+  `INV-RMA-08` §3/§10.
+- **Benefício:** cobre o uso real em telefone/tablet, que nenhum dos dois temas
+  fiéis ao legado atende bem; reaproveita metodologia já validada em produção pelo
+  projeto irmão CONAHOM em vez de reinventar do zero.
+- **Impacto:** médio-alto como experiência de uso; não altera nenhuma regra de negócio
+  (RMA continua sendo RMA) nem a fronteira de tenant (`EVO-SAAS-001`) — é puramente
+  camada de apresentação, mesma proporcionalidade já aplicada a V1/V2.
+- **Complexidade:** média — reaproveita todo o domínio/casos de uso já implementados
+  (Fases 1-9), é só uma terceira árvore de views + bundle Vite + tokens de design
+  próprios; a mudança de `TemaPreferido::alternar()` para seleção explícita é pequena e
+  localizada (2 arquivos + 1 Controller, `INV-RMA-08` §10).
+- **Risco:** baixo se implementado depois da baseline de paridade (mesma regra de
+  `EVO-SAAS-001`); alto se implementado durante a Fase 8/10 ainda em correção — risco de
+  a suíte de QA de paridade V1/V2 ter que lidar com uma UI de troca de tema que já mudou
+  de forma no meio do processo, sem necessidade (`INV-RMA-08` §8).
+- **Dependências:** baseline de paridade completa e validada (Trilha A — Fases 1-10 +
+  QA, `INV-RMA-05` §15), especificamente a Fase 8 (V1/V2) corrigida/commitada e a Fase
+  10 (QA de paridade) concluída antes de qualquer código de V3.
+- **Decisões adiadas:** forma exata de expressão dos tokens em Tailwind 4 (`@theme`
+  puro vs. arquivo próprio); paleta de cor/tipografia específica do V3 (decisão de
+  design de produto, não de arquitetura); desenho de UI do seletor de tema (3 opções);
+  critério de qualidade/aceite que substitui "QA de paridade" quando não há legado para
+  comparar; sequenciamento de quando alertas/crédito/relatórios/auditoria ganham view V3
+  — `INV-RMA-08` §9.
+- **Momento recomendado:** nenhuma linha de código de V3 (view, `v3.css`/`v3.js`,
+  alteração real do enum `TemaPreferido`) antes da baseline de paridade da Trilha A
+  estar validada — mesma estratégia C→A de `INV-RMA-07` §13, aplicada em
+  `INV-RMA-08` §8.
+- **Prioridade sugerida:** média, avaliar depois da Trilha A concluída — não é
+  bloqueante de nenhuma outra evolução registrada (`EVO-SAAS-*`).
+- **Fase:** pós-reconstrução (Trilha B).
+
 ## EVO-DOMINIO
 
 ### EVO-DOM-001 — Relacionamento por FK real entre RMA e contrapartes

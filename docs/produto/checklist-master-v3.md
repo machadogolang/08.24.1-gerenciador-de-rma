@@ -218,12 +218,14 @@ avançar antes, código não sai do seletor.
   `ImportarRmas` precisa executar `traduzirLinha()` em `--dry-run` e separar `origem`,
   `planejado`, `criado`, `atualizado`, `ignorado` e total real no destino. Bloqueia
   `F10-DAD-04…09`.
-- [ ] **ARQ H-003 (`ARQ-003`) — impedir escalada de privilégio do Supervisor.**
-  `UsuarioController::update`, `ResetarSenhaDeUsuario` e `UserPolicy` devem impedir
-  Supervisor de atribuir papel acima de Supervisor ou operar sobre SuperAdministrador,
-  mesmo por URL direta.
-- [ ] **QA H-004 — renovar suíte completa e documentar o checkpoint.** Depende de
-  H-001…H-003; commit local próprio antes de retomar `F10-FUN-07`.
+- [x] **ARQ H-003 (`ARQ-003`) — impedir escalada de privilégio do Supervisor.** Novo
+  `Papel::podeOperarSobrePapel()`, usado em `UsuarioController::update` (papel atual do
+  alvo via `UserPolicy::gerenciarUsuario` + papel pretendido) e `ResetarSenhaDeUsuario`.
+  8 regressões novas (`GerenciarUsuariosTest`, `ResetarSenhaDeUsuarioTest`): Supervisor
+  bloqueado contra SuperAdministrador (autopromoção, promoção de terceiro, alterar papel
+  existente, resetar senha), SuperAdministrador continua liberado.
+- [ ] **QA H-004 — renovar suíte completa e documentar o checkpoint.** `ARQ-001` e
+  `ARQ-003` concluídos (324 testes/678 assertions, sem falha); falta `ARQ-002`.
 
 ### H.2 Arquitetura (importante, pós-P0)
 
@@ -339,10 +341,9 @@ aprovados; nunca por mudança de cor sobre o Tema 1/2.
 
 ## Próxima tarefa segura
 
-`ARQ H-003` (`ARQ-003`): impedir a escalada de privilégio do Supervisor
-(`UsuarioController::update`, `ResetarSenhaDeUsuario`, `UserPolicy`). `ARQ H-001`
-(perda de estado do agregado) já foi corrigido e coberto por regressão — ver histórico
-do checklist. `ARQ H-003` é o próximo P0 de segurança que antecede `F10-FUN-07`,
-conforme `PLANO-ATAQUE.md` (seção AGORA) e `INV-RMA-10`. Depois de `H-002`/`H-003` e da
-suíte renovada (`QA H-004`), retomar `F10-FUN-07` pelos smokes somente leitura antes de
-qualquer mutação.
+`ARQ H-002` (`ARQ-002`): corrigir o dry-run do migrador (`ImportarRmas` não executa
+`traduzirLinha()` em `--dry-run`, e o relatório confunde `processados` de origem com
+destino). `ARQ H-001` e `ARQ H-003` já foram corrigidos e cobertos por regressão — ver
+histórico do checklist. `ARQ H-002` bloqueia `F10-DAD-04…09` e é o último P0 antes de
+`QA H-004` (renovar suíte/checkpoint) e da retomada de `F10-FUN-07` pelos smokes
+somente leitura.

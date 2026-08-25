@@ -44,4 +44,20 @@ enum Papel
     {
         return $this === self::SuperAdministrador;
     }
+
+    /**
+     * ARQ-003 (`INV-RMA-10`) — Supervisor pode gerenciar usuários, mas nunca
+     * SuperAdministrador: nem alterar/resetar senha de quem já é SuperAdministrador,
+     * nem atribuir esse papel a ninguém (o que incluiria promover a si próprio). Só
+     * SuperAdministrador lida com SuperAdministrador. `$papel` é o papel atual do alvo
+     * (gerenciar/resetar senha) ou o papel pretendido na troca (atribuir).
+     */
+    public function podeOperarSobrePapel(self $papel): bool
+    {
+        if (! $this->podeGerenciarUsuarios()) {
+            return false;
+        }
+
+        return $this === self::SuperAdministrador || $papel !== self::SuperAdministrador;
+    }
 }

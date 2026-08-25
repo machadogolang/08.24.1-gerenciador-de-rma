@@ -61,4 +61,43 @@ class ResetarSenhaDeUsuarioTest extends TestCase
         $response->assertRedirect();
         $this->assertTrue(Hash::check('nova-senha-123', $alvo->fresh()->password));
     }
+
+    /**
+     * ARQ-003 (`INV-RMA-10`) — Supervisor não pode resetar a senha de um
+     * SuperAdministrador, nem via caso de uso direto nem por URL.
+     */
+    public function test_supervisor_nao_pode_resetar_senha_de_superadministrador(): void
+    {
+        $ator = User::factory()->create(['papel' => Papel::Supervisor]);
+        $alvo = User::factory()->create(['papel' => Papel::SuperAdministrador, 'password' => Hash::make('antiga')]);
+
+        $this->expectException(HttpException::class);
+
+        app(ResetarSenhaDeUsuario::class)->resetar($ator, $alvo, 'nova-senha-123');
+    }
+
+    public function test_rota_de_reset_bloqueia_supervisor_contra_superadministrador(): void
+    {
+        $ator = User::factory()->create(['papel' => Papel::Supervisor]);
+        $alvo = User::factory()->create(['papel' => Papel::SuperAdministrador, 'password' => Hash::make('antiga')]);
+
+        $response = $this->actingAs($ator)->post("/usuarios/{$alvo->id}/resetar-senha", [
+            'nova_senha' => 'nova-senha-123',
+            'nova_senha_confirmation' => 'nova-senha-123',
+        ]);
+
+        $response->assertForbidden();
+        $this->assertTrue(Hash::check('antiga', $alvo->fresh()->password));
+    }
+
+    /** ARQ-003 — SuperAdministrador continua podendo resetar senha de outro. */
+    public function test_superadministrador_pode_resetar_senha_de_outro_superadministrador(): void
+    {
+        $ator = User::factory()->create(['papel' => Papel::SuperAdministrador]);
+        $alvo = User::factory()->create(['papel' => Papel::SuperAdministrador, 'password' => Hash::make('antiga')]);
+
+        app(ResetarSenhaDeUsuario::class)->resetar($ator, $alvo, 'nova-senha-123');
+
+        $this->assertTrue(Hash::check('nova-senha-123', $alvo->fresh()->password));
+    }
 }

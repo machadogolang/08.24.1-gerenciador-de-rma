@@ -15,4 +15,14 @@ class UserPolicy
     {
         return $ator->papel->podeGerenciarUsuarios();
     }
+
+    /**
+     * ARQ-003 (`INV-RMA-10`) — checagem por alvo: Supervisor não pode operar sobre um
+     * SuperAdministrador (nem trocar seu papel, nem resetar sua senha), mesmo por URL
+     * direta. Sempre via método nomeado do enum, nunca por ordinal/inteiro.
+     */
+    public function gerenciarUsuario(User $ator, User $alvo): bool
+    {
+        return $ator->papel->podeOperarSobrePapel($alvo->papel);
+    }
 }

@@ -12,8 +12,8 @@ de decisão de produto nem de mutação do banco histórico:
 1. [x] `ARQ-001`: provar por regressão e corrigir a perda de estado do agregado em
    edição/transições (`Rma::comAlteracoes()` + 7 casos de uso migrados; ver
    `docs/produto/checklist-master-v3.md` H-001);
-2. [ ] `ARQ-003`: impedir promoção indevida e operações do Supervisor sobre
-   SuperAdministrador;
+2. [x] `ARQ-003`: impedir promoção indevida e operações do Supervisor sobre
+   SuperAdministrador (`Papel::podeOperarSobrePapel()`; ver checklist H-003);
 3. [ ] renovar a suíte completa e documentar o checkpoint;
 4. [ ] retomar `F10-FUN-07` pelos smokes somente leitura;
 5. [ ] concluir `ARQ-002` antes de `F10-DAD-04`, tornando dry-run e reconciliação

@@ -41,6 +41,9 @@ class UsuarioController extends Controller
     public function update(Request $request, User $usuario): RedirectResponse
     {
         Gate::authorize('gerenciar', User::class);
+        // ARQ-003 (`INV-RMA-10`): Supervisor não pode operar sobre um
+        // SuperAdministrador existente, nem por URL direta.
+        Gate::authorize('gerenciarUsuario', $usuario);
 
         $dados = $request->validate([
             // `Rule::enum` exige backing type (tryFrom), que `Papel` deliberadamente não
@@ -48,14 +51,21 @@ class UsuarioController extends Controller
             'papel' => ['required', Rule::in(array_column(Papel::cases(), 'name'))],
         ]);
 
+        $papelPretendido = collect(Papel::cases())->firstWhere('name', $dados['papel']);
+
+        // ARQ-003: nem por atribuição — Supervisor não pode promover ninguém (nem a si
+        // próprio) a SuperAdministrador.
+        abort_unless($request->user()->papel->podeOperarSobrePapel($papelPretendido), 403);
+
         $usuario->update(['papel' => $dados['papel']]);
 
         return back()->with('status', 'Papel atualizado.');
     }
 
     /**
-     * Reseta a senha de outro usuário (LEG-RMA-003) — exige `podeGerenciarUsuarios()`,
-     * validado dentro do próprio caso de uso.
+     * Reseta a senha de outro usuário (LEG-RMA-003) — exige `podeGerenciarUsuarios()` e,
+     * desde `ARQ-003`, que o ator possa operar sobre o papel do alvo; validado dentro do
+     * próprio caso de uso.
      */
     public function resetarSenha(Request $request, User $usuario, ResetarSenhaDeUsuario $resetarSenhaDeUsuario): RedirectResponse
     {

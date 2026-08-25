@@ -561,4 +561,15 @@ permitida (log por ora, ver desvio acima).
 **Commit:** `#F7 - Auditoria (historico de modificacao, notificacoes, frete PoA,
 boletins)` (ver hash abaixo, aplicado junto com este log).
 
+**Revisão pós-fase (sessão principal, 2026-08-25):** o desvio mais importante desta
+fase — a correção de `BoletinsRelacionados` para não tratar dois RMAs sem nenhuma
+referência (destinatário/fabricante/fornecedor) como "relacionados" por `IS NULL`
+genérico — estava documentada em comentário e confirmada só por teste manual via
+`tinker`, sem nenhum teste automatizado travando a regressão. Adicionado
+`test_rma_sem_nenhuma_referencia_nao_casa_com_outro_tambem_sem_referencia` (prova direta
+do bug corrigido) e `test_rma_relacionado_apenas_por_fornecedor` (o único dos 3 campos
+sem teste próprio até então — só fabricante e destinatário tinham caso dedicado).
+
+`sail test`: 250/250 verdes, 447 assertions (248→250, 443→447).
+
 ---

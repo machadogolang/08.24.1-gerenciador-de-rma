@@ -58,4 +58,46 @@ class BoletinsRelacionadosTest extends TestCase
 
         $response->assertNotFound();
     }
+
+    public function test_rma_sem_nenhuma_referencia_nao_casa_com_outro_tambem_sem_referencia(): void
+    {
+        // Prova de regressão do desvio documentado em BoletinsRelacionados: o
+        // pseudocódigo original do design.md usaria orWhere(coluna, null), que o
+        // Query Builder traduz para "coluna IS NULL" — dois RMAs sem
+        // destinatario/fabricante/fornecedor casariam entre si por engano.
+        $operador = User::factory()->create(['papel' => Papel::Operador]);
+        $referencia = RmaEloquent::factory()->create([
+            'fabricante_id' => null,
+            'fornecedor_id' => null,
+            'destinatario_id' => null,
+        ]);
+        $outroTambemSemReferencia = RmaEloquent::factory()->create([
+            'fabricante_id' => null,
+            'fornecedor_id' => null,
+            'destinatario_id' => null,
+        ]);
+
+        $response = $this->actingAs($operador)->get("/rmas/{$referencia->id}/boletins-relacionados");
+
+        $response->assertOk();
+        $response->assertViewHas('relacionados', function ($relacionados) use ($outroTambemSemReferencia) {
+            return $relacionados->total() === 0
+                && ! $relacionados->contains('id', $outroTambemSemReferencia->id);
+        });
+    }
+
+    public function test_rma_relacionado_apenas_por_fornecedor(): void
+    {
+        $operador = User::factory()->create(['papel' => Papel::Operador]);
+        $fornecedor = \App\Models\Fornecedor::factory()->create();
+        $referencia = RmaEloquent::factory()->create(['fornecedor_id' => $fornecedor->id]);
+        $relacionado = RmaEloquent::factory()->create(['fornecedor_id' => $fornecedor->id]);
+
+        $response = $this->actingAs($operador)->get("/rmas/{$referencia->id}/boletins-relacionados");
+
+        $response->assertOk();
+        $response->assertViewHas('relacionados', function ($relacionados) use ($relacionado) {
+            return $relacionados->contains('id', $relacionado->id);
+        });
+    }
 }

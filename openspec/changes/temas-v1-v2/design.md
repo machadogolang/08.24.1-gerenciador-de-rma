@@ -25,10 +25,12 @@ do `design.md` anterior. Achados detalhados, com evidência de arquivo/linha, na
   `TrInconformidade`/`TrUrgente`/`TrZebrada1`/`TrZebrada2` (via o CSS compartilhado
   15.9.7.css) em `page/entrada.php`, `page/encaminhados.php`, `page/localizar.php` — ver
   seção dedicada abaixo.
-- **2 pendências novas registradas:** (1) fonte Open Sans do TEMA V2 nunca carrega de
-  fato (URL absoluta morta) — ver seção "Fontes"; (2) comportamento pós-login
-  assimétrico entre o login-gateway compartilhado e o login próprio de TEMA V1 — ver
-  "Estrutura de diretórios".
+- **2 pendências novas, ambas RESOLVIDAS por decisão do usuário em 2026-08-25:** (1)
+  fonte Open Sans do TEMA V2 nunca carrega de fato (URL absoluta morta) → self-hostar
+  corretamente, ver "Fontes"; (2) comportamento pós-login assimétrico entre o
+  login-gateway compartilhado e o login próprio de TEMA V1 → unificado, sempre respeita
+  `tema_preferido`, ver "Estrutura de diretórios". Nenhuma pendência bloqueia mais a
+  implementação da Fase 8.
 
 ## Paleta (fonte: `inventario-visual-tema-{v1,v2}.md` + confirmação direta em `pattern/{14.6.1,15.8.1,15.9.7}.css`)
 
@@ -177,30 +179,34 @@ tem TRÊS superfícies de login assimétricas, confirmadas no HTML/PHP real:
 3. **TEMA V2 não tem login próprio** — `15.8.1/login.php` só reencaminha para a raiz
    (não logado) ou para `inicio` (já logado). Depende inteiramente do login-gateway (1).
 
-Consequência para a árvore de Blade: `identidade/login.blade.php` não deve existir
-simetricamente em `temas/v1/` e `temas/v2/`. Estrutura corrigida:
+**RESOLVIDO (decisão do usuário, 2026-08-25): a V3 unifica o comportamento pós-login —
+sempre respeita `tema_preferido`, sem exceção.** Não existe um "login embutido de TEMA
+V1" separado do gateway na V3 — o achado do legado (dois códigos de `SignIn()`
+independentes, um deles ignorando a preferência) é tratado como bug de duplicação a não
+reproduzir, não como comportamento a preservar. Consequência direta na árvore de Blade:
+`identidade/login.blade.php` existe **uma única vez**, como o próprio gateway — não
+existe versão própria em `temas/v1/`. Estrutura corrigida:
 
 ```
 resources/views/
 ├── identidade/
-│   └── login.blade.php          # login-gateway compartilhado (visual próprio, nem V1 nem V2)
+│   └── login.blade.php          # único ponto de login — sempre redireciona respeitando
+│                                   tema_preferido (SessaoController, Fase 1)
 └── temas/
     ├── v1/
     │   ├── layout.blade.php
     │   ├── rma/{index,create,edit,show}.blade.php
     │   ├── parceiros/{index,_form}.blade.php
-    │   ├── identidade/login.blade.php   # login próprio do V1 (SignInCenterForm), além do gateway
-    │   └── identidade/{usuarios,perfil}.blade.php
+    │   └── identidade/{usuarios,perfil}.blade.php   # SEM login.blade.php
     └── v2/
         ├── layout.blade.php
         ├── (mesma árvore de rma/parceiros)
-        └── identidade/{usuarios,perfil}.blade.php   # SEM login.blade.php — usa o gateway
+        └── identidade/{usuarios,perfil}.blade.php   # SEM login.blade.php
 ```
 
-Pendência real herdada do achado: qual comportamento pós-login o V3 deve reproduzir por
-padrão — o do gateway (respeita `tema_preferido`) ou permitir também o atalho V1 que
-ignora a preferência? Decisão de produto, não decidida aqui; registrar em
-`checklist-master-v3.md` para confirmar com o usuário antes de implementar Fase 8.
+Visualmente, a tela de login em si pode continuar com identidade própria (nem V1 nem
+V2, como já era o gateway no legado) — a decisão resolvida é só sobre o REDIRECT
+pós-login, não sobre a aparência da tela de login.
 
 ## Organização Vite/Sass por tema
 
@@ -243,10 +249,16 @@ que se evita CSS de um tema vazar pro outro (cada `<link>`/`<script>` do Blade d
   LEGACY-RUNTIME nem, plausivelmente, em produção nos últimos anos** — o texto cai no
   fallback `"Arial","Fira Sans"`. Os arquivos físicos da fonte EXISTEM em
   `framework/fonts/OpenSans/` no repo legado, só a URL do `@font-face` está errada.
-  **Pendência nova, não decidida aqui:** reproduzir o fallback quebrado literalmente
-  (fiel ao que renderiza hoje) ou self-hostar a fonte corretamente via Vite (os arquivos
-  já existem, é só apontar certo) — isso muda a tipografia percebida, é decisão de
-  produto, perguntar ao usuário antes de implementar.
+  **RESOLVIDO (decisão do usuário, 2026-08-25) — REPRODUZIR O FALLBACK, não self-hostar
+  Open Sans.** Fidelidade visual é do resultado real observado no LEGACY-RUNTIME (o
+  fallback `"Arial","Fira Sans"`), não da intenção original de design nunca renderizada
+  de fato — carregar Open Sans de verdade mudaria a tipografia percebida para algo que
+  nenhum usuário real do legado jamais viu. `resources/sass/temas/v2.scss` declara
+  `font-family: "Arial", "Fira Sans", sans-serif` diretamente; **nenhum**
+  `@font-face`/arquivo de Open Sans é portado para a V3. Note a diferença de tratamento
+  do caso "Fira Mono"/"Fira Sans" abaixo: ali o CDN funciona de verdade hoje (o
+  resultado visual real inclui essas fontes), então self-hostar preserva fidelidade;
+  aqui o CDN nunca funcionou, então self-hostar QUEBRARIA fidelidade.
 - **"Fira Mono"/"Fira Sans":** `@import` do Google Fonts (`fonts.googleapis.com`) dentro
   do próprio `pattern/15.8.1.css`/`15.9.7.css`, e `//code.cdn.mozilla.net/fonts/fira.css`
   linkado direto no `<head>` de `15.8.1/inc/menu.php`. Ambos são CDN solto — a V3 deve
@@ -288,7 +300,7 @@ que se evita CSS de um tema vazar pro outro (cada `<link>`/`<script>` do Blade d
   para não haver dois lugares divergentes definindo o mesmo conjunto fechado de
   valores.
 
-## Pendências (atualizado — 2 resolvidas por evidência direta, 2 novas registradas)
+## Pendências (todas as 4 resolvidas — nenhuma bloqueia mais a implementação)
 
 1. ~~Mecanismo das âncoras de TEMA V2~~ **RESOLVIDO** — plugin de abas nativo do
    Bootstrap 3.3.5 (`data-toggle="tab"`), sem AJAX, todos os painéis pré-renderizados no
@@ -296,11 +308,10 @@ que se evita CSS de um tema vazar pro outro (cada `<link>`/`<script>` do Blade d
 2. ~~RN-11 em TEMA V1~~ **RESOLVIDO** — TEMA V1 usa as mesmas classes de alerta via CSS
    compartilhado (`pattern/15.9.7.css`), confirmado em 3 páginas reais. Ver seção "RN-11
    em TEMA V1" acima.
-3. **NOVA — Fonte Open Sans do TEMA V2 nunca carrega (URL de produção morta).** Decisão
-   de produto pendente: reproduzir o fallback quebrado ou self-hostar corretamente. Ver
-   "Fontes" acima.
-4. **NOVA — Comportamento pós-login assimétrico.** O login-gateway respeita
-   `tema_preferido`; o login embutido em TEMA V1 sempre fica em V1 independente da
-   preferência salva. Decidir se a V3 reproduz essa assimetria ou unifica o
-   comportamento (mudança de regra de negócio perceptível, não só visual — avaliar com
-   cuidado antes de decidir). Ver "Estrutura de diretórios" acima.
+3. ~~Fonte Open Sans do TEMA V2 nunca carrega~~ **RESOLVIDO (decisão do usuário,
+   2026-08-25): reproduzir o fallback (`Arial`/`Fira Sans`), nunca fazer Open Sans
+   carregar de verdade** — fidelidade é do resultado visual real observado, não da
+   intenção de design nunca renderizada. Ver "Fontes" acima.
+4. ~~Comportamento pós-login assimétrico~~ **RESOLVIDO (decisão do usuário, 2026-08-25):
+   unificar — sempre respeita `tema_preferido`, sem exceção.** Não existe login próprio
+   de TEMA V1 separado do gateway na V3. Ver "Estrutura de diretórios" acima.

@@ -64,19 +64,28 @@ Detalhe completo em `design.md` ("Mecanismo de navegação por tema", "RN-11 em 
    `page/encaminhados.php`, `page/localizar.php` — confirmado por leitura direta do PHP
    fonte. Única diferença real: TEMA V1 não usa `TrSemGarantia1/2` como classe própria
    (mapeia "SEM GARANTIA" para `TrInconformidade`); TEMA V2 usa o conjunto completo.
-3. **NOVA — Fonte "Open Sans" do TEMA V2 nunca carrega de fato.** `css/font-opensans.css`
-   aponta pra uma URL de produção morta (`cellsystem.com.br`, domínio fora do ar,
-   caminho de versão errado). O texto sempre renderizou no fallback (`Arial`/`Fira
-   Sans`), mesmo que os arquivos de fonte físicos existam no repo legado. Decisão de
-   produto pendente: reproduzir o fallback (fiel ao resultado percebido real) ou
-   self-hostar a fonte corretamente (mais próximo da intenção original, mas nunca
-   observado rodando). Não decidida nesta revisão — ver `design.md`.
-4. **NOVA — Comportamento pós-login assimétrico entre temas.** O login-gateway
-   compartilhado (porta de entrada padrão, `http://localhost:8094/`) respeita
-   `usuario.app`/`tema_preferido`; o login embutido em TEMA V1 (`14.6.1/index.php`, tela
-   própria, tabela HTML) ignora essa preferência e sempre mantém o usuário em TEMA V1.
-   É diferença de comportamento (não só visual) — decidir se a V3 reproduz a assimetria
-   ou unifica, antes de implementar `ResolverTemaAtivo`.
+3. **RESOLVIDA (decisão do usuário, 2026-08-25) — Fonte "Open Sans" do TEMA V2 nunca
+   carrega de fato.** `css/font-opensans.css` aponta pra uma URL de produção morta
+   (`cellsystem.com.br`, domínio fora do ar, caminho de versão errado). **Decisão: a V3
+   "deve respeitar" o resultado visual REAL do legado — reproduzir o fallback
+   (`"Arial","Fira Sans"`), nunca fazer Open Sans carregar de verdade.** Fidelidade
+   visual é do que o usuário efetivamente vê rodando hoje (LEGACY-RUNTIME confirmado),
+   não da intenção original nunca observada — self-hostar Open Sans mudaria a
+   tipografia percebida para algo que nenhum usuário real do legado jamais viu,
+   violando o princípio "visual idêntico ao legado". `resources/sass/temas/v2.scss`
+   declara `font-family: "Arial", "Fira Sans", sans-serif` diretamente, sem nenhum
+   `@font-face`/import de Open Sans.
+4. **RESOLVIDA (decisão do usuário, 2026-08-25) — Comportamento pós-login assimétrico
+   entre temas.** O login-gateway compartilhado (porta de entrada padrão,
+   `http://localhost:8094/`) respeita `usuario.app`/`tema_preferido`; o login embutido
+   em TEMA V1 (`14.6.1/index.php`, tela própria, tabela HTML) ignorava essa preferência
+   e sempre mantinha o usuário em TEMA V1. **Decisão: unificar — `SessaoController`
+   (Fase 1) sempre respeita `tema_preferido` no redirect pós-login, independente de por
+   qual rota/tela o usuário autenticou.** Não existe "login embutido de TEMA V1"
+   separado do gateway na V3 — os dois caminhos convergem no mesmo `SessaoController`,
+   eliminando a assimetria por construção (não há dois códigos de login para
+   divergir). Tratado como correção de inconsistência, não como comportamento de
+   negócio a preservar.
 
 ## Rastreabilidade com o legado
 

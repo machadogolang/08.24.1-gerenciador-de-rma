@@ -1,17 +1,36 @@
 # CellSystem RMA V3 — estado macro
 
-Última atualização: 2026-08-24. Nomenclatura oficial: **RMA V2 FINAL** = 15.9.7 ·
-**TEMA V1** = 14.6.1 · **TEMA V2** = 15.8.1 · **RMA V3** = este projeto.
+Última atualização: 2026-08-25 (reconciliação pós-Fases 1-3 + abertura de `INV-RMA-07`).
+Nomenclatura oficial: **RMA V2 FINAL** = 15.9.7 · **TEMA V1** = 14.6.1 · **TEMA V2** =
+15.8.1 · **RMA V3** = este projeto.
 
 ## Dois repositórios oficiais
 
 - **`08.24.4-legacy-gerenciador-de-rma`** (`~/github/08.24.4-legacy-gerenciador-de-rma`)
   — preservação **executável** do RMA V2/15.9.7 (código histórico + Docker). Referência
-  funcional/visual/de dados. Nunca modernizado. Ver seu `README.md`.
+  funcional/visual/de dados. Nunca modernizado. Ver seu `README.md`. Publicado no GitHub
+  (`machadogolang/08.24.4-legacy-gerenciador-de-rma`).
 - **`08.24.1-gerenciador-de-rma`** (este repo) — arqueologia consolidada, decisões,
-  OpenSpecs, PLAN, e a reconstrução V3 em si (ainda não iniciada).
+  OpenSpecs, PLAN, e a reconstrução V3 real: **Fases 1 (Identidade), 2 (Parceiros) e 3
+  (Rma núcleo) implementadas, testadas e commitadas** (`586513f`/`628475d`/`b2b3e74`);
+  Fase 4 (Ciclo de vida) em implementação; Fases 5-8 especificadas (OpenSpec completo);
+  Fases 9-10 especificadas, aguardando Fases 4/5 em código para Fase 9 poder ser
+  codificada. Ver `docs/produto/checklist-master-v3.md` para o estado granular corrente
+  — este documento (`PLAN.md`) é o resumo macro, o checklist é a fonte operacional.
 - **`~/github/_rma-arqueologia/`** — fonte bruta (tar.gz original + extração), fora de
   qualquer Git, usada só como origem para os dois repositórios acima.
+
+## Duas trilhas (a partir de `INV-RMA-07`, 2026-08-25)
+
+- **Trilha A — reconstrução fiel** (em andamento, este documento trata dela até aqui):
+  legado → arqueologia → RMA V3 → Fases 1-10 → migração V2→V3 → QA de paridade →
+  baseline moderna estável. Rastreável por `LEG-RMA-*`/`RN-*`/OpenSpec/
+  `paridade-v2-v3.md`.
+- **Trilha B — evolução SaaS multiempresa** (investigação aberta e concluída,
+  implementação NÃO iniciada): ver `docs/arquitetura/INV-RMA-07-evolucao-saas-
+  multiempresa.md` e `docs/produto/backlog-evolutivo.md` (`EVO-SAAS-001`). Recomendação
+  registrada: nenhuma linha de código de tenancy antes da baseline de paridade da
+  Trilha A estar validada.
 
 ## Objetivo 1 — Arqueologia e especificação da V2
 
@@ -68,12 +87,15 @@
 
 ### MIG-V3 — Migração V2 → V3
 
-- [ ] Mapa completo legado → V3 por tabela/campo (nasce da arqueologia já feita)
-- [ ] Migrador oficial (`php artisan rma:migrate-legacy` ou equivalente) — requisito de
-      produto, não script descartável
-- [ ] Normalizações e resolução de ambiguidade (dedup de parceiro por nome, etc.)
-- [ ] Relatório de reconciliação (contagens por entidade, ambíguos, não reconhecidos)
-- [ ] Testes de migração determinísticos
+- [X] Mapa completo legado → V3 por tabela/campo (`INV-RMA-06`)
+- [X] OpenSpec do migrador (`openspec/changes/migracao-v2-v3/`) — especificado, não
+      codificado (bloqueado até Fases 4/5 existirem em código)
+- [X] Normalizações e resolução de ambiguidade (dedup de parceiro por nome — já
+      implementado para `Cliente` na Fase 2, `EncontrarOuCriarCliente`; generalização
+      para os outros 3 tipos especificada na Fase 9)
+- [X] Relatório de reconciliação — especificado (`RelatorioDeReconciliacao`,
+      `INV-RMA-05` §14)
+- [ ] Migrador codificado + testes de migração determinísticos — pendente (Fase 9)
 
 ## Objetivo 2 — Reconstrução V3
 
@@ -109,16 +131,26 @@ funcionalidade entra em implementação sem OpenSpec correspondente madura.
 - [X] 10 fases de implementação definidas por ordem de dependência (Identidade →
       Parceiros → Rma núcleo → ciclo de vida → alertas/regras → créditos/relatórios →
       auditoria → apresentação/temas → migração → QA de paridade).
-- [X] Fase 1 (Identidade) detalhada arquivo por arquivo (migrations, `Papel`/
-      `TemaPreferido` como enum sem backing mágico, casos de uso, controllers, testes)
-      — ver §6 do documento de arquitetura.
-- [ ] `INV-RMA-06` (estratégia de migração formal) — ainda não escrita, próxima depois
-      da Fase 1 implementada.
+- [X] Fases 1-8 detalhadas arquivo por arquivo em `INV-RMA-05` §6-§13; Fases 9-10 em
+      §14-§15 (com `INV-RMA-06`, o mapa campo-a-campo, para a Fase 9).
+- [X] `INV-RMA-06` (estratégia de migração formal) — escrita (`docs/arquitetura/
+      INV-RMA-06-estrategia-reconstrucao.md`).
+- [X] `INV-RMA-07` (investigação de evolução SaaS multiempresa, Trilha B) — escrita e
+      concluída (`docs/arquitetura/INV-RMA-07-evolucao-saas-multiempresa.md`,
+      2026-08-25). Implementação de tenancy **não iniciada, propositalmente** — só
+      depois da baseline de paridade (Fases 1-10 + QA).
 
-- [ ] OpenSpecs por capacidade funcional coerente (catálogo proposto em
-      `PLANO-ATAQUE.md`; `autenticacao-usuarios` — Fase 1 — sendo escrita agora)
-- [ ] Implementação por fase (ver lista de 10 fases acima) — nenhuma iniciada ainda,
-      fundação técnica pura já concluída (V3-BASE)
+- [X] OpenSpecs escritas para todas as 10 fases (`openspec/changes/`) —
+      `autenticacao-usuarios`, `parceiros`, `rma-cadastro-e-localizacao`,
+      `rma-ciclo-de-vida`, `rma-alertas-e-prioridade`, `rma-creditos-e-relatorios`,
+      `rma-logistica-e-historico`, `temas-v1-v2`, `migracao-v2-v3`, `qa-paridade`.
+- [X] Fase 1 (Identidade) — implementada, testada, commitada (`586513f`).
+- [X] Fase 2 (Parceiros) — implementada, testada, commitada (`628475d`).
+- [X] Fase 3 (Rma núcleo) — implementada, testada, commitada (`b2b3e74`) — 85/85 testes
+      verdes, 189 assertions (verificado pessoalmente).
+- [R] Fase 4 (Ciclo de vida) — em implementação.
+- [ ] Fases 5-10 — especificadas, não codificadas. Fase 9 formalmente bloqueada até as
+      Fases 4/5 existirem em código.
 
 ### PARIDADE
 
@@ -129,8 +161,13 @@ funcionalidade entra em implementação sem OpenSpec correspondente madura.
 
 ## Objetivo 3 — Evolução (Trilha B)
 
-- [ ] Não iniciado — só depois de paridade funcional/visual/de dados comprovada. Ver
-      `docs/produto/backlog-evolutivo.md`.
+- [X] Investigação SaaS multiempresa aberta e concluída (`INV-RMA-07`, 2026-08-25) —
+      fronteira de tenant, estratégia de banco, isolamento, `User`×`Company`, papéis,
+      superadmin, numeração, migração do tenant CellSystem — tudo decidido no nível de
+      arquitetura, nada implementado.
+- [ ] Implementação — não iniciada, propositalmente. Só depois de paridade
+      funcional/visual/de dados comprovada (Fases 1-10 + QA). Ver
+      `docs/produto/backlog-evolutivo.md` (`EVO-SAAS-001`).
 
 ## Critério de sucesso da V3
 

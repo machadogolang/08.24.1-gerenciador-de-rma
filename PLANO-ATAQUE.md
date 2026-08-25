@@ -1,36 +1,43 @@
 # Plano de ataque — CellSystem RMA
 
-Última atualização: 2026-08-24.
+Última atualização: 2026-08-25 (reconciliação pós-Fases 1-3 + abertura de `INV-RMA-07`).
 
 ## AGORA
 
-**Arquitetura decidida** (`docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` —
-monólito modular, referência CONAHOM real). **Fase 1 (Identidade) em especificação**:
-OpenSpec escrita em `openspec/changes/autenticacao-usuarios/`, ainda não implementada.
-Checklist granular por fase (1 a 10) em `docs/produto/checklist-master-v3.md` — usar
-esse documento como mapa operacional a partir de agora, este arquivo continua sendo só
-o resumo de fase/dependência/critério de saída.
+**Trilha A (reconstrução) em andamento real:** Fases 1 (Identidade), 2 (Parceiros) e 3
+(Rma núcleo) implementadas, testadas e commitadas (`586513f`/`628475d`/`b2b3e74`, 85/85
+testes verdes na última verificação pessoal). Fase 4 (Ciclo de vida) em implementação.
+Fases 5-10 especificadas (OpenSpec completo), não codificadas — Fase 9 formalmente
+bloqueada até Fases 4/5 existirem em código. **Trilha B aberta:** `INV-RMA-07`
+(evolução SaaS multiempresa) investigada e concluída em 2026-08-25 — decisões de
+arquitetura registradas, implementação de tenancy propositalmente não iniciada (só
+depois da baseline de paridade). Checklist granular por fase em
+`docs/produto/checklist-master-v3.md` continua sendo o mapa operacional — este arquivo
+é só o resumo de fase/dependência/critério de saída.
 
 ## DEPOIS
 
-1. **INV-RMA-05** — arquitetura moderna proposta (Laravel, proporcional, linha CONAHOM,
-   investigar granularidade real de compartilhamento de domínio/controllers entre
-   TEMA V1 e TEMA V2 antes de fixar).
-2. **INV-RMA-06** — estratégia de reconstrução/migração formal (mapa legado→V3 por
-   tabela/campo, ver `MIG-V3` abaixo).
-3. Primeira OpenSpec real do catálogo proposto (`autenticacao-usuarios` é o candidato
-   mais simples/seguro — schema estável, regra já validada nos dois temas).
-4. Só depois: tasks, primeira fatia de implementação.
-5. Item residual de baixo risco, não bloqueante: RN-12 (threshold R$75) — confirmar
+1. Fase 4 (Ciclo de vida) — concluir implementação em andamento.
+2. Fase 5 (Alertas e regras) — próxima a implementar após Fase 4, na mesma disciplina
+   TDD das anteriores.
+3. Fases 6-8 — na ordem de dependência já fixada (`INV-RMA-05` §5).
+4. Fase 9 (Migração) — só depois das Fases 4/5 existirem em código (os enums que o
+   migrador traduz).
+5. Fase 10 (QA de paridade) — fecha por último, gate de conclusão da Trilha A.
+6. Trilha B (SaaS) — implementação só depois do gate acima, conforme `INV-RMA-07` §13.
+7. Item residual de baixo risco, não bloqueante: RN-12 (threshold R$75) — confirmar
    ausência/presença em TEMA V1 com leitura linha a linha completa, se necessário.
-6. ARQ-07c — screenshots/telas internas (novo RMA, detalhes) dos dois temas.
+8. ARQ-07c — screenshots/telas internas (novo RMA, detalhes) dos dois temas.
 
 ## DEPENDÊNCIAS
 
-- INV-RMA-05/06 dependem do parecer — **já disponível** (ARQ-08 concluído).
-- MIG-V3 (migrador real) depende de INV-RMA-05/06 (schema da V3 precisa existir).
+- INV-RMA-05/06/07 — todas escritas.
+- MIG-V3 (migrador real, Fase 9) depende de Fases 4/5 em código (schema/enums finais
+  precisam existir de verdade, não só especificados).
 - Implementação da V3 depende de OpenSpec madura por funcionalidade — nunca "legado →
-  interpretação rápida → código".
+  interpretação rápida → código". Todas as 10 fases já têm OpenSpec madura.
+- Trilha B (SaaS) depende da Trilha A completa e validada (paridade funcional/visual/de
+  dados) — `INV-RMA-07` §13.
 
 ## CRITÉRIO DE SAÍDA da arqueologia — ATINGIDO
 
@@ -43,7 +50,7 @@ o resumo de fase/dependência/critério de saída.
 - [ ] Mapa legado→V3 por tabela/campo — pendente, é o próximo passo (`MIG-V3`/
       `INV-RMA-06`), não faz parte do critério de saída da arqueologia em si.
 
-## Catálogo inicial de OpenSpec proposto (ainda nenhuma escrita — proposta de agrupamento)
+## Catálogo de OpenSpec (todas escritas — `openspec/changes/`)
 
 Nascido do inventário funcional (48 itens `LEG-RMA-NNN`), agrupado por capacidade
 coerente, não por botão nem num bloco só:
@@ -60,14 +67,17 @@ coerente, não por botão nem num bloco só:
 | `temas-v1-v2` | apresentação — decisão de arquitetura de tema, não itens LEG-RMA específicos |
 | `migracao-v2-v3` | MIG-01/02, não itens LEG-RMA |
 
-Cada change só é escrita quando houver decisão de arquitetura madura o bastante
-(`INV-RMA-05`) para descrever "como será na V3", não só "como era na V2".
+Todas as 9 changes acima (mais `qa-paridade`, Fase 10) estão escritas. Cada uma só foi
+escrita quando houve decisão de arquitetura madura o bastante (`INV-RMA-05`) para
+descrever "como será na V3", não só "como era na V2".
 
 ## NÃO FAZER AINDA
 
 - Não criar migration, model, controller, view Laravel da V3 sem OpenSpec correspondente.
-- Não fixar schema novo, enums finais, máquina de estado final até `INV-RMA-05` decidir.
-- Não implementar nenhum item do `backlog-evolutivo.md`.
+- Não implementar nenhum item do `backlog-evolutivo.md`, incluindo `EVO-SAAS-001` —
+  `INV-RMA-07` decide arquitetura, não implementa (nenhum `company_id`/`tenant_id`,
+  nenhuma tabela `companies`, nenhum billing/plano/assinatura antes da baseline de
+  paridade da Trilha A).
 - Não fazer melhoria estrutural de banco antes da baseline V3 validada (ver regra de
   evolução do banco, na investigação arquivada §10).
 - Não editar o código-fonte legado dentro de `08.24.4-legacy-gerenciador-de-rma/
@@ -101,5 +111,10 @@ Cada change só é escrita quando houver decisão de arquitetura madura o bastan
 | LR-05 | Mailpit validado de verdade | `mail()` capturado, nada saiu para a internet | `[X]` |
 | LR-06 | Execução simultânea com V3 | 6 containers ativos ao mesmo tempo, sem conflito | `[X]` |
 | V3-01 | Fundação técnica executável | Laravel 13/PHP 8.3, porta 8095, migrations + testes básicos passando | `[X]` |
-| MIG-01 | Mapa legado → V3 por tabela/campo | Documento completo, nascido da arqueologia | `[ ]` |
-| MIG-02 | Migrador oficial implementado | Repetível, testável, auditável, idempotente | `[ ]` |
+| F1 | Fase 1 — Identidade implementada | `sail test` verde, commit `#F1` | `[X]` |
+| F2 | Fase 2 — Parceiros implementada | `sail test` verde, commit `#F2` | `[X]` |
+| F3 | Fase 3 — Rma núcleo implementada | `sail test` verde, commit `#F3` | `[X]` |
+| F4 | Fase 4 — Ciclo de vida implementada | `sail test` verde, commit `#F4` | `[R]` em implementação |
+| MIG-01 | Mapa legado → V3 por tabela/campo | Documento completo (`INV-RMA-06`) | `[X]` |
+| MIG-02 | Migrador oficial implementado | Repetível, testável, auditável, idempotente — bloqueado até Fases 4/5 em código | `[ ]` |
+| SAAS-01 | Investigação de evolução SaaS multiempresa | `INV-RMA-07` — fronteira de tenant, banco, isolamento, User×Company, papéis, superadmin, numeração, migração decididos | `[X]` |

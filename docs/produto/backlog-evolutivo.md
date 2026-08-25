@@ -16,21 +16,35 @@ Benefício · Impacto · Complexidade · Risco · Dependências · Prioridade ·
   acesso, dado ou numeração.
 - **Legado:** campo texto livre, normalizado por `str_replace` ad-hoc (`RA`→`R A`),
   nunca usado para filtrar nenhuma query, relatório ou alerta.
-- **Evolução:** o pedido original desta iniciativa (antes da correção de prioridade
-  desta sessão) — plataforma SaaS multiempresa, shared database + shared schema +
-  `tenant_id`, modelo Usuário↔Membership↔Empresa (papel contextual por empresa),
-  numeração de RMA por tenant (`UNIQUE(empresa_id, numero)`), isolamento de storage,
-  testes dedicados de cross-tenant leak. Todo o conteúdo técnico já levantado sobre
-  isolamento de tenant, resolução de tenant corrente, autorização, route model binding
-  seguro, storage por tenant, superadmin de plataforma vs. admin de empresa, e a decisão
-  de não adotar biblioteca de tenancy no automático (avaliar caso a caso depois da
-  reconstrução) — tudo isso fica preservado aqui, não descartado, só adiado.
+- **Evolução:** plataforma SaaS multiempresa. Desenho concreto fechado em
+  `docs/arquitetura/INV-RMA-07-evolucao-saas-multiempresa.md` (2026-08-25): banco
+  compartilhado + `tenant_id` (Modelo A, escolhido sobre banco-por-empresa e híbrido —
+  `INV-RMA-07` §5); isolamento por construção via Global Scope + `TenantContext` +
+  route model binding customizado + Model Observer, nunca só disciplina de código
+  (`INV-RMA-07` §6); `User`↔`Company` many-to-many via `company_user`, com `Papel`
+  migrando de `users` para o vínculo (`INV-RMA-07` §7/§8 — evidência real do próprio
+  legado, grupo econômico com múltiplas empresas sob um banco só); superadmin de
+  plataforma tratado como autorização ortogonal ao `Papel` de tenant, nunca sobrecarga
+  dele (`INV-RMA-07` §9); numeração de RMA por empresa via contador transacional
+  dedicado, nunca `MAX+1` (`INV-RMA-07` §10); primeiro tenant = empresa "CellSystem",
+  migrador V2→V3 (`INV-RMA-06`) ganha um passo trivial de carimbo de tenant, sem
+  redesenho (`INV-RMA-07` §11); testes arquiteturais de isolamento como suíte própria e
+  obrigatória, parametrizada por model tenant-scoped (`INV-RMA-07` §14). Pendências reais
+  não decididas: catálogo compartilhável de `Fabricante` entre tenants; agregação de
+  segurança cross-tenant; formato exato do flag de administrador de plataforma —
+  `INV-RMA-07` §12/§17.
 - **Benefício:** transforma um sistema interno em produto comercializável para N
   empresas.
 - **Impacto:** altíssimo — é uma segunda geração do produto.
 - **Complexidade:** alta.
 - **Risco:** alto se implementado antes da reconstrução fiel — mistura escopo.
-- **Dependências:** reconstrução fiel completa e validada (Trilha A).
+- **Dependências:** reconstrução fiel completa e validada (Trilha A — Fases 1-10 + QA de
+  paridade, `INV-RMA-05` §15).
+- **Momento recomendado:** nenhuma linha de código de tenancy antes da baseline de
+  paridade estar validada (`INV-RMA-07` §13 — Estratégia C: fronteiras já investigadas
+  e decididas agora, implementação só depois). A modularidade já existente (fronteira
+  própria do módulo `Rma`, Policies centralizadas desde a Fase 1) foi desenhada de um
+  jeito que absorve tenancy sem reescrita ampla — não há vantagem em adiantar código.
 - **Prioridade sugerida:** alta, mas só depois da Trilha A.
 - **Fase:** pós-reconstrução (Trilha B), primeira grande iniciativa.
 

@@ -97,6 +97,14 @@ aqui — este objeto cresce incrementalmente junto com o schema.
 interface RepositorioDeRmas
 {
     public function criar(Rma $rma): Rma;         // devolve com id preenchido
+
+    // Ausente do snippet original — acrescentado durante a implementação real desta
+    // fase porque EditarRma (ajuste da revisão, ver docs/arquitetura/
+    // revisao-fases-1-2-3.md) precisava de um método de atualização sem furar a
+    // fronteira de domínio tocando o Eloquent model diretamente. A Fase 4 já assume
+    // este método existente (ver design.md de rma-ciclo-de-vida).
+    public function atualizar(Rma $rma): Rma;
+
     public function buscarPorId(int $id): ?Rma;
     /** @return Rma[] */
     public function buscar(CriterioDeBusca $criterio): array;

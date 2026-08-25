@@ -304,19 +304,30 @@ Tasks (resumido, ver `tasks.md` completo):
 - [ ] `sail test` verde, `checklist-master-v3.md`/`paridade-v2-v3.md` atualizados
       (paridade visual), commit `#F8`
 
-### Fase 9 — Migração V2→V3 — **NÃO INICIADA (esqueleto em `INV-RMA-05` §14)**
+### Fase 9 — Migração V2→V3 — **EM ESPECIFICAÇÃO**
 
-- [ ] Escrever `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`
-- [ ] Escrever `openspec/changes/migracao-v2-v3/{proposal,design,tasks}.md`
-- [ ] Mapa completo legado → V3 por tabela/campo (ver detalhe abaixo, Parte 4)
-- [ ] Migrador oficial + relatório de reconciliação + idempotência
+OpenSpec escrita: `openspec/changes/migracao-v2-v3/{proposal,design,tasks}.md`. Mapa
+campo-a-campo completo: `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`.
+Arquivo por arquivo detalhado em `INV-RMA-05` §14. **Bloqueador para codificar:**
+depende das Fases 4/5 (enums `Status`/`Solucao`/`Origem`/`Prioridade`/
+`StatusDeLancamento`) estarem implementadas em código, não só especificadas.
+
+- [x] Escrever `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`
+- [x] Escrever `openspec/changes/migracao-v2-v3/{proposal,design,tasks}.md`
+- [x] Mapa completo legado → V3 por tabela/campo
+- [ ] Migrador oficial + relatório de reconciliação + idempotência (bloqueado até
+      Fases 4/5 estarem implementadas em código)
 - [ ] Teste de migração determinístico
 
-### Fase 10 — QA de paridade — **contínua, fecha por último (esqueleto em `INV-RMA-05` §15)**
+### Fase 10 — QA de paridade — **EM ESPECIFICAÇÃO, contínua, fecha por último**
 
+OpenSpec escrita: `openspec/changes/qa-paridade/{proposal,design,tasks}.md`. Critério
+objetivo por eixo + gate de conclusão do projeto detalhados em `INV-RMA-05` §15.
+
+- [x] Escrever `openspec/changes/qa-paridade/{proposal,design,tasks}.md`
 - [ ] Paridade funcional por `LEG-RMA-NNN` (atualizar `paridade-v2-v3.md` a cada fase)
 - [ ] Paridade visual (screenshot V2×V3, 390/768/1440)
-- [ ] Paridade de dados (contagens pós-migração)
+- [ ] Paridade de dados (contagens pós-migração, Fase 9)
 
 ---
 

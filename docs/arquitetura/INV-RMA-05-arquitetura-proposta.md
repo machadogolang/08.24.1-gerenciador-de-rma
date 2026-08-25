@@ -1085,57 +1085,217 @@ design system, `INV-RMA-05` §4 já decide isso).
 `openspec/changes/temas-v1-v2/{proposal.md,design.md,tasks.md}` (nome já catalogado em
 `checklist-master-v3.md`).
 
-## 14. Fase 9 — Migração V2→V3 (esqueleto para retomada)
+## 14. Fase 9 em detalhe — Migração V2→V3
 
-Não detalhada arquivo-por-arquivo nesta rodada (depende de decisões que só ficam
-estáveis depois que as Fases 1-8 estiverem implementadas de verdade — schema final,
-enums finais, todos os campos "criados quando a regra que usa existe"). Esqueleto
-mínimo para retomada:
+### Pré-requisito que destravou o detalhamento desta fase
 
-- Primeiro documento a escrever: `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`
-  (mapa completo campo-a-campo `bd`→`rmas`, ver `checklist-master-v3.md` Parte 4 —
-  já tem a lista de tabelas a mapear, falta o mapeamento campo-a-campo em si).
-  **Pré-requisito concreto para esse mapa existir:** todos os enums de domínio fechado
-  (`Status`, `Solucao`, `Origem`, `Prioridade`, `StatusDeLancamento`, `Papel`) precisam
-  estar implementados e testados (Fases 1/4/5) — o mapa de migração é a tabela de
-  tradução número-legado→enum-novo mencionada em `INV-RMA-05` §1.1 ("o número original
-  só pode aparecer... na camada de migração").
-- Migrador: `php artisan rma:migrate-legacy` (ou nome melhor a decidir), módulo
-  `Rma/Infraestrutura`, conexão secundária para `rma_legacy`.
-- Requisitos já fixados (não re-decidir): idempotência, relatório de reconciliação,
-  deduplicação de parceiro reaproveitando `EncontrarOuCriarCliente` (Fase 2) generalizado
-  para os outros 3 tipos.
-- Pendência de decisão de produto herdada, não resolvida ainda: estratégia para valores
-  legados fora do domínio moderno (`origem=Rolo`, `status=retornou`, `empresa=R A`) —
-  `checklist-master-v3.md` Parte 4 já lista, decidir caso a caso quando a fase virar
-  corrente.
+A nota de §5 dizia que Fases 9/10 dependiam de "schema final, enums finais" só
+disponíveis depois das Fases 1-8 implementadas. Isso segue parcialmente verdade em
+termos de **código** (só as Fases 1-2 estão implementadas até agora), mas os enums de
+domínio fechado que a migração precisa (`Status`, `Solucao`, `Origem`, `Prioridade`,
+`StatusDeLancamento`, `Papel`, `TemaPreferido`) já têm **desenho fechado e código exato
+escrito** nas Fases 4/5 (§9/§10 acima) — a incerteza que restava era só "qual é o mapa
+campo-a-campo real", que dependia de ler o schema legado real (`bd` e as outras 8
+tabelas), não de esperar a implementação. Essa leitura foi feita
+(`~/github/08.24.4-legacy-gerenciador-de-rma/db/schema-only.sql`, `CREATE TABLE`
+completo das 9 tabelas) e o mapa está em
+`docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md` — este `§14` referencia esse
+mapa em vez de repeti-lo.
+
+### Arquitetura do migrador
+
+- Módulo `Rma/Infraestrutura` ganha uma sub-árvore `Migracao/`: o migrador é
+  infraestrutura (lê um formato de dado externo, o schema `rma_legacy`), não domínio
+  novo — coerente com a fronteira já justificada em §8 ("a Fase 9 precisa ler
+  `rma_legacy` sem vazar esse conhecimento pro resto da aplicação").
+- Conexão secundária **só-leitura**: `config/database.php` ganha uma entrada
+  `rma_legacy` (mesmo padrão de conexão nomeada do Laravel), apontando pro banco
+  histórico (`rma_legacy` do ambiente Docker, ver `docs/desenvolvimento/ambiente-v2-v3.md`).
+  A conexão é configurada com um usuário MySQL **sem permissão de escrita** (`GRANT
+  SELECT`), reforçando em nível de banco — não só de disciplina de código — que o
+  migrador nunca grava no banco legado, só lê.
+- Comando Artisan: `php artisan rma:migrar-legado` (nome final, substitui o placeholder
+  `rma:migrate-legacy` citado antes de decidir a convenção de nomenclatura em português
+  já usada em todo o resto do código desta V3 — `AutenticarUsuario`, `CriarRma`, etc.,
+  nunca em inglês).
+  - Opções: `--somente=<tabela>` (roda só um importador, para depuração incremental),
+    `--dry-run` (roda toda a lógica de tradução e reconciliação sem gravar nada — só
+    imprime o relatório), `--forcar` (permite reprocessar linhas já marcadas como
+    migradas — não usado no fluxo normal, só para corrigir um importador com bug depois
+    de já ter rodado uma vez).
+
+### Ordem de execução (por dependência de FK)
+
+```
+1. Usuarios         (users, dedup por email — sem dependência)
+2. Clientes         (clientes, dedup por nome — sem dependência)
+3. Fabricantes      (fabricantes, dedup por nome — sem dependência)
+4. Fornecedores     (fornecedores, dedup por nome — sem dependência)
+5. AssistenciasTecnicas (assistencias_tecnicas, dedup por nome — sem dependência)
+6. Rmas             (rmas — depende de 2/3/4/5 para resolver fabricante_id/
+                      fornecedor_id/cliente_id/destinatario_type+id)
+7. LogsDeAcesso     (tentativas_de_acesso — depende de 1, soft match por email)
+8. ModificacoesDeRma (modificacoes_de_rma — depende de 1 e 6, resolve rma_id via
+                      numero_legado e user_id via soft match; só roda se a Fase 7
+                      já estiver implementada, senão o comando pula esse passo e avisa)
+```
+
+### Arquivos
+
+- `app/Rma/Infraestrutura/Migracao/TabelaDeTraducao.php` — um método estático por enum
+  (`status()`, `solucao()`, `origem()`, `prioridade()`, `statusDeLancamento()`,
+  `papel()`, `temaPreferido()`), implementando as tabelas de `INV-RMA-06` §2-§5, §9,
+  §11 — **único lugar do código onde um valor cru do legado (`'entrada'`, `-1`,
+  `'14.6.1'`...) é comparado por igualdade**; todo o resto do migrador chama estes
+  métodos, nunca compara string/int diretamente
+- `app/Rma/Infraestrutura/Migracao/ConexaoLegado.php` — thin wrapper sobre
+  `DB::connection('rma_legacy')`, um método por tabela (`bd()`, `cliente()`,
+  `fabricante()`, `fornecedor()`, `assistenciaTecnica()`, `usuario()`, `log()`,
+  `modificacao()`) devolvendo `LazyCollection` (evita carregar as ~56 colunas × N
+  linhas de `bd` inteiras na memória de uma vez)
+- `app/Rma/Infraestrutura/Migracao/RelatorioDeReconciliacao.php` — objeto acumulador:
+  `contarOrigem(string $tabela, int $n)`, `contarDestino(string $tabela, int $n)`,
+  `registrarAnomalia(string $tabela, mixed $chaveOrigem, string $motivo)`,
+  `registrarConversaoAssistida(string $tabela, mixed $chaveOrigem, string $detalhe)`;
+  ao fim do comando, `resumo(): string` monta o relatório final (contagem origem×destino
+  por tabela + lista de anomalias + lista de conversões assistidas), impresso no
+  console e salvo em `storage/app/migracao/relatorio-{timestamp}.txt`
+- `app/Rma/Infraestrutura/Migracao/Importadores/ImportarUsuarios.php`,
+  `ImportarClientes.php`, `ImportarFabricantes.php`, `ImportarFornecedores.php`,
+  `ImportarAssistenciasTecnicas.php`, `ImportarRmas.php`, `ImportarLogsDeAcesso.php`,
+  `ImportarModificacoesDeRma.php` — uma classe por tabela legada, método público único
+  `executar(RelatorioDeReconciliacao $relatorio): void`, implementando exatamente o
+  mapeamento de `INV-RMA-06` para aquela tabela (idempotência via `numero_legado`/
+  `updateOrCreate` por email/nome conforme §1, §11, §16 de `INV-RMA-06`)
+- `app/Parceiros/Aplicacao/EncontrarOuCriarFabricante.php`,
+  `EncontrarOuCriarFornecedor.php`, `EncontrarOuCriarAssistenciaTecnica.php` —
+  generalização de `EncontrarOuCriarCliente` (Fase 2), usadas **só pelos importadores**
+  (`INV-RMA-06` §17 explica por que o runtime de criação de RMA, Fase 3, não passa a
+  usá-las — comportamento de tela não muda)
+- `app/Rma/Infraestrutura/Migracao/ResolverDestinatario.php` — cascata
+  `assistencia_tecnica → fornecedor → fabricante` (`INV-RMA-06` §7), sem auto-criação
+- `database/migrations/2026_09_01_000000_add_numero_legado_to_rmas_table.php` —
+  `numero_legado` (int, nullable, `unique`)
+- `database/migrations/2026_09_01_000001_add_campos_historicos_de_migracao_to_rmas_table.php`
+  — todas as colunas de `INV-RMA-06` §1.2 (preservação sem regra de negócio dona),
+  `solucao_legado_bruto`, `destinatario_nome_legado`, `operador_email_legado`,
+  `operador_id` (FK nullable)
+- `app/Console/Commands/MigrarLegado.php` — orquestra os 8 importadores na ordem de
+  dependência acima, dentro de uma transação por importador (não uma transação única
+  gigante — uma tabela com erro não deve impedir as outras de migrarem), imprime o
+  relatório de reconciliação ao final
+- `tests/Feature/Migracao/ImportarUsuariosTest.php` (+ 7 análogos, um por importador) —
+  banco `rma_legacy` de teste com fixture pequena e conhecida (não o dump de produção
+  inteiro): caso feliz, caso de anomalia (valor fora do domínio), caso de idempotência
+  (rodar o importador duas vezes não duplica), caso de soft-match (email bate/não bate)
+- `tests/Feature/Migracao/MigrarLegadoComandoTest.php` — roda o comando completo contra
+  a fixture pequena, valida ordem de execução e relatório final
+
+### Pendências herdadas de `INV-RMA-06`, não decididas aqui
+
+As 4 pendências numeradas no fim de `INV-RMA-06` (formato de data ambíguo em campos
+`varchar`, ocorrência real de `status='retornou'`, destino de `relatorio.
+informacaoadicional`, coordenação da coluna `rmas.valor` com a Fase 5) continuam sem
+decisão — são carregadas para o `proposal.md` desta change, não resolvidas por
+inferência.
 
 ### OpenSpec desta fase
 
-`openspec/changes/migracao-v2-v3/{proposal.md,design.md,tasks.md}` — não escrita ainda.
+`openspec/changes/migracao-v2-v3/{proposal.md,design.md,tasks.md}`.
 
-## 15. Fase 10 — QA de paridade (esqueleto para retomada)
+## 15. Fase 10 em detalhe — QA de paridade
 
-Contínua por natureza (`checklist-master-v3.md` já marca "fecha por último"), mas o
-esqueleto de critérios já pode ser fixado agora, porque não depende de nenhuma decisão
-de implementação ainda não tomada:
+### Por que esta fase não depende de nenhuma implementação nova
 
-- **Paridade funcional:** por `LEG-RMA-NNN`, atualizar `docs/produto/paridade-v2-v3.md`
-  a cada fase (já é prática das Fases 1-3, mantida). Critério de "paridade" =
-  comportamento percebido igual **ou** correção documentada com origem rastreável (RN-XX)
-  — nunca "ficou diferente porque a V3 é melhor" sem registro explícito de que a
-  diferença foi avaliada e aprovada.
-- **Paridade visual:** screenshot V2×V3 nos 3 breakpoints já definidos (390/768/1440),
-  cobrindo os dois temas — só é executável depois da Fase 8.
-- **Paridade de dados:** contagem por entidade pós-migração (Fase 9) bate com a
-  contagem do legado, por tabela — critério de teste determinístico já registrado em
-  `checklist-master-v3.md` Parte 4.
-- Nenhum arquivo novo de produto — esta fase é execução de QA sobre o que já existe,
-  registrado em relatório (`docs/qa/` — diretório ainda não criado, criar quando a fase
-  virar corrente).
+QA de paridade não escreve código de produto — verifica o que as Fases 1-9 já
+produziram contra 3 fontes de verdade já existentes: `paridade-v2-v3.md` (funcional),
+os dois temas do LEGACY-RUNTIME (visual) e o relatório de reconciliação da Fase 9
+(dados). O "esqueleto" anterior já cobria os 3 eixos corretamente; o que faltava era o
+critério objetivo de **quando cada eixo está fechado** e o **critério de conclusão do
+projeto** como um todo.
+
+### Eixo 1 — Paridade funcional
+
+Critério objetivo, por `LEG-RMA-NNN`: a linha em `paridade-v2-v3.md` está em
+`PARIDADE` **e** tem pelo menos uma das duas evidências ligadas a ela:
+
+- um teste automatizado (`tests/Feature/...`/`tests/Unit/...`) que passaria com o
+  comportamento do legado e falharia se a V3 divergisse sem justificativa — os testes
+  de regressão já escritos nas Fases 1-8 (`TrocarPropriaSenhaTest`, `ArquivarRmaTest`,
+  etc.) já seguem esse padrão; ou
+- para os itens sem teste automatizável direto (ex.: comparação visual pura), um passo
+  de QA manual documentado em `docs/qa/roteiro-paridade-funcional.md` (arquivo novo
+  desta fase), com o resultado esperado e o resultado observado registrados.
+
+Itens `NÃO RECONSTRUIR` (`LEG-RMA-016`, `034`) e `RETOMAR IDEIA` (`LEG-RMA-035`) contam
+como "fechados" sem teste — a evidência exigida ali é só a entrada na matriz com a
+justificativa já registrada (código morto confirmado), não um teste provando ausência.
+
+### Eixo 2 — Paridade visual
+
+Retoma os 3 breakpoints já usados como referência desde a Fase 8 (390/768/1440,
+`tests/Browser/` Playwright) e os mapeia para os breakpoints reais de cada tema
+(`INV-RMA-05` §13):
+
+| Breakpoint de QA | TEMA V1 (sem `@media`, layout fixo 984px) | TEMA V2 (`css/media.php`, 568/800/992/1080/1280/1366px) |
+|---|---|---|
+| 390px | layout fixo — mesma renderização de 984px com scroll horizontal (comportamento correto a preservar, **não** "consertar" para responsivo) | regra `min-width` mais próxima abaixo de 390 → nenhuma (abaixo do menor breakpoint, 568px) — comparar contra o estado "sem nenhum breakpoint aplicado" |
+| 768px | idem (fixo) | entre 568 e 800 → aplica a regra de 568px |
+| 1440px | idem (fixo) | acima de 1366 → aplica a regra de 1366px (maior breakpoint, "modo desktop cheio") |
+
+Critério objetivo: para cada combinação (tema × breakpoint × tela principal —
+login/painel de alertas/novo RMA/detalhe/localizar), screenshot da V3 lado a lado com o
+LEGACY-RUNTIME (`:8094`) sem diferença estrutural relevante (mesma disposição de
+elementos, mesma paleta — pequenas diferenças de rasterização de fonte não contam como
+divergência). Divergência real = pendência registrada com origem rastreável (achado já
+feito na Fase 8, ex.: fonte Open Sans nunca carrega em produção) ou correção aprovada
+pelo usuário, nunca "ficou diferente e não documentado por quê".
+
+### Eixo 3 — Paridade de dados
+
+O relatório de reconciliação da Fase 9 (`RelatorioDeReconciliacao`, §14 acima) **é** a
+evidência deste eixo, não uma verificação isolada e repetida — QA de paridade só precisa
+confirmar que:
+
+- a contagem "origem × destino" de cada tabela bate (ou a diferença é exatamente igual
+  ao número de anomalias + conversões assistidas + registros intencionalmente não
+  migrados — ex.: `assistencias`, sempre 0 migrado, por decisão já registrada em
+  `INV-RMA-06` §15);
+- nenhuma anomalia ficou sem uma linha correspondente no relatório final (toda anomalia
+  visível é rastreável até a chave de origem exata, não um contador solto).
+
+### Critério de conclusão do projeto (Trilha A → habilita Trilha B)
+
+Objetivo, sem inventar critério novo — consolida o que já estava disperso em
+`checklist-master-v3.md`/`paridade-v2-v3.md`/diretrizes do usuário ao longo do projeto:
+
+1. `docs/produto/paridade-v2-v3.md`: **100% das linhas não-`NÃO RECONSTRUIR`/
+   `RETOMAR IDEIA` em `PARIDADE`** (nenhuma `PENDENTE`/`EM ESPECIFICAÇÃO`/
+   `EM IMPLEMENTAÇÃO` restante).
+2. `sail test` verde na suíte inteira (não só a da última fase) — full-regression, não
+   incremental.
+3. Eixo 2 (paridade visual) fechado nos 3 breakpoints × 2 temas × telas principais, com
+   evidência em `tests/Browser/` (Playwright) e screenshots arquivados.
+4. Relatório de reconciliação da Fase 9 sem divergência não explicada (Eixo 3).
+5. Todas as pendências reais registradas ao longo das 9 fases anteriores (`LEG-RMA-002`
+   autocadastro, `EVO-AUD-001` diff estruturado, fonte Open Sans, assimetria de
+   pós-login, as 4 de `INV-RMA-06`) estão **decididas pelo usuário ou explicitamente
+   adiadas para o backlog evolutivo** — nenhuma pode ficar "esquecida", mas nem toda
+   pendência precisa virar código antes da Trilha B começar; precisa só ter uma decisão
+   registrada (implementar agora / adiar para `EVO-*` / não fazer).
+
+Só quando os 5 itens acima são verdade a V3 é declarada em paridade com a V2, e a
+Trilha B (`docs/produto/backlog-evolutivo.md`) pode começar.
+
+### Arquivos
+
+- `docs/qa/roteiro-paridade-funcional.md` — passos manuais para os itens sem teste
+  automatizável direto (criado nesta fase)
+- `docs/qa/relatorio-paridade-final.md` — o relatório final consolidando os 3 eixos +
+  o checklist de conclusão de projeto acima, gerado ao fim da execução desta fase
+- `tests/Browser/ParidadeVisualTest.php` (Playwright) — os 3 breakpoints × 2 temas ×
+  telas principais, screenshot diff contra o LEGACY-RUNTIME
 
 ### OpenSpec desta fase
 
-`openspec/changes/qa-paridade-v2-v3/{proposal.md,design.md,tasks.md}` — não escrita
-ainda; provavelmente mais leve que as anteriores (é um plano de verificação, não de
-implementação).
+`openspec/changes/qa-paridade/{proposal.md,design.md,tasks.md}`.

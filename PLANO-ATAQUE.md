@@ -1,33 +1,126 @@
 # Plano de ataque — CellSystem RMA
 
-Última atualização: 2026-08-25 (reconciliação pós-Fases 1-3 + abertura de `INV-RMA-07`).
+Última atualização: 2026-08-25 (reconciliação pós-Fase 4 + detalhe granular do que
+falta nas Fases 5-10).
 
 ## AGORA
 
-**Trilha A (reconstrução) em andamento real:** Fases 1 (Identidade), 2 (Parceiros) e 3
-(Rma núcleo) implementadas, testadas e commitadas (`586513f`/`628475d`/`b2b3e74`, 85/85
-testes verdes na última verificação pessoal). Fase 4 (Ciclo de vida) em implementação.
-Fases 5-10 especificadas (OpenSpec completo), não codificadas — Fase 9 formalmente
-bloqueada até Fases 4/5 existirem em código. **Trilha B aberta:** `INV-RMA-07`
+**Trilha A (reconstrução) em andamento real:** Fases 1 (Identidade), 2 (Parceiros), 3
+(Rma núcleo) e 4 (Ciclo de vida) implementadas, testadas e commitadas
+(`586513f`/`628475d`/`b2b3e74`/`a302c7b`, 131/131 testes verdes na última verificação
+pessoal). Fases 5-10 especificadas (OpenSpec completo), não codificadas — Fase 9
+formalmente bloqueada até Fases 4/5 existirem em código (4 já existe; falta a 5).
+**Trilha B aberta:** `INV-RMA-07`
 (evolução SaaS multiempresa) investigada e concluída em 2026-08-25 — decisões de
 arquitetura registradas, implementação de tenancy propositalmente não iniciada (só
 depois da baseline de paridade). Checklist granular por fase em
 `docs/produto/checklist-master-v3.md` continua sendo o mapa operacional — este arquivo
 é só o resumo de fase/dependência/critério de saída.
 
-## DEPOIS
+## DEPOIS — o que falta em cada fase (detalhe granular, espelha `checklist-master-v3.md`)
 
-1. Fase 4 (Ciclo de vida) — concluir implementação em andamento.
-2. Fase 5 (Alertas e regras) — próxima a implementar após Fase 4, na mesma disciplina
-   TDD das anteriores.
-3. Fases 6-8 — na ordem de dependência já fixada (`INV-RMA-05` §5).
-4. Fase 9 (Migração) — só depois das Fases 4/5 existirem em código (os enums que o
-   migrador traduz).
-5. Fase 10 (QA de paridade) — fecha por último, gate de conclusão da Trilha A.
-6. Trilha B (SaaS) — implementação só depois do gate acima, conforme `INV-RMA-07` §13.
-7. Item residual de baixo risco, não bloqueante: RN-12 (threshold R$75) — confirmar
-   ausência/presença em TEMA V1 com leitura linha a linha completa, se necessário.
-8. ARQ-07c — screenshots/telas internas (novo RMA, detalhes) dos dois temas.
+### Fase 5 — Alertas e regras (próxima a implementar)
+
+OpenSpec: `openspec/changes/rma-alertas-e-prioridade/`. Decisão já tomada: filtro de
+data inteiramente no SQL, nunca em PHP pós-`SELECT`. Falta:
+
+- Migration com `prioridade`, `marcarestoque`, NF (compra/venda), `lancadoretorno`
+- Enums `Origem`, `Prioridade`, `StatusDeLancamento`, `ClasseDeAlerta`
+- 10 classes de regra + `UrgenciaPorThreshold` (`app/Rma/Aplicacao/Alertas/`)
+- `Rma::classeDeAlerta()`, `Rma::prazoLegal()`
+- Controller + view do painel + rotas
+- 12 arquivos de teste unitário (10 regras + `ClasseDeAlerta` + threshold)
+- `sail test` verde, `paridade-v2-v3.md` (`LEG-RMA-018` a `029`), commit `#F5`
+
+### Fase 6 — Créditos e relatórios
+
+OpenSpec: `openspec/changes/rma-creditos-e-relatorios/`. Cobre `LEG-RMA-036` a `039` e
+`048` (fluxo único, não 3 sub-rotas como o legado quebrado de TEMA V2). Falta:
+
+- Migration com `credito_disponivel`
+- `MarcarCreditoDisponivel`, `AguardandoCredito`
+- 3 relatórios (RCD/RPEC/RMPE) — RMPE corrige intervalo hardcoded para 2014
+- Controller + views + rotas
+- 4 arquivos de teste
+- `sail test` verde, `paridade-v2-v3.md`, commit `#F6`
+
+### Fase 7 — Auditoria
+
+OpenSpec: `openspec/changes/rma-logistica-e-historico/` (cobre também `LEG-RMA-040`/
+`041`). Decisão já tomada: `ConsolidarFretePorCidade` usa TEMA V2 como especificação;
+log de modificação usa snapshot estruturado com ação nomeada (`EVO-AUD-001`, diff
+campo-a-campo, fica pendência registrada). Falta:
+
+- Migration `modificacoes_de_rma` (FK real para `rmas`/`users`)
+- Enum `AcaoDeModificacao`
+- `RegistrarModificacaoDeRma`, `EnviarNotificacaoDeConclusao`,
+  `EnviarNotificacaoDeTentativaNaoPermitida` (listeners)
+- `ConsolidarFretePorCidade`, `BoletinsRelacionados`
+- Controllers de histórico (modificação + acesso) + views + rotas
+- 7 arquivos de teste
+- `sail test` verde, pendência `EVO-AUD-001` registrada (perguntar ao usuário),
+  `paridade-v2-v3.md` (`LEG-RMA-040/041/044/045`), commit `#F7`
+
+### Fase 8 — Apresentação (Temas V1/V2)
+
+OpenSpec: `openspec/changes/temas-v1-v2/`. As 2 pendências originais (âncoras de TEMA
+V2; RN-11 em TEMA V1) já foram **resolvidas** por inspeção direta do LEGACY-RUNTIME.
+**2 decisões de produto continuam pendentes, bloqueando a view final** — precisam de
+você antes de codificar:
+
+1. Fonte Open Sans do TEMA V2 nunca carrega de fato (URL de produção morta) —
+   reproduzir o fallback quebrado ou self-hostar corretamente?
+2. Comportamento pós-login assimétrico (gateway respeita `tema_preferido`; login
+   próprio de TEMA V1 sempre fica em V1) — reproduzir a assimetria ou corrigir?
+
+Falta (depois das 2 decisões acima):
+
+- Sass por tema (`v1.scss`/`v2.scss`/`_compartilhado.scss` — este último porta o
+  CSS/JS compartilhado real `pattern/15.9.7.css`/`.js`, achado desta revisão)
+- `ResolverTemaAtivo` (middleware) + rotas por tema + `identidade/login.blade.php` do
+  gateway compartilhado
+- Árvore de Blade por tema (`resources/views/temas/{v1,v2}/`)
+- Testes de smoke por tema + Playwright (390/768/1440 — TEMA V1 layout fixo, TEMA V2
+  breakpoints próprios via `css/media.php`)
+- Screenshots reais (PNG) — fecha pendência residual da arqueologia (ARQ-07c)
+- `sail test` verde, `checklist-master-v3.md`/`paridade-v2-v3.md` (paridade visual),
+  commit `#F8`
+
+### Fase 9 — Migração V2→V3
+
+OpenSpec: `openspec/changes/migracao-v2-v3/`. Mapa campo-a-campo completo:
+`INV-RMA-06`. **Bloqueada para codificar até Fase 5 existir em código** (Fase 4 já
+existe). Falta:
+
+- Migrador oficial (`php artisan rma:migrar-legado`) + 8 importadores + relatório de
+  reconciliação + idempotência
+- Teste de migração determinístico
+- Resolver ou registrar decisão para as 4 pendências de `INV-RMA-06` (formato de data
+  ambíguo; ocorrência real de `status='retornou'`; destino de
+  `relatorio.informacaoadicional`; coordenação de `rmas.valor`)
+
+### Fase 10 — QA de paridade (fecha por último)
+
+OpenSpec: `openspec/changes/qa-paridade/`. Critério objetivo por eixo já fechado em
+`INV-RMA-05` §15. Falta:
+
+- Paridade funcional por `LEG-RMA-NNN` (atualizar `paridade-v2-v3.md` a cada fase, já
+  em andamento)
+- Paridade visual (screenshot V2×V3, Playwright, 390/768/1440)
+- Paridade de dados (contagens pós-migração, depende da Fase 9)
+- `docs/qa/roteiro-paridade-funcional.md` e `docs/qa/relatorio-paridade-final.md`
+
+### Trilha B (SaaS)
+
+Implementação só depois do gate de conclusão da Fase 10, conforme `INV-RMA-07` §13.
+Nada a fazer agora além do que `INV-RMA-07`/`EVO-SAAS-001` já registram.
+
+### Itens residuais, não bloqueantes
+
+- RN-12 (threshold R$75) — confirmar ausência/presença em TEMA V1 com leitura linha a
+  linha completa, se necessário.
+- `LEG-RMA-002` (autocadastro com convite) — decisão de produto pendente desde a Fase 1
+  (opção A: segredo em `.env`; opção B: só admin cria usuário).
 
 ## DEPENDÊNCIAS
 

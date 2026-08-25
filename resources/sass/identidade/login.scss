@@ -1,0 +1,75 @@
+// login.scss — entry point Vite exclusivo do gateway de login compartilhado
+// (`identidade/login.blade.php`). NÃO pertence a nenhum tema (V1/V2) — decisão já
+// registrada em `openspec/changes/temas-v1-v2/design.md` ("Login-gateway
+// compartilhado"): o login é único, sempre respeita `tema_preferido`, e essa tela é o
+// próprio gateway, distinto dos dois bundles de tema.
+//
+// Fonte real confirmada via `curl http://localhost:8094/` (sessão de correção Fase 8,
+// 2026-08-25): AdminLTE 2.2.0 (`login-page`/`login-box`/`login-box-body`) + Bootstrap
+// 3.3.5 (grid `.row`/`.col-xs-*`, `.form-control`, glyphicons) + um `.jumbotron`
+// inline (banner laranja/azul-marinho linkando para a ferramenta 14.6.1). Importamos o
+// mesmo Bootstrap 3.3.5 self-hostado que o TEMA V2 usa (glyphicons/form-control) só
+// pela dependência de framework — esta tela não é TEMA V2.
+@import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+
+// Paleta do gateway — nomeada aqui porque não pertence a nenhum $fundo/$acento de
+// _compartilhado.scss/v1.scss/v2.scss (aqueles são de tema; este é o login-gateway).
+$fundo-gateway: #d2d6de; // AdminLTE.min.css: `.login-page,.register-page{background:#d2d6de}`
+$largura-login-box: 360px; // AdminLTE.min.css: `.login-box,.register-box{width:360px;margin:7% auto}`
+$margem-vertical-login-box: 7%;
+$azul-borda-login-box: #3c8dbc; // AdminLTE `.btn-primary`/acento de marca, aplicado na borda superior do card
+$laranja-banner: rgba(255, 81, 0, 0.69); // gateway.html <style> inline: `.jumbotron{background-color:...}`
+$azul-marinho-banner: #17497a; // gateway.html <style> inline: `.jumbotron{border-bottom/border-top:...}`
+
+body.login-page {
+    background-color: $fundo-gateway;
+}
+
+.login-box {
+    width: $largura-login-box;
+    margin: $margem-vertical-login-box auto;
+}
+
+.login-box-body {
+    background: #fff;
+    padding: 20px;
+    color: #666;
+    border-top: 3px solid $azul-borda-login-box;
+}
+
+.login-box-msg {
+    margin: 0;
+    text-align: center;
+    padding: 0 20px 20px;
+
+    img {
+        width: 56px;
+    }
+}
+
+.form-control-feedback {
+    color: #777;
+}
+
+// Banner "NÃO É O QUE PROCURA?" — fonte: gateway.html <style> inline (`.jumbotron`).
+.jumbotron {
+    background-color: $laranja-banner;
+    border-bottom: 5px solid $azul-marinho-banner;
+    border-top: 1px solid $azul-marinho-banner;
+    padding: 15px;
+    color: #fff;
+    border-radius: 0;
+    width: $largura-login-box;
+    margin: 30px auto;
+    text-align: center;
+
+    a,
+    a:visited {
+        color: #fff;
+    }
+
+    h5 {
+        font-size: 14px;
+        margin: 0;
+    }
+}

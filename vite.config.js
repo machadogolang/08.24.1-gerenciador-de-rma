@@ -13,6 +13,9 @@ export default defineConfig({
                 // não precisa de plugin extra além de `sass` como devDependency).
                 'resources/js/temas/v1.js',
                 'resources/js/temas/v2.js',
+                // Gateway de login compartilhado (correção Fase 8, 2026-08-25) — não
+                // pertence a nenhum tema, ver resources/sass/identidade/login.scss.
+                'resources/js/identidade/login.js',
             ],
             refresh: true,
             fonts: [

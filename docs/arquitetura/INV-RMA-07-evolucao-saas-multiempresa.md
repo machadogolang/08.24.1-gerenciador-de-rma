@@ -95,7 +95,7 @@ novas o produto ganha".
 | `User` | **Pertence ao tenant, mas via vínculo, não posse exclusiva** | Ver §7 — um usuário pode legitimamente participar de mais de uma empresa (evidência real: `EVO-SAAS-001` já registra que o legado opera múltiplas empresas do mesmo grupo — Cellsystem/Expert/Registros Ativos/Informática — sob um único banco; é razoável que a mesma pessoa administre mais de uma). Recomendação em §7. |
 | `Papel` | **Atributo do vínculo User×Company, não do User global** | Consequência direta de `User` ser multi-tenant: uma pessoa pode ser `Supervisor` na Empresa A e `Operador` na B. Ver §8. |
 | `Cliente` | **Pertence ao tenant** | Cada empresa tem sua própria carteira de clientes — nenhuma evidência de compartilhamento no legado (`bd.empresa` nunca cruza com `cliente`). |
-| `Fabricante` | **Pertence ao tenant, com uma ressalva registrada como pendência** | O legado trata fabricante como cadastro livre por empresa (sem catálogo global). Manter assim na V1 do SaaS é a opção proporcional (evita antecipar um "catálogo global de marcas" sem evidência de necessidade real) — mas é o candidato mais óbvio a virar **compartilhável entre tenants** no futuro (ex.: "Samsung" é a mesma marca em qualquer empresa). Não decidir agora — ver §12 pendências. |
+| `Fabricante` | **Pertence ao tenant, com padrão de importação de catálogo de referência decidido (ver §4.1)** | O legado trata fabricante como cadastro livre por empresa (sem catálogo global). A cópia local continua pertencendo ao tenant — o que muda é a origem: em vez de o usuário digitar do zero, pode importar de um catálogo de referência da plataforma. |
 | `Fornecedor` | **Pertence ao tenant** | Mesma lógica de `Fabricante`, sem a mesma pressão de catálogo global (fornecedor tende a ser relação comercial própria de cada empresa, não uma entidade "universal"). |
 | `AssistenciaTecnica` | **Pertence ao tenant** | Idem `Fornecedor`. |
 | `Rma` | **Pertence ao tenant** | Sem ambiguidade — é o registro central do negócio de cada empresa. |
@@ -104,6 +104,39 @@ novas o produto ganha".
 | Configurações | **Duas categorias** | Configuração de plataforma (feature flags globais, parâmetros de sistema) é **global da plataforma**; configuração de aparência/operação por empresa (ex.: preferência de tema padrão, política de garantia — `EVO-DOM-003`) é **do tenant**. Nenhuma configuração hoje é compartilhável entre tenants por design — se aparecer um caso real, tratar como exceção documentada, não regra. |
 | Anotação pessoal (`users.anotacao`, Fase 1) | **Pertence ao User, que pertence ao tenant via vínculo** | Escopo transitivo — a anotação em si não precisa de coluna de tenant própria se o `User` já resolve isso via `company_user` (ver §7). |
 | Tentativas de acesso (`TentativaDeAcesso`, Fase 1) | **Pertence ao tenant (via `User`), com valor agregado à plataforma** | O registro individual é do tenant (auditoria de acesso da empresa); a plataforma pode querer agregações de segurança cross-tenant (ex.: detectar padrão de ataque de força bruta) — isso é uma capacidade de observabilidade da plataforma sobre dado do tenant, não uma entidade global própria. Não implementar essa agregação agora — registrar como possível `EVO-SEG` futuro. |
+
+### 4.1. Padrão "catálogo de referência + importação seletiva" (direção dada pelo usuário nesta sessão)
+
+Resolve a pendência original sobre `Fabricante`/`Fornecedor`/`AssistenciaTecnica`
+virarem "compartilháveis entre tenants" — a resposta não é dado compartilhado em tempo
+real (nenhum tenant nunca lê o cadastro de outro, isso violaria o próprio §14 desta
+investigação), é um **catálogo de referência da plataforma** (chamado aqui de "wiki" —
+um repositório de registros de referência, mantido em nível de plataforma, fora do
+escopo de qualquer tenant específico) do qual cada tenant **importa sob demanda,
+seleção explícita, com um clique**:
+
+- A wiki é dado **global da plataforma** — não pertence a nenhum tenant, não é
+  criada/editada no fluxo normal de uso do produto por um usuário comum.
+- Um usuário do tenant abre uma tela de importação (ex.: "Importar fabricantes da
+  wiki"), vê a lista de registros de referência disponíveis, **seleciona quais quer**
+  (não é um "importar tudo" automático) e confirma.
+- A importação **copia** o registro selecionado para dentro do tenant, criando um
+  `Fabricante` (ou `Fornecedor`/`AssistenciaTecnica`) normal, pertencente ao tenant,
+  igual a qualquer outro criado manualmente. **Não é uma referência viva** — depois de
+  importado, o registro do tenant é independente; uma edição posterior na wiki não
+  propaga automaticamente para os tenants que já importaram (evita a classe de bug
+  "um tenant edita e quebra o cadastro de todos os outros" e mantém o isolamento de
+  dado do tenant como propriedade absoluta, não relativizada por uma FK cross-tenant).
+- Consequência arquitetural direta: a entidade de catálogo (`Fabricante` etc.) continua
+  **pertencendo ao tenant** exatamente como já classificado na tabela acima — o padrão
+  novo é só a ORIGEM do dado na criação (digitado manualmente vs. importado da wiki via
+  clique), não uma mudança na fronteira de tenant já decidida. A wiki em si é uma nova
+  entidade de plataforma (`WikiDeFabricantes` ou nome melhor a decidir na
+  implementação), fora da fronteira de qualquer tenant, com seu próprio fluxo de
+  curadoria (quem alimenta a wiki é uma decisão de produto adiada, não de arquitetura —
+  ver pendência abaixo).
+- Não implementar agora — mesmo raciocínio de momento do §13: é Trilha B, só depois da
+  baseline de paridade.
 | Arquivos/anexos futuros | **Pertence ao tenant** | Isolamento de storage por tenant é parte da mesma fronteira — ver §9. |
 
 ## 5. Estratégia de banco de dados
@@ -261,10 +294,14 @@ implementar nada agora.
 
 ## 12. Pendências reais — não decididas por inferência
 
-1. **`Fabricante` como catálogo compartilhável entre tenants** — evidência insuficiente
-   de que vale a complexidade agora; decisão adiada, registrada como possível `EVO-DOM`
-   futuro se a demanda aparecer (múltiplos clientes SaaS cadastrando "Samsung"
-   separadamente pode ser aceitável para a primeira versão).
+1. **`Fabricante`/`Fornecedor`/`AssistenciaTecnica` como catálogo compartilhável entre
+   tenants — padrão de arquitetura resolvido em 2026-08-25 (§4.1): catálogo de
+   referência da plataforma ("wiki") + importação seletiva por clique, cópia
+   independente por tenant, nunca referência viva cross-tenant.** O que continua
+   pendente (decisão de produto, não de arquitetura): quem/como a wiki é alimentada
+   (curadoria manual da plataforma? agregação anônima do que os tenants já cadastraram?
+   catálogo de terceiros?) — sem evidência para decidir agora, e não bloqueia o resto do
+   desenho de tenancy.
 2. **Agregação de segurança cross-tenant sobre `TentativaDeAcesso`** (detecção de padrão
    de ataque na plataforma) — capacidade de plataforma, não de tenant; sem evidência de
    necessidade imediata, registrada como possível `EVO-SEG` futuro.
@@ -343,10 +380,16 @@ ganhar seu próprio gate de conclusão quando chegar a hora (não misturar com o
   durante (§13).
 - Migração CellSystem: primeiro tenant seedado, migrador ganha um passo trivial de
   carimbo de `company_id` (§11) — sem redesenhar `INV-RMA-06`.
+- Catálogo de referência compartilhável (`Fabricante`/`Fornecedor`/
+  `AssistenciaTecnica`): padrão "wiki de plataforma + importação seletiva por clique,
+  cópia independente por tenant" (§4.1/§12.1) — não altera a fronteira de tenant já
+  decidida (a entidade continua pertencendo ao tenant), só a origem do dado na criação.
 
 ## 17. Decisões adiadas (sem evidência suficiente agora)
 
-- Catálogo compartilhável de `Fabricante` entre tenants (§12.1).
+- Curadoria da wiki de catálogo (quem/como alimenta os registros de referência) —
+  arquitetura do mecanismo de importação já decidida (§4.1), só a operação de conteúdo
+  fica pendente (§12.1).
 - Agregação de segurança cross-tenant sobre tentativas de acesso (§12.2).
 - Formato exato do mecanismo de administrador de plataforma (§12.3).
 - Gatilho para eventualmente isolar fisicamente um tenant específico (§12.4).
@@ -372,11 +415,17 @@ ganhar seu próprio gate de conclusão quando chegar a hora (não misturar com o
 - **`EVO-SAAS-001`** (já existente) — complementado com as decisões concretas desta
   investigação (modelo de banco, mecanismo de isolamento, `User`×`Company`, superadmin,
   numeração) — ver edição em `docs/produto/backlog-evolutivo.md`. Não duplicado.
-- Nenhum item novo `EVO-SAAS-00N` criado — todas as descobertas desta investigação são
-  a mesma capacidade (multi-tenancy) já coberta por `EVO-SAAS-001`, só agora com desenho
-  concreto em vez de intenção registrada. Um item novo só se justificaria para uma
-  capacidade genuinamente diferente (ex. billing/assinatura seria um candidato a
-  `EVO-SAAS-002` quando a hora chegar — não criado agora, sem evidência de prioridade).
+- **`EVO-SAAS-002`** (novo, criado nesta sessão) — "Catálogo de referência da
+  plataforma com importação seletiva" (§4.1). Capacidade genuinamente diferente de
+  `EVO-SAAS-001`: não é infraestrutura de isolamento de tenant, é um produto de
+  conteúdo (catálogo compartilhado + fluxo de importação por clique) que só faz sentido
+  depois que a fronteira de tenant existir. Depende de `EVO-SAAS-001`.
+- **`EVO-SAAS-003`** (novo, criado nesta sessão) — "Comunidade/fórum inter-tenant"
+  (usuários de empresas diferentes conversando entre si, ideia registrada pelo usuário
+  explicitamente como evolução distante, sem detalhe de especificação pedido agora). É
+  o único caso identificado até aqui onde cruzar a fronteira de tenant é a intenção do
+  produto, não uma falha de isolamento — precisa de um modelo de identidade de
+  comunidade separado do dado operacional quando for especificado de verdade.
 
 ## 20. Referências
 

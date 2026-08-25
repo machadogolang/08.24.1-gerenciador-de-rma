@@ -48,6 +48,62 @@ Benefício · Impacto · Complexidade · Risco · Dependências · Prioridade ·
 - **Prioridade sugerida:** alta, mas só depois da Trilha A.
 - **Fase:** pós-reconstrução (Trilha B), primeira grande iniciativa.
 
+### EVO-SAAS-002 — Catálogo de referência da plataforma com importação seletiva
+
+- **Origem:** direção dada pelo usuário em 2026-08-25, registrada em
+  `docs/arquitetura/INV-RMA-07-evolucao-saas-multiempresa.md` §4.1 — resolve a pendência
+  original sobre `Fabricante`/`Fornecedor`/`AssistenciaTecnica` virarem "compartilháveis
+  entre tenants".
+- **Problema observado:** sem catálogo de referência, cada tenant digita "Samsung",
+  "LG" etc. do zero — repetição de esforço entre clientes do SaaS, sem ganho nenhum de
+  isolamento (o cadastro final continua pertencendo só ao tenant que digitou).
+- **Evolução:** uma "wiki" — catálogo de referência mantido em nível de **plataforma**
+  (não pertence a nenhum tenant) — com uma tela de importação onde o usuário do tenant
+  **seleciona explicitamente** quais registros quer trazer (nunca um "importar tudo"
+  automático) e confirma com um clique. A importação **copia** o registro para dentro
+  do tenant — vira um `Fabricante`/`Fornecedor`/`AssistenciaTecnica` normal, pertencente
+  ao tenant, indistinguível de um cadastrado manualmente. Não é referência viva: uma
+  edição posterior na wiki não propaga para quem já importou — preserva o isolamento de
+  dado do tenant como propriedade absoluta.
+- **Benefício:** reduz atrito de onboarding/cadastro sem violar isolamento de tenant.
+- **Impacto:** médio — é conveniência de cadastro, não mudança de fronteira de domínio.
+- **Complexidade:** média (nova entidade de plataforma "wiki" + fluxo de importação +
+  seleção de registros + decisão de curadoria de conteúdo, ainda em aberto).
+- **Risco:** baixo — não implementado antes da Trilha B (mesma regra de `EVO-SAAS-001`).
+- **Dependências:** `EVO-SAAS-001` (a fronteira de tenant precisa existir primeiro).
+- **Decisão adiada:** quem/como a wiki é alimentada (curadoria da plataforma? agregação
+  do que os tenants já cadastraram? catálogo de terceiros?) — sem evidência para decidir
+  agora, não bloqueia o resto do desenho.
+- **Fase:** pós-reconstrução (Trilha B), depois de `EVO-SAAS-001`.
+
+### EVO-SAAS-003 — Comunidade/fórum inter-tenant
+
+- **Origem:** direção dada pelo usuário em 2026-08-25 ("tipo um Adrenaline" — fórum onde
+  usuários de empresas diferentes conversam entre si). Explicitamente marcada pelo
+  próprio usuário como evolução futura, não algo a especificar em detalhe agora.
+- **Evolução:** espaço de comunidade cruzando tenants deliberadamente (o único caso
+  identificado até agora onde "cruzar tenant" é a intenção do produto, não um bug de
+  isolamento) — usuários de diferentes empresas clientes do SaaS discutindo entre si
+  (dúvidas técnicas, defeitos comuns, boas práticas de assistência técnica).
+- **Ressalva arquitetural registrada (não decidida em detalhe):** um fórum cross-tenant
+  não pode vazar dado de negócio do tenant (RMA, cliente, valores) para outras empresas
+  — precisa de um modelo de identidade de participação separado do dado operacional
+  (usuário participa "como pessoa da comunidade", não como extensão do cadastro
+  operacional do tenant). Mesma disciplina de fronteira do restante desta investigação:
+  não implementar sem antes especificar isolamento de conteúdo operacional × conteúdo de
+  comunidade.
+- **Benefício:** retenção/rede de valor entre clientes do SaaS (efeito de comunidade),
+  fora do escopo central de RMA.
+- **Impacto:** médio-alto como produto, mas fora do coração do produto (RMA) — avaliar
+  contra o princípio "SaaS não significa ERP"/escopo focado antes de priorizar.
+- **Complexidade:** alta o bastante para merecer sua própria investigação quando a hora
+  chegar — não especificada aqui além do registro da ideia.
+- **Risco:** baixo agora (não implementado); alto se implementado sem separar
+  claramente identidade de comunidade × dado operacional do tenant.
+- **Dependências:** `EVO-SAAS-001` (conceito de tenant/empresa precisa existir para
+  "usuários de empresas diferentes" fazer sentido).
+- **Fase:** pós-reconstrução (Trilha B), evolução distante — sem prioridade definida.
+
 ## EVO-DOMINIO
 
 ### EVO-DOM-001 — Relacionamento por FK real entre RMA e contrapartes

@@ -59,22 +59,59 @@ Gate: 2 temas × 3 breakpoints × telas acordadas, sem divergência silenciosa.
 
 Checkpoint dirigido TEMA V1 desktop (incorporado ao plano em 2026-08-25):
 
-- [x] **QA F10-V1-01 — comparar runtimes reais em 1440 px.** Dez superfícies Legacy
-  14.6.1 × V3, com 20 capturas locais reproduzíveis.
-- [x] **ARQ F10-V1-02 — auditar CSS integral e HTML autenticado.** Matriz consciente em
-  `docs/produto/paridade-visual-tema-v1.md`; sem cópia integral das folhas históricas.
-- [x] **DEV F10-V1-03 — restaurar cabeçalho/menu/painel históricos.** Blade Laravel e
-  seletores usados, mantendo base fixa de 984 px.
-- [x] **DEV F10-V1-04 — corrigir usuários, busca e novo RMA.** Tabelas, formulários,
-  controles e wrappers compatíveis com a composição 14.6.1.
+> **REABERTO em 2026-08-25 (sessão seguinte) por nova evidência de runtime.**
+> Inspeção humana direta comparando `:8094/14.6.1/` × `:8095` encontrou
+> divergências estruturais que contradizem os `[x]` abaixo — não é apenas
+> diferença de massa de dados. Fonte completa do achado e o plano de
+> reabertura tela-a-tela: `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-no-layout.md`.
+> Evidência local (não versionada — 8 PNGs Legacy×V3 comparáveis, mesma
+> cautela de `docs/produto/screenshots-paridade-v1/`):
+> `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT/`. Não apagar o histórico
+> abaixo — os itens só voltam a fechar quando a divergência for corrigida e
+> reprovada em runtime. `F10-V1-05` e `F10-V1-06` (fontes/logo/assets) não
+> foram contestados e continuam `[x]`.
+>
+> Achados já confirmados (ver documento fonte para detalhe completo de cada
+> um): menu superior do TEMA V1 falta `Entrada/Encaminhado/Aguardando
+> credito/Concluido!`; "Novo" no legado expande inline (`#JS-Novo`) sobre a
+> tela atual, no V3 navega para `/rmas/create` (perde contexto); formulário
+> de Novo RMA tem geometria e campos diferentes do legado (`SNID`, NF de
+> compra/venda + data, `P/N`, marcação de item em estoque — verificar se já
+> existem no domínio antes de assumir lacuna); CSS de `.tablenovo`/
+> `.novo_formInput*` generalizado em vez de reproduzir a geometria histórica;
+> Quadro de Anotações no V3 tem botão "Salvar anotação" que não existe no
+> legado (salvamento era pelo comportamento do campo); composição da Home/
+> Localizar difere em número/ordem/labels de controles; `<h1>` injetado em
+> telas que não tinham heading no legado; MENU administrativo do V3 não tem
+> `Controle/Créditos/Relatórios` (Fabricantes/Fornecedores/Assistências/
+> Clientes/Usuários existem). O teste `ParidadeVisualTemaV1.spec.ts` passou
+> com todas essas divergências presentes — precisa ser auditado e reforçado
+> (geometria via `getBoundingClientRect()`, computed styles, não só
+> screenshot mascarado), não apenas confiado como prova de paridade.
+
+- [ ] **QA F10-V1-01 — comparar runtimes reais em 1440 px.** ~~Dez superfícies Legacy
+  14.6.1 × V3, com 20 capturas locais reproduzíveis.~~ Reaberto: comparação
+  original não capturou as divergências estruturais acima.
+- [ ] **ARQ F10-V1-02 — auditar CSS integral e HTML autenticado.** ~~Matriz consciente em
+  `docs/produto/paridade-visual-tema-v1.md`; sem cópia integral das folhas históricas.~~
+  Reaberto: `.tablenovo`/`.novo_formInput*` e afins não reproduzem a geometria real.
+- [ ] **DEV F10-V1-03 — restaurar cabeçalho/menu/painel históricos.** ~~Blade Laravel e
+  seletores usados, mantendo base fixa de 984 px.~~ Reaberto: itens de navegação
+  superior e do MENU administrativo ausentes.
+- [ ] **DEV F10-V1-04 — corrigir usuários, busca e novo RMA.** ~~Tabelas, formulários,
+  controles e wrappers compatíveis com a composição 14.6.1.~~ Reaberto: Novo RMA
+  perdeu campos e a interação inline; Localizar/Home com composição diferente.
 - [x] **DEV F10-V1-05 — tornar fontes e logo locais.** Fira Mono válida via Vite e logo
   próprio do V3; nenhuma consulta ao Legacy como CDN.
 - [x] **QA F10-V1-06 — provar assets essenciais.** Sem 4xx/5xx/falha em build, fonte e
   imagem nas superfícies monitoradas.
-- [x] **QA F10-V1-07 — criar regressão Playwright.** Geometria, fonte, assets e matriz
-  desktop em `ParidadeVisualTemaV1.spec.ts`.
-- [x] **DOC F10-V1-08 — registrar diferenças conscientes.** Gateway compartilhado,
-  ações Laravel e dados distintos não são redesenho.
+- [ ] **QA F10-V1-07 — criar regressão Playwright.** ~~Geometria, fonte, assets e matriz
+  desktop em `ParidadeVisualTemaV1.spec.ts`.~~ Reaberto: o teste deu falso
+  positivo — passou com as divergências estruturais acima presentes; precisa
+  de asserção de geometria/estrutura, não só de screenshot/asset.
+- [ ] **DOC F10-V1-08 — registrar diferenças conscientes.** ~~Gateway compartilhado,
+  ações Laravel e dados distintos não são redesenho.~~ Reaberto: revisar quais
+  diferenças eram de fato conscientes/aceitas versus lacuna não percebida.
 
 - [ ] **QA F10-VIS-01 — fixar matriz de telas.** Login, home/alertas, novo RMA,
   detalhe/edição, busca/listagem, parceiros, crédito, relatórios e histórico.

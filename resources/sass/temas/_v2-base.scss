@@ -218,3 +218,62 @@ $vermelho-hover-v2: #f67d7d;
     letter-spacing: inherit;
     cursor: pointer;
 }
+
+// CP19 — menu lateral direito (`pattern/15.8.1.css:689,849-905`). `.fl`/`.fr` também
+// existem em `_v1-base.scss`, mas não são compartilhados (v2.scss não importa
+// v1-base) — duplicados aqui de propósito, mesmos valores.
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.cb {
+    clear: both;
+}
+
+.LRTOP1,
+.LRTOP2 {
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #e0d4d4;
+    cursor: pointer;
+    height: 28px;
+    padding: 6px 10px;
+
+    &:hover {
+        background-color: #904141;
+    }
+}
+
+.LRTOP1 {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.LRTOP2 {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.LiRight1,
+.LiRight2 {
+    text-align: left;
+    padding: 5px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #fff;
+
+    &:hover {
+        background-color: #904141;
+    }
+}
+
+.LiRight1 {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.LiRight2 {
+    background-color: rgba(0, 0, 0, 0.1);
+}

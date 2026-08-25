@@ -96,13 +96,7 @@
         </div>
 
         <aside class="shell-v2__sidebar upmenuright" id="menuright">
-            {{-- CP19 do plano de paridade V2 — as 14 seções de
-            `legacy-source/15.8.1/inc/rightmenu.php` (DEU ENTRADA HOJE, RECEBIDOS,
-            ENCAMINHADOS, LAST 10 CONCLUIDOS, DESTINATARIOS, TRANSPORTE P/ PORTO A,
-            URGENTE, PENDENTE CREDITO, CREDITO DISPONIVEL, FABRICANTES,
-            FORNECEDORES, CLIENTES, PRODUTOS DE CLIENTE, TODOS PRODUTOS) ainda não
-            foram portadas — este checkpoint (CP16/CP17) só garante a geometria
-            correta da coluna. --}}
+            @include('temas.v2.rma._painel_lateral')
         </aside>
     </div>
 

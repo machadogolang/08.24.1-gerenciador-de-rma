@@ -298,34 +298,89 @@ seção): `DEU ENTRADA HOJE` (`right_entrada`), `RECEBIDOS` (`right_recebido`),
 `CLIENTES` (`right_clientes`), `PRODUTOS DE CLIENTE` (`right_produtosdecliente`),
 `TODOS PRODUTOS` (`listar_nome_de_descricoes`). Item maior desta frente.
 
-- [ ] CP19-01 — para cada uma das 14 seções: identificar o caso de uso/read model V3
+- [x] CP19-01 — para cada uma das 14 seções: identificar o caso de uso/read model V3
       já existente que produz o dado equivalente (várias já devem existir —
       contadores por status, últimos RMAs, listagem de fabricantes/fornecedores/
       clientes); só criar query nova onde não existir equivalente moderno.
       `PRODUTOS DE CLIENTE`/`TODOS PRODUTOS`/`TRANSPORTE P/ PORTO A` são as mais
-      prováveis de não terem equivalente — investigar antes de assumir.
-- [ ] CP19-02 — implementar a estrutura visual: `LRTOP1`/`LRTOP2` alternados como
+      prováveis de não terem equivalente — investigar antes de assumir. **Achado**:
+      `URGENTE` e `PENDENTE CREDITO` já tinham classe de leitura idêntica
+      (`UrgenciaPorThreshold`/`AguardandoCredito`, Fase 5) — reutilizadas sem
+      alteração. As outras 12 são novas, em `app/Rma/Aplicacao/PainelLateral/`.
+- [x] CP19-02 — implementar a estrutura visual: `LRTOP1`/`LRTOP2` alternados como
       cabeçalho clicável de cada seção, `LiRight1`/`LiRight2` zebrado nas linhas,
       "Nenhum encontrado" quando vazio (reproduzir exatamente, não um estado vazio
       genérico diferente por seção).
-- [ ] CP19-03 — comportamento de expandir/colapsar por clique (equivalente moderno de
-      `right('#id')`, reaproveitando o padrão `data-pmo-alvo` já usado em
-      `v2.js`/`v1.js` se ele servir; senão, um pequeno helper próprio — sem jQuery
-      novo).
-- [ ] CP19-04 — truncamento de nome em 16 caracteres (`substr($nome,0,16)`) e formato
-      de data por seção (`H:m` em Entrada Hoje — provável erro histórico, confirmar
-      se é `H:i` pretendido antes de reproduzir literalmente um formato quebrado;
-      `d/m` nas demais) — documentar se algum for `[BUG-LEGADO]` antes de decidir
-      reproduzir ou corrigir.
-- [ ] CP19-05 — geometria: container 195px dentro do shell (CP16), `LiRight1/2`
-      `min-height:28px`, `padding:6px`/`6px 5px` conforme a seção, `font-size:12px
-      !important`, `letter-spacing:1px` só na primeira seção (conferir se é
-      intencional ou inconsistência do legado).
-- [ ] CP19-06 — capturar/reabrir/comparar sidebar completa (todas as 14 seções
-      expandidas ao menos uma vez), registrar diário.
-- [ ] CP19-07 — testes focados/build e commit local. Pode dividir em mais de um
-      commit se o volume justificar (ex.: um commit para a estrutura visual + toggle,
-      outro para os read models de dado).
+- [x] CP19-03 — comportamento de expandir/colapsar por clique — reaproveitado
+      `data-pmo-alvo` (já existia em `v1.js`/`v2.js`), sem JS novo.
+- [x] CP19-04 — truncamento de nome em 16 caracteres (`mb_substr`, todas as 14
+      seções) e formato de data por seção. **`H:m` de "Deu entrada hoje" era mesmo
+      `[BUG-LEGADO]`** (`m`=mês, não minuto) — corrigido para `H:i`, decisão
+      registrada no código (`ListarPainelLateral::listar()`), não é ambiguidade
+      cosmética como acento/encoding.
+- [x] CP19-05 — geometria: container 195px dentro do shell (CP16), `LiRight1/2`
+      `min-height:28px`, `padding:6px`/`6px 5px` conforme a seção (lista/contagem),
+      `font-size:12px`, `letter-spacing:1px` em `LRTOP1/2`/`LiRight1/2` (aplicado
+      uniforme nas 14 — a inconsistência do PHP fonte, onde só a 1ª seção tem o
+      `style` inline explícito, não é uma diferença visual real: todas herdam o
+      mesmo `letter-spacing` da classe).
+- [x] CP19-06 — capturar/reabrir/comparar sidebar completa (várias seções
+      expandidas simultaneamente, incluindo um caso "Nenhum encontrado" real —
+      `TRANSPORTE P/ PORTO A`), registrar diário.
+- [x] CP19-07 — testes focados/build e commit local.
+
+### CMP-V2-003 — CP19, menu lateral direito (14 seções)
+
+- Ambiente: Chromium headless (Playwright) + inspeção manual do HTML/SQL fonte
+  (`15.8.1/banco.php:708-939`, `metodo.php:99`). Viewport 2048×1152/1440×1000.
+- Arquitetura: 12 classes de leitura novas (`app/Rma/Aplicacao/PainelLateral/`, mesmo
+  padrão de `Alertas/*`, uma classe por seção, `listar(): Collection`), 2 reutilizadas
+  (`Alertas\UrgenciaPorThreshold`, `Alertas\AguardandoCredito` — já implementavam
+  exatamente `right_urgente()`/`right_pendentecredito()` desde a Fase 5, nenhuma regra
+  de negócio nova). Agregador `ListarPainelLateral` compõe as 14 e normaliza cada item
+  para `{nome, valor, id?}` — a view não faz nenhum cálculo. Injeção via
+  `View::composer('temas.v2.layout', ...)` (`AppServiceProvider`), mesmo padrão já
+  usado para o painel "Novo" do TEMA V1 (a sidebar aparece em toda página V2, não só
+  numa rota).
+- Achados de tradução SQL→Eloquent (grupos agregados: `GROUP BY` do legado vira
+  `Collection::groupBy()` em PHP após buscar os registros filtrados — sem SQL bruto na
+  view, mesma disciplina já usada em `Alertas/*`):
+  - `DESTINATARIOS`/`CREDITO DISPONIVEL`: legado agrupa por texto solto
+    (`destinatario`); V3 tem relação polimórfica (`destinatario_type`+`id`) — agrupado
+    pelo par tipo+id (mesmo conceito de
+    `ListagensPorStatusController::mapaDeDestinatarios()`) para não colidir ids de
+    tabelas diferentes.
+  - `CLIENTES`: `Rma` (Eloquent) não tem relação `cliente()` própria — resolvido por
+    mapa de nomes (`Cliente::whereIn('id',...)->pluck('nome','id')`), sem adicionar
+    relação nova ao model por enquanto (fora do escopo desta correção visual).
+  - `TRANSPORTE P/ PORTO A`: o legado faz 3 `LEFT JOIN` por NOME de texto solto contra
+    fornecedor/fabricante/assistência técnica; o V3 tem FK reais — virou `whereHas`/
+    `whereHasMorph` direto (mais correto que o legado, sem inventar dado).
+  - `URGENTE`: conferido que `UrgenciaPorThreshold` já é exatamente
+    `right_urgente()` (mesmos status, mesma condição
+    origem+marcarestoque+valor+prazo OU prioridade alta) — reaproveitado sem tocar.
+- **[BUG-LEGADO] confirmado e corrigido:** `right_entrada()` formata a hora com
+  `date('H:m', ...)` — `m` é mês, não minuto (`i`). Exibiria algo como "14:08"
+  parecendo "14h08" quando na verdade é "hora 14, mês 08" — informação
+  ativamente errada, não uma diferença cosmética. Corrigido para `H:i`.
+- Screenshots versionados (dado fictício de QA, sem cliente/produto real):
+  `docs/produto/screenshots-vis-v2-001/04-v3-sidebar-14-secoes-expandidas.png`.
+- Verificação funcional real (não só visual): as 14 seções renderizam os 14 títulos
+  na ordem correta; clique expande/colapsa; nomes truncados em 16 caracteres;
+  `FABRICANTES`/`DESTINATARIOS`/`CREDITO DISPONIVEL` mostram nome+contagem reais do
+  seed de QA; `TRANSPORTE P/ PORTO A` mostra "Nenhum encontrado" (nenhum
+  fornecedor/fabricante/assistência do seed fica em Porto Alegre — estado vazio real,
+  não simulado).
+- Diferença perceptível restante: nenhuma na estrutura/geometria/comportamento.
+  Conteúdo exato depende do dado real em produção (não comparável 1:1 com o Legacy
+  neste ambiente de QA, mesma limitação já registrada para outras seções desta
+  frente).
+- Decisão: **CP19 APROVADO**.
+- Testes/build: `php artisan test` (363/818, verde — nenhum teste quebrou ao injetar
+  a sidebar em toda página V2, incluindo os testes de `RenderizaTemaV2Test`);
+  `npm run build` (ok); `ParidadeVisualTemaV1.spec.ts` (4/4, zero regressão V1).
+- Commit: a seguir (`#ARQ-RMA - Adiciona o menu lateral direito com as 14 secoes do
+  Tema V2`).
 
 ## CP20 — Home e Pesquisar
 

@@ -15,6 +15,7 @@ use App\Rma\Dominio\Eventos\RmaRevertido;
 use App\Rma\Dominio\Eventos\SolucaoRegistrada;
 use App\Rma\Dominio\Eventos\TentativaDeGravacaoNaoPermitida;
 use App\Models\Fabricante;
+use App\Rma\Aplicacao\PainelLateral\ListarPainelLateral;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Infraestrutura\RmasEmBanco;
 use Illuminate\Support\Facades\Event;
@@ -65,6 +66,13 @@ class AppServiceProvider extends ServiceProvider
         // painel visível ou não.
         View::composer('temas.v1.rma._form_novo', function ($view) {
             $view->with('fabricantes', Fabricante::query()->orderBy('nome')->get());
+        });
+
+        // CP19 (paridade visual V2) — `inc/rightmenu.php` é incluído por `index.php`
+        // em toda página do TEMA V2, não só numa rota específica (mesmo raciocínio do
+        // composer acima para o painel "Novo" do TEMA V1).
+        View::composer('temas.v2.layout', function ($view) {
+            $view->with('painelLateral', app(ListarPainelLateral::class)->listar());
         });
     }
 }

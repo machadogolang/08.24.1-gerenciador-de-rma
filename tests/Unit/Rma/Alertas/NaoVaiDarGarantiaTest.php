@@ -82,4 +82,57 @@ class NaoVaiDarGarantiaTest extends TestCase
 
         $this->assertFalse($resultado->contains('id', $rma->id));
     }
+
+    public function test_dispara_markvision_com_nf_de_compra_vencida_mesmo_sem_fornecedor_receita(): void
+    {
+        // Segundo ramo do OR interno da regra MARKVISION (fabricante=MARKVISION E
+        // (fornecedor=Receita OU nfcompra_emissao vencida)) — cobre o lado do OR que
+        // o teste anterior (fornecedor=Receita) não exercitava.
+        $fabricante = Fabricante::factory()->create(['nome' => 'MARKVISION']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Outro Fornecedor']);
+
+        $rma = Rma::factory()->create([
+            'status' => Status::Entrada,
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+            'nfcompra_emissao' => now()->subDays(366),
+        ]);
+
+        $resultado = (new NaoVaiDarGarantia())->listar();
+
+        $this->assertTrue($resultado->contains('id', $rma->id));
+    }
+
+    public function test_fabricante_diferente_de_markvision_nunca_dispara_pela_regra_markvision(): void
+    {
+        // Prova de que o join é por FK/nome exato "MARKVISION", não por qualquer
+        // fabricante com fornecedor "Receita" ou NF vencida.
+        $fabricante = Fabricante::factory()->create(['nome' => 'Outro Fabricante']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Receita']);
+
+        $rma = Rma::factory()->create([
+            'status' => Status::Entrada,
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+            'nfcompra_emissao' => now()->subDays(366),
+        ]);
+
+        $resultado = (new NaoVaiDarGarantia())->listar();
+
+        $this->assertFalse($resultado->contains('id', $rma->id));
+    }
+
+    public function test_status_concluido_nunca_dispara_mesmo_com_condicoes_satisfeitas(): void
+    {
+        // A regra só se aplica a status Entrada/Recebido — prova de que a query
+        // realmente filtra por status no SQL, não só pelas condições de garantia.
+        $rma = Rma::factory()->create([
+            'status' => Status::Concluido,
+            'nfvenda_emissao' => now()->subDays(400),
+        ]);
+
+        $resultado = (new NaoVaiDarGarantia())->listar();
+
+        $this->assertFalse($resultado->contains('id', $rma->id));
+    }
 }

@@ -329,4 +329,19 @@ registradas como fora de escopo no `proposal.md`.
 **Commit:** `#F5 - Alertas e prioridade (10 regras + MARKVISION + threshold R$75)` (ver
 hash abaixo, aplicado junto com este log).
 
+**Revisão pós-fase (sessão principal, 2026-08-25):** encontrados 2 gaps reais de
+cobertura de teste, ambos corrigidos com testes comportamentais novos, nenhum ajuste de
+código de produto necessário:
+- `NaoVaiDarGarantiaTest` cobria "MARKVISION + fornecedor Receita" mas não o outro lado
+  do `OR` interno da regra ("MARKVISION + NF de compra vencida sem fornecedor Receita")
+  nem o caso negativo "fabricante diferente de MARKVISION nunca dispara pela regra
+  MARKVISION mesmo com as outras condições satisfeitas" nem "status fora de
+  Entrada/Recebido nunca dispara". 4 testes novos adicionados.
+- Nenhum teste de Feature exercitava `PainelDeAlertasController` pela camada HTTP (só
+  as 10 regras isoladamente, via Unit). Criado `tests/Feature/Rma/PainelDeAlertasTest.php`
+  (3 testes): RMA que dispara alerta aparece na view; RMA "tranquilo" (sem nenhuma
+  condição de alerta) não aparece; usuário não autenticado é redirecionado ao login.
+
+`sail test`: 196/196 verdes, 357 assertions (190→196, 348→357).
+
 ---

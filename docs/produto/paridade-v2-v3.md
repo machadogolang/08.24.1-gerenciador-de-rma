@@ -1,21 +1,25 @@
 # Matriz de paridade V2 → V3
 
-Data: 2026-08-24. Índice de rastreamento: nenhuma funcionalidade relevante do RMA V2
-pode "desaparecer" silenciosamente na V3. Atualizado a cada avanço de OpenSpec/
-implementação — ainda **totalmente pendente**, nenhuma OpenSpec nem implementação da V3
-existe ainda (correto neste estágio: arqueologia antes de especificação, ver
-`PLANO-ATAQUE.md`).
+Data: 2026-08-24 (atualizado 2026-08-24 — Fase 1 "Identidade" implementada e testada).
+Índice de rastreamento: nenhuma funcionalidade relevante do RMA V2 pode "desaparecer"
+silenciosamente na V3. Atualizado a cada avanço de OpenSpec/implementação. **Fase 1
+(`autenticacao-usuarios`) concluída:** 7 itens (`LEG-RMA-001/003/004/005/006/042/043`)
+passaram de `PENDENTE` para `PARIDADE`, com `sail test` verde (36/36) e login real
+confirmado por `curl` de ponta a ponta. `LEG-RMA-002` (autocadastro com convite)
+permanece `PENDENTE` — decisão de produto explicitamente não tomada nesta fase, ver
+`openspec/changes/autenticacao-usuarios/proposal.md`. Os demais itens aguardam as
+próximas fases (ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
 
 Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 
 | ID | Funcionalidade V2 | Tema V1 | Tema V2 | OpenSpec | V3 | QA | Status |
 |---|---|---|---|---|---|---|---|
-| LEG-RMA-001 | Login/logout | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-002 | Autocadastro com convite | confirmado | dúvida | — | — | — | PENDENTE |
-| LEG-RMA-003 | Resetar senha (admin) | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-004 | Trocar própria senha | funcional (correto) | quebrado (regressão) | — | — | — | PENDENTE — V3 usa TEMA V1 como especificação |
-| LEG-RMA-005 | Gerenciar usuários/permissões | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-006 | Selecionar tema V1/V2 | confirmado | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-001 | Login/logout | confirmado | confirmado | `autenticacao-usuarios` | `AutenticarUsuario`, `SessaoController` | `AutenticacaoTest` (5 testes) + curl manual | PARIDADE |
+| LEG-RMA-002 | Autocadastro com convite | confirmado | dúvida | `autenticacao-usuarios` | — | — | PENDENTE — decisão de produto não tomada, ver `proposal.md` (opção A/B) |
+| LEG-RMA-003 | Resetar senha (admin) | confirmado | confirmado | `autenticacao-usuarios` | `ResetarSenhaDeUsuario`, `UsuarioController::resetarSenha` | `ResetarSenhaDeUsuarioTest` | PARIDADE |
+| LEG-RMA-004 | Trocar própria senha | funcional (correto) | quebrado (regressão) | `autenticacao-usuarios` | `TrocarPropriaSenha` (TEMA V1 como especificação, RN-21) | `TrocarPropriaSenhaTest` (prova de regressão corrigida) | PARIDADE — V3 usa TEMA V1 como especificação |
+| LEG-RMA-005 | Gerenciar usuários/permissões | confirmado | confirmado | `autenticacao-usuarios` | `UsuarioController`, `UserPolicy`, `Papel::ocultoDaListagemDeUsuarios()` | `GerenciarUsuariosTest`, `PermissaoTest` | PARIDADE |
+| LEG-RMA-006 | Selecionar tema V1/V2 | confirmado | confirmado | `autenticacao-usuarios` | `AlternarTemaPreferido`, `TemaPreferidoController` | `AlternarTemaTest` (3 testes) | PARIDADE |
 | LEG-RMA-007 | Cadastrar novo RMA | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-008 | Localizar/pesquisar RMA | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-009 | Ver detalhes do RMA | confirmado | confirmado | — | — | — | PENDENTE |
@@ -51,8 +55,8 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-039 | Relatório RMPE | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-040 | Consolidação de frete (Porto Alegre) | código morto/comentado | confirmado, ativo | — | — | — | PENDENTE |
 | LEG-RMA-041 | Boletins relacionados (histórico por contraparte) | dúvida | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-042 | Bloco de notas pessoal | confirmado | dúvida | — | — | — | PENDENTE |
-| LEG-RMA-043 | Auditoria de autenticação | confirmado | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-042 | Bloco de notas pessoal | confirmado | dúvida | `autenticacao-usuarios` | `AtualizarAnotacaoPessoal`, `AnotacaoPessoalController` | `AnotacaoPessoalTest` | PARIDADE |
+| LEG-RMA-043 | Auditoria de autenticação | confirmado | confirmado | `autenticacao-usuarios` | `TentativaDeAcesso` (Eloquent), `ResultadoDeAcesso` (enum) | `AutenticacaoTest` (asserções de `tentativas_de_acesso`) | PARIDADE |
 | LEG-RMA-044 | Auditoria de modificação de RMA | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-045 | Notificação por e-mail | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-046 | Normalização automática (HGST→Hitachi, origem) | confirmado (duplicado) | confirmado | — | — | — | PENDENTE |
@@ -65,5 +69,7 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 o código legado não é a base — ver backlog/decisão de arquitetura).
 
 **2 itens já decididos como não-reconstrução** (LEG-RMA-016, LEG-RMA-034 — código morto
-em ambos os temas) e **1 item como "retomar ideia, não código"** (LEG-RMA-035). Os
-demais 45 itens aguardam OpenSpec.
+em ambos os temas) e **1 item como "retomar ideia, não código"** (LEG-RMA-035). **7 itens
+em PARIDADE** (Fase 1, `LEG-RMA-001/003/004/005/006/042/043`). **1 item PENDENTE por
+decisão de produto não tomada** (LEG-RMA-002). Os demais 37 itens aguardam as próximas
+fases.

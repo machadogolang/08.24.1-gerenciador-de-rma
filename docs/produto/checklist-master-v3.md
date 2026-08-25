@@ -118,29 +118,33 @@ migração em detalhe · Parte 5 — pendências operacionais menores.
 
 ## Parte 3 — As 10 fases de implementação (ordem de dependência, `INV-RMA-05` §5)
 
-### Fase 1 — Identidade — **EM ESPECIFICAÇÃO**
+### Fase 1 — Identidade — **CONCLUÍDA (2026-08-24)**
 
 OpenSpec escrita: `openspec/changes/autenticacao-usuarios/{proposal,design,tasks}.md`.
-Arquivo por arquivo já detalhado em `INV-RMA-05` §6. Tasks (de `tasks.md`, resumido):
+Arquivo por arquivo já detalhado em `INV-RMA-05` §6. Implementação completa, `sail test`
+100% verde (36/36 testes, 91 assertions) e login real confirmado por `curl` de ponta a
+ponta (Operador → `/perfil`, Supervisor → `/usuarios`, senha errada/usuário bloqueado →
+`/login`). Tasks (de `tasks.md`, resumido):
 
-- [ ] 2 migrations (`users` + `tentativas_de_acesso`)
-- [ ] `Papel`, `TemaPreferido`, `ResultadoDeAcesso` (enums de domínio)
-- [ ] `AutenticarUsuario`, `AlternarTemaPreferido` (casos de uso)
-- [ ] `User`, `TentativaDeAcesso` (Eloquent) + `UserPolicy`
-- [ ] `SessaoController`, `TemaPreferidoController` + rotas
-- [ ] View de login mínima (sem fidelidade visual ainda)
-- [ ] Factory/Seeder de usuário (1 por papel, para QA manual)
-- [ ] 4 arquivos de teste (autenticação, permissão, alternância de tema, enum `Papel`)
-- [ ] **Ajuste da revisão (`docs/arquitetura/revisao-fases-1-2-3.md`):** gestão de
+- [x] 2 migrations (`users` + `tentativas_de_acesso`)
+- [x] `Papel`, `TemaPreferido`, `ResultadoDeAcesso` (enums de domínio)
+- [x] `AutenticarUsuario`, `AlternarTemaPreferido` (casos de uso)
+- [x] `User`, `TentativaDeAcesso` (Eloquent) + `UserPolicy`
+- [x] `SessaoController`, `TemaPreferidoController` + rotas
+- [x] View de login mínima (sem fidelidade visual ainda)
+- [x] Factory/Seeder de usuário (1 por papel, para QA manual)
+- [x] 4 arquivos de teste (autenticação, permissão, alternância de tema, enum `Papel`)
+- [x] **Ajuste da revisão (`docs/arquitetura/revisao-fases-1-2-3.md`):** gestão de
       usuários incorporada a esta fase — `TrocarPropriaSenha` (`LEG-RMA-004`, TEMA V1
       como especificação, RN-21), `ResetarSenhaDeUsuario` (`LEG-RMA-003`),
       `UsuarioController` (`LEG-RMA-005`), `AtualizarAnotacaoPessoal` (`LEG-RMA-042`) +
       4 testes correspondentes
-- [ ] Pendência registrada, não decidida: `LEG-RMA-002` (autocadastro com convite) —
-      perguntar ao usuário antes de implementar
-- [ ] `sail test` verde
-- [ ] Atualizar `paridade-v2-v3.md` (`LEG-RMA-001`, `003`, `004`, `005`, `006`, `042`, `043`)
-- [ ] Commit `#F1 - Identidade`
+- [ ] Pendência registrada, **não decidida deliberadamente**: `LEG-RMA-002`
+      (autocadastro com convite) — aguardando o usuário escolher opção A ou B (ver
+      `proposal.md`); nem A nem B foi implementada nesta fase
+- [x] `sail test` verde (36/36)
+- [x] Atualizar `paridade-v2-v3.md` (`LEG-RMA-001`, `003`, `004`, `005`, `006`, `042`, `043` → PARIDADE)
+- [x] Commit `#F1 - Identidade`
 
 ### Fase 2 — Parceiros — **EM ESPECIFICAÇÃO**
 

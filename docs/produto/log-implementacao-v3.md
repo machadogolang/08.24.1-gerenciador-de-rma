@@ -44,3 +44,53 @@ usuário.
 **Commit:** `586513f` — `#F1 - Identidade (autenticacao, papeis, tema preferido)`.
 
 ---
+
+## Fase 2 — Parceiros
+
+**Data:** 2026-08-24.
+
+**Implementado:** 4 migrations (`clientes`, `fabricantes`, `fornecedores`,
+`assistencias_tecnicas`); enum `App\Compartilhado\Uf` (27 UFs, cast nativo puro,
+mesmo padrão de `TemaPreferido` da Fase 1); `App\Models\{Cliente,Fabricante,
+Fornecedor,AssistenciaTecnica}` (Eloquent direto, sem interface de repositório —
+decisão de `INV-RMA-05` §7: só `Rma`, na Fase 3, ganha essa fronteira); trait
+`App\Parceiros\Concerns\TemEnderecoEContato` compartilhada pelos 3 análogos
+(Fabricante/Fornecedor/AssistenciaTecnica — `Cliente` tem schema genuinamente
+diferente, não usa a trait); `App\Parceiros\Aplicacao\EncontrarOuCriarCliente` (único
+caso de uso real desta fase — corrige o `adicionar_cli()` do legado, que duplicava
+cliente por variação de digitação, comparando nome exato sem trim/case-fold); 4
+Policies (`ClientePolicy` + 3 análogas, delegando a `Papel::podeGravar()` da Fase 1,
+leitura liberada a qualquer autenticado); 4 Controllers resource
+(`app/Http/Controllers/Parceiros/`) + rotas `parceiros/{clientes,fabricantes,
+fornecedores,assistencias-tecnicas}`; views mínimas compartilhadas
+(`_form.blade.php`/`index.blade.php`, sem fidelidade visual — Fase 8); 4 Factories;
+testes de CRUD ×4 + `EncontrarOuCriarClienteTest`.
+
+**Desvios do OpenSpec (documentados no código):**
+- `Fornecedor` e `AssistenciaTecnica` precisaram de `protected $table` explícito: a
+  pluralização automática do Eloquent (inglês) gera `fornecedors` e
+  `assistencia_tecnicas`, que não batem com os nomes de tabela em português definidos
+  no `design.md` (`fornecedores`, `assistencias_tecnicas`). Detectado pelos testes de
+  CRUD (erro `Base table or view not found`), corrigido declarando o nome da tabela
+  explicitamente em cada model — nenhuma mudança de schema, só a resolução do nome.
+- Rotas: `Route::resource` também singulariza em inglês para o nome do parâmetro de
+  route model binding (`fornecedores` → `fornecedore`, `assistencias-tecnicas` →
+  `assistencias-tecnica`), incompatível com os nomes de parâmetro dos controllers
+  (`$fornecedor`, `$assistenciaTecnica`). Corrigido com `->parameters([...])`
+  explícito nas duas rotas afetadas.
+
+**Testes:** 61/61 verdes, 143 assertions (`sail test`) — os 36 da Fase 1 continuam
+passando. Confirmado manualmente via `tinker`: `EncontrarOuCriarCliente` reaproveita
+`"Cliente Teste Manual"` ao receber `"  cliente   TESTE MANUAL  "` (espaço duplo +
+maiúscula diferente) em vez de criar um segundo registro — `Cliente::count()`
+permaneceu em 1 antes da limpeza do dado de teste manual.
+
+**Pendências que ficaram de fora:** nenhuma da Fase 2 propriamente dita. Unificação em
+`Parceiro` polimórfico e a tabela órfã `assistencias` do legado permanecem fora de
+escopo por decisão já registrada em `proposal.md` (`EVO-DOM-001`, backlog evolutivo).
+Fidelidade visual das views fica para a Fase 8.
+
+**Commit:** `628475d` — `#F2 - Parceiros (cliente/fabricante/fornecedor/assistencia
+tecnica)`.
+
+---

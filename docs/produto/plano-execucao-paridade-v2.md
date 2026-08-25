@@ -210,21 +210,78 @@ Fonte: `legacy-source/15.8.1/index.php` (ordem de `<link>`/`<script>`),
 `legacy-source/pattern/15.9.7.css` (overrides finais com `!important` em
 `body`/`tr`/`td`/headings/breadcrumb/`.nav-tabs li`/`.upmenuright`).
 
-- [ ] CP18-01 — inspecionar cada seletor citado no achado 12 do prompt original
+- [x] CP18-01 — inspecionar cada seletor citado no achado 12 do prompt original
       (`_compartilhado.scss` atual tem `.breadcrumb { font-family:"Fira Mono",
       "Arial", "Fira Sans"; }` — comparar contra o computed style real do Legacy
       para breadcrumb, não assumir que a regra está errada sem medir primeiro).
-- [ ] CP18-02 — medir `getComputedStyle` + CDP `CSS.getPlatformFontsForNode` para:
+- [x] CP18-02 — medir `getComputedStyle` + CDP `CSS.getPlatformFontsForNode` para:
       `body`, `header`, `.nav-tabs`, `.nav-tabs li`, `.nav-tabs li a`, breadcrumb de
       Pesquisar, input de busca, botão de busca, títulos do Centro de Avisos, `th`,
-      `td`, menu direito, footer — Legacy × V3.
-- [ ] CP18-03 — corrigir só os seletores onde a medição confirmar divergência —
+      `td`, menu direito, footer — Legacy × V3. `th`/`td`/títulos do Centro de
+      Avisos/input de busca ainda não têm elemento vivo no V3 (dependem de CP20/22/23)
+      — remedir quando existirem.
+- [x] CP18-03 — corrigir só os seletores onde a medição confirmar divergência —
       preservar os que já baterem (não redesenhar o que está certo, mesma disciplina
       do achado 26 da fase 2 V1).
-- [ ] CP18-04 — confirmar ordem de cascata do CSS final compilado (Bootstrap → base
-      V2 → compartilhado → media), já iniciado em CP16-06.
-- [ ] CP18-05 — capturar/reabrir/comparar, registrar diário.
-- [ ] CP18-06 — testes focados/build e commit local.
+- [x] CP18-04 — confirmar ordem de cascata do CSS final compilado (Bootstrap → base
+      V2 → compartilhado → media) — **achado real: estava invertida** (compartilhado
+      antes de v2-base), corrigida.
+- [x] CP18-05 — capturar/reabrir/comparar, registrar diário.
+- [x] CP18-06 — testes focados/build e commit local.
+
+### CMP-V2-002 — CP18, cascata e fontes
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear fontes remotas. Medido `getComputedStyle` + CDP
+  `CSS.getPlatformFontsForNode` em `body`, `.nav-tabs li a`, `.upmenuright`/
+  `#menuright`, `.designedby` — Legacy × V3.
+- **Achado 1 (real, corrigido):** ordem de `@use` em `v2.scss` estava invertida —
+  `compartilhado` (equivalente a `15.9.7.css`) carregava ANTES de `v2-base`
+  (equivalente a `15.8.1.css`), quando o Legacy carrega `15.8.1.css` primeiro e
+  `15.9.7.css` por último (camada final de override `!important`). Confirmado no CSS
+  compilado (não só no SCSS fonte, `.btn-default` @43380 → `.shell-v2` @113420 →
+  `.TrZebrada1` @116444, ordem correta depois da correção). Mesmo tipo de achado que
+  gerou CP1 na fase 1 do Tema V1.
+- **Achado 2 (real, corrigido):** `.breadcrumb` tinha `font-family:"Fira Mono",
+  "Arial","Fira Sans"` sem `!important`, contra `"Arial","Open Sans","Fira
+  mono" !important` do Legacy (`pattern/15.9.7.css:180`). Na prática o valor
+  computado já era o correto mesmo antes da correção (a regra `body{...!important}`
+  já vencia por importância, independente de especificidade) — corrigido mesmo assim
+  por fidelidade de código-fonte (a regra antiga era enganosa: parecia efetiva mas
+  nunca era). `.breadcrumb` não tem elemento vivo hoje (só volta a ser usado no
+  CP20, Pesquisar).
+- **Achado 3 (real, corrigido, o mais substancial):** a sidebar (`.shell-v2__sidebar`
+  ← `.upmenuright`) tinha só a geometria portada no CP16, faltando
+  background/cor/peso/espaçamento. A medição revelou uma pegadinha de cascata que a
+  leitura isolada do CSS não capturava: `#menuright` (o `<div>` real do Legacy) tem
+  `style` INLINE que neutraliza boa parte da classe `.upmenuright`
+  (`background-color:rgba(0,0,0,0)`, `padding:0px`, `font-weight:normal`, todos
+  inline — vencem a classe mesmo sem `!important`, porque estilo inline sempre
+  vence CSS de classe). O filho direto tem SUA PRÓPRIA borda inline `1px solid
+  #444` (não a `#443E3D` da classe, que nunca chega a ser aplicada). Resultado real
+  computado — fundo transparente, sem padding, peso normal, borda `#444`, só
+  `color:#E3E1DA`/`letter-spacing:3px`/`text-align:center` da classe sobrevivem —
+  é o que foi portado, não a leitura ingênua da regra CSS isolada.
+- Tabela de medidas (Legacy × V3):
+
+  | Seletor | Propriedade | Legacy | V3 (antes) | V3 (depois) |
+  |---|---|---|---|---|
+  | `body` | `font-family` | `Arial, Open Sans, Fira mono` | idêntico | idêntico (já correto) |
+  | `.breadcrumb` | `font-family` (computado) | N/A (sem elemento vivo) | já correto por herança | agora correto também por regra própria |
+  | `#menuright` | `font-family` | `Arial, Open Sans, Fira mono` | `Open Sans, Arial, Roboto` (herdava do `html *`) | `Arial, Open Sans, Fira mono` |
+  | `#menuright` | `font-weight` | `400` (normal, inline vence classe) | `300` (herdado do body) | `400` |
+  | `#menuright` | `background-color` | `transparent` (inline vence) | não definido (herdava dark do body ok mas sem regra própria) | `transparent` (correto, sem regra) |
+  | `#menuright` filho | `border` | `1px solid #444` | `1px solid #444` (já estava certo por acaso) | mantido `#444` |
+  | `#menuright` | `letter-spacing` | `3px` | ausente | `3px` |
+  | `#menuright` | `color` | `#E3E1DA` | ausente | `#E3E1DA` |
+- Diferença perceptível restante: nenhuma nos seletores medidos. `th`/`td`/títulos do
+  Centro de Avisos/input de busca ficam pendentes de CP20/22/23 (sem elemento vivo
+  ainda).
+- Decisão: **CP18 APROVADO** para os seletores com elemento vivo hoje.
+- Testes/build: `php artisan test` (363/818, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` (4/4, zero regressão no V1).
+- Commit: a seguir (`#ARQ-RMA - Corrige a cascata de estilos e a fonte da barra
+  lateral do Tema V2`).
 
 ## CP19 — menu lateral direito (`rightmenu.php`)
 

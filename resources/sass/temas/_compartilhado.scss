@@ -47,7 +47,14 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+// CP18 (paridade V2) — `pattern/15.9.7.css:180-283` também força este seletor
+// (o elemento em si — não herda de `body` porque `html * { font-family: Open
+// Sans... }` acima aplica uma declaração explícita não-importante a cada
+// elemento, que vence sobre valor herdado mesmo sem `!important`).
+.upmenuright,
+.LiRight1,
+.LiRight2 {
     font-family: "Arial", "Open Sans", "Fira Mono" !important;
 }
 
@@ -124,7 +131,10 @@ $cor-alerta: #904141;
 .breadcrumb {
     margin-top: -10px;
     background-color: rgba(0, 0, 0, 0) !important;
-    font-family: "Fira Mono", "Arial", "Fira Sans";
+    // CP18 (paridade V2) — `pattern/15.9.7.css:180` sobrescreve com
+    // `!important`, mesma pilha do body/tr/td/headings (linha 41 acima), não
+    // "Fira Mono" primeiro como estava aqui.
+    font-family: "Arial", "Open Sans", "Fira Mono" !important;
     border-radius: 0px;
 
     a {

@@ -32,6 +32,15 @@ $vermelho-hover-v2: #f67d7d;
     flex: 0 0 auto;
 }
 
+// CP18 — medido diretamente no runtime (não só lido do CSS fonte): `#menuright`
+// (`index.php`) tem `style` INLINE que neutraliza boa parte da classe `.upmenuright`
+// (`pattern/15.8.1.css:808-821`) — `background-color:rgba(0,0,0,0)`,
+// `padding:0px`, `font-weight:normal`, todos inline, vencem a classe. O filho
+// direto (`#menuright > div`) tem SUA PRÓPRIA borda inline `1px solid #444` (não
+// a `#443E3D` da classe `.upmenuright`, que nunca chega a ser aplicada porque o
+// filho declara borda própria). Resultado real computado, replicado aqui num único
+// elemento: fundo transparente, sem padding, peso normal, borda `#444` — só
+// `color`/`letter-spacing`/`text-align` da classe sobrevivem (nada os sobrescreve).
 .shell-v2__sidebar {
     flex: 0 0 auto;
     width: $shell-sidebar-largura-v2;
@@ -40,8 +49,12 @@ $vermelho-hover-v2: #f67d7d;
     // inline) = 47px do topo da viewport até o conteúdo da sidebar — mesma referência
     // vertical usada por `.shell-v2 > .container` (`margin-top:40px`, ver abaixo).
     margin-top: 47px;
-    border: 1px solid #444;
     min-height: 100px;
+    text-align: center;
+    color: #e3e1da;
+    border: 1px solid #444;
+    letter-spacing: 3px;
+    font-weight: normal; // `#menuright` inline `font-weight:normal`, vence a classe
 }
 
 .header-v2 {

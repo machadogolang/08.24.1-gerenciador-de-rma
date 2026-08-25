@@ -6,8 +6,12 @@
 // (`maxcdn.bootstrapcdn.com`), agora self-hostado via Vite em vez de CDN solto.
 // Escopado só a este entry point — não vaza para o bundle de v1 (que não importa
 // nada daqui).
-@use "compartilhado";
+// Ordem importa (CP18, mesmo achado já resolvido no Tema V1/CP1): o Legacy carrega
+// `pattern/15.8.1.css` (equivalente a `v2-base`) ANTES de `pattern/15.9.7.css`
+// (equivalente a `compartilhado`) — a segunda folha é a camada final de overrides
+// `!important`. `@use` emite cada módulo na ordem declarada.
 @use "v2-base";
+@use "compartilhado";
 @use "sass:map";
 
 @import "../../../node_modules/bootstrap/dist/css/bootstrap.css";

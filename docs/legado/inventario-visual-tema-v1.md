@@ -2,7 +2,7 @@
 
 Data: 2026-08-24. Evidência combinada: CSS estático (`pattern/14.6.1.css`, 207 linhas) +
 HTML real renderizado pelo LEGACY-RUNTIME (login e dashboard autenticados,
-`http://localhost:8091/14.6.1/`, ver `legacy-runtime-ambiente.md`). Sem screenshot de
+`http://localhost:8094/14.6.1/`, ver `legacy-runtime-ambiente.md`). Sem screenshot de
 imagem ainda (não gerado nesta sessão — próximo passo, ARQ-07/LR-04).
 
 ## Identidade

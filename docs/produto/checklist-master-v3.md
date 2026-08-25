@@ -484,6 +484,8 @@ objetivo por eixo + gate de conclusão do projeto detalhados em `INV-RMA-05` §1
 
 ## Parte 5 — Pendências operacionais menores
 
+**Atualização operacional posterior (2026-08-25):** o bug descrito no item abaixo foi corrigido no repositório Legacy. A espera agora exige consulta autenticada no database final; os modos sanitized e historical foram executados e validados. O texto original permanece como registro do estado observado antes da autorização para alterar o Legacy.
+
 - [x] `scripts/legacy-reset.sh` (Legacy) — **testado de verdade nesta sessão**
       (2026-08-25): rodado do zero (`docker compose down -v` + `up -d`), reimportou
       `db/schema-only.sql`, `:8094` voltou a responder `200` e o banco ficou saudável

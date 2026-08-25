@@ -1,3 +1,32 @@
+# CellSystem RMA V3
+
+Reconstrução moderna do CellSystem RMA. O ambiente local oficial responde em
+http://localhost:8095/login e usa dados inteiramente fictícios para desenvolvimento e
+QA; dados históricos reais pertencem exclusivamente ao Legacy local em `:8094`.
+
+## Base local de QA
+
+Com o Sail ativo e `APP_ENV=local`, reconstrua migrations, usuários e fixtures com:
+
+```bash
+./scripts/v3-reset-qa.sh
+```
+
+O comando cria 5 usuários, 30 clientes, 10 fabricantes, 10 fornecedores, 5 assistências
+técnicas e 60 RMAs fictícios determinísticos. Recusa `APP_ENV=production`.
+
+Credenciais exclusivas de desenvolvimento, todas com senha `password`:
+
+- `bloqueado@rma.local` (autenticação negada)
+- `leitura@rma.local`
+- `operador@rma.local`
+- `supervisor@rma.local`
+- `superadministrador@rma.local`
+
+Detalhes: `docs/produto/ambientes-locais-v2-v3.md`.
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">

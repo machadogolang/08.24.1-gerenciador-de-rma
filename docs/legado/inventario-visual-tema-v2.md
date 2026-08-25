@@ -2,7 +2,7 @@
 
 Data: 2026-08-24. Evidência combinada: CSS estático (`pattern/15.8.1.css`, 905 linhas —
 mais de 4× o do TEMA V1) + HTML real renderizado pelo LEGACY-RUNTIME (login e dashboard
-autenticados, `http://localhost:8091/15.8.1/`). Sem screenshot de imagem ainda — próximo
+autenticados, `http://localhost:8094/15.8.1/`). Sem screenshot de imagem ainda — próximo
 passo, ARQ-07/LR-04.
 
 ## Identidade

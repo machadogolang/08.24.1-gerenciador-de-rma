@@ -71,6 +71,8 @@ deram 404 por engano de digitação da comparação, não bug da V3; corrigido e
 
 ### 3. Legacy-reset.sh testado de verdade
 
+**Atualização operacional posterior (2026-08-25):** o pedido de ambientes locais autorizou a alteração do repositório Legacy. A espera foi corrigida com consulta autenticada ao database final, eliminando também a corrida com o servidor temporário do entrypoint; resets sanitized e historical foram validados. O relato abaixo fica preservado como evidência do estado anterior.
+
 `scripts/legacy-reset.sh` (repositório Legacy) nunca havia sido executado de ponta a
 ponta. Rodado nesta sessão: `docker compose down -v` + `up -d`, reimportação do
 `db/schema-only.sql`, `:8094` voltou a responder `200`, banco saudável (`mysqladmin

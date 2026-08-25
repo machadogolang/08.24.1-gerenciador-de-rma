@@ -10,8 +10,8 @@ item pequeno entre uma sessão e outra.
 
 **Sumário:** Parte 1 — tudo já investigado (índice) · Parte 2 — arquitetura decidida e
 inventário de tecnologia · Parte 3 — as 10 fases de implementação, todas com OpenSpec
-completo (`proposal`/`design`/`tasks`); Fases 1-4 implementadas e testadas, Fase 5 em
-implementação, Fases 6-10 especificadas arquivo-por-arquivo (`INV-RMA-05` §11-§15,
+completo (`proposal`/`design`/`tasks`); Fases 1-5 implementadas e testadas, Fases 6-10
+especificadas arquivo-por-arquivo (`INV-RMA-05` §11-§15,
 `INV-RMA-06` para a Fase 9) · Parte 4 — estratégia de migração em detalhe (`INV-RMA-06`
 escrito) · Parte 5 — pendências operacionais menores.
 
@@ -229,23 +229,38 @@ polimórfica Eloquent) — no objeto de domínio puro, representado como
       teste manual via `tinker` (receber→encaminhar→concluir, `snretorno`
       auto-preenchido confirmado), commit `#F4`
 
-### Fase 5 — Alertas e regras — **EM ESPECIFICAÇÃO**
+### Fase 5 — Alertas e regras — **CONCLUÍDA**
 
-OpenSpec escrita: `openspec/changes/rma-alertas-e-prioridade/{proposal,design,tasks}.md`.
-Arquivo por arquivo detalhado em `INV-RMA-05` §10. **Decisão já tomada:** filtro de data
-inteiramente no SQL (query builder), nunca em PHP pós-`SELECT` — elimina por construção
-a classe de bug "num_rows mentiroso" do legado. RN-12 (threshold R$75) implementada
-para os dois temas (inferência registrada, não evidência direta — ver `design.md`).
-Tasks (resumido):
+OpenSpec: `openspec/changes/rma-alertas-e-prioridade/{proposal,design,tasks}.md` (tudo
+`[x]`). Arquivo por arquivo detalhado em `INV-RMA-05` §10. **Decisão confirmada:**
+filtro de data inteiramente no SQL (query builder), nunca em PHP pós-`SELECT` — elimina
+por construção a classe de bug "num_rows mentiroso" do legado; todos os limites de data
+usam operador estrito (`>`/`<`). RN-12 (threshold R$75) implementada para os dois temas
+(inferência registrada, não evidência direta — ver `design.md`). Coluna `valor`
+(ausente do schema original do `design.md`) adicionada nesta revisão — origem
+confirmada em `15.8.1/banco.php:777`. Tasks:
 
-- [ ] Migration com `prioridade`, `marcarestoque`, NF (compra/venda), `lancadoretorno`
-- [ ] `Origem`, `Prioridade`, `StatusDeLancamento`, `ClasseDeAlerta` (enums)
-- [ ] 10 classes de regra + `UrgenciaPorThreshold` em `app/Rma/Aplicacao/Alertas/`
-- [ ] `Rma::classeDeAlerta()`, `Rma::prazoLegal()`
-- [ ] Controller + view do painel + rotas
-- [ ] 12 arquivos de teste unitário (10 regras + `ClasseDeAlerta` + threshold)
-- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado (`LEG-RMA-018` a `029`),
-      commit `#F5`
+- [x] Migration incremental (`prioridade`, `marcarestoque`, NF compra/venda,
+      `lancadoretorno`, `valor`)
+- [x] `Origem`, `Prioridade` (sem case `Urgente` morto), `StatusDeLancamento`,
+      `ClasseDeAlerta` (enums de domínio)
+- [x] `Dominio\Rma` estendido (`classeDeAlerta()`, `prazoLegal()`, novas propriedades
+      readonly incl. `createdAt`)
+- [x] 10 classes de regra + `UrgenciaPorThreshold` em `app/Rma/Aplicacao/Alertas/`
+      (cada uma lendo `App\Models\Rma` diretamente, filtro inteiro no SQL)
+- [x] `RmasEmBanco`/`Models\Rma` atualizados (casts de `Prioridade`/`StatusDeLancamento`,
+      relações `fabricante()`/`fornecedor()` para o join de `NaoVaiDarGarantia`) —
+      `origem` deliberadamente SEM cast Eloquent (ver decisão no
+      `log-implementacao-v3.md`)
+- [x] `PainelDeAlertasController` + `_painel_de_alertas.blade.php` + rota
+      `rmas-alertas` (view mínima, sem fidelidade visual — Fase 8)
+- [x] 12 arquivos de teste unitário (10 regras + `ClasseDeAlertaTest` +
+      `UrgenciaPorThresholdTest`), cada regra de data com caso que dispara/não
+      dispara/limite exato (prova do operador estrito)
+- [x] `sail test` verde (190/190, mantendo os 131 das Fases 1-4),
+      `paridade-v2-v3.md` atualizado (`LEG-RMA-018` a `029` → PARIDADE), teste manual
+      via `tinker` (RMA `valor=100.00` disparado por `UrgenciaPorThreshold`,
+      `valor=75.00` exato não disparado — operador estrito confirmado), commit `#F5`
 
 ### Fase 6 — Créditos e relatórios — **EM ESPECIFICAÇÃO**
 

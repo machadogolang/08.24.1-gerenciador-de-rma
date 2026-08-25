@@ -2,6 +2,8 @@
 
 namespace App\Rma\Dominio;
 
+use Carbon\CarbonImmutable;
+
 final class Rma
 {
     public function __construct(
@@ -33,6 +35,17 @@ final class Rma
          */
         public readonly ?string $destinatarioType = null,
         public readonly ?int $destinatarioId = null,
+        public readonly ?Prioridade $prioridade = null,
+        public readonly bool $marcarestoque = true,
+        public readonly ?string $nfcompra = null,
+        public readonly ?\DateTimeInterface $nfcompraEmissao = null,
+        public readonly ?string $nfcompraChave = null,
+        public readonly ?string $nfvenda = null,
+        public readonly ?\DateTimeInterface $nfvendaEmissao = null,
+        public readonly ?string $nfvendaChave = null,
+        public readonly ?StatusDeLancamento $lancadoretorno = null,
+        public readonly ?float $valor = null,
+        public readonly ?\DateTimeInterface $createdAt = null,
     ) {}
 
     /**
@@ -81,6 +94,17 @@ final class Rma
             snretorno: $this->snretorno,
             destinatarioType: $this->destinatarioType,
             destinatarioId: $this->destinatarioId,
+            prioridade: $this->prioridade,
+            marcarestoque: $this->marcarestoque,
+            nfcompra: $this->nfcompra,
+            nfcompraEmissao: $this->nfcompraEmissao,
+            nfcompraChave: $this->nfcompraChave,
+            nfvenda: $this->nfvenda,
+            nfvendaEmissao: $this->nfvendaEmissao,
+            nfvendaChave: $this->nfvendaChave,
+            lancadoretorno: $this->lancadoretorno,
+            valor: $this->valor,
+            createdAt: $this->createdAt,
         );
     }
 
@@ -122,6 +146,59 @@ final class Rma
             snretorno: $this->sn,
             destinatarioType: $this->destinatarioType,
             destinatarioId: $this->destinatarioId,
+            prioridade: $this->prioridade,
+            marcarestoque: $this->marcarestoque,
+            nfcompra: $this->nfcompra,
+            nfcompraEmissao: $this->nfcompraEmissao,
+            nfcompraChave: $this->nfcompraChave,
+            nfvenda: $this->nfvenda,
+            nfvendaEmissao: $this->nfvendaEmissao,
+            nfvendaChave: $this->nfvendaChave,
+            lancadoretorno: $this->lancadoretorno,
+            valor: $this->valor,
+            createdAt: $this->createdAt,
         );
+    }
+
+    /**
+     * RN-11 (`LEG-RMA-028`) — a ordem de avaliação do `match(true)` preserva a
+     * precedência confirmada no legado (primeiro critério que bate vence). **Sem** o
+     * critério morto `prioridade=='urgente'` (não existe mais, ver `Prioridade`).
+     *
+     * Desvio do `design.md`: a comparação usa `Origem::Cliente->value` (string) em vez
+     * do enum diretamente — `$this->origem` permanece `?string` neste objeto (não
+     * `?Origem`), porque `comNormalizacaoDeGravacao()` recebe/produz valores de origem
+     * ainda não normalizados (ex.: nomes de fabricante/cliente arbitrários) que não
+     * pertencem ao domínio fechado do enum; tipar a propriedade como `Origem` quebraria
+     * `RmaTest` (Fase 3). Ver decisão completa em `log-implementacao-v3.md`, Fase 5.
+     */
+    public function classeDeAlerta(): ClasseDeAlerta
+    {
+        return match (true) {
+            $this->solucao === Solucao::SemGarantia => ClasseDeAlerta::Inconformidade,
+            $this->prioridade === Prioridade::Alta => ClasseDeAlerta::Inconformidade,
+            $this->origemEhTerceiroForaDoPrazo() => ClasseDeAlerta::Inconformidade,
+            $this->marcarestoque === false
+                && in_array($this->origem, [Origem::Cliente->value, Origem::Licitacao->value], true)
+                => ClasseDeAlerta::Inconformidade,
+            default => ClasseDeAlerta::Neutro,
+        };
+    }
+
+    /**
+     * RN-12 — prazo legal de 30 dias contado da criação do RMA, não persistido
+     * (calculado). Usado por `origemEhTerceiroForaDoPrazo()` e disponível para exibição.
+     */
+    public function prazoLegal(): CarbonImmutable
+    {
+        return CarbonImmutable::make($this->createdAt)->addDays(30);
+    }
+
+    private function origemEhTerceiroForaDoPrazo(): bool
+    {
+        return $this->origem === Origem::Cliente->value
+            && $this->marcarestoque === false
+            && $this->createdAt !== null
+            && $this->prazoLegal()->isPast();
     }
 }

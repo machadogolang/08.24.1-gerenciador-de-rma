@@ -219,3 +219,114 @@ Fidelidade visual das views fica para a Fase 8.
 hash abaixo, aplicado junto com este log).
 
 ---
+
+## Fase 5 — Alertas e regras
+
+**Data:** 2026-08-25.
+
+**Implementado:** migration incremental `add_alertas_fields_to_rmas_table`
+(`prioridade`, `marcarestoque`, blocos de NF `nfcompra`/`nfvenda` — só compra/venda,
+usados por RN-02/05/06/09 —, `lancadoretorno`, `valor` decimal(10,2) nullable);
+`App\Rma\Dominio\{Origem,Prioridade,StatusDeLancamento,ClasseDeAlerta}` (enums —
+`Prioridade` sem backing e sem case `Urgente` morto, RN-08; os demais backed string);
+`App\Rma\Dominio\Rma` estendido com `classeDeAlerta()` (RN-11), `prazoLegal()` (RN-12) e
+as novas propriedades readonly (`prioridade`, `marcarestoque`, NF compra/venda,
+`lancadoretorno`, `valor`, `createdAt`); as 10 classes de regra +
+`UrgenciaPorThreshold` em `app/Rma/Aplicacao/Alertas/`, cada uma lendo
+`App\Models\Rma` diretamente (não passa pelo repositório — são consultas de leitura
+para um painel, não casos de uso de escrita) com o filtro **inteiro no SQL** (decisão
+central da fase); `Models\Rma`/`RmasEmBanco` atualizados (novos casts, novos campos
+persistidos/lidos, relações `fabricante()`/`fornecedor()` para o join real de
+`NaoVaiDarGarantia`); `PainelDeAlertasController` + `_painel_de_alertas.blade.php` +
+rota `GET /rmas-alertas` (view mínima, sem fidelidade visual — Fase 8); 13 arquivos de
+teste (10 regras + `ClasseDeAlertaTest` + `UrgenciaPorThresholdTest`, todos em
+`tests/Unit/Rma/`, já que operam sobre o Eloquent model diretamente sem HTTP).
+
+**Correção ao `design.md` feita nesta sessão (antes de codificar) — coluna `valor`
+ausente:** `UrgenciaPorThreshold` (RN-12) usa `->where('valor', '>', 75.00)`, mas o
+schema original desta fase não listava a coluna — divergência real, já registrada em
+`INV-RMA-06` ("coordenação da coluna `rmas.valor` com a Fase 5"). Origem confirmada em
+`regras-negocio-rma-legado.md` RN-12: `15.8.1/banco.php:777` (`right_urgente()`), campo
+monetário real do RMA (não calculado). Adicionada ao `design.md` e à migration como
+`decimal(10,2) nullable`.
+
+**Decisão registrada — `Origem` sem cast Eloquent em `Models\Rma`:** o `design.md`
+sugere `casts(): ['origem' => Origem::class]`. Investigação: `App\Rma\Dominio\Rma::
+comNormalizacaoDeGravacao()` (Fase 3) tem um ramo `default` que devolve o valor de
+origem original **sem alterar** quando não bate com nenhum padrão conhecido — ou seja,
+texto livre fora do domínio fechado de 10 valores do enum pode legitimamente ser
+persistido. Um cast Eloquent `BackedEnum` lança `ValueError` na hidratação de qualquer
+registro cujo `origem` não seja um dos 10 valores — isto quebraria a leitura de RMAs
+legítimos assim que o domínio real (dados migrados do legado, ou texto livre digitado
+por um operador) contivesse um valor fora do enum. **Decisão adotada:** `origem`
+permanece coluna string simples em `Models\Rma` (sem cast) e também em `Dominio\Rma`
+(sem retipar a propriedade do construtor, para não quebrar `RmaTest`, que testa
+`comNormalizacaoDeGravacao()` com valores de entrada arbitrários pré-normalização,
+como `'Hitachi'`, `'CELLSYSTEM'`, `'Correios'` — nenhum deles é case do enum). As 10
+regras de alerta continuam usando `Origem::Cliente`/`Origem::Licitacao` literalmente
+nas queries (`whereIn('origem', [Origem::Cliente, Origem::Licitacao])`) — funciona sem
+cast porque o query builder do Laravel converte `BackedEnum` para `->value` na
+construção do SQL via `Illuminate\Support\enum_value()`, independente de qualquer cast
+no model (confirmado lendo `vendor/laravel/framework/.../Query/Builder.php`). Em
+`Rma::classeDeAlerta()` (domínio puro, sem Eloquent), a comparação usa
+`Origem::Cliente->value` (string) em vez do enum diretamente, pela mesma razão. Isto é
+uma correção da frase do `design.md` ("`Origem::normalizar()` passa a devolver este
+enum em vez de string solta") — não existe `Origem::normalizar()` nem no `design.md`
+nem implementado; a normalização real (`comNormalizacaoDeGravacao()`) continua
+devolvendo string, e o enum `Origem` participa só nas bordas de leitura (queries de
+alerta), não na gravação.
+
+**Correção ao `design.md` feita durante a implementação — `UrgenciaPorThreshold`
+(RN-12), condição de "prazo":** o snippet literal usa
+`$q3->whereColumn('created_at', '<', now())` — sintaxe inválida (`whereColumn()`
+compara duas colunas entre si, não aceita um valor `Carbon` como segundo argumento).
+Além do erro de sintaxe, o sentido "`<` now()" seria um guard quase sempre verdadeiro e
+comprovadamente frágil sob teste: `created_at` truncado ao segundo pode empatar com
+`now()` em execuções rápidas (RefreshDatabase + factory + query no mesmo milissegundo),
+produzindo falso negativo por corrida — reproduzido de fato ao rodar a suíte completa.
+A leitura que faz sentido de negócio e bate com a prosa do próprio `design.md`
+("`prazo` calculado como `created_at->addDays(30)`") é: o alerta significa "ainda dá
+tempo de agir, mas o valor alto exige prioridade" — ou seja, o prazo legal de 30 dias
+**ainda não estourou**. Implementado como `where('created_at', '>', now()->subDays(30))`
+(equivalente a `!Rma::prazoLegal()->isPast()`), o que também faz o cenário de
+verificação manual do `tasks.md` funcionar (RMA recém-criado aparece na listagem).
+Coberto por `UrgenciaPorThresholdTest::test_nao_dispara_quando_prazo_legal_ja_estourou`.
+
+**Correção adicional descoberta durante os testes — colunas `date` vs `now()`:**
+`nfcompra_emissao`/`nfvenda_emissao` são colunas `date` (sem hora), mas as 3 regras que
+as filtram (`GarantiaFornecedorExpirada`, `GarantiaFornecedorExpirandoEm30Dias`,
+`NaoVaiDarGarantia`) inicialmente usavam `now()->subDays(N)` (timestamp com hora) como
+limite — comparar uma data pura (meia-noite) contra um timestamp com a hora atual
+deslocava o limite exato em até 1 dia dependendo da hora em que a consulta roda,
+quebrando os testes de caso-limite (RMA com `nfcompra_emissao` exatamente 365 dias
+atrás disparava `GarantiaFornecedorExpirada`, quando não deveria). Corrigido para usar
+`today()->subDays(N)` (meia-noite) nas 3 regras — `recebido_em`/`encaminhado_em`
+(colunas `dateTime`) continuam usando `now()`, que é o tipo correto para elas.
+
+**Testes:** 190/190 verdes, 348 assertions (`sail test`), mantendo os 131 das Fases
+1-4. Cada uma das 10 regras de data tem teste de caso-que-dispara, caso-que-não-dispara
+e caso-limite exato (prova do operador estrito `>`/`<`, não `>=`/`<=`); para as regras
+sem data contínua (`NfRetornoPendenteDeLancar`, `ProtocoloAbertoNaoEncaminhado`,
+`PrioridadeAltaSemEncaminhar`, `SemNotaFiscal`, `SemNumeroDeSerie`) o "caso limite" foi
+adaptado para a borda de domínio equivalente (ex.: string vazia vs `null` vs valor
+"quase vazio", ou um valor de enum adjacente que não deveria bater). Nota técnica
+adicional: `SemNumeroDeSerieTest` originalmente testava `sn = ' '` (um espaço) como
+"não deveria disparar", mas o MySQL trata `'' = ' '` como iguais por padrão (colações
+não-binárias usam `PAD SPACE`, espaços à direita não importam na comparação `=`) —
+teste corrigido para `sn = '0'` (falsy em PHP, mas um valor preenchido de verdade em
+SQL), provando que a regra usa comparação SQL real, não uma checagem estilo PHP.
+
+**Testes manuais confirmados via `tinker`:** RMA criado com `origem=Cliente`,
+`marcarestoque=false`, `valor=100.00`, `status=Entrada` — `UrgenciaPorThreshold::
+listar()` o retorna; RMA idêntico com `valor=75.00` (exato) — não é retornado,
+confirmando o operador estrito `>` na fronteira R$75.
+
+**Pendências que ficaram de fora:** fidelidade visual das cores/CSS do painel por tema
+(Fase 8); crédito de fato (`PendenteCredito`→`GeradoCredito`, Fase 6); consolidação de
+frete Porto Alegre (Fase 6); envio real do e-mail de alerta (Fase 7). Todas já
+registradas como fora de escopo no `proposal.md`.
+
+**Commit:** `#F5 - Alertas e prioridade (10 regras + MARKVISION + threshold R$75)` (ver
+hash abaixo, aplicado junto com este log).
+
+---

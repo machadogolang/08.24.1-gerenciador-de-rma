@@ -45,18 +45,18 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-015 | Retornar p/ entrada (rollback) | confirmado | confirmado | `rma-ciclo-de-vida` | `ReverterRmaParaEntrada`, `Papel::podeReverterAlemDoMesmoDia()` | `ReverterRmaParaEntradaTest` | PARIDADE |
 | LEG-RMA-016 | Estado "retornou" | código morto | código morto | — | — | — | NÃO RECONSTRUIR (morto em ambos) |
 | LEG-RMA-017 | Registrar solução/resolução | confirmado | confirmado | `rma-ciclo-de-vida` | `RegistrarSolucao` | `RegistrarSolucaoTest` | PARIDADE |
-| LEG-RMA-018 | Alerta: recebido >30d não encaminhado | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-019 | Alerta: não vai dar garantia (MARKVISION) | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-020 | Alerta: NF pendente de lançamento | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-021 | Alerta: protocolo aberto não encaminhado | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-022 | Alerta: garantia fornecedor expirada | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-023 | Alerta: menos de 30d p/ expirar | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-024 | Alerta: prazo destinatário estourado | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-025 | Alerta: prioridade alta | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-026 | Alerta: sem nota fiscal | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-027 | Alerta: sem número de série | herdado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-028 | Classificação visual de inconformidade | dúvida | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-029 | Urgência por threshold R$75 | dúvida | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-018 | Alerta: recebido >30d não encaminhado | herdado | confirmado | `rma-alertas-e-prioridade` | `RecebidosSemEncaminhar30Dias` | `RecebidosSemEncaminhar30DiasTest` | PARIDADE |
+| LEG-RMA-019 | Alerta: não vai dar garantia (MARKVISION) | herdado | confirmado | `rma-alertas-e-prioridade` | `NaoVaiDarGarantia` (join real `fabricante`/`fornecedor`) | `NaoVaiDarGarantiaTest` | PARIDADE |
+| LEG-RMA-020 | Alerta: NF pendente de lançamento | herdado | confirmado | `rma-alertas-e-prioridade` | `NfRetornoPendenteDeLancar`, `StatusDeLancamento` | `NfRetornoPendenteDeLancarTest` | PARIDADE |
+| LEG-RMA-021 | Alerta: protocolo aberto não encaminhado | herdado | confirmado | `rma-alertas-e-prioridade` | `ProtocoloAbertoNaoEncaminhado` | `ProtocoloAbertoNaoEncaminhadoTest` | PARIDADE |
+| LEG-RMA-022 | Alerta: garantia fornecedor expirada | herdado | confirmado | `rma-alertas-e-prioridade` | `GarantiaFornecedorExpirada` | `GarantiaFornecedorExpiradaTest` | PARIDADE |
+| LEG-RMA-023 | Alerta: menos de 30d p/ expirar | herdado | confirmado | `rma-alertas-e-prioridade` | `GarantiaFornecedorExpirandoEm30Dias` | `GarantiaFornecedorExpirandoEm30DiasTest` | PARIDADE |
+| LEG-RMA-024 | Alerta: prazo destinatário estourado | herdado | confirmado | `rma-alertas-e-prioridade` | `PrazoDestinatarioEstourado` | `PrazoDestinatarioEstouradoTest` | PARIDADE |
+| LEG-RMA-025 | Alerta: prioridade alta | herdado | confirmado | `rma-alertas-e-prioridade` | `PrioridadeAltaSemEncaminhar`, `Prioridade` (sem case `Urgente` morto) | `PrioridadeAltaSemEncaminharTest` | PARIDADE |
+| LEG-RMA-026 | Alerta: sem nota fiscal | herdado | confirmado | `rma-alertas-e-prioridade` | `SemNotaFiscal` | `SemNotaFiscalTest` | PARIDADE |
+| LEG-RMA-027 | Alerta: sem número de série | herdado | confirmado | `rma-alertas-e-prioridade` | `SemNumeroDeSerie` | `SemNumeroDeSerieTest` | PARIDADE |
+| LEG-RMA-028 | Classificação visual de inconformidade | dúvida | confirmado | `rma-alertas-e-prioridade` | `ClasseDeAlerta`, `Rma::classeDeAlerta()` | `ClasseDeAlertaTest` | PARIDADE — só o enum de domínio (fidelidade visual por tema é Fase 8) |
+| LEG-RMA-029 | Urgência por threshold R$75 | dúvida | confirmado | `rma-alertas-e-prioridade` | `UrgenciaPorThreshold` | `UrgenciaPorThresholdTest` | PARIDADE — implementada p/ os 2 temas (inferência registrada, ver `design.md`) |
 | LEG-RMA-030 | Cadastro de clientes | confirmado | confirmado | `parceiros` | `ClienteController`, `EncontrarOuCriarCliente` (dedup corrigida) | `ClienteCrudTest`, `EncontrarOuCriarClienteTest` | PARIDADE |
 | LEG-RMA-031 | Cadastro de fabricantes | confirmado | confirmado | `parceiros` | `FabricanteController` | `FabricanteCrudTest` | PARIDADE |
 | LEG-RMA-032 | Cadastro de fornecedores | confirmado | confirmado | `parceiros` | `FornecedorController` | `FornecedorCrudTest` | PARIDADE |

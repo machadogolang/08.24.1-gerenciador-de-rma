@@ -95,6 +95,16 @@ final class RmasEmBanco implements RepositorioDeRmas
             'snretorno' => $rma->snretorno,
             'destinatario_type' => $rma->destinatarioType,
             'destinatario_id' => $rma->destinatarioId,
+            'prioridade' => $rma->prioridade,
+            'marcarestoque' => $rma->marcarestoque,
+            'nfcompra' => $rma->nfcompra,
+            'nfcompra_emissao' => $rma->nfcompraEmissao,
+            'nfcompra_chave' => $rma->nfcompraChave,
+            'nfvenda' => $rma->nfvenda,
+            'nfvenda_emissao' => $rma->nfvendaEmissao,
+            'nfvenda_chave' => $rma->nfvendaChave,
+            'lancadoretorno' => $rma->lancadoretorno,
+            'valor' => $rma->valor,
         ];
     }
 
@@ -123,6 +133,17 @@ final class RmasEmBanco implements RepositorioDeRmas
             snretorno: $model->snretorno,
             destinatarioType: $model->destinatario_type,
             destinatarioId: $model->destinatario_id,
+            prioridade: $model->prioridade,
+            marcarestoque: $model->marcarestoque,
+            nfcompra: $model->nfcompra,
+            nfcompraEmissao: $model->nfcompra_emissao,
+            nfcompraChave: $model->nfcompra_chave,
+            nfvenda: $model->nfvenda,
+            nfvendaEmissao: $model->nfvenda_emissao,
+            nfvendaChave: $model->nfvenda_chave,
+            lancadoretorno: $model->lancadoretorno,
+            valor: $model->valor !== null ? (float) $model->valor : null,
+            createdAt: $model->created_at,
         );
     }
 }

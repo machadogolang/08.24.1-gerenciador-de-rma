@@ -9,6 +9,7 @@ use App\Http\Controllers\Parceiros\ClienteController;
 use App\Http\Controllers\Parceiros\FabricanteController;
 use App\Http\Controllers\Parceiros\FornecedorController;
 use App\Http\Controllers\Rma\CicloDeVidaController;
+use App\Http\Controllers\Rma\PainelDeAlertasController;
 use App\Http\Controllers\Rma\RmaController;
 use Illuminate\Support\Facades\Route;
 
@@ -68,4 +69,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/rmas/{rma}/arquivar', [CicloDeVidaController::class, 'arquivar'])->name('rmas.arquivar');
     Route::post('/rmas/{rma}/reverter', [CicloDeVidaController::class, 'reverter'])->name('rmas.reverter');
     Route::post('/rmas/{rma}/solucao', [CicloDeVidaController::class, 'registrarSolucao'])->name('rmas.solucao');
+
+    // Painel de alertas (LEG-RMA-018 a 029) — Fase 5. Rota fixa antes de
+    // `rmas/{rma}` não é necessária aqui pois usa outro segmento inicial.
+    Route::get('/rmas-alertas', [PainelDeAlertasController::class, 'index'])->name('rmas.alertas');
 });

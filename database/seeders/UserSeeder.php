@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use LogicException;
 
 class UserSeeder extends Seeder
 {
@@ -19,6 +20,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production')) {
+            throw new LogicException('O UserSeeder de QA nao pode ser executado em producao.');
+        }
+
         foreach (Papel::cases() as $papel) {
             User::query()->updateOrCreate(
                 ['email' => sprintf('%s@rma.local', strtolower($papel->name))],

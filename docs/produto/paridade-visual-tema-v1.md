@@ -64,6 +64,7 @@ A classificação abaixo cobre os seletores por famílias funcionais. Seletores 
 | Open Sans | perde precedência para Arial/Fira nas superfícies comparadas | fallback consciente já decidido em C-05; não baixar |
 | Roboto | import histórico malformado e sem efeito computado relevante | não utilizado |
 | Fira Sans | importado, sem efeito computado nas superfícies reconstruídas | não utilizado |
+| Cantarell | carregador WebFont histórico, sem efeito computado nas superfícies | não utilizado |
 | Arial | tipografia visual dominante em corpo/tabelas | fonte do sistema, mantida |
 | `http://scripting.com.br` | link do rodapé | link de navegação histórico, não asset; mantido com `rel=noopener` |
 

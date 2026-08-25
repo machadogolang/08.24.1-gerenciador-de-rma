@@ -132,6 +132,62 @@ test('TEMA V1 carrega estrutura fixa, menu histórico, cascata e assets locais s
     await page.context().close();
 });
 
+test('TEMA V1 preserva as primitivas históricas das tabelas altas e compactas', async ({ browser }) => {
+    const page = await loginV3(browser);
+    await page.goto(`${V3}/rmas-concluidos`, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => {
+        document.querySelector('#CONTEUDO')?.insertAdjacentHTML('beforeend', `
+            <table id="fixture-primitivas-v1" class="Tabelinha-Table">
+                <tbody>
+                    <tr class="TableListarFPEF-TR"><th>HEADER</th></tr>
+                    <tr class="Tabelinha-TR1"><td class="Tabelinha-TD"><a href="#">TR1</a></td></tr>
+                    <tr class="Tabelinha-TR2"><td class="Tabelinha-TD">TR2</td></tr>
+                    <tr class="Tabelinha-TR3"><td class="Tabelinha-TD">TR3</td></tr>
+                    <tr class="TrZebrada1"><td>COMPACTA 1</td></tr>
+                    <tr class="TrZebrada2"><td>COMPACTA 2</td></tr>
+                    <tr class="TrInconformidade"><td>INCONFORMIDADE</td></tr>
+                    <tr class="TrUrgente"><td>URGENTE</td></tr>
+                </tbody>
+            </table>
+        `);
+    });
+
+    const tabela = page.locator('#fixture-primitivas-v1');
+    const header = tabela.locator('.TableListarFPEF-TR');
+    const td = tabela.locator('.Tabelinha-TD').first();
+
+    expect(await tabela.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(54, 51, 51)');
+    expect(await tabela.evaluate(el => getComputedStyle(el).width)).toBe('984px');
+    expect(await header.evaluate(el => getComputedStyle(el).height)).toBe('35px');
+    expect(await header.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(42, 42, 42)');
+    expect(await header.evaluate(el => getComputedStyle(el).color)).toBe('rgb(248, 193, 139)');
+    expect(Math.round((await header.boundingBox())!.height)).toBe(35);
+
+    expect(await td.evaluate(el => getComputedStyle(el).fontSize)).toBe('11px');
+    expect(await td.evaluate(el => getComputedStyle(el).letterSpacing)).toBe('1px');
+    expect(await td.evaluate(el => getComputedStyle(el).textTransform)).toBe('uppercase');
+    expect(await td.locator('a').evaluate(el => getComputedStyle(el).display)).toBe('block');
+
+    for (const [classe, cor] of [
+        ['Tabelinha-TR1', 'rgb(63, 63, 63)'],
+        ['Tabelinha-TR2', 'rgb(59, 59, 62)'],
+        ['Tabelinha-TR3', 'rgb(35, 35, 32)'],
+    ] as const) {
+        const linha = tabela.locator(`.${classe}`);
+        expect(await linha.evaluate(el => getComputedStyle(el).height)).toBe('30px');
+        expect(await linha.evaluate(el => getComputedStyle(el).backgroundColor)).toBe(cor);
+        expect(Math.round((await linha.boundingBox())!.height)).toBe(30);
+    }
+
+    for (const classe of ['TrZebrada1', 'TrZebrada2', 'TrInconformidade', 'TrUrgente']) {
+        const linha = tabela.locator(`.${classe}`);
+        expect(await linha.locator('td').evaluate(el => getComputedStyle(el).height)).toBe('18px');
+        expect(Math.round((await linha.boundingBox())!.height)).toBe(21);
+    }
+
+    await page.context().close();
+});
+
 test('captura matriz comparável Legacy V1 e V3 em 1440px', async ({ browser }) => {
     const legacy = await loginLegacy(browser);
     const v3 = await loginV3(browser);

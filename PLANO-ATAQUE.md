@@ -12,7 +12,7 @@ atômico e o diário de provas de
 `docs/produto/plano-execucao-paridade-estrutural-v1.md`:
 
 1. [x] CP1 — cascata/fontes, captura normalizada, inspeção visual e regressão CDP;
-2. [ ] CP2 — primitivas reais de tabela;
+2. [x] CP2 — primitivas reais de tabela;
 3. [ ] CP3A — composição completa de Concluído;
 4. [ ] CP3B/CP3C/CP3D — Entrada, Encaminhado e Aguardando crédito;
 5. [ ] CP4 — resumo inferior de Concluídos sem SQL no Blade;

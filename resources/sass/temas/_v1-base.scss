@@ -457,6 +457,27 @@ li {
     font-size: 12px;
 }
 
+.TableListarFPEF-TR {
+    height: 35px;
+    padding: 0;
+    border: 0;
+    background-color: #2a2a2a;
+    color: #f8c18b !important;
+
+    &:hover {
+        background-color: #2a2a2a;
+    }
+}
+
+.Tabelinha-TD {
+    height: 22px;
+    padding-left: 0;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
 .Tabelinha-TR1,
 .Tabelinha-TR2,
 .Tabelinha-TR3 {
@@ -472,6 +493,12 @@ li {
 .Tabelinha-TR1:hover,
 .Tabelinha-TR2:hover,
 .Tabelinha-TR3:hover { background-color: #904141; }
+
+.Tabelinha-TD > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
 
 .formInputPanel {
     box-sizing: border-box;

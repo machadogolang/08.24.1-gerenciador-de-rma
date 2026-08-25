@@ -49,17 +49,17 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
 
 ## CP2 — primitivas reais da tabela V1
 
-- [ ] CP2-01 — diff seletor legado × HTML legado × Blade × Sass.
-- [ ] CP2-02 — portar `TableListarFPEF-TR` e hover: 35 px/#2A2A2A/#F8C18B.
-- [ ] CP2-03 — portar `Tabelinha-TD`: 22 px/11 px/1 px/uppercase.
-- [ ] CP2-04 — conferir `Tabelinha-Table`: #363333/100%/12 px/borda e padding zero.
-- [ ] CP2-05 — conferir `Tabelinha-TR1/2/3`: cores e regra de 30 px.
-- [ ] CP2-06 — conferir `TrZebrada1/2`, `TrInconformidade`, `TrUrgente`: 18 px.
-- [ ] CP2-07 — preservar overrides globais `table/td/tr/th` da segunda folha.
-- [ ] CP2-08 — tornar o link da célula bloco integral sem HTML inválido.
-- [ ] CP2-09 — testar o filho que realmente pinta o glifo, não só o `td`.
-- [ ] CP2-10 — capturar fixture com header, linhas altas e compactas.
-- [ ] CP2-11 — abrir/comparar prints, registrar diário, testes/build e commit local.
+- [x] CP2-01 — diff seletor legado × HTML legado × Blade × Sass.
+- [x] CP2-02 — portar `TableListarFPEF-TR` e hover: 35 px/#2A2A2A/#F8C18B.
+- [x] CP2-03 — portar `Tabelinha-TD`: 22 px/11 px/1 px/uppercase.
+- [x] CP2-04 — conferir `Tabelinha-Table`: #363333/100%/12 px/borda e padding zero.
+- [x] CP2-05 — conferir `Tabelinha-TR1/2/3`: cores e regra de 30 px.
+- [x] CP2-06 — conferir `TrZebrada1/2`, `TrInconformidade`, `TrUrgente`: 18 px.
+- [x] CP2-07 — preservar overrides globais `table/td/tr/th` da segunda folha.
+- [x] CP2-08 — tornar o link da célula bloco integral sem HTML inválido.
+- [x] CP2-09 — testar o filho que realmente pinta o glifo, não só o `td`.
+- [x] CP2-10 — capturar fixture com header, linhas altas e compactas.
+- [x] CP2-11 — abrir/comparar prints, registrar diário, testes/build e commit local.
 
 ## CP3A — Concluído
 
@@ -160,6 +160,20 @@ sido abertos e inspecionados, com ambiente e medidas registrados.
   tipografia e rodapé equivalentes; diferença de 1 px no recorte do rodapé não é
   perceptível. `CÃ³pia` Legacy × `Cópia` V3 é `[BUG-LEGADO]` de encoding consciente.
 - Estado: **CP1 APROVADO**; divergências remanescentes pertencem a CP2–CP4.
+
+### CMP-V1-003 — CP2, primitivas de tabela
+
+- Ambiente: Chromium headless, zoom 100%, DPR 1, viewport 1440×1000.
+- Screenshots abertos: `{legacy,v3}-cp2-concluidos-1440x1000.png` e
+  `v3-cp2-fixture-primitivas-1440.png` (locais/ignorados).
+- Resultado: `TableListarFPEF-TR` coincide em 35 px, #2A2A2A e #F8C18B; tabela/TD
+  coincidem em fundo, grade, alinhamento, uppercase e spacing. A fixture comprova TR1,
+  TR2, TR3, TrZebrada1/2, TrInconformidade e TrUrgente.
+- Medidas: linha alta CSS/bbox 30 px na fixture; compacta `td` 18 px e `tr` 21 px;
+  link de célula `display:block` e área integral.
+- Diferença restante: Concluído ainda escolhe família compacta; aplicação por superfície
+  pertence ao CP3A, não à primitiva.
+- Estado: **CP2 APROVADO** por teste e inspeção visual.
 
 ## Modelo para próximas entradas
 

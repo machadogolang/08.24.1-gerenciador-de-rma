@@ -173,6 +173,63 @@ Benefício · Impacto · Complexidade · Risco · Dependências · Prioridade ·
   bloqueante de nenhuma outra evolução registrada (`EVO-SAAS-*`).
 - **Fase:** pós-reconstrução (Trilha B).
 
+## EVO-ARQUIVOS
+
+### EVO-ARQ-001 — Anexos de arquivo no RMA (foto, laudo, NF digitalizada)
+
+- **Origem:** investigação de evolução inspirada em módulos reais do CONAHOM
+  (`~/github/online-conahom-laravel/app/{Armazenamento,Arquivos}/`), registrada em
+  `docs/arquitetura/INV-RMA-09-arquivos-e-configuracao-admin.md` (2026-08-25).
+  **Confirmado nesta investigação: não há evidência de upload de arquivo/imagem em
+  nenhum dos quatro documentos de arqueologia do legado** (`inventario-funcional-rma-v2.md`,
+  `modelo-dominio-rma-legado.md`, `regras-negocio-rma-legado.md`,
+  `inventario-banco-rma-v2.md`) — os blocos de nota fiscal (`nfcompra`/`nfvenda`/`chave`)
+  são campos de texto, nunca upload. **Isto é evolução de produto pura, não
+  reconstrução que faltou** — mesma categoria de `EVO-SAAS-001`/`EVO-UX-001`.
+- **Problema observado:** a operação real de assistência técnica claramente se
+  beneficiaria de anexar evidência visual/documental a um RMA (foto do produto com
+  defeito, laudo técnico da assistência, digitalização da NF cujo texto/chave já é
+  capturado hoje), mas nem o legado nem o RMA V3 atual (Fases 1-9) oferecem isso.
+- **Legado:** nenhum campo de upload existe; NF é só texto/chave de 44 dígitos.
+- **Evolução:** anexo de arquivo vinculado a um `Rma` — desenho recomendado em
+  `INV-RMA-09` §A.4: entidade `AnexoDoRma` **dentro do módulo `app/Rma/` existente**
+  (não um módulo `Arquivos`/`Armazenamento` central estilo CONAHOM — não há hoje um
+  segundo módulo do RMA V3 com necessidade de upload que justifique um catálogo
+  agregado), atrás de uma interface mínima de armazenamento (`guardar`/`baixar`/
+  `existe`/`remover`), storage local no dia 1 com porta aberta para trocar por
+  S3-compatible depois sem reescrita (`INV-RMA-09` §A.5). Convenção de caminho sem
+  dado pessoal inspirada em `ContextoDoArquivo` do CONAHOM, sem portar a classe
+  inteira. **Proporcionalidade avaliada explicitamente (`INV-RMA-09` §A.3): não
+  copiar a arquitetura completa do CONAHOM** (2 fornecedores de storage + roteador,
+  catálogo central agregando N módulos, versionamento de arquivo, verificação de
+  drift dedicada) — é overengineering para o volume/caso de uso do RMA (poucos
+  anexos por registro, um único módulo consumidor hoje).
+- **Benefício:** evidência visual/documental do problema relatado, reduz dependência de
+  descrição textual só, alinhado ao que a operação de assistência técnica já faz na
+  prática fora do sistema (anexar foto/laudo por e-mail/WhatsApp, sem rastro no RMA).
+- **Impacto:** médio — não muda regra de negócio nem ciclo de vida do RMA, é uma
+  capacidade adicional sobre o agregado existente.
+- **Complexidade:** baixa a média — interface de storage simples + uma entidade nova
+  dentro do módulo já existente; cresce se/quando um segundo módulo consumidor
+  aparecer (extração para módulo central, não decidida agora).
+- **Risco:** baixo se implementado depois da baseline de paridade (mesma regra de
+  `EVO-SAAS-001`/`EVO-UX-001`); overengineering se copiar a arquitetura do CONAHOM
+  inteira sem evidência de volume que justifique (`INV-RMA-09` §A.3).
+- **Dependências:** baseline de paridade completa e validada (Trilha A — Fases 1-10 +
+  QA, `INV-RMA-05` §15). Isolamento de storage por tenant, se implementado depois de
+  `EVO-SAAS-001`, reaproveita o mesmo Global Scope/`TenantContext` já decidido —
+  `AnexoDoRma` entra na lista de entidades tenant-scoped sem mecanismo próprio
+  (`INV-RMA-09` §A.6).
+- **Decisões adiadas:** categorização de anexo por papel (foto/laudo/NF, enum simples
+  se necessário); storage local vs. S3-compatible em produção real; momento de extrair
+  para um módulo central de arquivos, se um segundo consumidor aparecer —
+  `INV-RMA-09` §A "Pendências reais".
+- **Momento recomendado:** nenhuma linha de código (migration, model, upload real)
+  antes da baseline de paridade da Trilha A estar validada.
+- **Prioridade sugerida:** média — não é bloqueante de nenhuma outra evolução
+  registrada.
+- **Fase:** pós-reconstrução (Trilha B).
+
 ## EVO-DOMINIO
 
 ### EVO-DOM-001 — Relacionamento por FK real entre RMA e contrapartes
@@ -213,6 +270,72 @@ Benefício · Impacto · Complexidade · Risco · Dependências · Prioridade ·
   (fabricante × origem × janela de tempo), com o campo `politicadegarantia` (hoje texto
   morto) alimentando a regra de verdade em vez de só aparecer como leitura.
 - **Fase:** pós-reconstrução.
+- **Ver também:** `EVO-CONF-001`, mesma categoria geral de problema (regra de negócio
+  hoje hardcoded/estática virando editável por admin) — recomendação registrada em
+  `INV-RMA-09` §B.5 é que, quando `EVO-DOM-003` for especificado em detalhe, nasça
+  dentro do mesmo módulo `App\Configuracao` proposto para `EVO-CONF-001`, em vez de
+  reinventar um mecanismo de configuração próprio.
+
+### EVO-CONF-001 — Área de configuração de admin (parâmetros de sistema editáveis)
+
+- **Origem:** investigação de evolução inspirada no módulo real de configuração do
+  CONAHOM (`~/github/online-conahom-laravel/resources/views/admin/configuracoes/`,
+  `app/Comunicacao/{Dominio,Aplicacao}/`), registrada em
+  `docs/arquitetura/INV-RMA-09-arquivos-e-configuracao-admin.md` (2026-08-25). **Não é
+  categoria nova (`EVO-CONFIG`) — entra em `EVO-DOMINIO` porque o problema real é de
+  regra de negócio do domínio do RMA ficando hardcoded/só-`.env`, não uma capacidade de
+  infraestrutura nova como `EVO-ARQ-001`** (justificativa completa em `INV-RMA-09`,
+  seção final "Backlog evolutivo — itens criados").
+- **Problema observado:** confirmado por leitura direta do código já implementado
+  (Fases 1-9) — três parâmetros de negócio reais hoje hardcoded/só-`.env`, sem tela
+  administrativa: (1) destinatário de notificação de conclusão
+  (`app/Rma/Aplicacao/EnviarNotificacaoDeConclusao.php:17`,
+  `config('rma.notificacoes.conclusao')`, só editável via `.env`/redeploy); (2)
+  threshold de urgência R$75 (RN-12,
+  `app/Rma/Aplicacao/Alertas/UrgenciaPorThreshold.php:41`, literal `75.00` na query);
+  (3) cidade "PORTO ALEGRE" hardcoded
+  (`app/Rma/Aplicacao/ConsolidarFretePorCidade.php:21`, `private const CIDADE`, RN-16,
+  Fase 7 — o próprio comentário do código já reconhece isso como candidato a
+  configuração futura, sem agir, corretamente fora de escopo da Trilha A). Um quarto
+  candidato (política de garantia por fabricante) já está registrado separadamente
+  como `EVO-DOM-003`.
+- **Legado:** nenhuma tela de configuração administrativa existe — parâmetros de
+  negócio ficam presos em `if`/constante no código-fonte PHP.
+- **Evolução:** módulo novo `App\Configuracao` (fronteira própria
+  `Dominio/Aplicacao/Infraestrutura`), com o mesmo padrão real do CONAHOM (`INV-RMA-09`
+  §B.1/§B.4): um objeto de valor `readonly` imutável e validado por configuração (ex.
+  `ConfiguracaoDeNotificacaoDeRma`, `ConfiguracaoDeAlertaDeUrgencia`,
+  `ConfiguracaoDeConsolidacaoDeFrete`), com autoria e data de publicação como campo do
+  próprio objeto (`publicadaEm`/`publicadaPorNome`/`publicadaPorIdentificador`); um
+  caso de uso `Publicar{Nome}` por configuração, dentro de transação; um objeto
+  "efetivo" que resolve **publicado (se existir) ?? fallback do `.env`/constante
+  atual** — preserva o comportamento atual como default seguro enquanto ninguém usa a
+  tela, mesmo padrão `ConfiguracaoEfetivaDeEnvioDeEmail`/`ConfiguracaoDeComunicacao::
+  padrao()` do CONAHOM. UI recomendada: **uma tela única** com os 3-4 campos reais, não
+  um hub de múltiplas seções (`INV-RMA-09` §B.3) — proporcional ao volume de
+  candidatos encontrados, evita estrutura vazia tipo "em breve".
+- **Benefício:** parâmetros de negócio passam a ser editáveis por um administrador sem
+  redeploy, com rastro de quem mudou e quando — reduz risco de regra de negócio
+  desatualizada presa em código e melhora auditabilidade de mudança de política.
+- **Impacto:** médio — não muda o resultado das regras em si (RN-12, RN-16 continuam
+  as mesmas regras), muda quem pode ajustá-las e como.
+- **Complexidade:** baixa a média — reaproveita metodologia já validada em produção
+  pelo CONAHOM; escopo inicial é só 3-4 objetos de valor + casos de uso de publicação,
+  não uma reconstrução de domínio.
+- **Risco:** baixo se implementado depois da baseline de paridade; risco de
+  overengineering se replicar as 6 telas/segredo separado do CONAHOM sem candidato
+  real que justifique (`INV-RMA-09` §B.3).
+- **Dependências:** baseline de paridade completa e validada (Trilha A — Fases 1-10 +
+  QA, `INV-RMA-05` §15).
+- **Decisões adiadas:** persistência exata (tabela por configuração vs. genérica
+  chave/valor); autorização de quem pode publicar (qual `Papel`); UI hub vs. tela
+  única (recomendação dada, não fechada); se `EVO-DOM-003` nasce dentro deste módulo
+  ou como extensão do domínio `Rma`/`Fabricante` — `INV-RMA-09` §B.6.
+- **Momento recomendado:** nenhuma linha de código (migration, model, view, config
+  publicável) antes da baseline de paridade da Trilha A estar validada.
+- **Prioridade sugerida:** média — não é bloqueante de nenhuma outra evolução
+  registrada; conecta-se a `EVO-DOM-003` quando este for especificado.
+- **Fase:** pós-reconstrução (Trilha B).
 
 ## EVO-AUTOMACAO
 

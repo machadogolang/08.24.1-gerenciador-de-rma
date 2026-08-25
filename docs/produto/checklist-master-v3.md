@@ -167,32 +167,25 @@ a ponta. Tasks (resumido):
 - [x] 4 Factories + 5 arquivos de teste (CRUD ×4 + dedup)
 - [x] `sail test` verde, `paridade-v2-v3.md` atualizado, commit `#F2`
 
-### Fase 3 — Rma núcleo — **EM ESPECIFICAÇÃO**
+### Fase 3 — Rma núcleo — **CONCLUÍDA**
 
-OpenSpec escrita: `openspec/changes/rma-cadastro-e-localizacao/{proposal,design,tasks}.md`.
-Arquivo por arquivo detalhado em `INV-RMA-05` §8. **Decisão já tomada:** este é o único
-módulo que usa a fronteira completa `Dominio`(puro)/`Aplicacao`/`Infraestrutura` com
-interface de repositório (justificativa: a Fase 9/migração precisa dessa fronteira para
-não vazar a leitura do schema `rma_legacy` pro resto da aplicação); identificador
-incremental (sem UUID/ULID — sem caso de uso ainda). Tasks (resumido):
+OpenSpec: `openspec/changes/rma-cadastro-e-localizacao/{proposal,design,tasks}.md`
+(tudo `[x]`). Único módulo com a fronteira completa `Dominio`(puro)/`Aplicacao`/
+`Infraestrutura` com interface de repositório — implementado exatamente como
+justificado (a Fase 9/migração vai usar essa fronteira). Tasks:
 
-- [ ] Migration incremental de `rmas` (só os campos desta fase, não a tabela inteira) —
-      **ajuste da revisão:** inclui `fornecedor_id` (ausente do desenho original)
-- [ ] `Rma` (objeto de domínio puro), `RepositorioDeRmas` (interface),
-      `CriterioDeBusca` (value object — substitui os `campo=TUDO/NF/SNPNSNID` do
-      legado por named constructors)
-- [ ] `RmasEmBanco` (Eloquent, implementação interna da infra) + binding no
-      `AppServiceProvider`
-- [ ] `CriarRma`, `EditarRma` (**ajuste da revisão** — `LEG-RMA-010` não tinha fase
-      dona), `BuscarRmas`, `VerDetalheDoRma` (casos de uso)
-- [ ] **Ajuste da revisão:** normalizações RN-13 (HGST→Hitachi) e RN-14 (cascata de
-      `origem`) em `CriarRma`/`EditarRma` — não adiar para Fase 4/5; RN-17
-      (`marcarestoque`) reproduzida só como valor do formulário, sem o cálculo morto
-      do legado
-- [ ] Controller + views mínimas + rotas
-- [ ] Factory + 6 arquivos de teste (4 feature + 2 unit de `CriterioDeBusca`/`Rma`)
-- [ ] `sail test` verde, `paridade-v2-v3.md` atualizado
-      (`LEG-RMA-007/008/009/010/046`), commit `#F3`
+- [x] Migration incremental de `rmas` (inclui `fornecedor_id`, ajuste da revisão)
+- [x] `Rma` (objeto de domínio puro), `RepositorioDeRmas` (interface — ganhou um
+      método `atualizar()` não previsto no snippet original do `design.md`, necessário
+      para `EditarRma` não furar a fronteira), `CriterioDeBusca` (value object)
+- [x] `RmasEmBanco` (Eloquent interno) + binding no `AppServiceProvider`
+- [x] `CriarRma`, `EditarRma`, `BuscarRmas`, `VerDetalheDoRma` (casos de uso)
+- [x] Normalizações RN-13/RN-14 em `CriarRma`/`EditarRma`, confirmadas de ponta a ponta
+      na criação e na edição; RN-17 sem o cálculo morto do legado
+- [x] Controller + views mínimas + rotas
+- [x] Factory + 6 arquivos de teste (4 feature + 2 unit de `CriterioDeBusca`/`Rma`)
+- [x] `sail test` verde (85/85, mantendo os 61 das Fases 1-2), `paridade-v2-v3.md`
+      atualizado (`LEG-RMA-007/008/009/010/046` → PARIDADE), commit `#F3`
 
 ### Fase 4 — Ciclo de vida — **EM ESPECIFICAÇÃO**
 

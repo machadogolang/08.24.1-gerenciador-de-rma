@@ -8,6 +8,7 @@ use App\Http\Controllers\Parceiros\AssistenciaTecnicaController;
 use App\Http\Controllers\Parceiros\ClienteController;
 use App\Http\Controllers\Parceiros\FabricanteController;
 use App\Http\Controllers\Parceiros\FornecedorController;
+use App\Http\Controllers\Rma\RmaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -52,4 +53,10 @@ Route::middleware('auth')->group(function () {
         ->except(['show'])
         ->parameters(['assistencias-tecnicas' => 'assistenciaTecnica'])
         ->names('parceiros.assistencias-tecnicas');
+
+    // Rma núcleo (LEG-RMA-007/008/009/010) — criação, busca, detalhe, edição.
+    // Parâmetro de rota é o id puro (int), não Eloquent model binding: o objeto de
+    // domínio `Dominio\Rma` é puro e o Eloquent model interno nunca sai da
+    // infraestrutura (ver `app/Rma/Infraestrutura/RmasEmBanco.php`).
+    Route::resource('rmas', RmaController::class)->except(['destroy']);
 });

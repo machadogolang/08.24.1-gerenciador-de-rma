@@ -10,8 +10,12 @@ permanece `PENDENTE` — decisão de produto explicitamente não tomada nesta fa
 `openspec/changes/autenticacao-usuarios/proposal.md`. **Fase 2 (`parceiros`) concluída:**
 4 itens (`LEG-RMA-030/031/032/033`) passaram de `PENDENTE` para `PARIDADE`, com
 `sail test` verde (61/61, mantendo os 36 da Fase 1) e a deduplicação de
-`EncontrarOuCriarCliente` confirmada por `tinker` de ponta a ponta. Os demais itens
-aguardam as próximas fases (ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
+`EncontrarOuCriarCliente` confirmada por `tinker` de ponta a ponta. **Fase 3
+(`rma-cadastro-e-localizacao`) concluída:** 5 itens (`LEG-RMA-007/008/009/010/046`)
+passaram de `PENDENTE` para `PARIDADE`, com `sail test` verde (85/85, mantendo os 61
+das Fases 1-2). RN-13/RN-14 (normalização HGST→Hitachi/cascata de origem) confirmadas
+de ponta a ponta tanto na criação quanto na edição. Os demais itens aguardam as
+próximas fases (ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §5).
 
 Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 
@@ -23,10 +27,10 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-004 | Trocar própria senha | funcional (correto) | quebrado (regressão) | `autenticacao-usuarios` | `TrocarPropriaSenha` (TEMA V1 como especificação, RN-21) | `TrocarPropriaSenhaTest` (prova de regressão corrigida) | PARIDADE — V3 usa TEMA V1 como especificação |
 | LEG-RMA-005 | Gerenciar usuários/permissões | confirmado | confirmado | `autenticacao-usuarios` | `UsuarioController`, `UserPolicy`, `Papel::ocultoDaListagemDeUsuarios()` | `GerenciarUsuariosTest`, `PermissaoTest` | PARIDADE |
 | LEG-RMA-006 | Selecionar tema V1/V2 | confirmado | confirmado | `autenticacao-usuarios` | `AlternarTemaPreferido`, `TemaPreferidoController` | `AlternarTemaTest` (3 testes) | PARIDADE |
-| LEG-RMA-007 | Cadastrar novo RMA | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-008 | Localizar/pesquisar RMA | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-009 | Ver detalhes do RMA | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-010 | Editar/salvar RMA | confirmado | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-007 | Cadastrar novo RMA | confirmado | confirmado | `rma-cadastro-e-localizacao` | `CriarRma`, `RmaController` | `CriarRmaTest` (4 testes) | PARIDADE |
+| LEG-RMA-008 | Localizar/pesquisar RMA | confirmado | confirmado | `rma-cadastro-e-localizacao` | `BuscarRmas`, `CriterioDeBusca` | `BuscarRmasTest`, `CriterioDeBuscaTest` | PARIDADE |
+| LEG-RMA-009 | Ver detalhes do RMA | confirmado | confirmado | `rma-cadastro-e-localizacao` | `VerDetalheDoRma` | `VerDetalheDoRmaTest` | PARIDADE |
+| LEG-RMA-010 | Editar/salvar RMA | confirmado | confirmado | `rma-cadastro-e-localizacao` | `EditarRma` | `EditarRmaTest` (3 testes) | PARIDADE |
 | LEG-RMA-011 | Receber RMA | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-012 | Encaminhar RMA | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-013 | Concluir RMA | confirmado | confirmado | — | — | — | PENDENTE |
@@ -62,7 +66,7 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-043 | Auditoria de autenticação | confirmado | confirmado | `autenticacao-usuarios` | `TentativaDeAcesso` (Eloquent), `ResultadoDeAcesso` (enum) | `AutenticacaoTest` (asserções de `tentativas_de_acesso`) | PARIDADE |
 | LEG-RMA-044 | Auditoria de modificação de RMA | confirmado | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-045 | Notificação por e-mail | confirmado | confirmado | — | — | — | PENDENTE |
-| LEG-RMA-046 | Normalização automática (HGST→Hitachi, origem) | confirmado (duplicado) | confirmado | — | — | — | PENDENTE |
+| LEG-RMA-046 | Normalização automática (HGST→Hitachi, origem) | confirmado (duplicado) | confirmado | `rma-cadastro-e-localizacao` | `Rma::comNormalizacaoDeGravacao()` | `RmaTest` (unit) + `CriarRmaTest`/`EditarRmaTest` (ponta a ponta) | PARIDADE |
 | LEG-RMA-047 | S/N de retorno auto-preenchido | ausente | confirmado | — | — | — | PENDENTE |
 | LEG-RMA-048 | Módulo Créditos pendentes/usados/disponíveis | N/A (nunca existiu) | quebrado | — | — | — | PENDENTE (reconstruir só a intenção: fluxo único de crédito) |
 

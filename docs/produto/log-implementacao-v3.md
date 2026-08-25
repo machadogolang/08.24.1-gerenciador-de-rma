@@ -94,3 +94,58 @@ Fidelidade visual das views fica para a Fase 8.
 tecnica)`.
 
 ---
+
+## Fase 3 — Rma núcleo
+
+**Data:** 2026-08-25.
+
+**Implementado:** migration incremental de `rmas` (inclui `fornecedor_id`, ajuste da
+revisão); `App\Rma\Dominio\{Rma,RepositorioDeRmas,CriterioDeBusca}` (objeto de domínio
+puro, sem Eloquent); `App\Rma\Infraestrutura\RmasEmBanco` (implementação Eloquent
+interna, nunca exposta fora da infra) + binding em `AppServiceProvider`;
+`App\Rma\Aplicacao\{CriarRma,EditarRma,BuscarRmas,VerDetalheDoRma}` — `CriarRma`/
+`EditarRma` chamam `EncontrarOuCriarCliente` (Fase 2) e aplicam
+`Rma::comNormalizacaoDeGravacao()` (RN-13/RN-14) antes de persistir; `RmaController`
+(index/create/store/show/edit/update) + `RmaPolicy` (mesmo padrão de `ClientePolicy`);
+views mínimas; `RmaFactory`; 6 arquivos de teste (4 feature + 2 unit).
+
+Esta é a única fase com a fronteira completa `Dominio`/`Aplicacao`/`Infraestrutura` com
+interface de repositório — decisão já tomada em `INV-RMA-05` §7/§8, confirmada correta
+na implementação (a Fase 9/migração vai usar essa fronteira para não vazar o schema
+`rma_legacy` pro resto do app).
+
+**Desvios do OpenSpec (documentados no código):**
+- `RepositorioDeRmas` ganhou um método `atualizar(Rma $rma): Rma` não presente no
+  snippet literal do `design.md` (que antecedia o ajuste da revisão que trouxe
+  `EditarRma`/`LEG-RMA-010` para esta fase) — necessário para `EditarRma` não furar a
+  fronteira de domínio tocando o Eloquent model diretamente. Mesmo padrão de
+  `criar()`/`buscarPorId()`, sem quebrar a pureza do objeto de domínio.
+- `CriterioDeBusca::porNotaFiscal()` busca no campo `os` (ordem de serviço) nesta fase,
+  não em campos de nota fiscal reais (`nfcompra`/`nfremessa`/`nfvenda`), que só entram
+  na Fase 6 (crédito/NF). Decisão registrada em comentário no
+  `RmasEmBanco.php` — revisitar quando os campos reais existirem.
+
+**Testes:** 85/85 verdes, 189 assertions (`sail test`), mantendo os 61 das Fases 1-2.
+`RmaTest::comNormalizacaoDeGravacao` cobre todos os casos do `design.md` (HGST→Hitachi,
+origem=fabricante/fornecedor→Unknown, origem=cliente/empresa→Cliente,
+Cellsystem→Loja, Leilao/Receita/Receita Federal→Leilão, valor fora do domínio
+inalterado). `CriarRmaTest`/`EditarRmaTest` confirmam a normalização de ponta a ponta
+via HTTP, não só no unit test isolado.
+
+**Pendências que ficaram de fora:** nenhuma da Fase 3 propriamente dita. `origem` segue
+como string solta nesta fase (deliberado — o enum de domínio fechado só nasce na Fase
+4/5, quando o conjunto de valores usado pelas regras de alerta estiver fixado por
+completo).
+
+**Nota de processo:** esta fase foi implementada por um agente em background que foi
+interrompido por um limite de sessão da API antes de concluir os testes Feature
+(`EditarRmaTest`/`BuscarRmasTest`/`VerDetalheDoRmaTest` e a atualização de
+documentação). O trabalho já commitável (domínio, aplicação, infraestrutura,
+controller, views, `CriarRmaTest`, testes unit) estava correto e completo; a
+continuação (os 3 testes Feature restantes + atualização de `paridade-v2-v3.md`/
+`checklist-master-v3.md`/`tasks.md`) foi concluída diretamente nesta sessão principal.
+
+**Commit:** `#F3 - Rma nucleo (criacao, busca, detalhe)` (ver hash abaixo, aplicado
+junto com este log).
+
+---

@@ -18,9 +18,13 @@ destino ainda não existem em `app/Rma/Dominio/`.
 - [ ] 8 importadores em `app/Rma/Infraestrutura/Migracao/Importadores/`
 - [ ] `app/Console/Commands/MigrarLegado.php` (opções `--somente`/`--dry-run`/`--forcar`)
 - [ ] 8 testes de importador + `MigrarLegadoComandoTest`
-- [ ] Resolver ou registrar decisão do usuário para as 4 pendências de `INV-RMA-06`
-      (formato de data ambíguo; ocorrência real de `status='retornou'`; destino de
-      `relatorio.informacaoadicional`; coordenação de `rmas.valor`)
+- [ ] Resolver ou registrar decisão do usuário para as 3 pendências reais restantes de
+      `INV-RMA-06` (formato de data ambíguo — implementar o parser de 3 tentativas
+      descrito lá, nunca lançar exceção; ocorrência real de `status='retornou'` — só
+      decidir se o relatório de reconciliação encontrar de verdade; destino de
+      `relatorio.informacaoadicional` — aplicar a opção B, descartar, por omissão, já
+      que o dado continua recuperável no backup do Legacy, e registrar isso como decisão
+      tomada por omissão, não silenciosa). `rmas.valor` já resolvido (Fase 5).
 - [ ] `sail test` verde
 - [ ] Rodar `--dry-run` contra fixture pequena, revisar relatório manualmente antes de
       considerar o migrador pronto para uso real

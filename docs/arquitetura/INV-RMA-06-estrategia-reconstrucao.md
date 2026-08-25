@@ -468,6 +468,8 @@ formalmente.
    Decisão de produto explícita necessária (opção A/B) antes do migrador rodar sobre essa
    tabela — ou aceitar a opção B (descartar) por omissão se o usuário não se manifestar,
    já que o dado permanece recuperável no backup do repositório Legacy.
-4. **Coluna `rmas.valor` ausente da migration listada da Fase 5** (§8) — bloqueador
-   técnico a resolver antes do migrador rodar, não uma decisão de produto; registrado
-   aqui para não ser esquecido quando a Fase 9 virar corrente.
+4. ~~Coluna `rmas.valor` ausente da migration listada da Fase 5~~ **RESOLVIDO
+   (2026-08-25):** `valor decimal(10,2) nullable` adicionada à migration da Fase 5
+   (`add_alertas_fields_to_rmas_table`), gap encontrado e corrigido antes da
+   implementação daquela fase. O migrador (Fase 9) pode mapear `bd.valor` → `rmas.valor`
+   sem bloqueio.

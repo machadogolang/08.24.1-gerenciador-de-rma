@@ -10,6 +10,7 @@ use App\Http\Controllers\Parceiros\ClienteController;
 use App\Http\Controllers\Parceiros\FabricanteController;
 use App\Http\Controllers\Parceiros\FornecedorController;
 use App\Http\Controllers\Rma\CicloDeVidaController;
+use App\Http\Controllers\Rma\ControlePainelController;
 use App\Http\Controllers\Rma\CreditoController;
 use App\Http\Controllers\Rma\HistoricoDeModificacaoController;
 use App\Http\Controllers\Rma\ListagensPorStatusController;
@@ -104,6 +105,10 @@ Route::middleware('auth')->group(function () {
     // Gate `'gerenciar'` de `UsuarioController` (tela administrativa).
     Route::get('/rmas-historico', [HistoricoDeModificacaoController::class, 'index'])->name('rmas.historico.index');
     Route::get('/historico-de-acesso', [HistoricoDeAcessoController::class, 'index'])->name('identidade.historico-de-acesso.index');
+
+    // VIS-V1-010 — painel "Controle" do TEMA V1 (`14.6.1/page/controle.php`), distinto
+    // do "Controle" do TEMA V2 (esse é `rmas.historico.index`, acima).
+    Route::get('/rmas-controle', [ControlePainelController::class, 'index'])->name('rmas.controle.index');
 
     // Logística (LEG-RMA-040/041, RN-16, Fase 7) — outro segmento inicial, sem
     // conflito com `rmas/{rma}`.

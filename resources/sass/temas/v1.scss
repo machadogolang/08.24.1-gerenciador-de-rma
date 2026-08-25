@@ -403,6 +403,34 @@ li {
     font-size: 11px;
 }
 
+// VIS-V1-010 — painel "Controle" (`pattern/14.6.1.css`: `.formTitlePanel`,
+// `.formLabelPanel`, `.trcontrole1`/`.tdcontrole1`). `<details>/<summary>` nativos
+// substituem o `expande()`/`minimize()` em JS do legado (mesmo comportamento de
+// painel colapsado por padrão, sem framework — ver VIS-V1-002).
+.formTitlePanel {
+    clear: both;
+    margin: 0 0 10px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.formLabelPanel {
+    margin: 2px 10px 0 0;
+    font-size: 11px;
+}
+
+.trcontrole1 {
+    height: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+.tdcontrole1 {
+    padding: 0 5px;
+    text-align: center;
+}
+
 .usuariosemail {
     text-transform: lowercase;
     font-family: "Fira Mono", Arial, sans-serif;

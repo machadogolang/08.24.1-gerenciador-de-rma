@@ -10,7 +10,7 @@
         $painelSessao = request()->routeIs(
             'v1.parceiros.*',
             'v1.identidade.usuarios.*',
-            'rmas.historico.*',
+            'rmas.controle.*',
             'rmas.credito.*',
             'rmas.relatorios.*',
         );
@@ -62,7 +62,7 @@
                     <a class="lisessao" href="{{ rota_tema('parceiros.assistencias-tecnicas.index') }}">Assistências</a>
                     <a class="lisessao" href="{{ rota_tema('parceiros.clientes.index') }}">Clientes</a>
                     @can('gerenciar', \App\Models\User::class)
-                        <a class="lisessao" href="{{ route('rmas.historico.index') }}">Controle</a>
+                        <a class="lisessao" href="{{ route('rmas.controle.index') }}">Controle</a>
                     @endcan
                     <a class="lisessao" href="{{ route('rmas.credito.index') }}">Créditos</a>
                     <a class="lisessao" href="{{ route('rmas.relatorios.rcd') }}">Relatórios</a>

@@ -273,7 +273,48 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   apontar para uma composição própria com as ações do painel (arquivar/mudar senha já
   têm rota; faltam `VIS-V1-011/012/013`); `rmas.historico.index` continua correto como
   "Logs de modificação" do V2, só não é o "Controle" do V1
-- Status: **[ ] pendente** — reclassificar o link antes de fechar `F10-V1-03`
+- Status: **[x] CORRIGIDO NESTA SESSÃO** — novo `ControlePainelController`
+  (`app/Http/Controllers/Rma/ControlePainelController.php`), rota `GET /rmas-controle`
+  (`rmas.controle.index`), view `temas/v1/rma/controle.blade.php`. MENU do TEMA V1
+  ("Controle") agora aponta para essa rota; `rmas.historico.index`
+  (`HistoricoDeModificacaoController`) não foi tocado e continua acessível pela própria
+  URL — é o "Controle" do TEMA V2, achado documentado acima, não removido. Composição
+  reproduz as 7 ações do painel real (`14.6.1/page/controle.php`), na mesma ordem,
+  reaproveitando ações V3 já existentes (nenhum caso de uso novo):
+  - ADICIONAR REPRESENTANTE → 3 forms (Fornecedor/Fabricante/Assistência), cada um
+    postando direto para a rota `store` já existente do respectivo parceiro (o legado
+    usa 1 form + select "tipo"; aqui 3 forms porque não existe dispatcher genérico de
+    tipo na V3 e criar um só para isso seria caso de uso novo desnecessário).
+  - ARQUIVAR UMA SOLICITACAO DE RMA → reaproveita `rmas.arquivar` (POST
+    `/rmas/{rma}/arquivar`); form reescreve a própria `action` com o número digitado via
+    `onsubmit` nativo (sem fetch/AJAX), mesmo padrão de VIS-V1-002.
+  - DELETAR UMA SOLICITACAO DE RMA (`VIS-V1-011`) e DELETAR UM USUARIO (`VIS-V1-012`) →
+    **não implementados** (hard delete, decisão de produto/segurança pendente); a view
+    renderiza só o título + texto de pendência citando o ID do achado, sem form.
+  - INFORMACAO DO PROCEDIMENTO DE RMA → texto estático reproduzido (artefatos de
+    encoding do original corrigidos: `m�os`→`mãos`, `�`→`é`).
+  - LISTAR SOLICITACOES DE RMA ARQUIVADAS (`VIS-V1-013`) → **implementado**: consulta
+    `Status::Arquivado` direto no controller (mesmo enum já usado por
+    `rmas.arquivar`/`rmas.reverter`, sem decisão de produto nova), mesmas colunas do
+    legado (CHAVE/FABRICANTE/DESCRICAO/MODELO/S-N/OS).
+  - MUDAR SENHA → reaproveita `identidade.perfil.senha.update` (exige senha atual +
+    confirmação); o legado só pedia "NOVA SENHA" sem senha atual — decisão deliberada de
+    manter a rota V3 mais segura já existente em vez de reintroduzir o form inseguro
+    (não é lacuna, é reaproveitamento com o contrato de segurança que já existia).
+  - CSS: classes reais de `pattern/14.6.1.css` adicionadas a `resources/sass/temas/v1.scss`
+    (`.formTitlePanel`, `.formLabelPanel`, `.trcontrole1`, `.tdcontrole1`); painéis usam
+    `<details>/<summary>` nativos (substituem `expande()`/`minimize()` do legado sem JS
+    novo).
+  - Teste: `tests/Feature/Rma/ControlePainelTest.php` (8 casos — autorização
+    Supervisor/Operador/visitante, listagem de arquivados filtrada, "nenhum item
+    arquivado", arquivar por número via rota reaproveitada, MENU aponta para a rota
+    nova e não mais para `rmas.historico.index`, `rmas.historico.index` continua
+    acessível pela própria URL).
+  - Screenshot depois: `docs/produto/screenshots-vis-v1-001/10-v3-controle-painel-corrigido.png`
+    (V3, todos os painéis expandidos, dado fictício do seed de QA — commitável, mesma
+    regra dos demais prints desta pasta). Comparar com os já commitados
+    `06-legacy-menu-controle-v1-colapsado.png`/`07-legacy-menu-controle-v1-ajuda-expandida.png`
+    (Legacy).
 
 ## VIS-V1-011 — Ação "Deletar RMA" (hard delete) ausente na V3
 
@@ -330,8 +371,9 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   (título "LISTAR SOLICITACOES DE RMA ARQUIVADAS" visível no painel)
 - Critério de aceite: listagem (ou filtro de busca por status) para `Status::Arquivado`,
   acessível a partir de uma tela real
-- Status: **[ ] pendente** — prioridade menor (dado é auditável via `rmas.historico`,
-  falta visão consolidada)
+- Status: **[x] CORRIGIDO NESTA SESSÃO** — implementado dentro do painel Controle
+  (`VIS-V1-010`, `ControlePainelController::index`), seção "LISTAR SOLICITACOES DE RMA
+  ARQUIVADAS", mesmas colunas do legado. Ver detalhes e teste em `VIS-V1-010` acima.
 
 ## VIS-V1-014 — Tela de ajuda/procedimento estática ausente na V3
 
@@ -406,9 +448,9 @@ por isso fica registrado para a próxima sessão junto de VIS-V1-001/002/003/004
 | VIS-V1-007 | Não auditado tela a tela |
 | VIS-V1-008 | **Corrigido nesta sessão anterior — refinamento em `VIS-V1-010`** |
 | VIS-V1-009 | Pendente — 5 telas de detalhe de parceiro ausentes (`PAR-PARCEIRO-001`) |
-| VIS-V1-010 | Pendente — "Controle" do MENU V1 aponta para tela errada (refina `VIS-V1-008`) |
-| VIS-V1-011 | Pendente — ação "Deletar RMA" ausente, requer decisão de produto |
-| VIS-V1-012 | Pendente — ação "Deletar usuário" ausente (V1 e V2) |
-| VIS-V1-013 | Pendente — listagem "RMAs arquivados" ausente, prioridade menor |
+| VIS-V1-010 | **Corrigido e testado nesta sessão** — painel Controle V1 próprio, link reclassificado |
+| VIS-V1-011 | Pendente — ação "Deletar RMA" ausente, requer decisão de produto (mantido `[ ]` de propósito) |
+| VIS-V1-012 | Pendente — ação "Deletar usuário" ausente (V1 e V2) (mantido `[ ]` de propósito) |
+| VIS-V1-013 | **Corrigido nesta sessão** — implementado dentro do painel Controle V1 |
 | VIS-V1-014 | Pendente — tela de ajuda estática ausente, prioridade baixa |
 | VIS-V2-001 | Pendente — listagem "Recebido" (TEMA V2 legado) totalmente ausente |

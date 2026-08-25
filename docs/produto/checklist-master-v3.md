@@ -95,9 +95,15 @@ Checkpoint dirigido TEMA V1 desktop (incorporado ao plano em 2026-08-25):
 - [ ] **ARQ F10-V1-02 — auditar CSS integral e HTML autenticado.** ~~Matriz consciente em
   `docs/produto/paridade-visual-tema-v1.md`; sem cópia integral das folhas históricas.~~
   Reaberto: `.tablenovo`/`.novo_formInput*` e afins não reproduzem a geometria real.
-- [ ] **DEV F10-V1-03 — restaurar cabeçalho/menu/painel históricos.** ~~Blade Laravel e
-  seletores usados, mantendo base fixa de 984 px.~~ Reaberto: itens de navegação
-  superior e do MENU administrativo ausentes.
+- [ ] **DEV F10-V1-03 — restaurar cabeçalho/menu/painel históricos.** Blade Laravel e
+  seletores usados, mantendo base fixa de 984 px. Reaberto e parcialmente corrigido de
+  novo: os 4 atalhos de navegação superior — Entrada/Encaminhado/Aguardando credito/
+  Concluido — agora abrem listagem real, não link morto (`VIS-V1-001`, esta sessão, ver
+  `docs/produto/checklist-paridade-visual-v1-runtime.md`). Ainda não fecha: o item
+  "Controle" do MENU (`VIS-V1-008`, sessão anterior) foi mapeado para a tela ERRADA —
+  aponta para `rmas.historico.index`, que reproduz o painel "Controle" do V2 legado
+  (logs), não o do V1 (7 ações administrativas) — ver refinamento `VIS-V1-010` no
+  parecer de cobertura.
 - [ ] **DEV F10-V1-04 — corrigir usuários, busca e novo RMA.** ~~Tabelas, formulários,
   controles e wrappers compatíveis com a composição 14.6.1.~~ Reaberto: Novo RMA
   perdeu campos e a interação inline; Localizar/Home com composição diferente.
@@ -112,6 +118,37 @@ Checkpoint dirigido TEMA V1 desktop (incorporado ao plano em 2026-08-25):
 - [ ] **DOC F10-V1-08 — registrar diferenças conscientes.** ~~Gateway compartilhado,
   ações Laravel e dados distintos não são redesenho.~~ Reaberto: revisar quais
   diferenças eram de fato conscientes/aceitas versus lacuna não percebida.
+
+### F10 — cobertura de telas (achado `INV-RMA-BUG-LAYOUT-parecer-cobertura-telas.md`, 2026-08-25)
+
+Auditoria de todas as 38 telas reais do legado (14.6.1 + 15.8.1) contra rota+controller+
+view real da V3 — mesma disciplina de `VIS-V1-001` (nunca por nome de classe). 7 telas
+sem nenhum equivalente, 2 ações administrativas ausentes cross-tema, 1 refinamento de
+achado anterior. Detalhe completo, evidências e critério de aceite de cada item:
+`docs/produto/checklist-paridade-visual-v1-runtime.md` (`VIS-V1-009` a `VIS-V1-014`,
+`VIS-V2-001`).
+
+- [ ] **DEV F10-COB-01 — detalhe de parceiro (`VIS-V1-009`).** Rota `GET` de detalhe para
+  fornecedor/fabricante/cliente/assistência técnica, com campos completos do domínio +
+  RMAs associados; já rastreado como `PAR-PARCEIRO-001` na matriz de temas.
+- [ ] **DOC F10-COB-02 — reclassificar "Controle" do MENU V1 (`VIS-V1-010`).** `VIS-V1-008`
+  mapeou para `rmas.historico.index` (painel "Controle" do V2, logs), não para o painel
+  real do V1 (7 ações). Corrigir a classificação antes de fechar `F10-V1-03`.
+- [ ] **DECISAO F10-COB-03 — ação "Deletar RMA" (`VIS-V1-011`).** Implementar hard delete
+  com o contrato do legado, ou registrar decisão explícita de não reconstruir (padrão
+  `LEG-RMA-016`/`034`) — hoje é omissão silenciosa, não decisão.
+- [ ] **DECISAO F10-COB-04 — ação "Deletar usuário" (`VIS-V1-012`).** Mesma decisão
+  pendente de `F10-COB-03`, cross-tema (V1 e V2 legado); alternativa é soft-delete
+  registrado como escolha.
+- [ ] **DEV F10-COB-05 — listagem "RMAs arquivados" (`VIS-V1-013`).** Listagem/filtro de
+  busca por `Status::Arquivado`; prioridade menor (dado já auditável via `rmas.historico`).
+- [ ] **DEV F10-COB-06 — tela de ajuda estática (`VIS-V1-014`).** Reproduzir o texto do
+  procedimento Entrada→Recebido→Encaminhado→Concluído, ou decisão de descartar;
+  prioridade baixa.
+- [ ] **DEV F10-COB-07 — listagem "Recebido" do TEMA V2 legado (`VIS-V2-001`).** Quinta
+  listagem por status (ao lado de Entrada/Encaminhado/Concluído do V2), mesmas regras de
+  destaque de `VIS-V1-001`; risco sinalizado de o gate visual fechar sem ela porque o V1
+  nunca teve essa aba.
 
 - [ ] **QA F10-VIS-01 — fixar matriz de telas.** Login, home/alertas, novo RMA,
   detalhe/edição, busca/listagem, parceiros, crédito, relatórios e histórico.

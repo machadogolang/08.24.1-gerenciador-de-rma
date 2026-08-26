@@ -13,9 +13,13 @@ Campos do legado não reproduzidos aqui, por classificação explícita (VIS-V1-
   adicionou (`fornecedor_id`); mantê-lo aqui tornaria o TEMA V1 visualmente diferente do
   runtime original só porque o domínio evoluiu. Continua disponível na Edição/V2.
 - `Fabricante` continua `<select fabricante_id>` (FK), não o `<input list>` de texto
-  livre do legado — mudança já existente no domínio (não é uma lacuna desta correção;
-  reverter para texto livre exigiria um caso de uso de resolução por nome que não
-  existe hoje para Fabricante, diferente do Cliente que já tem `EncontrarOuCriarCliente`).
+  livre do legado. CP8-04 (fase 2) pediu portar de volta pra input/datalist, mas
+  `EncontrarOuCriarFabricante` (que existe hoje) tem docblock próprio dizendo que é
+  "SÓ pelo migrador" e que a criação em runtime "continua exigindo fabricante de uma
+  lista já cadastrada" (decisão de fase anterior, não desta correção) — usá-la aqui
+  reverteria essa decisão sem re-confirmar com quem a tomou. **Item CP8-04 deixado em
+  aberto**, não implementado às cegas; os demais itens de CP8 (checkbox/datas/
+  box-sizing) foram fechados nesta correção.
 - `Descricao`/`Origem`/`Modelo`/`Empresa` eram `<input list="...">` com sugestões
   carregadas do banco no legado; aqui viram input simples — perda de autocomplete, sem
   impacto no dado persistido/estrutura, fora do critério de aceite (estrutura/geometria/
@@ -45,7 +49,7 @@ Campos do legado não reproduzidos aqui, por classificação explícita (VIS-V1-
             <td width="8%"><div style="margin-left:10px;">NF C:</div></td>
             <td width="14%"><input class="novo_formInputSmall" type="text" name="nfcompra" value="{{ old('nfcompra') }}" maxlength="255"></td>
             <td width="4%"><div style="margin-left:10px;">DATA:</div></td>
-            <td width="14%"><input class="novo_formInputDATE" type="date" name="nfcompra_emissao" value="{{ old('nfcompra_emissao') }}"></td>
+            <td width="14%"><input class="novo_formInputDATE" type="text" name="nfcompra_emissao" value="{{ old('nfcompra_emissao') }}" placeholder="00/00/2015" maxlength="10"></td>
         </tr>
         <tr>
             <td>SNID:</td>
@@ -62,7 +66,7 @@ Campos do legado não reproduzidos aqui, por classificação explícita (VIS-V1-
             <td><div style="margin-left:10px;">NF V:</div></td>
             <td><input class="novo_formInputSmall" type="text" name="nfvenda" value="{{ old('nfvenda') }}" maxlength="255"></td>
             <td><div style="margin-left:10px;">DATA:</div></td>
-            <td><input class="novo_formInputDATE" type="date" name="nfvenda_emissao" value="{{ old('nfvenda_emissao') }}"></td>
+            <td><input class="novo_formInputDATE" type="text" name="nfvenda_emissao" value="{{ old('nfvenda_emissao') }}" placeholder="00/00/2015" maxlength="10"></td>
         </tr>
         <tr>
             <td>S/N:</td>
@@ -88,9 +92,15 @@ Campos do legado não reproduzidos aqui, por classificação explícita (VIS-V1-
         </tr>
     </table>
 
+    {{-- CP8 (fase 2, `plano-execucao-paridade-visual-v1-fase2.md`) — toggle histórico
+    de `pattern/15.9.7.css:286-296` (regra global `input[type=checkbox] + label`,
+    escopada aqui a `#JS-Novo` pra não afetar outros checkboxes do sistema, ver
+    `_v1-base.scss`). Rótulo vem de `content: attr(data-text-true|false)` via
+    `::before`/`::after` — sem texto próprio no `<label>`; `<i></i>` é a bolinha
+    deslizante. --}}
     <div style="padding:5px 0;clear:both;">
         <input type="checkbox" id="marcarestoque" name="marcarestoque" value="1" @checked(old('marcarestoque', true))>
-        <label for="marcarestoque">O ITEM E DO ESTOQUE</label>
+        <label for="marcarestoque" data-text-true="O ITEM E DO ESTOQUE" data-text-false="ITEM NAO E DO ESTOQUE"><i></i></label>
     </div>
 </form>
 <p class="both"></p>

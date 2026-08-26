@@ -186,8 +186,12 @@ hr {
     text-align: left;
 }
 
+// CP8-05 (fase 2 V1) — `pattern/14.6.1.css`/`15.9.7.css` não declaram `box-sizing`
+// pra nenhuma destas 5 classes (era `content-box` no browser da época); o V3 tinha
+// adicionado `border-box` nas 5, o que reduz a largura renderizada em
+// padding+border (2-6px, dependendo da classe) contra o Legacy — removido pra bater
+// exatamente com o `outerWidth` medido nos dois lados.
 .novo_formInput {
-    box-sizing: border-box;
     height: 22px;
     width: 100%;
     margin: 0;
@@ -199,7 +203,6 @@ hr {
 }
 
 .novo_formInputDATE {
-    box-sizing: border-box;
     height: 22px;
     width: 94%;
     margin: 0;
@@ -212,7 +215,6 @@ hr {
 }
 
 .novo_formInputSmall {
-    box-sizing: border-box;
     height: 22px;
     width: 94%;
     margin: 0;
@@ -225,7 +227,6 @@ hr {
 }
 
 .novo_defeito {
-    box-sizing: border-box;
     height: 22px;
     width: 99%;
     margin-left: 1px;
@@ -237,7 +238,6 @@ hr {
 }
 
 .formInputObservacao {
-    box-sizing: border-box;
     height: 22px;
     width: 99%;
     margin-left: 1px;
@@ -246,6 +246,57 @@ hr {
     background-color: #26251f;
     color: $texto;
     font-size: 13px;
+}
+
+// CP8-02 — toggle "item é do estoque" (`pattern/15.9.7.css:286-296`), escopado a
+// `#JS-Novo` (regra global no Legacy, mas outros checkboxes do sistema — ex. login,
+// V2 — não devem herdar este estilo).
+#JS-Novo {
+    input[type="checkbox"] {
+        display: none;
+
+        + label {
+            display: inline-block;
+            position: relative;
+            width: 475px;
+            height: 30px;
+            padding-top: 10px;
+            background-color: #db574d;
+            color: #fff;
+            font-size: 12px;
+            font-weight: normal;
+            line-height: 20px;
+            text-transform: uppercase;
+            transition: all 200ms ease;
+
+            &::before,
+            &::after {
+                display: inline-block;
+                width: 50%;
+                height: 100%;
+                text-align: center;
+            }
+
+            &::before { content: attr(data-text-true); }
+            &::after { content: attr(data-text-false); }
+
+            i {
+                position: absolute;
+                top: 10%;
+                left: 5%;
+                width: 45%;
+                height: 80%;
+                background-color: #fff;
+                transition: all 200ms ease;
+            }
+        }
+
+        &:checked + label {
+            background-color: #67b04f;
+
+            i { left: 50%; }
+        }
+    }
 }
 
 .formButtonEnviarNovo {

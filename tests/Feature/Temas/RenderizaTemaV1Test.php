@@ -53,6 +53,23 @@ class RenderizaTemaV1Test extends TestCase
         $response->assertSeeText('RMA tema V1');
     }
 
+    /**
+     * CP8 (fase 2 V1) — achado real: reaproveitar `$ocultarTituloVisual` (só devia
+     * controlar o H1) pra também controlar se `#JS-Novo` é renderizado fez o painel
+     * global "Novo" sumir da Página Inicial (regressão introduzida e corrigida na
+     * mesma sessão que fechou CP6, achada testando o CP8). `$omitirPainelNovoGlobal`
+     * é a flag própria, só para `/rmas/create`.
+     */
+    public function test_painel_novo_global_continua_presente_na_pagina_inicial(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('id="JS-Novo"', false);
+    }
+
     public function test_novo_rma_v1_renderiza(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Operador]);

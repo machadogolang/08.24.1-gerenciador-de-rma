@@ -254,6 +254,18 @@ class RmaController extends Controller
      */
     private function validarDados(Request $request): array
     {
+        // CP8 (fase 2 V1) — `menujs-top/novo.php` usa `type="text"
+        // placeholder="00/00/2015"` pras datas, não `type="date"` (o TEMA V2 e o
+        // fallback `/rmas/create` continuam com o date picker nativo, que já manda
+        // ISO `Y-m-d`) — normaliza só quando o valor bate com `dd/mm/aaaa`, mantendo
+        // o `Y-m-d` do TEMA V2 intocado.
+        foreach (['nfcompra_emissao', 'nfvenda_emissao'] as $campo) {
+            $valor = $request->input($campo);
+            if (is_string($valor) && preg_match('#^(\d{1,2})/(\d{1,2})/(\d{4})$#', $valor, $partes) === 1) {
+                $request->merge([$campo => sprintf('%s-%02d-%02d', $partes[3], (int) $partes[2], (int) $partes[1])]);
+            }
+        }
+
         $dados = $request->validate([
             'descricao' => ['required', 'string', 'max:255'],
             'fabricante_id' => ['nullable', 'integer', 'exists:fabricantes,id'],

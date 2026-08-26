@@ -190,29 +190,91 @@ A mecânica inline (abrir sem navegar, manter a tela abaixo, POST funcional) já
 correta e **não deve ser mexida**. Fonte:
 `legacy-source/14.6.1/menujs-top/novo.php`, `pattern/15.9.7.css`.
 
-- [ ] CP8-01 — ler `novo.php` e a folha `15.9.7.css` (seção de checkbox/toggle) por
+- [x] CP8-01 — ler `novo.php` e a folha `15.9.7.css` (seção de checkbox/toggle) por
       inteiro.
-- [ ] CP8-02 — portar o toggle histórico do campo "item é do estoque": `label` com
+- [x] CP8-02 — portar o toggle histórico do campo "item é do estoque": `label` com
       `data-text-true="O ITEM E DO ESTOQUE"`/`data-text-false="ITEM NAO E DO
       ESTOQUE"`, `<i></i>` deslizante, `background-color:#DB574D` desmarcado /
       `#67B04F` marcado, `width:475px; height:30px`. Escopar a regra ao painel Novo
       do TEMA V1 (não alterar outros checkboxes do sistema). Preservar semântica de
       envio (marcado=true/desmarcado=false).
-- [ ] CP8-03 — trocar `type="date"` por `type="text" placeholder="00/00/2015"` nos
+- [x] CP8-03 — trocar `type="date"` por `type="text" placeholder="00/00/2015"` nos
       campos de data; converter `dd/mm/YYYY` → formato interno na camada HTTP antes
       de validar/persistir, sem enfraquecer validação; não alterar TEMA V2.
-- [ ] CP8-04 — trocar `<select name="fabricante_id">` por input/datalist visualmente
-      igual ao legado (`novo_formInput` + `list="fabricantes"`); resolver
-      nome→`fabricante_id` na camada de apresentação/aplicação antes do caso de uso,
-      sem query no Blade, sem alterar a modelagem do banco.
-- [ ] CP8-05 — auditar `box-sizing:border-box` introduzido pelo V3 em
+- [ ] CP8-04 — **deixado em aberto, não implementado.** Trocar `<select
+      name="fabricante_id">` por input/datalist exigiria `EncontrarOuCriarFabricante`
+      em runtime de criação — mas o docblock dessa classe diz explicitamente que ela é
+      "SÓ pelo migrador" e que a criação em runtime "continua exigindo fabricante de
+      uma lista já cadastrada" (decisão de uma fase anterior). Implementar isso às
+      cegas reverteria essa decisão sem revalidar com quem a tomou — ver nota em
+      `_form_novo.blade.php`.
+- [x] CP8-05 — auditar `box-sizing:border-box` introduzido pelo V3 em
       `novo_formInput`, `novo_formInputDATE`, `novo_formInputSmall`, `novo_defeito`,
       `formInputObservacao`: medir `outerWidth`/`outerHeight` Legacy×V3 para cada
       um; se o legado não tinha `border-box` e isso muda a geometria, reproduzir o
       box model histórico (a regra é `outerWidth`/`outerHeight` iguais, não "qual
       prática é mais moderna").
-- [ ] CP8-06 — capturar/reabrir/comparar painel Novo completo, registrar diário.
-- [ ] CP8-07 — testes focados/build e commit local.
+- [x] CP8-06 — capturar/reabrir/comparar painel Novo completo, registrar diário.
+- [x] CP8-07 — testes focados/build e commit local.
+
+### CMP-V1-2-003 — CP8, painel Novo: checkbox, datas, box-sizing
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear fontes remotas. Spec de regressão rodada do host.
+- Fonte: `menujs-top/novo.php` (146 linhas, lido por inteiro), `pattern/15.9.7.css:
+  286-296` (toggle de checkbox, regra global `input[type=checkbox] + label`),
+  `pattern/14.6.1.css:109-111,181-182` (5 classes de campo, nenhuma com
+  `box-sizing` declarado).
+- **Achado real, corrigido:** as 5 classes de campo (`novo_formInput`,
+  `novo_formInputDATE`, `novo_formInputSmall`, `novo_defeito`,
+  `formInputObservacao`) tinham `box-sizing:border-box` adicionado pelo V3, sem
+  fonte no Legacy (que roda em `content-box`, o padrão do browser da época — nenhuma
+  das duas folhas de CSS originais declara a propriedade). Isso reduzia a largura
+  renderizada em padding+border (2-6px conforme a classe) — removido; `outerWidth`
+  bateu exatamente nos dois lados depois (134px/80px/397px/397px, confirmado via
+  `getBoundingClientRect()`).
+- **Achado de escopo:** o toggle de checkbox (`input[type=checkbox] + label`) é uma
+  regra GLOBAL no Legacy (sem classe própria) — portá-la sem escopo afetaria
+  qualquer outro checkbox+label do sistema (login, TEMA V2 etc.). Escopada a
+  `#JS-Novo input[type="checkbox"] + label` em `_v1-base.scss`.
+- **Achado real, corrigido — regressão introduzida nesta mesma sessão (CP6):** ao
+  clicar "Novo" na Página Inicial pra medir o painel deste checkpoint, o clique
+  NAVEGAVA pra `/rmas/create` em vez de abrir o painel inline — `#JS-Novo` não
+  existia mais no DOM da Página Inicial. Causa raiz: CP6 tinha reaproveitado
+  `$ocultarTituloVisual` (criada só pra esconder o H1) também como condição pra
+  renderizar `#JS-Novo` (`@unless` em `layout.blade.php`); ao somar `rmas.index`/
+  `v1.rmas.index` a essa flag (pra esconder o H1 da Home), o painel Novo global
+  sumiu junto, sem querer. Corrigido com uma flag própria
+  (`$omitirPainelNovoGlobal`, só `/rmas/create`) — H1 continua oculto na Home, painel
+  Novo global continua presente. Teste de regressão dedicado adicionado
+  (`RenderizaTemaV1Test::test_painel_novo_global_continua_presente_na_pagina_inicial`)
+  pra este cenário específico não voltar a quebrar silenciosamente.
+- **CP8-04 (fabricante) deixado em aberto**, não implementado — `EncontrarOuCriarFabricante`
+  existe mas seu próprio docblock diz que é só pro migrador; a criação em runtime
+  "continua exigindo fabricante de uma lista já cadastrada" por decisão de fase
+  anterior. Implementar às cegas reverteria essa decisão sem revalidação — registrado
+  como pendência explícita, não como gap silencioso.
+- Tabela de medidas (`getBoundingClientRect`, Legacy × V3):
+
+  | Elemento | Legacy | V3 antes | V3 depois | Delta depois |
+  |---|---|---|---|---|
+  | `.novo_formInput[name=descricao]` outerWidth | `134px` | `134px` (border-box já rendia igual aqui por coincidência de %) | `134px` | `0` |
+  | `.novo_formInputDATE` outerWidth | `80px` | `80px` | `80px` | `0` |
+  | `.novo_defeito`/`.formInputObservacao` outerWidth | `397px` | `397px` | `397px` | `0` |
+  | toggle `label` (`width,height,bg` marcado) | `475px,30px,rgb(103,176,79)` | inexistente (checkbox sem estilo) | `475px,30px,rgb(103,176,79)` | `0` |
+  | toggle `::before`/`::after` content | `"O ITEM E DO ESTOQUE"`/`"ITEM NAO E DO ESTOQUE"` | inexistente | idêntico | `0` |
+  | painel Novo presente no DOM da Página Inicial | sim (`#JS-Novo` global) | **não** (regressão CP6) | sim | `0` |
+- Diferença perceptível restante: nenhuma na geometria/estilo do formulário. Campo
+  Fabricante continua `<select>` FK (CP8-04, pendência explícita); autocomplete de
+  Descrição/Origem/Modelo/Empresa continua fora de escopo (decisão já registrada em
+  VIS-V1-003).
+- Screenshots versionados (fictício QA, mesma régua desta sessão):
+  `docs/produto/screenshots-vis-v1-001/{22-legacy-novo-painel-checkbox-toggle,23-v3-novo-painel-cp8-corrigido}.png`.
+- Decisão: **CP8 APROVADO**, com CP8-04 explicitamente pendente (não bloqueante,
+  documentado).
+- Testes/build: `php artisan test` (364/820, verde — 1 teste novo de regressão);
+  `npm run build` (ok); `ParidadeVisualTemaV1.spec.ts` rodado do host (4/4, verde).
+- Commit: a seguir (`#ARQ-RMA - Corrige o checkbox as datas e o box model do painel Novo do tema V1`).
 
 ## CP9 — Quadro de Anotações
 

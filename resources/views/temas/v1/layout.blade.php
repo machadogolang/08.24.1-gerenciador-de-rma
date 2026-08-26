@@ -26,6 +26,14 @@
         // via Playwright: o H1 "RMAs" visível empurrava o gap header→Localizar de
         // 14px (Legacy) para 72px (V3, antes desta correção).
         $ocultarTituloVisual = request()->routeIs('rmas.create', 'v1.rmas.create', 'rmas.index', 'v1.rmas.index');
+        // CP8 — achado real: `$ocultarTituloVisual` também controlava se `#JS-Novo`
+        // é renderizado (`@unless` abaixo) — ao somar `rmas.index` a essa flag no
+        // CP6 (só pra esconder o H1), o painel "Novo" global sumiu por completo da
+        // Página Inicial (regressão introduzida e corrigida na mesma sessão, achada
+        // ao medir o clique em "Novo" pelo CP8). Flag própria, só para
+        // `/rmas/create` (que já tem seu próprio `#JS-Novo` fixo via
+        // `create.blade.php`, não precisa do painel global duplicado).
+        $omitirPainelNovoGlobal = request()->routeIs('rmas.create', 'v1.rmas.create');
         // CP7 — `startpage.php` abre `#JS-Localizar` já visível só na Página Inicial
         // (script inline próprio, ver CP6); nas demais páginas o painel começa
         // oculto, igual ao `#JS-Novo`, e só abre via clique em "Localizar"
@@ -118,7 +126,7 @@
             essa view (`AppServiceProvider::boot()`), mesmo padrão do legado (a query
             de `listar_nome_de_fabricantes()` roda em toda carga de página, painel
             oculto ou não). --}}
-            @unless ($ocultarTituloVisual)
+            @unless ($omitirPainelNovoGlobal)
                 <div class="JS-Novo tam" id="JS-Novo" style="display:none;">
                     @include('temas.v1.rma._form_novo')
                 </div>

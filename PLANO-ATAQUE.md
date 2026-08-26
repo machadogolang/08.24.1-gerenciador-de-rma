@@ -30,7 +30,9 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
 
 1. [x] CP6 — Página Inicial sem conteúdo artificial (removidos "RMAs"/"Novo RMA");
 2. [x] CP7 — Localizar como painel inline histórico (maior item da fase);
-3. [ ] CP8 — painel Novo: toggle de estoque, campo de data, fabricante, box-sizing;
+3. [x] CP8 — painel Novo: toggle de estoque, campo de data, box-sizing (CP8-04,
+   fabricante como input/datalist, deixado em aberto — reverteria decisão de fase
+   anterior sobre `EncontrarOuCriarFabricante`);
 4. [ ] CP9 — Quadro de Anotações (rows=20, título, remover botão salvar);
 5. [ ] CP10 — sidebar de contadores (box model, links);
 6. [ ] CP11 — separador antes do Centro de Avisos (`separador2.png`);

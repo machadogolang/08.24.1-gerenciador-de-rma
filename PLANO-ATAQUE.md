@@ -43,7 +43,9 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
    redesenho das 10 tabelas por-grupo, deixado em aberto — classificação completa
    documentada, implementação é frente futura dedicada, risco de regressão no
    componente compartilhado com o TEMA V2 já fechado);
-8. [ ] CP13 — fixture de QA com comprimento de dado realista;
+8. [x] CP13 — fixture de QA com comprimento de dado realista (`os`/`descricao`
+   encurtados; 1 registro com `solucao=PendenteCredito`, Aguardando Crédito deixa
+   de ficar sempre vazia);
 9. [ ] CP14 — investigação da máquina de estados `$TR1` (só corrigir com evidência);
 10. [ ] CP15 — gate final da fase 2 (três viewports, prova final, checklist).
 

@@ -55,14 +55,31 @@ class QaSeeder extends Seeder
                 default => $fabricantes[($indice - 1) % $fabricantes->count()],
             };
 
+            // CP13 (fase 2 V1, `plano-execucao-paridade-visual-v1-fase2.md`) —
+            // comprimento de texto comparável ao Legacy real (ex.: `os` como
+            // "5947"/"6040", 4-5 dígitos, não "OS-QA-00059"; `descricao` como
+            // "NOBREAK 700VA"/"ESTABILIZADOR 300VA", ~13-20 caracteres) — só o
+            // COMPRIMENTO muda, o dado continua 100% fictício e determinístico.
+            // `PendenteCredito` (CP13-02): nenhum registro do seed anterior tinha
+            // esse valor de `solucao` — a tela "Aguardando Crédito" (fase 1,
+            // CMP-V1-005) só tinha sido comparada por teste automatizado, sem par de
+            // screenshot, por falta de dado. O 3º registro (primeiro
+            // `Status::Encaminhado`) ganha esse valor aditivamente, sem remover
+            // nenhuma combinação já coberta.
+            $solucao = match (true) {
+                $estado === Status::Concluido => Solucao::Reparo,
+                $indice === 3 => Solucao::PendenteCredito,
+                default => null,
+            };
+
             Rma::factory()->create([
-                'descricao' => sprintf('Equipamento ficticio QA %03d', $indice),
+                'descricao' => sprintf('Ficticio QA %03d', $indice),
                 'fabricante_id' => $fabricantes[($indice - 1) % $fabricantes->count()]->id,
                 'fornecedor_id' => $fornecedores[($indice - 1) % $fornecedores->count()]->id,
                 'cliente_id' => $clientes[($indice - 1) % $clientes->count()]->id,
                 'modelo' => sprintf('MODELO-QA-%03d', $indice),
                 'sn' => sprintf('SN-QA-%06d', $indice),
-                'os' => sprintf('OS-QA-%05d', $indice),
+                'os' => (string) (5900 + $indice),
                 'origem' => $indice % 2 === 0 ? 'Cliente' : 'Loja',
                 'empresa' => 'Empresa Ficticia QA',
                 'defeito' => sprintf('Defeito ficticio para teste %03d', $indice),
@@ -73,7 +90,7 @@ class QaSeeder extends Seeder
                 'concluido_em' => $concluidoEm,
                 'arquivado_em' => $arquivadoEm,
                 'protocolo' => sprintf('PROTOCOLO-QA-%04d', $indice),
-                'solucao' => $estado === Status::Concluido ? Solucao::Reparo : null,
+                'solucao' => $solucao,
                 'destinatario_type' => $destinatario::class,
                 'destinatario_id' => $destinatario->id,
                 'prioridade' => $prioridades[($indice - 1) % count($prioridades)],

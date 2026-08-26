@@ -34,11 +34,15 @@ class QaSeederTest extends TestCase
         $this->assertTrue(Hash::check('password', $supervisor->password));
 
         $primeiroRma = Rma::query()->oldest('id')->firstOrFail();
-        $this->assertSame('Equipamento ficticio QA 001', $primeiroRma->descricao);
+        $this->assertSame('Ficticio QA 001', $primeiroRma->descricao);
         $this->assertNotNull($primeiroRma->cliente_id);
         $this->assertNotNull($primeiroRma->fabricante_id);
         $this->assertNotNull($primeiroRma->fornecedor_id);
         $this->assertNotNull($primeiroRma->destinatario_id);
+
+        // CP13 (fase 2 V1) — pelo menos 1 registro com `solucao=PendenteCredito`
+        // pra Aguardando Crédito nunca ficar vazio no seed padrão.
+        $this->assertSame(1, Rma::query()->where('solucao', \App\Rma\Dominio\Solucao::PendenteCredito)->count());
     }
 
     public function test_recusa_semeadura_de_qa_em_producao(): void

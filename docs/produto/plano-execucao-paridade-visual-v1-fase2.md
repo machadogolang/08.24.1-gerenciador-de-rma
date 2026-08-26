@@ -563,17 +563,60 @@ Só depois de CP6–CP12, para não misturar "tamanho do texto fictício" com de
 CSS na comparação visual final (ex.: `OS-QA-00059` vs `5947`, `EQUIPAMENTO FICTICIO
 QA 059` vs `INTELBRAS`).
 
-- [ ] CP13-01 — ajustar o seed de QA (`scripts/v3-reset-qa.sh` ou factory
+- [x] CP13-01 — ajustar o seed de QA (`scripts/v3-reset-qa.sh` ou factory
       correspondente) para gerar OS, fabricantes, modelos, descrições e seriais com
       comprimento semelhante ao observado no Legacy, continuando 100% fictício (não
       copiar dado real).
-- [ ] CP13-02 — garantir pelo menos um registro fictício com `solucao=PENDENTE
+- [x] CP13-02 — garantir pelo menos um registro fictício com `solucao=PENDENTE
       CREDITO` no seed padrão, para permitir captura direta de Aguardando Crédito
       (pendência deixada pela fase 1 — CMP-V1-005 comparou essa tela só por teste
       automatizado, sem par de screenshot).
-- [ ] CP13-03 — regenerar screenshots das 4 listagens com a fixture nova e comparar
+- [x] CP13-03 — regenerar screenshots das 4 listagens com a fixture nova e comparar
       densidade de linha com o Legacy.
-- [ ] CP13-04 — registrar diário e commit local.
+- [x] CP13-04 — registrar diário e commit local.
+
+### CMP-V1-2-008 — CP13, fixture de QA com comprimento de dado realista
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear fontes remotas. Spec de regressão rodada do host + V2 rodada no container
+  (confirmar zero regressão cruzada, já que `QaSeeder` é compartilhado pelos dois
+  temas).
+- Fonte da comparação de comprimento: screenshots Legacy já capturados nesta sessão
+  (CP23/V2: `os` real como `5947`/`6040`/`6003`, 4 dígitos; `descricao` real como
+  `NOBREAK 700VA`/`ESTABILIZADOR 300VA`/`2UND - HD 2,5" SLIM`, 13-20 caracteres).
+- **Achado real, corrigido — só comprimento, sem mudar contagens:**
+  `descricao`: `"Equipamento ficticio QA 001"` (27 caracteres) → `"Ficticio QA 001"`
+  (16 caracteres, ainda claramente fictício); `os`: `"OS-QA-00001"` (11 caracteres,
+  formato alfanumérico) → `(string)(5900+$indice)` (4 dígitos puros, `"5901"`..
+  `"5960"`, mesmo formato numérico puro do Legacy). `modelo`/`sn` não alterados —
+  já estavam em faixa de comprimento comparável (13/12 caracteres, Legacy varia
+  8-26).
+- **Achado real, corrigido:** nenhum registro do seed anterior tinha
+  `solucao=PendenteCredito` — a tela Aguardando Crédito (rota `rmas-aguardando-
+  credito`) ficava sempre vazia (achado já registrado na fase 1, CMP-V1-005,
+  nunca fechado). Adicionado aditivamente: o 3º registro (1º `Status::Encaminhado`
+  do ciclo de 5) ganha `solucao=PendenteCredito` — não remove nenhuma combinação já
+  coberta (a contagem de `Status::Concluido`+`Solucao::Reparo`, usada em várias
+  medições já aprovadas desta sessão — ex. CP7's teste funcional de 12 linhas —,
+  continua em 12, intocada). Testado: `/rmas-aguardando-credito` foi de sempre-vazia
+  pra 1 linha real, com todos os campos preenchidos (fabricante, protocolo,
+  destinatário etc.).
+- Teste unitário do seeder (`QaSeederTest`) atualizado: string literal
+  `'Equipamento ficticio QA 001'`→`'Ficticio QA 001'` (mesmo registro, só o valor
+  mudou) + nova asserção `assertSame(1, ... where solucao=PendenteCredito ... count())`.
+- Screenshots versionados (fictício QA, mesma régua desta sessão):
+  `docs/produto/screenshots-vis-v1-001/{30-v3-aguardando-credito-cp13-primeiro-dado,31-v3-entrada-cp13-fixture-realista}.png`
+  — a 2ª mostra a densidade/comprimento de linha da listagem Entrada com o dado
+  novo, comparável ao Legacy.
+- Diferença perceptível restante: nenhuma nova. `fabricante`/`fornecedor`/`cliente`
+  (nomes vindos das factories, não deste seeder) já estavam em faixa de comprimento
+  razoável, não tocados.
+- Decisão: **CP13 APROVADO**.
+- Testes/build: `php artisan test` (364/821, verde — 1 assertion nova);
+  `ParidadeVisualTemaV1.spec.ts` rodado do host (4/4, verde);
+  `ComparacaoVisualTemaV2Test.spec.ts` rodado no container (2 passados/1 skip,
+  inalterado — zero regressão no TEMA V2 pela mudança do seed compartilhado).
+- Commit: a seguir (`#ARQ-RMA - Ajusta a fixture de QA para comprimento de dado realista e cobre aguardando credito`).
 
 ## CP14 — Investigação da máquina de estados `$TR1` (não é correção às cegas)
 

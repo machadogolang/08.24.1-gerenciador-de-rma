@@ -26,6 +26,11 @@
         // via Playwright: o H1 "RMAs" visível empurrava o gap header→Localizar de
         // 14px (Legacy) para 72px (V3, antes desta correção).
         $ocultarTituloVisual = request()->routeIs('rmas.create', 'v1.rmas.create', 'rmas.index', 'v1.rmas.index');
+        // CP7 — `startpage.php` abre `#JS-Localizar` já visível só na Página Inicial
+        // (script inline próprio, ver CP6); nas demais páginas o painel começa
+        // oculto, igual ao `#JS-Novo`, e só abre via clique em "Localizar"
+        // (`LocalizarMaximize()`, portado em `v1.js`).
+        $emIndice = request()->routeIs('rmas.index', 'v1.rmas.index');
         // As quatro listagens históricas começam pelo próprio ícone/título interno.
         // A seção permite omitir só o H1 artificial de #CONTEUDO sem retirar o painel
         // "Novo" permanente do DOM.
@@ -48,7 +53,12 @@
                 <li id="menu-novo" class="menu-up {{ request()->routeIs('v1.rmas.create') ? 'active' : '' }}">
                     <a href="{{ rota_tema('rmas.create') }}">Novo</a>
                 </li>
-                <li class="menu-up"><a href="{{ rota_tema('rmas.index') }}#localizar">Localizar</a></li>
+                {{-- CP7 — fallback funcional sem JS aponta pra Página Inicial (onde o
+                painel já vem aberto); com JS, `v1.js` intercepta e abre inline sem
+                navegar, mesmo padrão de `#menu-novo`. --}}
+                <li id="menu-localizar" class="menu-up">
+                    <a href="{{ rota_tema('rmas.index') }}">Localizar</a>
+                </li>
                 <li class="menu-up {{ request()->routeIs('rmas.entrada') ? 'active' : '' }}">
                     <a href="{{ route('rmas.entrada') }}">Entrada</a>
                 </li>
@@ -113,6 +123,15 @@
                     @include('temas.v1.rma._form_novo')
                 </div>
             @endunless
+
+            {{-- CP7 — equivalente a `menujs-top/localizar.php`, sempre no DOM (como
+            `#JS-Novo`), oculto por padrão exceto na Página Inicial, onde
+            `startpage.php` já abre visível (CP6). `LocalizarMaximize()` do legado só
+            troca `display`/`font-weight`, sem `MinimizeMenuRight()` — replicado à
+            risca em `v1.js` (não fecha o painel Novo se os dois estiverem abertos). --}}
+            <div class="JS-Localizar tam" id="JS-Localizar" style="display:{{ $emIndice ? 'block' : 'none' }};">
+                @include('temas.v1.rma._form_localizar')
+            </div>
 
             @unless ($painelSessao)
                 <div id="CONTEUDO">

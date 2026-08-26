@@ -4,19 +4,10 @@
     {{-- CP6 (fase 2, `plano-execucao-paridade-visual-v1-fase2.md`) — `startpage.php`
     não tem link "Novo RMA" próprio; o atalho já existe no menu superior ("Novo",
     `#menu-novo` em `temas/v1/layout.blade.php`). Este link duplicava o mesmo
-    destino sem fonte real no Legacy — removido. --}}
-    <form method="GET" action="{{ rota_tema('rmas.index') }}" id="localizar" class="JS-Localizar tam">
-        <label>Buscar por
-            <select name="tipo" class="formSelect">
-                <option value="texto" @selected($tipo === 'texto')>Texto</option>
-                <option value="serial" @selected($tipo === 'serial')>Serial</option>
-                <option value="nota_fiscal" @selected($tipo === 'nota_fiscal')>Nota fiscal</option>
-            </select>
-        </label>
-        <input class="JSformLocalizarInput" type="text" name="valor" value="{{ $valor }}">
-        <button class="JSformLocalizarButton" type="submit">Buscar</button>
-    </form>
-
+    destino sem fonte real no Legacy — removido.
+    CP7 — o painel Localizar (antes um `<form>` fixo só desta view) virou global em
+    `temas/v1/layout.blade.php` (`#JS-Localizar`, sempre no DOM, igual ao `#JS-Novo`,
+    aberto por padrão só na Página Inicial) — ver `_form_localizar.blade.php`. --}}
     @if (count($rmas) === 0)
         <p class="nenhumencontrado">Nenhum RMA encontrado.</p>
     @else

@@ -37,13 +37,35 @@ class RmaController extends Controller
         $tipo = $request->query('tipo', 'texto');
         $valor = (string) $request->query('valor', '');
 
+        // CP7 (fase 2 V1) — painel Localizar histórico (`menujs-top/localizar.php`)
+        // manda `campo` (13 opções + TUDO) em vez de `tipo`; mapeado aqui, na camada
+        // de apresentação, para os 3 tipos que `CriterioDeBusca`/`RmasEmBanco::buscar()`
+        // realmente aceitam — não inventa filtro por coluna que não existe.
+        // `os`→nota_fiscal (mesma coluna já buscada por esse tipo) e
+        // `SNPNSNID`→serial (busca só `sn`; `pn`/`snid` sem equivalente, `[GAP]`) têm
+        // encaixe literal; os demais campos sem coluna própria de busca
+        // (`fabricante`/`cliente`/`destinatario`/`rastreio_ida`/`protocolo`/`NF`/
+        // `numero`) caem no fallback `texto` (mesmo tratamento já aceito para `os`
+        // antes desta fase, ver docblock de `RmasEmBanco`) — `[GAP]` documentado,
+        // não é uma busca escopada à coluna que o rótulo sugere.
+        if ($request->has('campo')) {
+            $tipo = match ($request->query('campo')) {
+                'os' => 'nota_fiscal',
+                'SNPNSNID' => 'serial',
+                default => 'texto',
+            };
+        }
+
+        $solucaoQuery = (string) $request->query('solucao', '');
+        $solucao = Solucao::tryFrom($solucaoQuery);
+
         $criterio = match ($tipo) {
-            'serial' => CriterioDeBusca::porSerial($valor),
-            'nota_fiscal' => CriterioDeBusca::porNotaFiscal($valor),
-            default => CriterioDeBusca::porTexto($valor),
+            'serial' => CriterioDeBusca::porSerial($valor, $solucao),
+            'nota_fiscal' => CriterioDeBusca::porNotaFiscal($valor, $solucao),
+            default => CriterioDeBusca::porTexto($valor, $solucao),
         };
 
-        $rmas = $valor !== '' ? $caso->buscar($criterio) : [];
+        $rmas = ($valor !== '' || $solucao !== null) ? $caso->buscar($criterio) : [];
 
         // CP23 (paridade visual V2) — as abas Entrada/Recebido/Encaminhado/Concluído
         // (`15.8.1/page/{entrada,recebido,encaminhado,concluido}.php`) são listagens
@@ -63,6 +85,12 @@ class RmaController extends Controller
             'rmas' => $rmas,
             'tipo' => $tipo,
             'valor' => $valor,
+            // CP7 (fase 2 V1) — reflete a última busca nos selects de
+            // `_form_localizar.blade.php` (o Legacy não fazia isso, `<option
+            // selected>` estático — melhoria de UX sem custo de fidelidade visual
+            // estática, mesmo critério já usado para o autosave de Anotações).
+            'campo' => $request->query('campo', 'TUDO'),
+            'solucao' => $solucaoQuery !== '' ? $solucaoQuery : '%',
             'porStatusV2' => $porStatusV2,
             // CP20/CP23 (paridade visual V2) — as tabelas históricas mostram nome de
             // fabricante/destinatário, não só o id; mesmo padrão de

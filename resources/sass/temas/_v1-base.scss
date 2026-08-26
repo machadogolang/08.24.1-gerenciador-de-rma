@@ -632,6 +632,18 @@ li {
     letter-spacing: 1px;
 }
 
+// CP7 (fase 2 V1) — nunca tinha sido portada (só existia como classe em
+// `pattern/14.6.1.css`, sem `<select>` real usando-a antes desta correção). Medido
+// no Legacy via Playwright, computed style: `height:52px` (o valor cru da classe,
+// `text-align:center` incluso).
+.JSformLocalizarSelect {
+    margin-left: 15px;
+    padding: 2px;
+    height: 52px;
+    font-size: 12px;
+    text-align: center;
+}
+
 // Estado histórico do item de navegação selecionado (`14.6.1.css`).
 .active {
     color: gold !important;

@@ -66,6 +66,12 @@ final class RmasEmBanco implements RepositorioDeRmas
             'nota_fiscal' => $consulta->where('os', 'like', '%' . $criterio->valor() . '%'),
         };
 
+        // CP7 (fase 2 V1) — filtro aditivo independente do texto (`solucao` do
+        // painel Localizar do legado, ver `CriterioDeBusca::solucao()`).
+        if ($criterio->solucao() !== null) {
+            $consulta->where('solucao', $criterio->solucao());
+        }
+
         return $consulta->orderByDesc('id')->get()
             ->map(fn (RmaEloquent $model) => $this->paraDominio($model))
             ->all();

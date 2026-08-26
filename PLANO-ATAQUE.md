@@ -29,7 +29,7 @@ execução, CP6 fechado**) — restante da superfície do Tema V1 que a fase 1 n
 Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado:
 
 1. [x] CP6 — Página Inicial sem conteúdo artificial (removidos "RMAs"/"Novo RMA");
-2. [ ] CP7 — Localizar como painel inline histórico (maior item da fase);
+2. [x] CP7 — Localizar como painel inline histórico (maior item da fase);
 3. [ ] CP8 — painel Novo: toggle de estoque, campo de data, fabricante, box-sizing;
 4. [ ] CP9 — Quadro de Anotações (rows=20, título, remover botão salvar);
 5. [ ] CP10 — sidebar de contadores (box model, links);

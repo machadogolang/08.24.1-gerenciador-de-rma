@@ -43,3 +43,17 @@ if (botaoNovo && painelNovo) {
         botaoNovo.style.fontWeight = 'bold';
     });
 }
+
+// CP7 (fase 2 V1) — equivalente a `LocalizarMaximize()` (`pattern/14.6.1.js`): não
+// chama nenhum "minimize" (o legado não fecha o painel Novo se os dois estiverem
+// abertos ao mesmo tempo) — mesma omissão preservada aqui.
+const botaoLocalizar = document.querySelector('#menu-localizar a');
+const painelLocalizar = document.querySelector('#JS-Localizar');
+
+if (botaoLocalizar && painelLocalizar) {
+    botaoLocalizar.addEventListener('click', (evento) => {
+        evento.preventDefault();
+        painelLocalizar.style.display = 'block';
+        document.querySelector('#menu-localizar').style.fontWeight = 'bold';
+    });
+}

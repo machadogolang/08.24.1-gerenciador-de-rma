@@ -89,8 +89,8 @@ Maior item desta fase. Fonte:
 `legacy-source/14.6.1/menujs-top/localizar.php`, `pattern/14.6.1.css`,
 `pattern/14.6.1.js`.
 
-- [ ] CP7-01 — ler os 3 arquivos fonte por inteiro.
-- [ ] CP7-02 — medir geometria real no Legacy via `getBoundingClientRect()` +
+- [x] CP7-01 — ler os 3 arquivos fonte por inteiro.
+- [x] CP7-02 — medir geometria real no Legacy via `getBoundingClientRect()` +
       computed style (não assumir os valores do prompt sem medir):
       `#JS-Localizar` (`min-height:25px; padding:10px; margin-bottom:10px`),
       `.JSformLocalizarInput` (`width:422px; height:30px; padding:10px;
@@ -98,33 +98,91 @@ Maior item desta fase. Fonte:
       (`margin-left:15px; height:52px; font-size:12px`),
       `.JSformLocalizarButton` (`height:52px; width:100px; margin-left:15px;
       font-size:14px; letter-spacing:1px; background:#106D78`).
-- [ ] CP7-03 — extrair partial `resources/views/temas/v1/rma/_form_localizar.blade.php`
+- [x] CP7-03 — extrair partial `resources/views/temas/v1/rma/_form_localizar.blade.php`
       (mesmo padrão consciente já usado para `_form_novo.blade.php`, incluído uma vez
       pelo layout, sem duplicar entre páginas).
-- [ ] CP7-04 — montar select SOLUÇÃO com as opções históricas: `QUALQUER UMA SOLUCAO`,
+- [x] CP7-04 — montar select SOLUÇÃO com as opções históricas: `QUALQUER UMA SOLUCAO`,
       `GERADO CREDITO`, `SEM GARANTIA`, `REPARO`, `TROCA DO PRODUTO`,
       `TROCA DE PECA INTERNA`, `DEVOLUCAO DO PRODUTO`, `REEMBOLSO DO DINHEIRO`,
       `REPARO PELO RMA`, `TESTADO TUDO OK`, `ORCAMENTO PAGO`, `PROCON` — mapear cada
       rótulo para o valor real do enum `Solucao` do domínio (não inventar valor).
-- [ ] CP7-05 — montar select CAMPO com as opções históricas: `TODOS OS CAMPOS`,
+- [x] CP7-05 — montar select CAMPO com as opções históricas: `TODOS OS CAMPOS`,
       `ORDEM DE SERVICO`, `FABRICANTE`, `DESCRICAO`, `S/N, P/N OR ID/SNID/ETC`,
       `MODELO`, `ORIGEM`, `EMPRESA`, `CLIENTE`, `CODIGO DE RASTREIO`, `PROTOCOLO`,
       `NF`, `DESTINATARIO`, `CHAVE` — mapear para os critérios que o caso de uso de
       busca atual realmente aceita; documentar `[BUG-LEGADO]`/gap se algum campo
       histórico não tiver equivalente moderno (mesmo tratamento dado a "NF R" na
       fase 1 — não simular busca que não funciona).
-- [ ] CP7-06 — adapter na camada de apresentação/aplicação que traduz os parâmetros
+- [x] CP7-06 — adapter na camada de apresentação/aplicação que traduz os parâmetros
       da UI V1 para o caso de uso de busca existente; não portar parâmetros HTTP
       antigos para o domínio, não colocar query no Blade.
-- [ ] CP7-07 — comportamento inline: `#JS-Localizar` presente no DOM, oculto por
+- [x] CP7-07 — comportamento inline: `#JS-Localizar` presente no DOM, oculto por
       padrão exceto na Página Inicial (que já inicia com Localizar aberto no
       Legacy), clique em "Localizar" expõe o painel e deixa o item do menu em
       negrito, sem navegar — mesmo padrão do `NovoMaximize()` já portado para Novo.
-- [ ] CP7-08 — não introduzir jQuery só para isso; reaproveitar o padrão vanilla já
+- [x] CP7-08 — não introduzir jQuery só para isso; reaproveitar o padrão vanilla já
       usado no toggle do painel Novo.
-- [ ] CP7-09 — capturar/reabrir/comparar geometria completa (outerWidth/outerHeight
+- [x] CP7-09 — capturar/reabrir/comparar geometria completa (outerWidth/outerHeight
       de cada campo), registrar diário.
-- [ ] CP7-10 — testes focados/build e commit local.
+- [x] CP7-10 — testes focados/build e commit local.
+
+### CMP-V1-2-002 — CP7, Localizar como painel inline histórico
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear fontes remotas. Spec de regressão rodada do host.
+- Fonte: `menujs-top/localizar.php` (42 linhas, lido por inteiro), `pattern/14.6.1.css`
+  (seletores `.JS-Localizar`/`.JSformLocalizar*`), `pattern/14.6.1.js`
+  (`LocalizarMaximize()`).
+- **Achado de ordem visual (confirmado por medição, não por suposição):** o HTML fonte
+  tem `input(fl)` seguido de 3 blocos `float:right` na ordem
+  botão/CAMPO/SOLUÇÃO — com `float:right`, cada bloco novo entra à ESQUERDA do
+  anterior, então a ordem visual final é `input, SOLUÇÃO, CAMPO, FILTRAR` (confirmado
+  nos dois lados via `getBoundingClientRect().x` de cada elemento).
+- **Achado real, corrigido:** `.JSformLocalizarSelect` nunca tinha sido portada para
+  `_v1-base.scss` (só existia como classe morta, nenhum `<select>` a usava antes desta
+  correção) — sem ela, os selects renderizavam com a altura padrão do browser (24px)
+  em vez de `height:52px`, e sem o `margin-left:15px` que define o espaçamento entre
+  os 3 blocos flutuados. Adicionada com os valores medidos no Legacy.
+- **Achado de arquitetura:** o painel Localizar antes só existia dentro de
+  `rma/index.blade.php` (só a Página Inicial tinha o form). Portado para
+  `temas/v1/layout.blade.php` como painel global (`#JS-Localizar`, sempre no DOM,
+  oculto por padrão), mesmo padrão já usado por `#JS-Novo`/`_form_novo.blade.php` —
+  agora abre inline em QUALQUER página (ex.: Entrada) sem navegar, clicando
+  "Localizar" no menu superior, replicando `LocalizarMaximize()` (que não chama
+  `MinimizeMenuRight()`, omissão preservada).
+- **Adapter de busca (`RmaController::index()`):** `campo`→tipo de busca com encaixe
+  literal onde existe (`os`→`nota_fiscal`, mesma coluna; `SNPNSNID`→`serial`, só a
+  coluna `sn` — `pn`/`snid` sem cobertura, `[GAP]`); os campos sem coluna de busca
+  própria no schema atual (`fabricante`/`cliente`/`destinatario`/`rastreio_ida`/
+  `protocolo`/`NF`/`numero`) caem no fallback `texto` (mesmo tratamento já aceito
+  para `os` antes desta fase) — `[GAP]` documentado no código, rótulo histórico
+  preservado, comportamento real não inventado. `solucao` virou filtro aditivo
+  genuíno: `CriterioDeBusca` ganhou um 3º parâmetro opcional (`?Solucao`),
+  `RmasEmBanco::buscar()` aplica `WHERE solucao = ?` quando presente — testado
+  funcionalmente (`solucao=REPARO` retornou 12 linhas, batendo com o contador da
+  sidebar). Mudança 100% aditiva (parâmetro opcional, default `null`) — TEMA V2 (que
+  também usa `RmaController::index()`) continua com o comportamento antigo intacto.
+- Tabela de medidas (`getBoundingClientRect`/computed style, Legacy × V3, viewport
+  1440×1000):
+
+  | Elemento | Legacy | V3 antes | V3 depois | Delta depois |
+  |---|---|---|---|---|
+  | `#JS-Localizar` (`x,y,width,height`) | `228,65,984,72` | painel não existia fora do índice | `228,65,984,72` | `0` |
+  | `.JSformLocalizarInput` (`x,y,width,height`) | `240,75,444,52` | idêntico (já existia) | `240,75,444,52` | `0` |
+  | select CAMPO (`x,width,height`) | `901,186,52` | `901,186,24` | `901,186,52` | `0` |
+  | select SOLUÇÃO (`x,width,height`) | `700,186,52` | `715,186,24` | `700,186,52` | `0` |
+  | `.JSformLocalizarButton` (`x,y,width,height`) | `1102,75,100,52` | idêntico (já existia) | `1102,75,100,52` | `0` |
+  | toggle em página não-índice (Entrada) | painel oculto→visível ao clicar, sem navegar | painel inexistente fora do índice | oculto→visível ao clicar, sem navegar (`url` inalterada) | `0` |
+- Diferença perceptível restante: nenhuma na geometria/composição do painel. Gaps de
+  precisão de busca por campo documentados inline (`[GAP]`), não fabricados.
+- Screenshots versionados (fictício QA + contadores agregados, mesma régua já usada
+  nesta sessão): `docs/produto/screenshots-vis-v1-001/{19-legacy-localizar-pagina-inicial,20-v3-localizar-pagina-inicial-cp7,21-v3-localizar-toggle-inline-entrada}.png`.
+- Decisão: **CP7 APROVADO**.
+- Testes/build: `php artisan test` (363/818, verde, antes e depois da extensão de
+  `CriterioDeBusca`); `npm run build` (ok); `ParidadeVisualTemaV1.spec.ts` rodado do
+  host (4/4, verde); checagem funcional dedicada do filtro `solucao` (12 linhas para
+  `REPARO`, sem exceção).
+- Commit: a seguir (`#ARQ-RMA - Reconstroi o painel Localizar inline do tema V1 com geometria e filtros reais`).
 
 ## CP8 — Painel Novo: divergências visuais restantes
 

@@ -1,6 +1,6 @@
 # Plano de execução — paridade visual do Tema V2
 
-Data: 2026-08-25. Estado: **em execução**. Frente independente da paridade do Tema V1
+Data: 2026-08-25. Estado: **encerrada (CP16–CP25 aprovados)**. Frente independente da paridade do Tema V1
 (fechada em `plano-execucao-paridade-estrutural-v1.md`, CP0–CP5) — **não reabrir V1
 nesta frente**. Matriz correta desta comparação:
 
@@ -667,19 +667,88 @@ PHP fonte antes de aplicar): `DT ENTRADA 9%`, `ORIGEM 8%`, `NF C 6%`, `NF V 6%`,
 
 ## CP25 — gate final da paridade V2
 
-- [ ] CP25-01 — rodar suíte PHP completa e Vite build.
-- [ ] CP25-02 — rodar Playwright visual completo; confirmar Tema V1 sem regressão
+- [x] CP25-01 — rodar suíte PHP completa e Vite build.
+- [x] CP25-02 — rodar Playwright visual completo; confirmar Tema V1 sem regressão
       (obrigatório sempre que `_compartilhado.scss` for tocado — ver regra CP16-08/
       seção 30 do prompt original).
-- [ ] CP25-03 — comparar em 2048×1152, 1440×1000, 1562×1400 e 1700×1000.
-- [ ] CP25-04 — gerar screenshot + overlay 50% + diff absoluto para pelo menos: Home,
+- [x] CP25-03 — comparar em 2048×1152, 1440×1000, 1562×1400 e 1700×1000.
+- [x] CP25-04 — gerar screenshot + overlay 50% + diff absoluto para pelo menos: Home,
       Pesquisar, Entrada, Encaminhado, Concluído, menu direito expandido, dropdown
       Menu aberto.
-- [ ] CP25-05 — abrir cada par final e registrar uma entrada no diário.
-- [ ] CP25-06 — produzir a tabela final por elemento (formato da seção 31 do prompt
+- [x] CP25-05 — abrir cada par final e registrar uma entrada no diário.
+- [x] CP25-06 — produzir a tabela final por elemento (formato da seção 31 do prompt
       original) e caminhos dos screenshots.
-- [ ] CP25-07 — atualizar `docs/produto/checklist-paridade-visual-v1-runtime.md` (se
+- [x] CP25-07 — atualizar `docs/produto/checklist-paridade-visual-v1-runtime.md` (se
       aplicável ao V2) e `PLANO-ATAQUE.md`, criar commit final do checkpoint.
+
+### CMP-V2-008 — CP25, gate final da paridade V2
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, `deviceScaleFactor:1`, sem
+  bloquear fontes remotas. Medido nas 4 viewports do plano: 2048×1152, 1440×1000,
+  1562×1400, 1700×1000. `devicePixelRatio`/`zoom` de `html`/`body` conferidos neutros
+  (1/normal) nas 4 — sem artefato de escala.
+- **Achado que corrigiu o próprio script de medição (não é bug de produto):** a
+  primeira tentativa do script de gate mediu `#entrada .Tabelinha-Table` sem clicar
+  antes na aba "Entrada" — como o `.tab-pane` só fica visível com `.active`
+  (mecanismo Bootstrap 3 documentado em CMP-V2-001), a medição saía zerada. Corrigido
+  clicando `a[href="#entrada"]`/`#encaminhado`/`#concluido` antes de cada medição.
+- **Achado de infraestrutura, não de código desta frente:** rodar
+  `ParidadeVisualTemaV1.spec.ts` via `docker compose exec laravel.test` falhou com
+  `ERR_CONNECTION_REFUSED`/`net::ERR_NAME_NOT_RESOLVED` em `host.docker.internal:8094`
+  — o container do Legacy (`rma-legacy-php-legacy-1`, projeto externo) publica a porta
+  8094 só em `127.0.0.1` (`docker ps`: `127.0.0.1:8094->80/tcp`), então não é
+  alcançável a partir de outro container (mesmo com `host.docker.internal` resolvendo
+  para o gateway certo, `docker-proxy` não escuta lá). Sem relação com nenhuma mudança
+  desta sessão (container com esse binding há 11h, antes de qualquer CP16). Contornado
+  rodando a suíte diretamente do host (`npx playwright test`, que já é o padrão
+  documentado para este spec) com `LEGACY_BASE_URL=http://localhost:8094/14.6.1/` e
+  `PLAYWRIGHT_BASE_URL=http://localhost:8095` — 4/4 verde. Ficha aberta apenas como
+  nota operacional (comando certo para rodar este spec é sempre pelo host).
+- Tabela final por elemento (`getBoundingClientRect`, Legacy 15.8.1 × V3 `/v2/rma`),
+  idêntica nas 4 viewports (só `x` muda com a centralização, sempre
+  `(viewport-1190)/2`; tabela abaixo usa 2048×1152 como referência, delta = 0 em
+  todas as 4):
+
+  | Elemento | Legado | V3 | Delta |
+  |---|---|---|---|
+  | `header` (`x,y,width,height`) | `0,-3,2048,40` | `0,-3,2048,40` | `0` |
+  | wrapper do header (1190px) | `x=429,width=1190,right=1619` | idêntico | `0` |
+  | `.container`/`.shell-v2 > .container` (990px) | `x=429,width=990,right=1419` | idêntico | `0` |
+  | sidebar (195px) | `x=1424,y=47,width=195,right=1619` | idêntico | `0` |
+  | `.nav-tabs.nav-v2` (1190px, 9 itens 11.1%) | `x=429,width=1190,right=1619` | idêntico | `0` |
+  | tabela Entrada (`#entrada .Tabelinha-Table`, aba ativa) | `x=429,width=990,right=1419` | idêntico | `0` |
+  | tabela Encaminhado (`#encaminhado .Tabelinha-Table`, aba ativa) | `x=429,width=990,right=1419` | idêntico | `0` |
+  | tabela Concluído (`#concluido .Tabelinha-Table`, aba ativa) | `x=429,width=990,right=1419` | idêntico | `0` |
+  | cor do header | `#C20F41` | `#C20F41` | `0` |
+  | cor da aba ativa | `#FE0048` | `#FE0048` | `0` |
+  | fonte rasterizada (`body`, CDP `CSS.getPlatformFontsForNode`) | Open Sans local | Open Sans local | `0` |
+  | rodapé `.designedby` (2ª linha `letter-spacing`) | `1px` | `1px` | `0` |
+  | sidebar 14 seções (`LRTOP1/2`, `LiRight1/2`, expandir/colapsar) | presente | presente, mesmo comportamento | `0` |
+  | dropdown "Menu" (9 itens, `.lidropdown`/`.menuz` alternado) | presente | presente, abre/fecha | `0` |
+  | Início/Pesquisar (composição unificada, Centro de Avisos 10 grupos) | idêntico | idêntico | `0` |
+  | 4 abas por status (Entrada/Recebido/Encaminhado/Concluído sempre cheias) | sempre populadas | sempre populadas (correção CP23) | `0` |
+  | `y` do conteúdo (`.container`/`.tab-content`) | `≈37` | `40` | `3px` (tolerado, ver CMP-V2-001 — camada extra de aninhamento do Legacy) |
+- Diferenças perceptíveis remanescentes, todas já documentadas nos checkpoints que as
+  encontraram, nenhuma nova nesta rodada: zebra fina de Entrada/Recebido/Encaminhado
+  (`[INVESTIGAR]`, CMP-V2-006), gap "Anotacoes" sem página própria (`[GAP]`,
+  CMP-V2-001), redesenho por-grupo do Centro de Avisos fora de escopo desta frente
+  (CMP-V2-004/pendências).
+- Screenshots versionados (`docs/produto/screenshots-vis-v2-001/`, sem dado real —
+  fictício QA): `01` Legacy home/shell, `02` V3 home/shell, `03` dropdown aberto,
+  `04` sidebar 14 seções expandidas, `05` início/pesquisar unificados, `06` Centro de
+  Avisos, `07` aba Entrada, `08` aba Encaminhado (novo), `09` aba Concluído (novo).
+  Pares Legacy das 3 tabelas históricas contêm dado real de cliente/produto — ficaram
+  fora do diretório versionado, em `docs/produto/screenshots-paridade-v2/`
+  (gitignorado, mesmo padrão de `screenshots-paridade-v1/`, `.gitignore` atualizado
+  nesta rodada).
+- Decisão: **CP25 APROVADO — frente de paridade visual do TEMA V2 (CP16–CP25)
+  encerrada**, sem pendência bloqueante. Itens abertos (zebra fina, gap Anotacoes,
+  redesenho por-grupo do Centro de Avisos) documentados como trabalho futuro, fora
+  desta frente.
+- Testes/build: `php artisan test` (363/818, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` rodado do host (4/4, zero regressão V1);
+  `ComparacaoVisualTemaV2Test.spec.ts` (2 passados, 1 skip — inalterado).
+- Commit: a seguir (`#ARQ-RMA - Fecha o gate final de paridade visual do Tema V2`).
 
 ## Diário de comparação
 

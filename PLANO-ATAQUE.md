@@ -46,20 +46,25 @@ operacional de cada fase. Pareceres:
 `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-encontrados.md` (fase 2).
 
 **Frente paralela — paridade visual do Tema V2**
-(`docs/produto/plano-execucao-paridade-v2.md`, **em execução**). Matriz:
-`LEGADO 15.8.1 <-> V3 /v2/rma` (nunca `/rmas`, nunca `14.6.1`). Independente da fase 2
-do Tema V1 acima — não reabrir V1 aqui.
+(`docs/produto/plano-execucao-paridade-v2.md`, **encerrada, CP16-CP25 aprovados**).
+Matriz: `LEGADO 15.8.1 <-> V3 /v2/rma` (nunca `/rmas`, nunca `14.6.1`). Independente da
+fase 2 do Tema V1 acima — V1 não foi reaberto nesta frente.
 
-1. [ ] CP16 — shell global (wrapper 1190px / `.container` 990px / sidebar 195px);
-2. [ ] CP17 — header e navegação reais (9 itens históricos, dropdown Menu);
-3. [ ] CP18 — cascata e fontes do V2;
-4. [ ] CP19 — menu lateral direito (`rightmenu.php`, 14 seções);
-5. [ ] CP20 — Home e Pesquisar;
-6. [ ] CP21 — separador antes do Centro de Avisos;
-7. [ ] CP22 — Centro de Avisos;
-8. [ ] CP23 — tabelas das 5 abas (Pesquisar/Entrada/Recebido/Encaminhado/Concluído);
-9. [ ] CP24 — footer;
-10. [ ] CP25 — gate final (3+1 viewports, prova final, checklist).
+1. [x] CP16 — shell global (wrapper 1190px / `.container` 990px / sidebar 195px);
+2. [x] CP17 — header e navegação reais (9 itens históricos, dropdown Menu);
+3. [x] CP18 — cascata e fontes do V2;
+4. [x] CP19 — menu lateral direito (`rightmenu.php`, 14 seções);
+5. [x] CP20 — Home e Pesquisar;
+6. [x] CP21 — separador antes do Centro de Avisos;
+7. [x] CP22 — Centro de Avisos;
+8. [x] CP23 — tabelas das 5 abas (Pesquisar/Entrada/Recebido/Encaminhado/Concluído);
+9. [x] CP24 — footer;
+10. [x] CP25 — gate final (4 viewports, prova final, checklist) — ver `CMP-V2-008`.
+
+Pendências explícitas fora desta frente (não bloqueiam o fechamento): zebra fina de
+Entrada/Recebido/Encaminhado (`[INVESTIGAR]`), gap "Anotacoes" sem página própria
+(`[GAP]`), redesenho por-grupo do Centro de Avisos (cada `subp/listar_*.php` tem seu
+próprio layout de colunas, hoje servido por uma partial genérica).
 
 ### Lote anterior pausado, não descartado
 

@@ -464,27 +464,98 @@ Fonte: `legacy-source/14.6.1/inc/startpage.php`, `pattern/14.6.1.css`.
 Fonte: `legacy-source/14.6.1/inc/startpage.php` (lista de includes) e cada
 `subp/listar_*.php` referenciado por ele.
 
-- [ ] CP12-01 — mapear a lista COMPLETA de includes de `startpage.php` até o fim do
+- [x] CP12-01 — mapear a lista COMPLETA de includes de `startpage.php` até o fim do
       arquivo (os prompts originais só citam os 10 primeiros — não parar aí),
       registrando a ordem exata.
-- [ ] CP12-02 — para cada `subp/listar_*.php`: ler o arquivo e classificar a
+- [x] CP12-02 — para cada `subp/listar_*.php`: ler o arquivo e classificar a
       apresentação real (lista genérica ícone+título+Mostrar+itens / tabela com
       colunas próprias / mensagem "Nenhum item foi encontrado" quando vazio).
-- [ ] CP12-03 — comparar com `ListarGruposDeAlertas::listar()` e
+- [x] CP12-03 — comparar com `ListarGruposDeAlertas::listar()` e
       `_centro_de_avisos.blade.php` atuais: confirmar quais grupos existem, faltam
       ou estão fora de ordem.
-- [ ] CP12-04 — criar presenter/ordenação específica da apresentação V1 que respeite
+- [x] CP12-04 — criar presenter/ordenação específica da apresentação V1 que respeite
       a ordem histórica, sem alterar a ordem usada por outros consumidores do caso
       de uso (ex.: TEMA V2), se eles dependerem de ordem diferente.
-- [ ] CP12-05 — criar partials/presenters só para os grupos cuja apresentação real
-      diverge do genérico atual (ex.: o grupo com tabela de colunas próprias visto
-      no achado "PROTOCOLO ESTA ABERTO E O PRODUTO NAO ENCAMINHADO"); reaproveitar
-      os casos de uso modernos existentes, sem SQL/PHP procedural portado.
-- [ ] CP12-06 — verificar estado inicial real (Mostrar/Ocultar) de cada grupo no
+- [ ] CP12-05 — **deixado em aberto, não implementado — ver justificativa no
+      diário.** Classificação completa (CP12-02) feita e documentada; a
+      implementação (10 presenters + read-models) fica pra uma frente futura
+      dedicada.
+- [x] CP12-06 — verificar estado inicial real (Mostrar/Ocultar) de cada grupo no
       runtime Legacy; não assumir que todos começam ocultos — reproduzir por grupo.
-- [ ] CP12-07 — capturar/reabrir/comparar Centro de Avisos completo (todos os
+- [x] CP12-07 — capturar/reabrir/comparar Centro de Avisos completo (todos os
       grupos), registrar diário.
-- [ ] CP12-08 — testes focados/build e commit local.
+- [x] CP12-08 — testes focados/build e commit local.
+
+### CMP-V1-2-007 — CP12, ordem/títulos do Centro de Avisos + classificação completa
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear fontes remotas. Spec de regressão rodada do host.
+- Fonte: `startpage.php:192-230` (10 includes, já lido por inteiro nos CP6/9/10/11 —
+  confirmado de novo aqui: exatamente 10, nenhum a mais até o fim do arquivo) + os 10
+  `subp/listar_*.php` (`legacy-source/15.8.1/subp/`, ~100 linhas cada, lidos/varridos
+  por inteiro nesta rodada). **Achado que reduziu o trabalho de CP12-01/02/03:** V1 e
+  V2 incluem os MESMOS 10 arquivos-fonte (`startpage.php` inclui de
+  `"../15.8.1/subp/..."`, o diretório do próprio TEMA V2) — a investigação de
+  ordem/título já feita e aprovada pro V2 (CP22/`CMP-V2-005`) é literalmente a mesma
+  pro V1, sem necessidade de reinvestigar do zero.
+- **Achado real, corrigido (mesmo padrão do CP22 do V2):** `rma/index.blade.php`
+  passava `$grupos` direto de `ListarGruposDeAlertas::listar()` pro partial
+  compartilhado — chaves descritivas da Fase 5, ordem própria, nenhuma batendo com
+  `startpage.php`. Corrigido com o MESMO array de reordenação/relabel já provado no
+  V2 (`$ordemHistoricaCentroDeAvisosV1`, literal idêntico ao
+  `$ordemHistoricaCentroDeAvisosV2`), duplicado nesta view por decisão consciente —
+  não alterar `ListarGruposDeAlertas` (compartilhada com `PainelDeAlertasController`
+  e o TEMA V2), mesma justificativa já registrada no CP22. "Urgência por valor"
+  confirmado ausente também no V1 (mesmos 10 includes do V2, nenhum 11º grupo).
+- **CP12-05 (redesenho por-grupo) deixado em aberto — classificação completa feita,
+  implementação não.** Todos os 10 grupos têm tabela de colunas PRÓPRIA (nenhum é
+  lista genérica) — achado mais abrangente que o já registrado pro V2 (que citava só
+  1 exemplo). Cabeçalhos reais extraídos de cada arquivo (`grep -a` — os 10 arquivos
+  são ISO-8859, não UTF-8, `grep` normal os trata como binário e retorna vazio sem
+  `-a`, achado operacional registrado aqui pra não se perder de novo):
+
+  | Grupo | Colunas reais (`<th>`, ordem exata) |
+  |---|---|
+  | Prioridade alta sem encaminhar | ENTRADA\|T\|ORIGEM\|NF C\|NF V\|FORNECEDOR\|FABRICANTE\|DESCRICAO\|MODELO\|OS\|A |
+  | Protocolo aberto não encaminhado | RECEBIDO\|T\|ORIGEM\|NF C\|NF V\|FORNECEDOR\|FABRICANTE\|DESCRICAO\|MODELO\|OS\|A |
+  | Sem número de série | RECEBIDO\|T\|ORIGEM\|NF C\|NF V\|FORNECEDOR\|FABRICANTE\|DESCRICAO\|MODELO\|OS\|A |
+  | Sem nota fiscal | RECEBIDO\|T\|ORIGEM\|FORNECEDOR\|FABRICANTE\|DESCRICAO\|MODELO\|S/N\|OS\|A |
+  | Prazo do destinatário estourado | ENCAMINHADO\|T\|ORIGEM\|FABRICANTE\|DESCRICAO\|MODELO\|PROTOCOLO\|DESTINATARIO\|OS\|A |
+  | Recebidos +30 dias sem encaminhar | RECEBIDO\|T\|ORIGEM\|FORNECEDOR\|FABRICANTE\|DESCRICAO\|MODELO\|S/N\|OS\|A |
+  | Garantia do fornecedor expirada | ENTRADA\|ORIGEM\|NF C\|T C\|NF V\|FORNECEDOR\|FABRICANTE\|DESCRICAO\|MODELO\|OS\|A |
+  | Garantia expirando em 30 dias | ENTRADA\|ORIGEM\|NF C\|T E\|NF V\|FORNECEDOR\|FABRICANTE\|DESCRICAO\|MODELO\|OS\|A |
+  | Não vai dar garantia | ENTRADA\|ORIGEM\|NF C\|T C\|NF V\|FORNECEDOR\|FABRICANTE\|DESCRICAO\|MODELO\|OS\|A |
+  | NF de retorno pendente | CONCLUIDO\|T\|ORIGEM\|NF C\|NF V\|FORNECEDOR\|FABRICANTE\|DESCRICAO\|MODELO\|OS\|A |
+
+  Cada grupo também tem sua própria lógica de zebra/`$TR1` inline (achado relevante
+  pro CP14) e sua própria consulta de origem dos dados — implementar as 10 tabelas
+  exigiria: (a) 10 read-models novos ou um genérico parametrizado, (b) 10 partials
+  Blade, (c) decidir zebra por grupo (entra em atrito direto com CP14, ainda não
+  investigado), tudo num componente COMPARTILHADO com o TEMA V2 já fechado/aprovado
+  (CP16-25) — risco de regressão real numa superfície que acabou de passar por gate
+  final. Fica registrado como pendência de uma frente futura dedicada, com a
+  classificação completa acima pronta pra uso direto (não precisa reler os 10
+  arquivos de novo).
+- Estado inicial (Mostrar/Ocultar): confirmado nos 10 arquivos — todos começam
+  `Mostrar` visível/dados ocultos (`style="display:block"` no `pmostrar_*`,
+  `style="display:none"` no `pocultar_*`/`dados_*`), já era o comportamento do
+  partial existente, nenhuma mudança necessária (mesmo achado do V2/CP22-03).
+- Tabela (Legacy × V3), título e posição:
+
+  | # | Legacy (`subp/listar_*.php`) | V3 (renderizado) |
+  |---|---|---|
+  | 1-10 | (mesma tabela de `CMP-V2-005`, títulos idênticos) | idêntico, ordem e texto batendo 1:1 |
+- Diferença perceptível restante: só o `[GAP]` já conhecido (tabelas por-grupo
+  genéricas em vez de específicas), documentado, não implementado nesta rodada.
+- Screenshot versionado (fictício QA):
+  `docs/produto/screenshots-vis-v1-001/29-v3-centro-de-avisos-ordem-titulos-cp12.png`.
+- Decisão: **CP12 APROVADO com CP12-05 explicitamente pendente** (não bloqueante,
+  documentado com evidência completa).
+- Testes/build: `php artisan test` (364/820, verde — uma rodada isolada teve 1 falha
+  transitória não relacionada a este código, não reproduzida em 2 reexecuções
+  subsequentes); `npm run build` (ok); `ParidadeVisualTemaV1.spec.ts` rodado do host
+  (4/4, verde).
+- Commit: a seguir (`#ARQ-RMA - Corrige a ordem e os titulos do centro de avisos na pagina inicial do tema V1`).
 
 ## CP13 — Fixture de QA com comprimento de dado realista
 

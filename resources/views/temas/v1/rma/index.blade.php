@@ -1,5 +1,31 @@
 @extends('temas.v1.layout')
 
+@php
+    // CP12 (fase 2 V1) — mesmo achado/mapeamento já provado no TEMA V2 (CP22/
+    // CMP-V2-005): `startpage.php` inclui os mesmos 10 `subp/listar_*.php` de
+    // `../15.8.1/subp/` (lido por inteiro nos CP6/CP9/CP10 — sem mais includes
+    // depois do último, "Urgência por valor" também não aparece aqui). Títulos
+    // literais idênticos aos já confirmados pro V2 (mesmos arquivos-fonte).
+    // Reordenação/relabel só nesta view, não em `ListarGruposDeAlertas` (mesma
+    // decisão já tomada pro V2 — evita risco às duas superfícies compartilhadas).
+    $ordemHistoricaCentroDeAvisosV1 = [
+        'Prioridade alta sem encaminhar' => 'PRODUTOS COM MAIOR PRIORIDADE SEM ENCAMINHAMENTO',
+        'Protocolo aberto não encaminhado' => 'PROTOCOLO ESTA ABERTO E O PRODUTO NAO ENCAMINHADO',
+        'Sem número de série' => 'NECESSARIO IDENTIFICAR O S/N',
+        'Sem nota fiscal' => 'SEM NF DE COMPRA E NF DE VENDA',
+        'Prazo do destinatário estourado' => 'O DESTINATARIO ESTOUROU O PRAZO DE 30 DIAS PARA RETORNAR',
+        'Recebidos há mais de 30 dias sem encaminhar' => 'RECEBIDO A MAIS DE 30 DIAS E NAO ENCAMINHADO',
+        'Garantia do fornecedor expirada' => 'PRAZO DE GARANTIA COM O FORNECEDOR EXPIRADO MAIS DE 1 ANO',
+        'Garantia do fornecedor expirando em até 30 dias' => 'FALTA MENOS DE 30 DIAS PARA EXPIRAR GARANTIA DE 1 ANO COM O FORNECEDOR',
+        'Não vai dar garantia' => 'NAO VAI DAR GARANTIA',
+        'NF de retorno pendente de lançar' => 'PRODUTOS COM PENDENCIA DE LANCAR NF DO RETORNO',
+    ];
+    $gruposCentroDeAvisosV1 = [];
+    foreach ($ordemHistoricaCentroDeAvisosV1 as $chaveInterna => $tituloLiteral) {
+        $gruposCentroDeAvisosV1[$tituloLiteral] = $grupos[$chaveInterna] ?? collect();
+    }
+@endphp
+
 @section('conteudo')
     {{-- CP6 (fase 2, `plano-execucao-paridade-visual-v1-fase2.md`) — `startpage.php`
     não tem link "Novo RMA" próprio; o atalho já existe no menu superior ("Novo",
@@ -89,5 +115,5 @@
     <img src="{{ asset('images/tema-v1/separador2.png') }}" alt="Separador" title="Separador" height="40" class="separador2-inicial">
     <div class="both"></div>
 
-    @include('rma._centro_de_avisos', ['grupos' => $grupos])
+    @include('rma._centro_de_avisos', ['grupos' => $gruposCentroDeAvisosV1])
 @endsection

@@ -39,7 +39,10 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
 5. [x] CP10 — sidebar de contadores (box model, links reais pras 4 listagens +
    filtro por solução);
 6. [x] CP11 — separador antes do Centro de Avisos (`separador2.png`);
-7. [ ] CP12 — Centro de Avisos (ordem histórica, composição por grupo, mostrar/ocultar);
+7. [x] CP12 — Centro de Avisos (ordem/títulos históricos corrigidos; CP12-05,
+   redesenho das 10 tabelas por-grupo, deixado em aberto — classificação completa
+   documentada, implementação é frente futura dedicada, risco de regressão no
+   componente compartilhado com o TEMA V2 já fechado);
 8. [ ] CP13 — fixture de QA com comprimento de dado realista;
 9. [ ] CP14 — investigação da máquina de estados `$TR1` (só corrigir com evidência);
 10. [ ] CP15 — gate final da fase 2 (três viewports, prova final, checklist).

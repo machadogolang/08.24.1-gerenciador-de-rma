@@ -403,6 +403,56 @@
           "color": "rgb(255, 255, 255)"
         }
       }
+    },
+    "prioridadeExpandida": {
+      "tabela": {
+        "legacy": null,
+        "v3": {
+          "x": 228,
+          "y": 823.19,
+          "width": 984,
+          "height": 283,
+          "display": "table",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgb(54, 51, 51)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      "cabecalho": {
+        "legacy": null,
+        "v3": {
+          "x": 228.5,
+          "y": 823.69,
+          "width": 983,
+          "height": 34,
+          "display": "table-row",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgb(42, 42, 42)",
+          "color": "rgb(248, 193, 139)"
+        }
+      },
+      "primeiraCelula": {
+        "legacy": null,
+        "v3": {
+          "x": 228.5,
+          "y": 857.69,
+          "width": 78.41,
+          "height": 31,
+          "display": "table-cell",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "11px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      }
     }
   },
   {
@@ -724,7 +774,8 @@
         }
       }
     },
-    "protocoloExpandido": null
+    "protocoloExpandido": null,
+    "prioridadeExpandida": null
   },
   {
     "viewport": {
@@ -1045,6 +1096,7 @@
         }
       }
     },
-    "protocoloExpandido": null
+    "protocoloExpandido": null,
+    "prioridadeExpandida": null
   }
 ]

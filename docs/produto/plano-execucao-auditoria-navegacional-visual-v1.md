@@ -59,7 +59,15 @@ posterior. “A rota respondeu” não equivale a paridade visual.
 - [ ] NAV-03-01 — 16 contadores laterais: destino e filtro resultante de cada link.
 - [x] NAV-03-02 — protocolo aberto não encaminhado: Mostrar/Ocultar, tabela e Ver
       (`CMP-NAV-V1-001`/`CMP-V1-2-011`).
-- [ ] NAV-03-03 — cada um dos outros 9 grupos: Mostrar/Ocultar, tabela e Ver.
+- [x] NAV-03-03A — prioridade alta sem encaminhar (`CMP-NAV-V1-002`).
+- [ ] NAV-03-03B — sem número de série.
+- [ ] NAV-03-03C — sem nota fiscal.
+- [ ] NAV-03-03D — prazo do destinatário estourado.
+- [ ] NAV-03-03E — recebidos há mais de 30 dias sem encaminhar.
+- [ ] NAV-03-03F — garantia do fornecedor expirada.
+- [ ] NAV-03-03G — garantia expirando em até 30 dias.
+- [ ] NAV-03-03H — não vai dar garantia.
+- [ ] NAV-03-03I — NF de retorno pendente.
 - [ ] NAV-03-04 — resultado de Localizar: Ver e Editar.
 - [ ] NAV-03-05 — autosave de Anotações: sucesso, persistência e erro controlado.
 
@@ -110,3 +118,14 @@ um commit final. Antes de cada commit, este plano deve declarar o **próximo ite
 exato**, arquivos-fonte a reler, estado das evidências e comandos de retomada. Se uma
 sessão for interrompida no meio de um item, registrar o estado no diário, mas não
 criar commit afirmando conclusão parcial como aprovada.
+
+### CMP-NAV-V1-002 — Página Inicial, prioridade alta sem encaminhar
+
+- Estado: **APROVADO somente para este grupo**, em 2026-08-26.
+- Funcional: Mostrar/Ocultar e Ver exercitados no V3; Browser permanente verde.
+- Visual: par aberto. Legacy sem dados comprova o empty-state; V3 com fixture comprova
+  tabela ENTRADA e reutiliza a estrutura que CMP-NAV-V1-001 mediu contra uma tabela
+  Legacy não vazia. Não houve mutação do banco histórico para criar uma comparação.
+- Evidência/deltas: `CMP-V1-2-012`, screenshots de prioridade e
+  `evidencias-v1-fase2/cp15-medidas.json`.
+- Próximo item: CP12-05C/CMP-NAV-V1-003, grupo “NECESSARIO IDENTIFICAR O S/N”.

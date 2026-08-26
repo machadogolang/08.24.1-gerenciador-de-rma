@@ -7,6 +7,8 @@ use App\Identidade\Dominio\TemaPreferido;
 use App\Models\Cliente;
 use App\Models\Rma;
 use App\Models\User;
+use App\Rma\Dominio\Prioridade;
+use App\Rma\Dominio\Status;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -58,6 +60,23 @@ class RenderizaTemaV2Test extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('temas.v2.rma.create');
+    }
+
+    public function test_tabela_compartilhada_de_prioridade_tambem_renderiza_no_tema_v2(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        Rma::factory()->create([
+            'status' => Status::Entrada,
+            'prioridade' => Prioridade::Alta,
+            'descricao' => 'Prioridade compartilhada QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v2/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="prioridade-alta-sem-encaminhar"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-abertos-nao-encaminhados"', false);
+        $response->assertSeeText('Prioridade compartilhada QA');
     }
 
     public function test_detalhe_de_rma_v2_renderiza(): void

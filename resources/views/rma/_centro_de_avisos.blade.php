@@ -18,12 +18,26 @@
 @foreach ($grupos as $titulo => $rmas)
     @php
         $alvo = 'centro-de-avisos-dados-' . $loop->index;
-        $partialDaTabela = match ($titulo) {
-            'PROTOCOLO ESTA ABERTO E O PRODUTO NAO ENCAMINHADO' => 'rma.alertas._protocolo_aberto_nao_encaminhado',
+        $configuracaoDaTabela = match ($titulo) {
+            'PRODUTOS COM MAIOR PRIORIDADE SEM ENCAMINHAMENTO' => [
+                'tipo' => 'prioridade-alta-sem-encaminhar',
+                'rotuloData' => 'ENTRADA',
+                'campoData' => 'created_at',
+                'abreviarMercadoLivre' => true,
+            ],
+            'PROTOCOLO ESTA ABERTO E O PRODUTO NAO ENCAMINHADO' => [
+                'tipo' => 'protocolo-aberto-nao-encaminhado',
+                'rotuloData' => 'RECEBIDO',
+                'campoData' => 'recebido_em',
+                'abreviarMercadoLivre' => false,
+            ],
             default => null,
         };
+        $partialDaTabela = $configuracaoDaTabela === null
+            ? null
+            : 'rma.alertas._abertos_nao_encaminhados';
     @endphp
-    <div class="regra-de-alerta" @if ($partialDaTabela) data-alerta-tipo="protocolo-aberto-nao-encaminhado" @endif>
+    <div class="regra-de-alerta" @if ($configuracaoDaTabela) data-alerta-tipo="{{ $configuracaoDaTabela['tipo'] }}" @endif>
         <div class="regra-de-alerta-cabecalho">
             <img src="{{ asset('images/rma/retornou.png') }}" alt="" width="20" height="20">
             <span class="regra-de-alerta-titulo">{{ Illuminate\Support\Str::upper($titulo) }}:</span>
@@ -33,7 +47,7 @@
             @if ($rmas->isEmpty())
                 <p class="nenhumencontrado">Nenhum item foi encontrado</p>
             @elseif ($partialDaTabela !== null)
-                @include($partialDaTabela, compact('rmas'))
+                @include($partialDaTabela, ['rmas' => $rmas, ...$configuracaoDaTabela])
             @else
                 <ul>
                     @foreach ($rmas as $registro)

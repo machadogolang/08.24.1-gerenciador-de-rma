@@ -169,9 +169,9 @@ explícita do próprio checklist ("não é correção às cegas").
 
 ### Atualização viva — 2026-08-26, retomada após o handoff
 
-- O print do usuário reabriu CP12-05 como bloqueante. CP12-05A (protocolo aberto não
-  encaminhado) foi reconstruído como tabela histórica e aprovado após abrir o par
-  sanitizado; ver `CMP-V1-2-011`. CP12-05B–J (outros 9 grupos) continuam pendentes.
+- O print do usuário reabriu CP12-05 como bloqueante. CP12-05A (protocolo) e
+  CP12-05B (prioridade alta) foram reconstruídos e aprovados após abrir os pares;
+  ver `CMP-V1-2-011/012`. CP12-05C–J (outros 8 grupos) continuam pendentes.
 - Gerador/evidência agora são permanentes em `scripts/qa/paridade-v1-fase2.mjs`,
   `screenshots-evidencias-v1-fase2/` e `evidencias-v1-fase2/cp15-medidas.json`.
 - Nova matriz obrigatória menu a menu/link a link está em
@@ -181,9 +181,9 @@ explícita do próprio checklist ("não é correção às cegas").
   (código + teste + evidência + diário), nunca acumular tudo para o final. Antes de
   cada commit, deixar no plano o próximo item exato e as instruções de retomada.
   Nunca push sem autorização.
-- Próximo item exato deste checkpoint: **CP12-05B**, tabela “Produtos com maior
-  prioridade sem encaminhamento”; reler o respectivo `listar_*.php`, implementar,
-  testar, gerar e abrir o par, documentar `CMP-V1-2-012`, então commitar.
+- Próximo item exato deste checkpoint: **CP12-05C**, tabela “Necessário identificar
+  o S/N”; reler `listar_semsn.php`, implementar, testar, gerar e abrir o par,
+  documentar `CMP-V1-2-013`, então commitar.
 
 **Depois de CP12-05B–J, retomar CP15 — gate final da fase 2**
 (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`). Precisa: rodar suíte PHP

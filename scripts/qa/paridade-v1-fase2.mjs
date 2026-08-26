@@ -28,6 +28,25 @@ const viewports = [
     { width: 1700, height: 1000 },
 ];
 
+const gruposExpandidos = [
+    {
+        chave: 'protocoloExpandido',
+        arquivo: 'protocolo-expandido',
+        mostrarLegacy: '#pmostrar_pabertonaoencaminhado',
+        ocultarLegacy: '#pocultar_pabertonaoencaminhado',
+        dadosLegacy: '#dados_pabertonaoencaminhado',
+        grupoV3: '[data-alerta-tipo="protocolo-aberto-nao-encaminhado"]',
+    },
+    {
+        chave: 'prioridadeExpandida',
+        arquivo: 'prioridade-expandida',
+        mostrarLegacy: '#pmostrar_prioridadealta',
+        ocultarLegacy: '#pocultar_prioridadealta',
+        dadosLegacy: '#dados_prioridadealta',
+        grupoV3: '[data-alerta-tipo="prioridade-alta-sem-encaminhar"]',
+    },
+];
+
 const elementos = [
     ['header', '#TOPO', '#TOPO'],
     ['base', '#BASE', '#BASE'],
@@ -99,8 +118,8 @@ async function entrarV3(browser, viewport) {
     return page;
 }
 
-async function sanitizar(page) {
-    await page.evaluate(() => {
+async function sanitizar(page, seletorTabela = null) {
+    await page.evaluate(seletor => {
         const anotacao = document.querySelector('#anotacao');
         if (anotacao instanceof HTMLTextAreaElement) anotacao.value = 'EVIDENCIA SANITIZADA';
 
@@ -117,9 +136,7 @@ async function sanitizar(page) {
         // Evidência estrutural versionável: preserva exatamente uma linha e a
         // geometria percentual da tabela, mas nunca leva dados reais do Legacy ao
         // Git. A captura raw continua disponível apenas no diretório ignorado.
-        const tabela = document.querySelector(
-            '.tabela-alerta-protocolo, #dados_pabertonaoencaminhado .Tabelinha-Table',
-        );
+        const tabela = seletor === null ? null : document.querySelector(seletor);
         if (tabela instanceof HTMLTableElement) {
             const linhas = [...tabela.querySelectorAll('tbody tr, tr')]
                 .filter(linha => !linha.classList.contains('SuperTr'));
@@ -133,7 +150,46 @@ async function sanitizar(page) {
                 if (indice < valores.length) celula.textContent = valores[indice];
             });
         }
-    });
+    }, seletorTabela);
+}
+
+async function capturarGrupoExpandido(legacy, v3, grupo) {
+    const tabelaLegacy = `${grupo.dadosLegacy} .Tabelinha-Table`;
+    const tabelaV3 = `${grupo.grupoV3} .tabela-alerta-abertos-nao-encaminhados`;
+    const grupoV3 = v3.locator(grupo.grupoV3);
+
+    await legacy.locator(grupo.mostrarLegacy).click();
+    await grupoV3.locator('.pmo').click();
+    await legacy.locator(grupo.dadosLegacy).waitFor({ state: 'visible' });
+    await v3.locator(tabelaV3).waitFor({ state: 'visible' });
+
+    await legacy.screenshot({ path: join(destinoRaw, `legacy-cp15-${grupo.arquivo}-1440x1000.png`), fullPage: true });
+    await v3.screenshot({ path: join(destinoRaw, `v3-cp15-${grupo.arquivo}-1440x1000.png`), fullPage: true });
+
+    const medidas = {
+        tabela: {
+            legacy: await medir(legacy, tabelaLegacy),
+            v3: await medir(v3, tabelaV3),
+        },
+        cabecalho: {
+            legacy: await medir(legacy, `${grupo.dadosLegacy} .SuperTr`),
+            v3: await medir(v3, `${tabelaV3} .SuperTr`),
+        },
+        primeiraCelula: {
+            legacy: await medir(legacy, `${grupo.dadosLegacy} tbody td, ${grupo.dadosLegacy} tr:not(.SuperTr) td`),
+            v3: await medir(v3, `${tabelaV3} tbody td`),
+        },
+    };
+
+    await sanitizar(legacy, tabelaLegacy);
+    await sanitizar(v3, tabelaV3);
+    await legacy.screenshot({ path: join(destinoSanitizado, `legacy-cp15-${grupo.arquivo}-1440x1000.png`), fullPage: true });
+    await v3.screenshot({ path: join(destinoSanitizado, `v3-cp15-${grupo.arquivo}-1440x1000.png`), fullPage: true });
+
+    await legacy.locator(grupo.ocultarLegacy).click();
+    await grupoV3.locator('.pmo').click();
+
+    return medidas;
 }
 
 const browser = await chromium.launch();
@@ -156,41 +212,17 @@ for (const viewport of viewports) {
     }
 
 
-    let protocoloExpandido = null;
+    const medidasDosGrupos = Object.fromEntries(gruposExpandidos.map(grupo => [grupo.chave, null]));
     if (viewport.width === 1440) {
-        await legacy.locator('#pmostrar_pabertonaoencaminhado').click();
-        const grupoV3 = v3.locator('[data-alerta-tipo="protocolo-aberto-nao-encaminhado"]');
-        await grupoV3.locator('.pmo').click();
-        await legacy.locator('#dados_pabertonaoencaminhado .Tabelinha-Table').waitFor({ state: 'visible' });
-        await grupoV3.locator('.tabela-alerta-protocolo').waitFor({ state: 'visible' });
-
-        await legacy.screenshot({ path: join(destinoRaw, 'legacy-cp15-protocolo-expandido-1440x1000.png'), fullPage: true });
-        await v3.screenshot({ path: join(destinoRaw, 'v3-cp15-protocolo-expandido-1440x1000.png'), fullPage: true });
-
-        protocoloExpandido = {
-            tabela: {
-                legacy: await medir(legacy, '#dados_pabertonaoencaminhado .Tabelinha-Table'),
-                v3: await medir(v3, '.tabela-alerta-protocolo'),
-            },
-            cabecalho: {
-                legacy: await medir(legacy, '#dados_pabertonaoencaminhado .SuperTr'),
-                v3: await medir(v3, '.tabela-alerta-protocolo .SuperTr'),
-            },
-            primeiraCelula: {
-                legacy: await medir(legacy, '#dados_pabertonaoencaminhado tbody td, #dados_pabertonaoencaminhado tr:not(.SuperTr) td'),
-                v3: await medir(v3, '.tabela-alerta-protocolo tbody td'),
-            },
-        };
-
-        await sanitizar(legacy);
-        await sanitizar(v3);
-        await legacy.screenshot({ path: join(destinoSanitizado, 'legacy-cp15-protocolo-expandido-1440x1000.png'), fullPage: true });
-        await v3.screenshot({ path: join(destinoSanitizado, 'v3-cp15-protocolo-expandido-1440x1000.png'), fullPage: true });
-
-        await legacy.locator('#pocultar_pabertonaoencaminhado').click();
-        await grupoV3.locator('.pmo').click();
+        for (const grupo of gruposExpandidos) {
+            medidasDosGrupos[grupo.chave] = await capturarGrupoExpandido(legacy, v3, grupo);
+        }
     }
 
+    // Os cliques de captura usam scrollIntoView. Voltar ao topo evita que o estado
+    // de scroll altere a rasterização do header fixed na evidência base da Home.
+    await legacy.evaluate(() => scrollTo(0, 0));
+    await v3.evaluate(() => scrollTo(0, 0));
     await sanitizar(legacy);
     await sanitizar(v3);
     await legacy.screenshot({ path: join(destinoSanitizado, `legacy-cp15-home-${sufixo}.png`), fullPage: true });
@@ -203,7 +235,7 @@ for (const viewport of viewports) {
             v3: await v3.evaluate(() => devicePixelRatio),
         },
         medidas,
-        protocoloExpandido,
+        ...medidasDosGrupos,
     });
 
     await legacy.context().close();

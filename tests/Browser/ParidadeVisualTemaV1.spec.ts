@@ -201,7 +201,7 @@ test('Mostrar do protocolo abre tabela compacta com a familia Arial do legado', 
     await expect(grupo.locator('.pmo')).toHaveText('Ocultar');
     await expect(grupo.locator('.pmo')).toHaveAttribute('aria-expanded', 'true');
 
-    const tabela = grupo.locator('.tabela-alerta-protocolo');
+    const tabela = grupo.locator('.tabela-alerta-abertos-nao-encaminhados');
     await expect(tabela).toBeVisible();
     await expect(tabela.locator('thead th')).toHaveCount(11);
     await expect(tabela.locator('tbody tr')).not.toHaveCount(0);
@@ -214,6 +214,46 @@ test('Mostrar do protocolo abre tabela compacta com a familia Arial do legado', 
     ).first().boundingBox())!.height);
     const alturaLinhaV3 = Math.round((await tabela.locator('tbody tr').first().boundingBox())!.height);
     expect(Math.abs(alturaLinhaV3 - alturaLinhaLegacy)).toBeLessThanOrEqual(1);
+    await expect(tabela.locator('img[title="Ver"]').first()).toBeVisible();
+
+    await legacy.context().close();
+    await page.context().close();
+});
+
+test('Mostrar da prioridade abre a tabela ENTRADA compacta do legado', async ({ browser }) => {
+    const page = await loginV3(browser);
+    const legacy = await loginLegacy(browser);
+    await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => document.fonts.ready);
+    await legacy.locator('#pmostrar_prioridadealta').click();
+
+    const grupo = page.locator('[data-alerta-tipo="prioridade-alta-sem-encaminhar"]');
+    await grupo.locator('.pmo').click();
+    await expect(grupo.locator('.pmo')).toHaveText('Ocultar');
+
+    const tabela = grupo.locator('.tabela-alerta-abertos-nao-encaminhados');
+    await expect(tabela).toBeVisible();
+    await expect(tabela.locator('thead th')).toHaveCount(11);
+    await expect(tabela.locator('thead th').first()).toHaveText('ENTRADA');
+    await expect(tabela.locator('tbody tr')).not.toHaveCount(0);
+    expect(await tabela.locator('.SuperTr').evaluate(el => getComputedStyle(el).fontFamily))
+        .toBe('Arial, "Open Sans", "Fira Mono"');
+    expect(await tabela.locator('tbody td').first().evaluate(el => getComputedStyle(el).fontFamily))
+        .toBe('Arial, "Open Sans", "Fira Mono"');
+
+    const alturaV3 = Math.round((await tabela.locator('tbody tr').first().boundingBox())!.height);
+    const linhasLegacy = legacy.locator('#dados_prioridadealta tr:not(.SuperTr)');
+    if (await linhasLegacy.count() > 0) {
+        const alturaLegacy = Math.round((await linhasLegacy.first().boundingBox())!.height);
+        expect(Math.abs(alturaV3 - alturaLegacy)).toBeLessThanOrEqual(1);
+    } else {
+        // O banco Legacy do laboratório pode legitimamente não ter prioridade alta.
+        // Nesse caso registramos o empty-state ao vivo e provamos a estrutura pelo
+        // arquivo-fonte + partial compartilhado já medido no grupo de protocolo.
+        await expect(legacy.locator('#dados_prioridadealta')).toContainText('Nenhum item foi encontrado');
+        expect(alturaV3).toBeGreaterThanOrEqual(30);
+        expect(alturaV3).toBeLessThanOrEqual(31);
+    }
     await expect(tabela.locator('img[title="Ver"]').first()).toBeVisible();
 
     await legacy.context().close();

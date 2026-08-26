@@ -483,7 +483,7 @@ Fonte: `legacy-source/14.6.1/inc/startpage.php` (lista de includes) e cada
       os outros 9 continuam classificados e pendentes em tarefas separadas.
 - [x] CP12-05A — protocolo: partial de tabela, nomes de fornecedor/fabricante,
       11 colunas, fonte Arial, ícone Ver, teste de clique e par visual expandido.
-- [ ] CP12-05B — prioridade alta sem encaminhar.
+- [x] CP12-05B — prioridade alta sem encaminhar.
 - [ ] CP12-05C — sem número de série.
 - [ ] CP12-05D — sem nota fiscal.
 - [ ] CP12-05E — prazo do destinatário estourado.
@@ -842,3 +842,34 @@ apague descobertas nem leve o próximo agente a repetir conclusões antigas.
 - **Próximo item exato após o commit:** CP12-05B — reconstruir “PRODUTOS COM MAIOR
   PRIORIDADE SEM ENCAMINHAMENTO”, começando pela releitura integral do seu
   `listar_*.php`, depois teste, geração, abertura do par e nova entrada `CMP-*`.
+
+### CMP-V1-2-012 — CP12-05B, prioridade alta sem encaminhar
+
+- Fonte lida integralmente: `15.8.1/subp/listar_prioridadealta.php` e
+  `metodo.php::listar_prioridadealta()` (`status∈{entrada,recebido}` +
+  `prioridade='alta'`, ordenado por `entrada DESC`). Colunas:
+  `ENTRADA|T|ORIGEM|NF C|NF V|FORNECEDOR|FABRICANTE|DESCRICAO|MODELO|OS|A`.
+- Implementação: a tabela usa o mesmo partial estrutural do protocolo porque os dois
+  arquivos históricos têm markup/percentuais idênticos; configuração fechada muda
+  somente `RECEBIDO/recebido_em` para `ENTRADA/created_at` e aplica a abreviação
+  histórica `Mercado Livre→M LIVRE`. Não foi criado SQL nem regra de negócio no Blade.
+- Runtime Legacy: o banco do laboratório não contém hoje nenhum registro do grupo;
+  ao clicar “Mostrar”, o Legacy exibe `Nenhum item foi encontrado` e não cria a
+  `<table>`. Isso foi preservado como evidência real, sem fabricar/mutar dado
+  histórico. O V3 usa fixture QA e mostra a tabela, permitindo verificar a estrutura.
+- Par aberto e inspecionado:
+  `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-prioridade-expandida-1440x1000.png`.
+  A prancha confirma o empty-state Legacy à esquerda e, à direita, header ENTRADA,
+  11 colunas, Arial, zebra compacta, Ocultar e ícone Ver.
+- Medidas V3 (`cp15-medidas.json`; Legacy `null` por não haver tabela): tabela
+  `x=228,y=823.19,width=984,height=283` raw; header
+  `x=228.5,width=983,height=34,font=Arial 12px`; primeira célula
+  `78.41×31,font=Arial 11px`. A captura sanitizada preserva uma linha; altura raw
+  maior decorre apenas dos registros fictícios. Geometria compartilhada já foi
+  comparada 1:1 contra a tabela Legacy não vazia em CMP-V1-2-011.
+- Decisão: **CP12-05B APROVADO**, limitado a esse grupo. Testes: V1+V2+caso de uso
+  22 testes/71 asserções; Browser protocolo+prioridade 2/2; Vite build verde.
+- Commit: imediato após este registro.
+- **Próximo item exato após o commit:** CP12-05C — “NECESSARIO IDENTIFICAR O S/N”;
+  reler `listar_semsn.php`, confirmar a estrutura/diferenças, implementar, testar,
+  gerar e abrir o par, registrar `CMP-V1-2-013` e então commitar.

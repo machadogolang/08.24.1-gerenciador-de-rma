@@ -10,6 +10,7 @@ use App\Models\Fornecedor;
 use App\Models\Rma;
 use App\Models\User;
 use App\Rma\Dominio\Status;
+use App\Rma\Dominio\Prioridade;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -108,7 +109,7 @@ class RenderizaTemaV1Test extends TestCase
 
         $response->assertOk();
         $response->assertSee('data-alerta-tipo="protocolo-aberto-nao-encaminhado"', false);
-        $response->assertSee('class="Tabelinha-Table tabela-alerta-protocolo"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-abertos-nao-encaminhados"', false);
         $response->assertSeeInOrder([
             'RECEBIDO', 'T', 'ORIGEM', 'NF C', 'NF V', 'FORNECEDOR',
             'FABRICANTE', 'DESCRICAO', 'MODELO', 'OS', 'A',
@@ -118,6 +119,32 @@ class RenderizaTemaV1Test extends TestCase
         $response->assertSeeText('Produto ficticio da tabela');
         $response->assertSee(rota_tema('rmas.show', ['rma' => $rma->id]), false);
         $response->assertDontSee("#{$rma->id} — Produto ficticio da tabela", false);
+    }
+
+    public function test_alerta_de_prioridade_alta_renderiza_tabela_historica_com_entrada(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante Prioridade QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor Prioridade QA']);
+        Rma::factory()->create([
+            'status' => Status::Entrada,
+            'prioridade' => Prioridade::Alta,
+            'created_at' => now()->subDays(7),
+            'origem' => 'Mercado Livre',
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+            'descricao' => 'Produto prioritario ficticio',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="prioridade-alta-sem-encaminhar"', false);
+        $response->assertSeeText('ENTRADA');
+        $response->assertSeeText('M LIVRE');
+        $response->assertSeeText('Fornecedor Prioridade QA');
+        $response->assertSeeText('Fabricante Prioridade QA');
+        $response->assertDontSeeText('Mercado Livre');
     }
 
     public function test_novo_rma_v1_renderiza(): void

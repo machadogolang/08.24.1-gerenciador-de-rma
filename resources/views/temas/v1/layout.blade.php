@@ -20,7 +20,12 @@
         // continua no DOM (acessibilidade/semântica), só fica visualmente oculto
         // aqui — não é uma auditoria tela-a-tela de VIS-V1-007, só o impacto direto
         // encontrado nesta correção.
-        $ocultarTituloVisual = request()->routeIs('rmas.create', 'v1.rmas.create');
+        // CP6 (fase 2, `plano-execucao-paridade-visual-v1-fase2.md`) — a Página
+        // Inicial soma o mesmo problema: `startpage.php` não tem H1 nenhum, começa
+        // direto pelo painel Localizar (`padding-top:12px` depois do header). Medido
+        // via Playwright: o H1 "RMAs" visível empurrava o gap header→Localizar de
+        // 14px (Legacy) para 72px (V3, antes desta correção).
+        $ocultarTituloVisual = request()->routeIs('rmas.create', 'v1.rmas.create', 'rmas.index', 'v1.rmas.index');
         // As quatro listagens históricas começam pelo próprio ícone/título interno.
         // A seção permite omitir só o H1 artificial de #CONTEUDO sem retirar o painel
         // "Novo" permanente do DOM.

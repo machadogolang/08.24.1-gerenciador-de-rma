@@ -24,11 +24,11 @@ descartada como bug de CSS/DOM (`#BASE`/`#TOPO` idênticos, `devicePixelRatio`/`
 neutros nos dois lados) — ver seção 1 de
 `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-encontrados.md`.
 
-**Fase 2** (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`, **não
-iniciada**) — restante da superfície do Tema V1 que a fase 1 não cobria. Executar em
-ordem, um checkpoint por vez, commit local a cada checkpoint fechado:
+**Fase 2** (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`, **em
+execução, CP6 fechado**) — restante da superfície do Tema V1 que a fase 1 não cobria.
+Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado:
 
-1. [ ] CP6 — Página Inicial sem conteúdo artificial (remover "RMAs"/"Novo RMA");
+1. [x] CP6 — Página Inicial sem conteúdo artificial (removidos "RMAs"/"Novo RMA");
 2. [ ] CP7 — Localizar como painel inline histórico (maior item da fase);
 3. [ ] CP8 — painel Novo: toggle de estoque, campo de data, fabricante, box-sizing;
 4. [ ] CP9 — Quadro de Anotações (rows=20, título, remover botão salvar);

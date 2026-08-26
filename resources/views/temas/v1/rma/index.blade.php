@@ -1,8 +1,10 @@
 @extends('temas.v1.layout')
 
 @section('conteudo')
-    <p><a href="{{ rota_tema('rmas.create') }}">Novo RMA</a></p>
-
+    {{-- CP6 (fase 2, `plano-execucao-paridade-visual-v1-fase2.md`) — `startpage.php`
+    não tem link "Novo RMA" próprio; o atalho já existe no menu superior ("Novo",
+    `#menu-novo` em `temas/v1/layout.blade.php`). Este link duplicava o mesmo
+    destino sem fonte real no Legacy — removido. --}}
     <form method="GET" action="{{ rota_tema('rmas.index') }}" id="localizar" class="JS-Localizar tam">
         <label>Buscar por
             <select name="tipo" class="formSelect">

@@ -1,6 +1,6 @@
 # Plano de execução — paridade visual do Tema V1, fase 2
 
-Data: 2026-08-25. Estado: **não iniciado**. Continuação de
+Data: 2026-08-25. Estado: **em execução (CP6 fechado)**. Continuação de
 `docs/produto/plano-execucao-paridade-estrutural-v1.md` (CP0–CP5, **fechado** —
 cascata/fontes, primitivas de tabela, as 4 listagens por status com resumo e
 propagação). Esta fase cobre o restante da superfície do Tema V1 que os dois prompts
@@ -32,16 +32,56 @@ parecer sobre a percepção de largura — já investigada e descartada como bug
 
 ## CP6 — Página Inicial sem conteúdo artificial
 
-- [ ] CP6-01 — ler `legacy-source/14.6.1/inc/startpage.php` por inteiro (topo da
+- [x] CP6-01 — ler `legacy-source/14.6.1/inc/startpage.php` por inteiro (topo da
       página, antes do quadro de anotações).
-- [ ] CP6-02 — medir V3 atual: confirmar que `rma/index.blade.php` renderiza H1 "RMAs"
+- [x] CP6-02 — medir V3 atual: confirmar que `rma/index.blade.php` renderiza H1 "RMAs"
       e link "Novo RMA" que não existem no Legacy.
-- [ ] CP6-03 — remover "RMAs"/"Novo RMA" da composição visual (H1 pode virar
+- [x] CP6-03 — remover "RMAs"/"Novo RMA" da composição visual (H1 pode virar
       `sr-only`, mantendo semântica; o atalho Novo já existe no menu superior).
-- [ ] CP6-04 — medir a distância header→primeira superfície útil (Localizar) nos dois
+- [x] CP6-04 — medir a distância header→primeira superfície útil (Localizar) nos dois
       lados; confirmar que o V3 não tem mais os ~45-50px extras artificiais.
-- [ ] CP6-05 — capturar/reabrir/comparar Página Inicial, registrar diário.
-- [ ] CP6-06 — testes focados/build e commit local.
+- [x] CP6-05 — capturar/reabrir/comparar Página Inicial, registrar diário.
+- [x] CP6-06 — testes focados/build e commit local.
+
+### CMP-V1-2-001 — CP6, Página Inicial sem conteúdo artificial
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear fontes remotas. Specs rodadas do host (`PLAYWRIGHT_BASE_URL`/
+  `LEGACY_BASE_URL` explícitos — ver nota operacional da fase 1/CMP-V2-008 sobre por
+  que este spec não roda via `docker compose exec`).
+- Fonte: `legacy-source/14.6.1/inc/startpage.php` lido por inteiro — a Página Inicial
+  não tem H1/heading nenhum, começa direto por `<div style="clear:both;
+  padding-top:12px;"></div>` seguido do painel Localizar (já aberto, `display:block`
+  via script inline). Também não existe link "Novo RMA" próprio — o atalho "Novo" já
+  é item do menu superior (`inc/topmenu.php`, já portado em `layout.blade.php`).
+- **Achados reais, corrigidos:**
+  1. `rma/index.blade.php` tinha um `<p><a>Novo RMA</a></p>` sem fonte no Legacy,
+     duplicando o item "Novo" do menu — removido.
+  2. `layout.blade.php` renderizava sempre o H1 `$titulo` ("RMAs") dentro de
+     `#CONTEUDO` na Página Inicial — sem equivalente no Legacy. Reaproveitado o
+     mecanismo `$ocultarTituloVisual` já existente (criado em VIS-V1-007 para
+     `/rmas/create`), estendendo para `rmas.index`/`v1.rmas.index` — H1 continua no
+     DOM (`sr-only`, `position:absolute`), só some visualmente.
+- Tabela de medidas (`getBoundingClientRect`, Legacy × V3, antes/depois desta
+  correção):
+
+  | Medida | Legacy | V3 antes | V3 depois | Delta depois |
+  |---|---|---|---|---|
+  | `#TOPO`/header, `bottom` | `51` | `51` | `51` | `0` |
+  | H1 visível | ausente | `26px` de altura, `position:static` | `position:absolute` (sem altura no fluxo) | — |
+  | `#JS-Localizar`/`.JS-Localizar`, `top` | `65` | `123` | `65` | `0` |
+  | gap header→Localizar | `14px` | `72px` | `14px` | `0` |
+- Diferença perceptível restante: nenhuma na composição do topo da Página Inicial. A
+  parte funcional do painel Localizar (só 1 select "tipo" + 1 input + botão, contra os
+  2 selects históricos SOLUÇÃO/CAMPO + input + botão do Legacy) é escopo do CP7, não
+  deste item.
+- Screenshots versionados (sem dado real de cliente/produto — só contadores agregados
+  e texto de teste, mesma régua já aplicada às evidências desta sessão):
+  `docs/produto/screenshots-vis-v1-001/{17-legacy-pagina-inicial-sem-heading-artificial,18-v3-pagina-inicial-cp6-corrigido}.png`.
+- Decisão: **CP6 APROVADO**.
+- Testes/build: `php artisan test` (363/818, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` rodado do host (4/4, verde).
+- Commit: a seguir (`#ARQ-RMA - Remove o titulo e o link artificiais da pagina inicial do tema V1`).
 
 ## CP7 — Localizar como painel inline histórico
 

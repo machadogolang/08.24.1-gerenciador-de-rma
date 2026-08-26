@@ -1,8 +1,9 @@
 # Plano de ataque — CellSystem RMA
 
-Última atualização: 2026-08-25. Fonte granular:
+Última atualização: 2026-08-26. Fonte granular:
 `docs/produto/checklist-master-v3.md`.
-Handoff para nova sessão: `docs/produto/handoff-sessao-2026-08-25.md`.
+Handoff para nova sessão: `docs/produto/handoff-sessao-2026-08-26.md` (substitui o
+handoff de 2026-08-25, mantido só como histórico).
 
 ## AGORA
 

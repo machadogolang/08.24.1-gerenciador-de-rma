@@ -46,7 +46,12 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
 8. [x] CP13 — fixture de QA com comprimento de dado realista (`os`/`descricao`
    encurtados; 1 registro com `solucao=PendenteCredito`, Aguardando Crédito deixa
    de ficar sempre vazia);
-9. [ ] CP14 — investigação da máquina de estados `$TR1` (só corrigir com evidência);
+9. [x] CP14 — investigação da máquina de estados `$TR1` — **achado real, aguardando
+   decisão do usuário**: `Rma::classeDeAlerta()` nunca devolve `ClasseDeAlerta::
+   Urgente` (prioridade alta / 30-dias-cliente-fora-do-prazo saem com a cor errada,
+   `TrInconformidade` em vez de `TrUrgente`); mesmo achado já registrado como
+   `[INVESTIGAR]` no CP23 do TEMA V2, agora com evidência completa. Ver
+   `CMP-V1-2-009`;
 10. [ ] CP15 — gate final da fase 2 (três viewports, prova final, checklist).
 
 Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da

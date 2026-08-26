@@ -623,18 +623,83 @@ QA 059` vs `INTELBRAS`).
 Item de investigação, não de implementação garantida — só alterar
 `Rma::classeDeAlerta()`/`classe_css_de_alerta()` se houver evidência de runtime.
 
-- [ ] CP14-01 — reproduzir localmente uma sequência real de RMAs em Entrada com pelo
+- [x] CP14-01 — reproduzir localmente uma sequência real de RMAs em Entrada com pelo
       menos 2 tipos de alerta diferentes intercalados (ex.: `SEM GARANTIA` seguido
       de `Cliente`/`marcarestoque=0` fora do prazo).
-- [ ] CP14-02 — comparar a classe CSS de cada linha, na mesma sequência, entre
+- [x] CP14-02 — comparar a classe CSS de cada linha, na mesma sequência, entre
       Legacy (`$TR1` como estado compartilhado do PHP) e V3
       (`Rma::classeDeAlerta()` + índice).
-- [ ] CP14-03 — se divergir: documentar o achado com evidência (sequência exata +
-      classes obtidas nos dois lados) e decidir a correção com o usuário antes de
-      implementar — pode exigir um presenter de linha V1 com máquina de estado
-      própria, não alteração do domínio.
-- [ ] CP14-04 — se não divergir: registrar a prova negativa (não é bug) e fechar o
-      item sem alteração de código.
+- [x] CP14-03 — **divergiu — achado real, documentado, NÃO implementado.** Ver
+      diário (`CMP-V1-2-009`) pra evidência completa e a decisão em aberto pro
+      usuário.
+- [ ] CP14-04 — não se aplica (achado positivo, não negativo — ver CP14-03).
+
+### CMP-V1-2-009 — CP14, achado real na máquina de estados `$TR1` (decisão pendente do usuário)
+
+- Ambiente: leitura completa de `page/entrada.php` (14.6.1, branches `$TR1` linhas
+  41-49) + `Rma::classeDeAlerta()`/`classe_css_de_alerta()` (domínio) + verificação
+  empírica ao vivo (Playwright, `/rmas-entrada`, 24 linhas reais da fixture QA pós-
+  CP13, `getComputedStyle` de cada `<tr>`).
+- **Achado 1 — `ClasseDeAlerta::Urgente` é código morto, nunca devolvido:**
+  `Rma::classeDeAlerta()` mapeia AS QUATRO condições de alerta
+  (`SemGarantia`/`prioridade=Alta`/`origemEhTerceiroForaDoPrazo()`/
+  `marcarestoque=false+Cliente-ou-Licitação`) pro MESMO caso
+  `ClasseDeAlerta::Inconformidade`. O Legacy real (`entrada.php:41-49`) usa DUAS
+  classes CSS diferentes, com cores de fundo diferentes
+  (`pattern/15.9.7.css:60-63`: `TrInconformidade` `#303033`, `TrUrgente`
+  `#382830`):
+  - `TrInconformidade`: SEM GARANTIA (linhas 41-42) OU
+    `marcarestoque=0 AND origem∈{Cliente,Licitação}` (linhas 46-47).
+  - `TrUrgente`: `origem=Cliente AND marcarestoque=0 AND >30 dias fora do prazo`
+    (linha 44) OU `prioridade=alta` (linha 45). (A condição `prioridade=="urgente"`
+    da linha 43 é sobre um valor de prioridade morto — RN-08, já documentado no
+    docblock do enum `Prioridade` — nunca dispara na prática.)
+  - Verificado ao vivo: nenhuma das 24 linhas de `/rmas-entrada` (fixture com
+    `prioridade=Alta` em 1 a cada 3 registros) rendeu `TrUrgente` — todas as linhas
+    de alerta vieram `TrInconformidade` (`rgb(48,48,51)`, confere com `#303033`).
+    Confirma o mapeamento incorreto ao vivo, não só por leitura de código.
+  - **Achado já apontado, mas não resolvido, no CP23 do TEMA V2** (`[INVESTIGAR]`
+    em `plano-execucao-paridade-v2.md`: "Entrada não usa `TrUrgente` nem checa
+    prazo de 30 dias") — como `Rma::classeDeAlerta()` é do domínio (compartilhada
+    pelos dois temas), esse achado do V2 e o do CP14 são o MESMO bug, confirmado
+    agora com evidência completa dos dois lados.
+- **Achado 2 — ordem de alternação da zebra diverge quando há linhas de alerta
+  intercaladas:** no Legacy, as linhas `TrUrgente` (branches 3-5, priority/30-dias)
+  NÃO tocam `$TR1` — o toggle de zebra "pula" essas linhas, mantendo a alternância
+  correta pras linhas neutras ao redor. Já as linhas `TrInconformidade` por SEM
+  GARANTIA/estoque (branches 1-2/6-7) CONSOMEM um turno do `$TR1` mesmo sem
+  renderizar zebra. V3 usa `$indice % 2` (posição bruta no array, avança em TODA
+  linha, alerta ou não) — trace manual de uma sequência
+  [neutra,alerta-urgente,neutra,neutra]: Legacy produz `Zebrada2,Urgente,Zebrada1,
+  Zebrada2` (alternância correta, pula a linha urgente); V3 produz
+  `Zebrada1,Urgente,Zebrada1,Zebrada2` (as duas linhas neutras ao redor da linha de
+  alerta saem com a MESMA classe de zebra — alternância quebrada). Efeito visual:
+  sutil (duas linhas adjacentes-por-conteúdo com o mesmo tom de zebra em vez de
+  alternado), mas é uma divergência real e mensurável.
+- **Decisão pendente do usuário (CP14-03 explicitamente pede isso antes de
+  implementar):** corrigir exige decidir ONDE — `Rma::classeDeAlerta()` é
+  compartilhada com o TEMA V2 (que já tem o mesmo achado registrado como
+  `[INVESTIGAR]`, não corrigido); mudar o método de domínio conserta os dois temas
+  de uma vez (aditivo — `Urgente` já existe no enum e no `classe_css_de_alerta()`,
+  só nunca é devolvido), mas exigiria uma máquina de estado própria por
+  view/listagem pra reproduzir o "pular linha urgente" da alternância — os
+  presenters atuais (`RmaController`/`ListagensPorStatusController`) só passam
+  `$indice` do `foreach`, não um contador que ignora linhas de alerta. Opções, sem
+  decisão tomada aqui: (a) corrigir só o mapeamento Urgente×Inconformidade
+  (fecha o achado 1, mais simples, zero risco de regressão de zebra) e deixar o
+  achado 2 (ordem de alternação) documentado como tolerância aceita (efeito visual
+  pequeno); (b) corrigir os dois achados juntos, com um contador de zebra próprio
+  passado a `classe_css_de_alerta()` em vez do índice bruto — maior, toca
+  `RmaController`/`ListagensPorStatusController`/TEMA V2 simultaneamente.
+- Screenshots: não capturados nesta rodada — achado é de CLASSE CSS/cor de fundo,
+  não de geometria, e não há screenshot Legacy comparável disponível com a MESMA
+  sequência de dados (dado real de produção, não reproduzível com a fixture QA).
+  Evidência é o trace de código + a verificação ao vivo acima.
+- Decisão: **CP14 fechado como investigação — achado real registrado, correção
+  NÃO implementada, aguardando decisão do usuário sobre escopo (a) ou (b) acima.**
+- Testes/build: nenhuma alteração de código nesta rodada — suíte não rodada de
+  novo (sem mudança pra verificar).
+- Commit: a seguir, só documentação (`#DOC-RMA - Registra o achado da maquina de estados TrUrgente pendente de decisao`).
 
 ## CP15 — Gate final da fase 2
 

@@ -447,6 +447,12 @@ $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scs
     }
 }
 
+// CP11 (fase 2 V1) — fonte real `startpage.php:182`.
+.separador2-inicial {
+    float: right;
+    margin-top: 50px;
+}
+
 // Port consciente da estrutura autenticada do TEMA V1. Fonte:
 // `pattern/14.6.1.css` + `14.6.1/index.php`; apenas seletores usados pelos Blades V1.
 li {

@@ -38,7 +38,7 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
    autosave via fetch);
 5. [x] CP10 — sidebar de contadores (box model, links reais pras 4 listagens +
    filtro por solução);
-6. [ ] CP11 — separador antes do Centro de Avisos (`separador2.png`);
+6. [x] CP11 — separador antes do Centro de Avisos (`separador2.png`);
 7. [ ] CP12 — Centro de Avisos (ordem histórica, composição por grupo, mostrar/ocultar);
 8. [ ] CP13 — fixture de QA com comprimento de dado realista;
 9. [ ] CP14 — investigação da máquina de estados `$TR1` (só corrigir com evidência);

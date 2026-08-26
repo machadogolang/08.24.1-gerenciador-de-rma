@@ -83,5 +83,11 @@
     </div>
     <div class="both"></div>
 
+    {{-- CP11 (fase 2 V1) — separador entre o painel Anotações/Contadores e o Centro
+    de Avisos, fonte real `startpage.php:182` (`separador2.png`,
+    `margin-top:50px;float:right;height:40px`). --}}
+    <img src="{{ asset('images/tema-v1/separador2.png') }}" alt="Separador" title="Separador" height="40" class="separador2-inicial">
+    <div class="both"></div>
+
     @include('rma._centro_de_avisos', ['grupos' => $grupos])
 @endsection

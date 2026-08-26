@@ -423,15 +423,41 @@ Fonte: `legacy-source/14.6.1/inc/startpage.php`, `pattern/14.6.1.css`.
 
 ## CP11 — Separador antes do Centro de Avisos
 
-- [ ] CP11-01 — localizar `separador2.png` no repositório Legacy
+- [x] CP11-01 — localizar `separador2.png` no repositório Legacy
       (`legacy-source/images/`), igual ao já feito para os ícones das 4 listagens.
-- [ ] CP11-02 — portar para `public/images/tema-v1/`, validar hash byte a byte.
-- [ ] CP11-03 — inserir com `float:right; margin-top:50px; height:40px` e o
+- [x] CP11-02 — portar para `public/images/tema-v1/`, validar hash byte a byte.
+- [x] CP11-03 — inserir com `float:right; margin-top:50px; height:40px` e o
       `clear`/`hr` que o Legacy usa antes/depois, na posição real (entre
       anotação/contadores e o Centro de Avisos).
-- [ ] CP11-04 — capturar/reabrir/comparar, registrar diário.
-- [ ] CP11-05 — testes focados/build e commit local (pode ser junto do CP12 se os
+- [x] CP11-04 — capturar/reabrir/comparar, registrar diário.
+- [x] CP11-05 — testes focados/build e commit local (pode ser junto do CP12 se os
       dois ficarem pequenos o suficiente para um commit coerente).
+
+### CMP-V1-2-006 — CP11, separador antes do Centro de Avisos
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000.
+  Spec de regressão rodada do host.
+- Fonte: `startpage.php:182` (`<img style="margin-top:50px;float:right;"
+  src=".../separador2.png" height="40"/>`). `separador2.png` já tinha sido portado e
+  hash-verificado pro TEMA V2 (CP11/CMP-V2-*) — mesmo arquivo byte-idêntico
+  (`md5sum f9d3ecd2...`), só copiado pra `public/images/tema-v1/` (não há por que
+  baixar/verificar de novo um asset já confirmado nesta sessão).
+- Sem achado de divergência: a classe nova (`.separador2-inicial`) só precisou de
+  `float:right;margin-top:50px` — `height="40"` já vem do atributo HTML, igual ao
+  Legacy.
+- Tabela de medidas (`getBoundingClientRect`, Legacy × V3):
+
+  | Elemento | Legacy | V3 | Delta |
+  |---|---|---|---|
+  | `x,width,height` | `519,693,40` | `519,693,40` | `0` |
+  | `margin-top`/`float` | `50px`/`right` | `50px`/`right` | `0` |
+  | `y` | `711` | `648` | `63px` (esperado — conteúdo acima difere em altura por causa do dado real vs fictício, não é defeito de CSS) |
+- Screenshot versionado (fictício QA):
+  `docs/produto/screenshots-vis-v1-001/28-v3-separador-antes-centro-de-avisos-cp11.png`.
+- Decisão: **CP11 APROVADO**.
+- Testes/build: `php artisan test` (364/820, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` rodado do host (4/4, verde).
+- Commit: a seguir (`#ARQ-RMA - Insere o separador antes do centro de avisos na pagina inicial do tema V1`).
 
 ## CP12 — Centro de Avisos
 

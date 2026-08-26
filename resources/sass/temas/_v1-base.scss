@@ -404,9 +404,16 @@ $largura-rotulo-stats: 198px;
 $largura-valor-stats: 45px;
 $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scss (14.6.1.css:76)
 
+// CP10 (fase 2 V1) — `[style="float:right;width:280px;margin-right:-8px;
+// margin-top:-15px;"]` medido direto no Legacy (nenhum id/class próprio no
+// container-fonte). `box-sizing:border-box` removido de `.formLabelStats`/
+// `.formValorStats` (mesmo achado do CP8: nenhuma das duas classes reais declara a
+// propriedade — a largura do Legacy é width+padding+border, não só width).
 .contadores-do-painel {
     float: right;
     width: $largura-sidebar-contadores;
+    margin-right: -8px;
+    margin-top: -15px;
 
     .formLabelStats {
         margin: 0 5px 0 0;
@@ -416,7 +423,9 @@ $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scs
         border: 1px solid rgba(0, 0, 0, 0.3);
         background-color: #26251f;
         padding: 5px;
-        box-sizing: border-box;
+        font-weight: 300;
+        font-family: "Open Sans", "Arial", "Fira Mono", sans-serif;
+        letter-spacing: 1px;
 
         &:hover {
             background-color: $cor-hover-stats;
@@ -432,7 +441,9 @@ $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scs
         padding: 5px;
         margin: 0;
         text-align: center;
-        box-sizing: border-box;
+        font-weight: 300;
+        font-family: "Open Sans", "Arial", "Fira Mono", sans-serif;
+        letter-spacing: 1px;
     }
 }
 

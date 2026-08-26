@@ -36,7 +36,8 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
    anterior sobre `EncontrarOuCriarFabricante`);
 4. [x] CP9 — Quadro de Anotações (rows=20, título, remover botão salvar,
    autosave via fetch);
-5. [ ] CP10 — sidebar de contadores (box model, links);
+5. [x] CP10 — sidebar de contadores (box model, links reais pras 4 listagens +
+   filtro por solução);
 6. [ ] CP11 — separador antes do Centro de Avisos (`separador2.png`);
 7. [ ] CP12 — Centro de Avisos (ordem histórica, composição por grupo, mostrar/ocultar);
 8. [ ] CP13 — fixture de QA com comprimento de dado realista;

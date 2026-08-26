@@ -72,6 +72,36 @@ if (! function_exists('classe_css_de_alerta')) {
     }
 }
 
+if (! function_exists('link_do_contador_v1')) {
+    /**
+     * CP10 (fase 2 V1, `plano-execucao-paridade-visual-v1-fase2.md`) — cada contador
+     * da sidebar (`inc/startpage.php:17-176`) é um `<a>` real no Legacy, não texto
+     * estático. Os 4 primeiros (`ENTRADA`/`PENDENTE CREDITO`/`ENCAMINHADO`/
+     * `CONCLUIDO`) apontam pras 4 listagens dedicadas (rotas SEM prefixo por tema,
+     * mesmo critério já usado em `temas/v2/layout.blade.php` pra Creditos/
+     * Relatorios/Controle — `rota_tema()` só resolve `v1.*`/`v2.*`). Os demais
+     * (soluções + total) apontam pro Localizar com `solucao` — filtro aditivo que
+     * só existe a partir do CP7 (`CriterioDeBusca::solucao()`).
+     *
+     * `[GAP]` "QUANTIDADE TOTAL DE ITENS": o Legacy usa `solucao=%` (curinga SQL,
+     * sem equivalente em `Solucao::tryFrom()`) pra listar TODO o banco sem filtro —
+     * a busca V3 não tem modo "listar tudo sem filtro" (evitaria uma tabela sem
+     * paginação); aponta pro Localizar vazio (mesmo destino de clicar "Pag.
+     * Inicial"), não reproduz a listagem completa.
+     */
+    function link_do_contador_v1(string $rotulo): string
+    {
+        return match ($rotulo) {
+            'ENTRADA' => route('rmas.entrada'),
+            'PENDENTE CREDITO' => route('rmas.aguardando-credito'),
+            'ENCAMINHADO' => route('rmas.encaminhados'),
+            'CONCLUIDO' => route('rmas.concluidos'),
+            'QUANTIDADE TOTAL DE ITENS' => rota_tema('rmas.index'),
+            default => rota_tema('rmas.index', ['solucao' => $rotulo]),
+        };
+    }
+}
+
 if (! function_exists('origem_abreviada_v1')) {
     /**
      * VIS-V1-001 — abreviação de apresentação confirmada em

@@ -352,22 +352,74 @@ Fonte: `legacy-source/14.6.1/inc/startpage.php`, `pattern/14.6.1.css`.
 
 Fonte: `legacy-source/14.6.1/inc/startpage.php`, `pattern/14.6.1.css`.
 
-- [ ] CP10-01 — ler a seção da sidebar nos dois arquivos por inteiro.
-- [ ] CP10-02 — medir geometria real no Legacy: container `width:280px; float:right;
+- [x] CP10-01 — ler a seção da sidebar nos dois arquivos por inteiro.
+- [x] CP10-02 — medir geometria real no Legacy: container `width:280px; float:right;
       margin-right:-8px; margin-top:-15px`; `.formLabelStats` `width:198px;
       padding:5px; border:1px` (sem `border-box`); `.formInputStats` `width:45px;
       padding:5px; border:1px` (sem `border-box`).
-- [ ] CP10-03 — remover `box-sizing:border-box` desses elementos se a medição
+- [x] CP10-03 — remover `box-sizing:border-box` desses elementos se a medição
       confirmar que altera a geometria; reproduzir semanticamente com
       `<p class="formLabelStats">`/`<input class="formInputStats" disabled>` ou
       produzir os mesmos `outerWidth`/`outerHeight` por outro meio.
-- [ ] CP10-04 — confirmar/restaurar que cada contador é link (`<a>`) para a
+- [x] CP10-04 — confirmar/restaurar que cada contador é link (`<a>`) para a
       listagem/filtro correspondente: `ENTRADA`→Entrada, `PENDENTE CREDITO`→
       Aguardando crédito, `ENCAMINHADO`→Encaminhado, `CONCLUIDO`→Concluído, e os
       filtros por solução (`SEM GARANTIA`, `GERADO CREDITO` etc.) para onde o
       Legacy realmente aponta — mapear caso a caso, não assumir.
-- [ ] CP10-05 — capturar/reabrir/comparar sidebar, registrar diário.
-- [ ] CP10-06 — testes focados/build e commit local.
+- [x] CP10-05 — capturar/reabrir/comparar sidebar, registrar diário.
+- [x] CP10-06 — testes focados/build e commit local.
+
+### CMP-V1-2-005 — CP10, sidebar de contadores
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear fontes remotas. Spec de regressão rodada do host.
+- Fonte: `startpage.php:17-176` (16 contadores, já lido por inteiro nos CP6/CP9),
+  `pattern/14.6.1.css:74-76` (`.formLabelStats`/`.formInputStats`, nenhuma com
+  `box-sizing` declarado).
+- **Achado real, corrigido (mesmo padrão do CP8):** `.formLabelStats`/
+  `.formValorStats` tinham `box-sizing:border-box` no V3 — Legacy roda em
+  `content-box`, então `outerWidth` real é `width+padding×2+border×2`
+  (198+10+2=210px pro rótulo, 45+10+2=57px pro valor), não a largura declarada
+  crua. Corrigido; `outerWidth` bateu exato nos dois lados depois. Container ganhou
+  `margin-right:-8px;margin-top:-15px` (ausentes, só tinha `float:right;width:280px`)
+  — `x` do container bateu exato (`940px`) depois da correção.
+- **Achado real, corrigido — o maior desta rodada:** nenhum dos 16 contadores era um
+  link antes desta correção (só `<p>` estático) — `[link_do_contador_v1()]` novo em
+  `app/Support/view_do_tema.php` mapeia rótulo→destino: os 4 primeiros
+  (`ENTRADA`/`PENDENTE CREDITO`/`ENCAMINHADO`/`CONCLUIDO`) pras 4 rotas dedicadas já
+  existentes (`rmas.entrada` etc., sem prefixo de tema — mesmo critério já usado em
+  `temas/v2/layout.blade.php` pra rotas sem variante `v1.`/`v2.`); os 11 de solução
+  pro Localizar com `solucao=X` (filtro aditivo do CP7). Testado funcionalmente:
+  clique em "REPARO" navegou pra `?solucao=REPARO` e retornou 12 linhas, batendo com
+  o valor mostrado no próprio contador.
+- **Achado de estrutura, confirmado como fiel ao Legacy (não é bug):** o `<a>` que
+  envolve `.formLabelStats`/`.formValorStats` colapsa pra `width:0;height:0` nos dois
+  lados (Legacy e V3) — os filhos são `float:left` sem clearfix no próprio `<a>`.
+  Confirmado que o Legacy tem exatamente o mesmo comportamento (medido
+  `getBoundingClientRect()` do `<a>` real em produção) — clique funciona porque cai
+  nos filhos visíveis, que borbulham o evento pro `<a>`. Não "corrigido" com
+  clearfix — seria modernizar além do que o Legacy realmente faz.
+- **`[GAP]` documentado (não bloqueante):** "QUANTIDADE TOTAL DE ITENS" no Legacy usa
+  `solucao=%` (curinga SQL) pra listar todo o banco sem filtro; a busca V3 não tem
+  modo "listar tudo sem filtro" — aponta pro Localizar vazio em vez de reproduzir a
+  listagem completa (ver docblock de `link_do_contador_v1()`).
+- Tabela de medidas (`getBoundingClientRect`, Legacy × V3):
+
+  | Elemento | Legacy | V3 antes | V3 depois | Delta depois |
+  |---|---|---|---|---|
+  | container (`x,width,marginRight,marginTop`) | `940,280,-8px,-15px` | `932,280,0,0` | `940,280,-8px,-15px` | `0` |
+  | `.formLabelStats` outerWidth | `210px` | `198px` | `210px` | `0` |
+  | `.formValorStats`/`.formInputStats` outerWidth | `57px` | `45px` | `57px` | `0` |
+  | contador é link funcional | sim (16/16) | não (0/16) | sim (16/16) | `0` |
+  | clique em "REPARO" → linhas retornadas | (histórico, não comparável 1:1) | N/A | `12` (bate com o contador) | — |
+- Diferença perceptível restante: nenhuma na geometria/estilo/comportamento de link.
+  `[GAP]` de "QUANTIDADE TOTAL DE ITENS" documentado, não bloqueante.
+- Screenshots versionados (fictício QA, mesma régua desta sessão):
+  `docs/produto/screenshots-vis-v1-001/{26-legacy-sidebar-contadores,27-v3-sidebar-contadores-cp10-corrigido}.png`.
+- Decisão: **CP10 APROVADO**.
+- Testes/build: `php artisan test` (364/820, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` rodado do host (4/4, verde).
+- Commit: a seguir (`#ARQ-RMA - Restaura os links reais da sidebar de contadores do tema V1`).
 
 ## CP11 — Separador antes do Centro de Avisos
 

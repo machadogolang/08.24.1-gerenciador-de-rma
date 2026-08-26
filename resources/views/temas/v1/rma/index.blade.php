@@ -67,10 +67,16 @@
             >{{ auth()->user()?->anotacao }}</textarea>
         </div>
 
+        {{-- CP10 (fase 2 V1) — cada contador é um `<a>` real no Legacy
+        (`inc/startpage.php:17-176`), não texto estático — ver `link_do_contador_v1()`
+        em `app/Support/view_do_tema.php` pro mapeamento rótulo→destino
+        (`[GAP]` documentado lá pra "QUANTIDADE TOTAL DE ITENS"). --}}
         <div class="contadores-do-painel">
             @foreach ($contadores as $rotulo => $quantidade)
-                <p class="formLabelStats fl">{{ $rotulo }}</p>
-                <p class="formValorStats fl">{{ $quantidade }}</p>
+                <a href="{{ link_do_contador_v1($rotulo) }}">
+                    <p class="formLabelStats fl">{{ $rotulo }}</p>
+                    <p class="formValorStats fl">{{ $quantidade }}</p>
+                </a>
                 <div class="both"></div>
             @endforeach
         </div>

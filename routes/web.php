@@ -31,6 +31,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Dashboard — redireciona para página inicial do RMA (Entrada)
+    Route::get('/dashboard', function () {
+        return redirect()->route('rmas.entrada');
+    })->name('dashboard');
+
     Route::post('/logout', [SessaoController::class, 'destroy'])->name('logout');
 
     Route::post('/tema/alternar', [TemaPreferidoController::class, 'update'])->name('tema.alternar');

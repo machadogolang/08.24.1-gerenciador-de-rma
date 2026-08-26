@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
+    {{-- CP9 (fase 2 V1) — autosave do Quadro de Anotações via `fetch` precisa do
+    token CSRF fora de um `<form>` tradicional. --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $titulo ?? 'RMA' }} — CellSystem RMA</title>
     @vite(['resources/js/temas/v1.js'])
 </head>

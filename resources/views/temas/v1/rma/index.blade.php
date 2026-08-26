@@ -46,19 +46,26 @@
     MESMA rota/caso de uso já existente desde a Fase 1 (`AtualizarAnotacaoPessoal`, ver
     `temas/v1/identidade/perfil.blade.php`) — nenhuma lógica nova, só um segundo lugar
     na UI editando o mesmo dado. Contadores vêm de `RmaController::contadoresDoPainel()`
-    (consulta de composição, não regra de negócio nova). --}}
-    <div class="painel-inicial-v1">
-        <form method="POST" action="{{ route('identidade.perfil.anotacao.update') }}" class="quadro-de-anotacoes">
-            @csrf
-            @method('PUT')
+    (consulta de composição, não regra de negócio nova).
 
-            <p class="quadro-de-anotacoes-titulo">
-                <img src="{{ asset('images/rma/notas.png') }}" width="20" alt="">
-                QUADRO DE ANOTACOES
-            </p>
-            <textarea name="anotacao" rows="14" class="textareaanotacao">{{ old('anotacao', auth()->user()?->anotacao) }}</textarea>
-            <button type="submit" class="buttonSave">Salvar anotação</button>
-        </form>
+    CP9 (fase 2 V1) — `startpage.php` salva a cada `onkeyup` (AJAX antigo, não
+    portado), sem botão "Salvar" e sem `<form>` (o campo oculto `id="em"`/`onkeyup`
+    fazem tudo via JS). Aqui vira `data-anotacao-autosave` + `fetch` debounced
+    (`v1.js`) pro mesmo endpoint que o formulário tradicional do perfil usa — sem
+    reimplementar o polling antigo, sem botão. `rows="20"`/classes `panotacao`/
+    `imganotacao`/`textareaanotacao` com os valores medidos no Legacy
+    (CMP-V1-2-004). --}}
+    <div class="painel-inicial-v1">
+        <div class="quadro-de-anotacoes">
+            <p class="panotacao"><img class="imganotacao" src="{{ asset('images/rma/notas.png') }}" width="20" alt="">QUADRO DE ANOTACOES</p>
+            <textarea
+                id="anotacao"
+                class="textareaanotacao"
+                rows="20"
+                data-anotacao-autosave
+                data-anotacao-url="{{ route('identidade.perfil.anotacao.update') }}"
+            >{{ auth()->user()?->anotacao }}</textarea>
+        </div>
 
         <div class="contadores-do-painel">
             @foreach ($contadores as $rotulo => $quantidade)

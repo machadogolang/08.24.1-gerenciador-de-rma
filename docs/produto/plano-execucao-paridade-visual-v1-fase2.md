@@ -280,22 +280,73 @@ correta e **não deve ser mexida**. Fonte:
 
 Fonte: `legacy-source/14.6.1/inc/startpage.php`, `pattern/14.6.1.css`.
 
-- [ ] CP9-01 — ler a seção do quadro de anotações nos dois arquivos por inteiro.
-- [ ] CP9-02 — medir geometria real no Legacy: container ~675px, `margin-left:1px`,
+- [x] CP9-01 — ler a seção do quadro de anotações nos dois arquivos por inteiro.
+- [x] CP9-02 — medir geometria real no Legacy: container ~675px, `margin-left:1px`,
       textarea `rows=20` width ~674px, `padding:5px`, `font-size:12px`,
       `letter-spacing:1px`, `line-height:1.5` (medir para confirmar, não assumir).
-- [ ] CP9-03 — trocar `rows="14"` por `rows="20"` e ajustar a geometria do
+- [x] CP9-03 — trocar `rows="14"` por `rows="20"` e ajustar a geometria do
       container/textarea para bater com o medido.
-- [ ] CP9-04 — restaurar o estilo real do título (`panotacao`/`imganotacao`): ícone
+- [x] CP9-04 — restaurar o estilo real do título (`panotacao`/`imganotacao`): ícone
       deslocado com margins negativas, `margin-top:-16px`, `padding:10px`,
       `letter-spacing:3px`, `font-weight:bold` — não reduzir a
       `.quadro-de-anotacoes-titulo { font-weight:300; }` genérico atual.
-- [ ] CP9-05 — remover o botão "Salvar anotação" da composição visual (o Legacy
+- [x] CP9-05 — remover o botão "Salvar anotação" da composição visual (o Legacy
       salva durante a digitação, sem botão). Implementar salvamento moderno:
       evento de input/change na textarea, debounce, `fetch` para o endpoint Laravel
       existente, CSRF, tratamento de erro discreto — sem portar o AJAX antigo.
-- [ ] CP9-06 — capturar/reabrir/comparar quadro de anotações, registrar diário.
-- [ ] CP9-07 — testes focados/build e commit local.
+- [x] CP9-06 — capturar/reabrir/comparar quadro de anotações, registrar diário.
+- [x] CP9-07 — testes focados/build e commit local.
+
+### CMP-V1-2-004 — CP9, Quadro de Anotações
+
+- Ambiente: Chromium headless (Playwright), zoom 100%, DPR 1, viewport 1440×1000, sem
+  bloquear fontes remotas. Spec de regressão rodada do host.
+- Fonte: `startpage.php` linhas 10-15 (título+textarea), `pattern/14.6.1.css:65-67`
+  (`.panotacao`/`.imganotacao`/`.textareaanotacao`). `startpage.php` sobrepõe `style`
+  inline em cima das classes (`.panotacao` vira `border:0;width:664px;margin-top:
+  -16px`; a textarea vira `display:block;border:0`) — os dois medidos e embutidos
+  como valor final das classes em `_v1-base.scss` (mesmo critério já usado pro
+  `#menuright` do TEMA V2, CP18), sem inline no Blade.
+- **Achado real, corrigido:** `.quadro-de-anotacoes-titulo` era uma classe genérica
+  V3 (`font-weight:300`) sem relação com as classes reais do Legacy — trocada pelas
+  classes originais `.panotacao`/`.imganotacao` com os valores medidos
+  (`padding:10px`, `letter-spacing:3px`, `font-weight:700`, `margin-top:-16px`,
+  ícone com margins negativas pra sobrepor o texto). `.textareaanotacao` trocou
+  `border:1px solid`/fundo sólido `#26251f` por `border:0`/fundo
+  `rgba(0,0,0,0.1)` (real), `rows="14"`→`rows="20"`.
+- **Achado de comportamento, implementado como equivalente moderno (não port
+  literal):** o Legacy salva a cada `onkeyup` via AJAX próprio (código não
+  disponível/não portado); botão "Salvar anotação" removido da composição (sem
+  fonte no Legacy). Autosave novo: debounce de 800ms + `fetch` PUT pro mesmo
+  endpoint que o formulário tradicional do perfil já usa
+  (`identidade.perfil.anotacao.update`) — `AnotacaoPessoalController::update()`
+  ganhou uma resposta JSON condicional (`$request->wantsJson()`), aditiva, o form
+  tradicional do perfil continua recebendo o redirect de sempre. Erro de rede/HTTP
+  marca a textarea com uma borda vermelha sutil (`.textareaanotacao--erro`), sem
+  alert/modal.
+- Verificação funcional (não só visual): digitado texto na textarea, capturada a
+  requisição `PUT .../perfil/anotacao` (`X-CSRF-TOKEN`/`Accept:application/json`
+  corretos), recarregada a página numa aba nova — texto persistiu, confirmando o
+  ciclo completo `fetch`→controller→banco→re-render. Conta de teste resetada
+  (`anotacao=null`) depois da verificação.
+- Tabela de medidas (`getBoundingClientRect`/computed style, Legacy × V3):
+
+  | Elemento | Legacy | V3 antes | V3 depois | Delta depois |
+  |---|---|---|---|---|
+  | `.panotacao` (`width,height,padding,bg,letterSpacing,fontWeight,marginTop`) | `684,34,10px,rgba(0,0,0,.1),3px,700,-16px` | classe genérica, sem essas propriedades | `684,37,10px,rgba(0,0,0,.1),3px,700,-16px` | `0` (altura varia ±3px por causa da fonte real vs fallback, tolerado) |
+  | `.textareaanotacao` (`width,padding,bg,letterSpacing`) | `684,5px,rgba(0,0,0,.1),1px` | `681,2px,rgb(38,37,31),normal` | `684,5px,rgba(0,0,0,.1),1px` | `0` |
+  | `rows` | `20` | `14` | `20` | `0` |
+  | botão "Salvar anotação" | ausente | presente | ausente | `0` |
+- Diferença perceptível restante: nenhuma na geometria/estilo do quadro. O AJAX
+  antigo do Legacy não foi portado literalmente (decisão já registrada no plano —
+  equivalente moderno, não port 1:1).
+- Screenshots versionados (fictício/local — "Conta local; nao pertence ao dump
+  historico", mesma régua desta sessão):
+  `docs/produto/screenshots-vis-v1-001/{24-legacy-quadro-anotacoes,25-v3-quadro-anotacoes-cp9-corrigido}.png`.
+- Decisão: **CP9 APROVADO**.
+- Testes/build: `php artisan test` (364/820, verde); `npm run build` (ok);
+  `ParidadeVisualTemaV1.spec.ts` rodado do host (4/4, verde).
+- Commit: a seguir (`#ARQ-RMA - Restaura o quadro de anotacoes com salvamento automatico no tema V1`).
 
 ## CP10 — Sidebar de contadores
 

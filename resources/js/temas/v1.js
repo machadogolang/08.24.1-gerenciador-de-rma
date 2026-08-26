@@ -57,3 +57,37 @@ if (botaoLocalizar && painelLocalizar) {
         document.querySelector('#menu-localizar').style.fontWeight = 'bold';
     });
 }
+
+// CP9 (fase 2 V1) — Quadro de Anotações da Página Inicial: `startpage.php` salva a
+// cada `onkeyup` via AJAX próprio, sem botão "Salvar". Equivalente moderno: debounce
+// de 800ms + `fetch` pro mesmo endpoint do formulário tradicional do perfil
+// (`identidade.perfil.anotacao.update`) — sem reimplementar o polling antigo.
+const campoAnotacao = document.querySelector('[data-anotacao-autosave]');
+
+if (campoAnotacao) {
+    let temporizador = null;
+
+    campoAnotacao.addEventListener('input', () => {
+        clearTimeout(temporizador);
+        campoAnotacao.classList.remove('textareaanotacao--erro');
+        temporizador = setTimeout(() => {
+            fetch(campoAnotacao.dataset.anotacaoUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify({ anotacao: campoAnotacao.value }),
+            })
+                .then((resposta) => {
+                    if (!resposta.ok) {
+                        campoAnotacao.classList.add('textareaanotacao--erro');
+                    }
+                })
+                // Tratamento discreto (CP9-05): sem alert/modal — só marca o campo
+                // pra indicar visualmente que a última alteração não foi salva.
+                .catch(() => campoAnotacao.classList.add('textareaanotacao--erro'));
+        }, 800);
+    });
+}

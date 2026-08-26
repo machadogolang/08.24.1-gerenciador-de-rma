@@ -350,18 +350,51 @@ $largura-sidebar-contadores: 280px;
 .quadro-de-anotacoes {
     float: left;
     width: $largura-quadro-de-anotacoes;
+    margin-left: 1px;
+}
 
-    .quadro-de-anotacoes-titulo {
-        font-weight: 300;
-    }
+// CP9 (fase 2 V1) — `.panotacao`/`.imganotacao`/`.textareaanotacao` são as classes
+// reais do Legacy (`pattern/14.6.1.css:65-67`); `startpage.php` sobrepõe um `style`
+// inline em `.panotacao` (`border:0;width:664px;margin-top:-16px`) e na textarea
+// (`display:block;border:0`) — medidos via Playwright e já embutidos aqui como valor
+// final da classe (sem inline no Blade, mesmo critério já usado no TEMA V2 pra
+// `#menuright`/CP18).
+.panotacao {
+    margin-bottom: 2px;
+    margin-top: -16px;
+    padding: 10px;
+    width: 664px;
+    border: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    letter-spacing: 3px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.imganotacao {
+    float: left;
+    margin-left: -5px;
+    margin-top: -3px;
+    margin-right: 8px;
 }
 
 .textareaanotacao {
     display: block;
-    width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    background-color: #26251f;
-    color: $texto;
+    width: 674px;
+    padding: 5px;
+    border: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 1.5;
+
+    // CP9-05 — indicador discreto de falha no autosave (`v1.js`), sem
+    // alert/modal — só uma borda vermelha sutil enquanto a última alteração não
+    // foi confirmada salva.
+    &.textareaanotacao--erro {
+        border: 1px solid rgba(219, 87, 77, 0.6);
+    }
 }
 
 // Fonte real: `14.6.1.css:74-76` (`.formInputStats`/`.formLabelStats`) — rótulo com

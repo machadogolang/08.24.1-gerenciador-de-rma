@@ -19,8 +19,10 @@ plano de ataque não carrega.
    Encaminhado (`[INVESTIGAR]`), gap "Anotacoes" sem página própria (`[GAP]`), redesenho
    por-grupo do Centro de Avisos (fora de escopo desta frente).
 3. **Paridade visual do Tema V1, fase 2** (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`,
-   CP6–CP15) — **em execução**, CP6–CP9 fechados nesta sessão, **CP10 é o próximo
-   passo**.
+   CP6–CP15) — **em execução**, CP6–CP14 fechados nesta sessão. **CP15 (gate final)
+   é o próximo passo, mas há uma decisão do usuário pendente antes (ver seção
+   "Decisão pendente" abaixo) — CP15 pode rodar sem ela (documentando o pendente),
+   mas o resultado final muda dependendo da escolha.**
 
 ## O que foi feito nesta sessão, em ordem
 
@@ -81,39 +83,119 @@ plano de ataque não carrega.
   Testado o ciclo completo (digitou → capturou a requisição → recarregou noutra aba →
   texto persistiu).
 
-Todos os 4 checkpoints (CP6–CP9) têm entrada de diário completa em
-`plano-execucao-paridade-visual-v1-fase2.md` (`CMP-V1-2-001` a `CMP-V1-2-004`), com
-tabela de medidas Legacy×V3×Delta, screenshots versionados e commit próprio. Nenhum
-teve regressão: suíte completa (364 testes/820 assertions) verde depois de cada um,
-`ParidadeVisualTemaV1.spec.ts` 4/4 verde depois de cada um (rodado do host).
+- **CP10 (V1 fase 2)** — sidebar de contadores: `box-sizing:border-box` removido de
+  `.formLabelStats`/`.formValorStats` (mesmo achado do CP8 — `outerWidth` real é
+  210px/57px, não 198px/45px); container ganhou `margin-right:-8px;margin-top:-15px`
+  (ausentes). **Achado maior:** nenhum dos 16 contadores era link antes — todos
+  viraram `<a>` reais (`link_do_contador_v1()`, novo em
+  `app/Support/view_do_tema.php`): os 4 primeiros pras 4 listagens dedicadas, os 11
+  de solução pro Localizar com `?solucao=X` (usa o filtro aditivo do CP7). Testado
+  funcionalmente (clique em "REPARO" → 12 linhas, batendo com o contador).
+  Confirmado que o `<a>` colapsa pra `width:0;height:0` (filhos `float:left` sem
+  clearfix) **nos dois lados** — não é bug, é fidelidade ao Legacy, não "corrigido".
+  `[GAP]` documentado: "QUANTIDADE TOTAL DE ITENS" não tem modo "listar tudo sem
+  filtro" no V3.
+- **CP11 (V1 fase 2)** — `separador2.png` copiado do TEMA V2 (já hash-verificado
+  nesta sessão, mesmo arquivo) pra `public/images/tema-v1/`, inserido entre o painel
+  Anotações/Contadores e o Centro de Avisos com a geometria exata
+  (`float:right;margin-top:50px;height:40px`).
+- **CP12 (V1 fase 2)** — ordem/títulos do Centro de Avisos corrigidos reaproveitando
+  o MESMO mapeamento já provado no TEMA V2 (CP22) — os 10 `subp/listar_*.php` são os
+  arquivos-fonte idênticos pros dois temas. **CP12-05 (redesenho por-grupo das 10
+  tabelas com colunas próprias) ficou deliberadamente em aberto** — classificação
+  completa feita (todos os 10 headers de coluna extraídos e documentados no diário,
+  `CMP-V1-2-007`), mas a implementação é grande (10 presenters + read-models) e
+  mexe num componente COMPARTILHADO com o TEMA V2 recém-fechado — risco de
+  regressão sem benefício proporcional pra esta sessão. Nota técnica: os 10
+  arquivos são ISO-8859 — `grep` sem `-a` os trata como binário e retorna vazio
+  silenciosamente, achado operacional que vale registrar.
+- **CP13 (V1 fase 2)** — fixture de QA (`QaSeeder`) ajustada: `os` de
+  `"OS-QA-00001"` (formato alfanumérico, 11 caracteres) pra `"5901"` (numérico puro,
+  4 dígitos, igual ao Legacy real); `descricao` de `"Equipamento ficticio QA 001"`
+  (27 caracteres) pra `"Ficticio QA 001"` (16 caracteres). Adicionado 1 registro com
+  `solucao=PendenteCredito` (nenhum existia antes) — a tela Aguardando Crédito, que
+  desde a fase 1 (CMP-V1-005) só tinha sido testada de forma automatizada por falta
+  de dado, agora tem 1 linha real pra screenshot. Zero regressão confirmada nos dois
+  temas (`QaSeeder` é compartilhado).
+- **CP14 (V1 fase 2) — investigação, achado real, SEM implementação (decisão do
+  usuário pendente).** Ver seção própria abaixo.
 
-## Commits desta sessão (branch `main`, sem push — 10 à frente de `origin/main`)
+Todos os 9 checkpoints (CP6–CP14) têm entrada de diário completa em
+`plano-execucao-paridade-visual-v1-fase2.md` (`CMP-V1-2-001` a `CMP-V1-2-009`), com
+tabela de medidas Legacy×V3×Delta (onde aplicável), screenshots versionados e commit
+próprio. Nenhuma correção teve regressão: suíte completa (364 testes/820-821
+assertions) verde depois de cada uma, `ParidadeVisualTemaV1.spec.ts` 4/4 verde depois
+de cada uma (rodado do host), `ComparacaoVisualTemaV2Test.spec.ts` inalterado (2
+passados/1 skip) nas rodadas em que o TEMA V2 podia ter sido afetado (CP13, seed
+compartilhado).
 
-Do mais antigo pro mais recente (todos os anteriores ao início desta sessão específica
-já estavam no branch; os novos, em ordem):
+## Decisão pendente do usuário — achado do CP14
+
+`Rma::classeDeAlerta()` (domínio, compartilhado entre TEMA V1 e TEMA V2) nunca
+devolve `ClasseDeAlerta::Urgente` — as condições que deveriam mapear pra essa classe
+(`prioridade=Alta`, `origem=Cliente+marcarestoque=0+prazo de 30 dias estourado`) caem
+todas em `ClasseDeAlerta::Inconformidade` por engano. No Legacy real
+(`14.6.1/page/entrada.php:41-49`), essas são DUAS classes CSS com cores de fundo
+diferentes (`TrInconformidade` `#303033` × `TrUrgente` `#382830`,
+`pattern/15.9.7.css:60-63`). Confirmado ao vivo: nenhuma das 24 linhas de
+`/rmas-entrada` (fixture com `prioridade=Alta` em 1 a cada 3 registros) rendeu
+`TrUrgente`. **Esse mesmo achado já tinha sido apontado (mas não resolvido) no CP23
+do TEMA V2** (`[INVESTIGAR]`: "Entrada não usa `TrUrgente` nem checa prazo de 30
+dias") — é o MESMO bug de domínio, afetando os dois temas.
+
+Achado secundário: a ordem de alternação da zebra (`TrZebrada1`/`TrZebrada2`) também
+diverge quando há linhas de alerta intercaladas — o Legacy usa um contador (`$TR1`)
+que PULA linhas `TrUrgente` mas AVANÇA em linhas `TrInconformidade`; o V3 usa o índice
+bruto do array, que avança em toda linha igual. Efeito visual pequeno (duas linhas
+neutras adjacentes por conteúdo podem sair com a mesma zebra em vez de alternada), mas
+real e mensurável.
+
+Evidência completa (trace de código linha a linha + verificação ao vivo) está em
+`CMP-V1-2-009`. Duas opções de correção, sem decisão tomada:
+- **(a) Mínima:** corrigir só o mapeamento `Urgente`×`Inconformidade` em
+  `Rma::classeDeAlerta()` (aditivo, o case `Urgente` já existe no enum e em
+  `classe_css_de_alerta()`, só nunca é devolvido) — fecha o achado principal, risco
+  baixo, não toca a ordem de alternação.
+- **(b) Completa:** corrige os dois achados juntos — exige passar um contador de
+  zebra que pula linhas de alerta pra `classe_css_de_alerta()` em vez do índice bruto
+  do `foreach`, tocando `RmaController`/`ListagensPorStatusController`/as views do
+  TEMA V2 que reaproveitam a mesma função — maior, mais completo.
+
+**Pergunte ao usuário qual escolher antes de implementar qualquer coisa aqui** — CP14
+foi deliberadamente fechado como investigação, não como correção, por instrução
+explícita do próprio checklist ("não é correção às cegas").
+
+## Próximo passo imediato
+
+**CP15 — gate final da fase 2** (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`,
+linha ~639). Precisa: rodar suíte PHP completa + Vite build; rodar Playwright visual
+completo (specs de paridade do host, demais no container) e confirmar TEMA V2 sem
+regressão; comparar em 1440×1000, 1562×1400 e 1700×1000 (as duas viewports
+secundárias, não executadas na fase 1, ficam obrigatórias aqui); abrir cada par final e
+registrar no diário; produzir tabela final por elemento (mesmo formato de CMP-V1-007
+da fase 1); atualizar `docs/produto/checklist-paridade-visual-v1-runtime.md` e
+`PLANO-ATAQUE.md`. CP15 pode fechar com o achado do CP14 documentado como pendência
+explícita (mesmo padrão já usado pro CP8-04/CP12-05) — não precisa esperar a decisão
+do usuário pra rodar o gate, só não pode "esconder" o achado como se não existisse.
+
+## Commits desta sessão (branch `main`)
+
+Nota: em algum ponto desta sessão o branch remoto avançou (provavelmente um push feito
+fora desta sessão) — `git log --oneline origin/main..HEAD` mostra só os commits mais
+recentes como "à frente"; os commits de CP6-CP12 já foram sincronizados. Nenhum push
+foi feito por esta sessão em nenhum momento. Do mais antigo pro mais recente, os
+commits desta rodada de trabalho (CP25/V2 até CP14/V1):
 - Fecha o gate final de paridade visual do tema V2 (`CMP-V2-008`, CP25).
 - Remove o titulo e o link artificiais da pagina inicial do tema V1 (CP6).
 - Reconstroi o painel Localizar inline do tema V1 com geometria e filtros reais (CP7).
 - Corrige o checkbox as datas e o box model do painel Novo do tema V1 (CP8).
 - Restaura o quadro de anotacoes com salvamento automatico no tema V1 (CP9).
-
-## Próximo passo imediato
-
-**CP10 — sidebar de contadores** (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`,
-linha ~300). Fonte: `legacy-source/14.6.1/inc/startpage.php` (já lido por inteiro nesta
-sessão pro CP6/CP9 — reaproveitar a leitura) + `pattern/14.6.1.css`. Precisa:
-medir geometria real (`.formLabelStats`/`.formInputStats`, container `width:280px;
-float:right;margin-right:-8px;margin-top:-15px`), auditar se `box-sizing:border-box`
-foi introduzido indevidamente (mesmo padrão de achado do CP8 — bem provável que sim,
-`_v1-base.scss` tem um histórico disso nesta área), e confirmar/restaurar que cada
-contador é um link real pra listagem/filtro correspondente (o HTML fonte já está citado
-no plano, linhas 145-175 de `startpage.php`, com os hrefs de cada um — inclusive pros
-filtros por solução, que agora têm um destino real depois do CP7,
-`?campo=TUDO&solucao=X` mapeado pra `rota_tema('rmas.index', ['solucao' => 'X'])` no V3).
-Depois de CP10: CP11 (separador antes do Centro de Avisos, pequeno) → CP12 (Centro de
-Avisos completo, todos os grupos — o maior item restante) → CP13 (fixture de QA
-realista) → CP14 (investigação `$TR1`, só corrige com evidência) → CP15 (gate final da
-fase 2).
+- Documenta o handoff da sessao com o progresso da fase 2 do tema V1.
+- Restaura os links reais da sidebar de contadores do tema V1 (CP10).
+- Insere o separador antes do centro de avisos na pagina inicial do tema V1 (CP11).
+- Corrige a ordem e os titulos do centro de avisos na pagina inicial do tema V1 (CP12).
+- Ajusta a fixture de QA para comprimento de dado realista e cobre aguardando credito (CP13).
+- Registra o achado da maquina de estados TrUrgente pendente de decisao (CP14, só documentação).
 
 ## Notas operacionais que valem para qualquer checkpoint futuro
 

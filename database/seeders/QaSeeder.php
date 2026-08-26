@@ -78,7 +78,10 @@ class QaSeeder extends Seeder
                 'fornecedor_id' => $fornecedores[($indice - 1) % $fornecedores->count()]->id,
                 'cliente_id' => $clientes[($indice - 1) % $clientes->count()]->id,
                 'modelo' => sprintf('MODELO-QA-%03d', $indice),
-                'sn' => sprintf('SN-QA-%06d', $indice),
+                // CP12-05C — uma única linha recebida sem S/N mantém o gerador
+                // Legacy×V3 reexecutável para listar_semsn.php, sem fabricar nem
+                // alterar dado no banco histórico somente leitura.
+                'sn' => $indice === 2 ? null : sprintf('SN-QA-%06d', $indice),
                 'os' => (string) (5900 + $indice),
                 'origem' => $indice % 2 === 0 ? 'Cliente' : 'Loja',
                 'empresa' => 'Empresa Ficticia QA',

@@ -45,6 +45,14 @@ const gruposExpandidos = [
         dadosLegacy: '#dados_prioridadealta',
         grupoV3: '[data-alerta-tipo="prioridade-alta-sem-encaminhar"]',
     },
+    {
+        chave: 'semNumeroDeSerieExpandido',
+        arquivo: 'sem-numero-de-serie-expandido',
+        mostrarLegacy: '#pmostrar_semsn',
+        ocultarLegacy: '#pocultar_semsn',
+        dadosLegacy: '#dados_semsn',
+        grupoV3: '[data-alerta-tipo="sem-numero-de-serie"]',
+    },
 ];
 
 const elementos = [

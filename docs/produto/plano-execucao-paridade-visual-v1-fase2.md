@@ -484,7 +484,7 @@ Fonte: `legacy-source/14.6.1/inc/startpage.php` (lista de includes) e cada
 - [x] CP12-05A — protocolo: partial de tabela, nomes de fornecedor/fabricante,
       11 colunas, fonte Arial, ícone Ver, teste de clique e par visual expandido.
 - [x] CP12-05B — prioridade alta sem encaminhar.
-- [ ] CP12-05C — sem número de série.
+- [x] CP12-05C — sem número de série.
 - [ ] CP12-05D — sem nota fiscal.
 - [ ] CP12-05E — prazo do destinatário estourado.
 - [ ] CP12-05F — recebidos há mais de 30 dias sem encaminhar.
@@ -873,3 +873,41 @@ apague descobertas nem leve o próximo agente a repetir conclusões antigas.
 - **Próximo item exato após o commit:** CP12-05C — “NECESSARIO IDENTIFICAR O S/N”;
   reler `listar_semsn.php`, confirmar a estrutura/diferenças, implementar, testar,
   gerar e abrir o par, registrar `CMP-V1-2-013` e então commitar.
+
+### CMP-V1-2-013 — CP12-05C, necessário identificar o S/N
+
+- Fonte lida integralmente: `15.8.1/subp/listar_semsn.php` e
+  `metodo.php::listar_semsn()`. Contrato histórico: `status='recebido'`,
+  `sn=''`, ordem `recebido DESC`; colunas
+  `RECEBIDO|T|ORIGEM|NF C|NF V|FORNECEDOR|FABRICANTE|DESCRICAO|MODELO|OS|A`.
+  “Mercado Livre” permanece por extenso.
+- Achado funcional corrigido: `SemNumeroDeSerie::listar()` já normalizava S/N
+  vazio como `NULL` ou `''`, mas não aplicava a ordem histórica. Agora ordena por
+  `recebido_em DESC`, coberto por regressão própria. O arquivo Legacy referencia
+  `$entrada/$solucao/$prioridade/$marcarestoque` sem recebê-los no `SELECT`;
+  esses branches são inalcançáveis e não foram transportados ao V3.
+- Implementação visual: configuração fechada `sem-numero-de-serie` reutiliza o
+  partial comum comprovado nos CP12-05A/B, com `RECEBIDO/recebido_em`, origem por
+  extenso e mensagem vazia histórica. A fixture determinística tem exatamente um
+  recebido sem S/N para o loop visual; nenhum dado ou código Legacy foi alterado.
+- Par gerado e **aberto em página inteira e recorte ampliado**:
+  `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-sem-numero-de-serie-expandido-1440x1000.png`.
+  Inspeção: mesmos 11 headers, percentuais de coluna, Arial, cores, zebra, densidade,
+  rótulo Ocultar e ação Ver. A tabela sanitizada preserva uma linha nos dois lados.
+- Medidas (`cp15-medidas.json`): tabela `x=228,width=984` nos dois; header
+  `x=228.5,width=983,height=34,font=Arial 12px` nos dois; primeira célula
+  `78.53×30` Legacy × `78.50×31` V3, `Arial 11px`. A altura raw
+  `305×66` reflete somente mais linhas reais no Legacy; `y` de
+  `getBoundingClientRect()` não é comparável depois de `scrollIntoView`.
+- Validação: 28 testes PHP/102 asserções; Browser dos três grupos já restaurados
+  3/3; build Vite verde. A primeira chamada Browser sem
+  `PLAYWRIGHT_BASE_URL=http://localhost:8095` esperou a porta 80; a chamada com
+  bases explícitas passou e é o comando obrigatório de retomada.
+- Decisão: **CP12-05C APROVADO**, limitado a este grupo. Home/CP12-05/CP15 seguem
+  abertos enquanto CP12-05D–J não forem comparados.
+- Commit: imediato após este registro.
+- **Próximo item exato após o commit:** CP12-05D — “SEM NF DE COMPRA E NF DE
+  VENDA”; reler integralmente `15.8.1/subp/listar_semnota.php` e
+  `metodo.php::listar_semnota()`, classificar colunas/empty-state/branches, criar
+  teste V1+V2 e Browser, incluir o grupo no gerador, gerar e abrir o par, registrar
+  `CMP-V1-2-014`/`CMP-NAV-V1-004` e então commitar separadamente.

@@ -16,6 +16,7 @@ final class SemNumeroDeSerie
         return Rma::query()
             ->where('status', Status::Recebido)
             ->where(fn ($query) => $query->whereNull('sn')->orWhere('sn', ''))
+            ->orderByDesc('recebido_em')
             ->get();
     }
 }

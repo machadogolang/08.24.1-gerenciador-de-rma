@@ -58,4 +58,22 @@ class SemNumeroDeSerieTest extends TestCase
 
         $this->assertFalse($resultado->contains('id', $rma->id));
     }
+
+    public function test_ordena_por_recebimento_mais_recente_como_o_legado(): void
+    {
+        $maisAntigo = Rma::factory()->create([
+            'status' => Status::Recebido,
+            'sn' => null,
+            'recebido_em' => now()->subDays(10),
+        ]);
+        $maisRecente = Rma::factory()->create([
+            'status' => Status::Recebido,
+            'sn' => '',
+            'recebido_em' => now()->subDay(),
+        ]);
+
+        $resultado = (new SemNumeroDeSerie())->listar();
+
+        $this->assertSame([$maisRecente->id, $maisAntigo->id], $resultado->pluck('id')->all());
+    }
 }

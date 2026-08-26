@@ -60,7 +60,7 @@ posterior. “A rota respondeu” não equivale a paridade visual.
 - [x] NAV-03-02 — protocolo aberto não encaminhado: Mostrar/Ocultar, tabela e Ver
       (`CMP-NAV-V1-001`/`CMP-V1-2-011`).
 - [x] NAV-03-03A — prioridade alta sem encaminhar (`CMP-NAV-V1-002`).
-- [ ] NAV-03-03B — sem número de série.
+- [x] NAV-03-03B — sem número de série (`CMP-NAV-V1-003`).
 - [ ] NAV-03-03C — sem nota fiscal.
 - [ ] NAV-03-03D — prazo do destinatário estourado.
 - [ ] NAV-03-03E — recebidos há mais de 30 dias sem encaminhar.
@@ -129,3 +129,18 @@ criar commit afirmando conclusão parcial como aprovada.
 - Evidência/deltas: `CMP-V1-2-012`, screenshots de prioridade e
   `evidencias-v1-fase2/cp15-medidas.json`.
 - Próximo item: CP12-05C/CMP-NAV-V1-003, grupo “NECESSARIO IDENTIFICAR O S/N”.
+
+### CMP-NAV-V1-003 — Página Inicial, necessário identificar o S/N
+
+- Estado: **APROVADO somente para este grupo**, em 2026-08-26.
+- Funcional: Mostrar/Ocultar, tabela e ação Ver exercitados; ordem
+  `recebido_em DESC` coberta por teste. Browser Legacy×V3 verde.
+- Visual: par sanitizado gerado e aberto em página inteira e recorte ampliado;
+  11 colunas, header RECEBIDO, Arial, largura 984px, zebra e linha compacta
+  equivalentes. Deltas e achados completos em `CMP-V1-2-013`.
+- Artefatos: gerador `scripts/qa/paridade-v1-fase2.mjs`; screenshots
+  `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-sem-numero-de-serie-expandido-1440x1000.png`;
+  medidas `docs/produto/evidencias-v1-fase2/cp15-medidas.json`.
+- Próximo item: CP12-05D/CMP-NAV-V1-004, grupo “SEM NF DE COMPRA E NF DE VENDA”;
+  começar pela leitura integral de `listar_semnota.php`, sem reaproveitar a tabela
+  comum antes de provar sua estrutura.

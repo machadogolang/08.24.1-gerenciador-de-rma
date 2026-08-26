@@ -31,6 +31,13 @@
                 'campoData' => 'recebido_em',
                 'abreviarMercadoLivre' => false,
             ],
+            'NECESSARIO IDENTIFICAR O S/N' => [
+                'tipo' => 'sem-numero-de-serie',
+                'rotuloData' => 'RECEBIDO',
+                'campoData' => 'recebido_em',
+                'abreviarMercadoLivre' => false,
+                'mensagemVazio' => 'Nenhum item foi encontrado sem identificação',
+            ],
             default => null,
         };
         $partialDaTabela = $configuracaoDaTabela === null
@@ -45,7 +52,7 @@
         <span class="pmo" data-pmo-alvo="#{{ $alvo }}" aria-controls="{{ $alvo }}" aria-expanded="false">Mostrar</span>
         <div style="display:none;" id="{{ $alvo }}" class="regra-de-alerta-dados">
             @if ($rmas->isEmpty())
-                <p class="nenhumencontrado">Nenhum item foi encontrado</p>
+                <p class="nenhumencontrado">{{ $configuracaoDaTabela['mensagemVazio'] ?? 'Nenhum item foi encontrado' }}</p>
             @elseif ($partialDaTabela !== null)
                 @include($partialDaTabela, ['rmas' => $rmas, ...$configuracaoDaTabela])
             @else

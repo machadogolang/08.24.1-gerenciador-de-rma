@@ -453,6 +453,92 @@
           "color": "rgb(255, 255, 255)"
         }
       }
+    },
+    "semNumeroDeSerieExpandido": {
+      "tabela": {
+        "legacy": {
+          "x": 228,
+          "y": 999.94,
+          "width": 984,
+          "height": 305,
+          "display": "table",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgb(54, 51, 51)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 228,
+          "y": 513.19,
+          "width": 984,
+          "height": 66,
+          "display": "table",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgb(54, 51, 51)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      "cabecalho": {
+        "legacy": {
+          "x": 228.5,
+          "y": 1000.44,
+          "width": 983,
+          "height": 34,
+          "display": "table-row",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgb(42, 42, 42)",
+          "color": "rgb(248, 193, 139)"
+        },
+        "v3": {
+          "x": 228.5,
+          "y": 513.69,
+          "width": 983,
+          "height": 34,
+          "display": "table-row",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgb(42, 42, 42)",
+          "color": "rgb(248, 193, 139)"
+        }
+      },
+      "primeiraCelula": {
+        "legacy": {
+          "x": 228.5,
+          "y": 1034.44,
+          "width": 78.53,
+          "height": 30,
+          "display": "table-cell",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira mono\"",
+          "fontSize": "11px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 228.5,
+          "y": 547.69,
+          "width": 78.5,
+          "height": 31,
+          "display": "table-cell",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "11px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      }
     }
   },
   {
@@ -775,7 +861,8 @@
       }
     },
     "protocoloExpandido": null,
-    "prioridadeExpandida": null
+    "prioridadeExpandida": null,
+    "semNumeroDeSerieExpandido": null
   },
   {
     "viewport": {
@@ -1097,6 +1184,7 @@
       }
     },
     "protocoloExpandido": null,
-    "prioridadeExpandida": null
+    "prioridadeExpandida": null,
+    "semNumeroDeSerieExpandido": null
   }
 ]

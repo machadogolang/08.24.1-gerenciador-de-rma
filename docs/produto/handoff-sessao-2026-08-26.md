@@ -169,9 +169,10 @@ explícita do próprio checklist ("não é correção às cegas").
 
 ### Atualização viva — 2026-08-26, retomada após o handoff
 
-- O print do usuário reabriu CP12-05 como bloqueante. CP12-05A (protocolo) e
-  CP12-05B (prioridade alta) foram reconstruídos e aprovados após abrir os pares;
-  ver `CMP-V1-2-011/012`. CP12-05C–J (outros 8 grupos) continuam pendentes.
+- O print do usuário reabriu CP12-05 como bloqueante. CP12-05A (protocolo),
+  CP12-05B (prioridade alta) e CP12-05C (sem S/N) foram reconstruídos e aprovados
+  após abrir os pares; ver `CMP-V1-2-011/012/013`. CP12-05D–J (outros 7 grupos)
+  continuam pendentes.
 - Gerador/evidência agora são permanentes em `scripts/qa/paridade-v1-fase2.mjs`,
   `screenshots-evidencias-v1-fase2/` e `evidencias-v1-fase2/cp15-medidas.json`.
 - Nova matriz obrigatória menu a menu/link a link está em
@@ -181,11 +182,18 @@ explícita do próprio checklist ("não é correção às cegas").
   (código + teste + evidência + diário), nunca acumular tudo para o final. Antes de
   cada commit, deixar no plano o próximo item exato e as instruções de retomada.
   Nunca push sem autorização.
-- Próximo item exato deste checkpoint: **CP12-05C**, tabela “Necessário identificar
-  o S/N”; reler `listar_semsn.php`, implementar, testar, gerar e abrir o par,
-  documentar `CMP-V1-2-013`, então commitar.
+- CP12-05C também corrigiu a ausência de `ORDER BY recebido DESC` no caso de uso,
+  adicionou uma única linha QA recebida sem S/N e estendeu o gerador permanente.
+  Validação: 28 testes/102 asserções, Browser dos três grupos 3/3 e Vite verde.
+- Próximo item exato deste checkpoint: **CP12-05D**, tabela “SEM NF DE COMPRA E NF
+  DE VENDA”; reler `listar_semnota.php` + `metodo.php::listar_semnota()`,
+  implementar somente depois de classificar a estrutura, testar V1/V2+Browser,
+  gerar e abrir o par, documentar `CMP-V1-2-014`/`CMP-NAV-V1-004`, então
+  commitar isoladamente.
+- Comando Browser no host precisa das bases explícitas:
+  `PLAYWRIGHT_BASE_URL=http://localhost:8095 LEGACY_BASE_URL=http://localhost:8094/14.6.1/ npx playwright test ...`.
 
-**Depois de CP12-05B–J, retomar CP15 — gate final da fase 2**
+**Depois de CP12-05D–J, retomar CP15 — gate final da fase 2**
 (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`). Precisa: rodar suíte PHP
 completa + Vite build; rodar Playwright visual
 completo (specs de paridade do host, demais no container) e confirmar TEMA V2 sem

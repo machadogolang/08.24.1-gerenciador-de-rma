@@ -43,6 +43,10 @@ class QaSeederTest extends TestCase
         // CP13 (fase 2 V1) — pelo menos 1 registro com `solucao=PendenteCredito`
         // pra Aguardando Crédito nunca ficar vazio no seed padrão.
         $this->assertSame(1, Rma::query()->where('solucao', \App\Rma\Dominio\Solucao::PendenteCredito)->count());
+        $this->assertSame(1, Rma::query()
+            ->where('status', \App\Rma\Dominio\Status::Recebido)
+            ->whereNull('sn')
+            ->count());
     }
 
     public function test_recusa_semeadura_de_qa_em_producao(): void

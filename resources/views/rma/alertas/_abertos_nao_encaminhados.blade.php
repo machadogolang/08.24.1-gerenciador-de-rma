@@ -1,9 +1,9 @@
 {{--
-    CP12-05A/B (fase 2 V1) — estrutura comum comprovada em
-    `15.8.1/subp/listar_{pabertonaoencaminhado,prioridadealta}.php`. As diferenças
-    literais (rótulo/campo de data e abreviação de Mercado Livre) chegam por uma
-    configuração fechada no partial pai. Consultas permanecem nos casos de uso;
-    aqui há somente composição de apresentação.
+    CP12-05A–C (fase 2 V1) — estrutura comum comprovada nos três arquivos históricos
+    listar_pabertonaoencaminhado.php, listar_prioridadealta.php e listar_semsn.php.
+    As diferenças literais (rótulo/campo de data, abreviação de Mercado Livre e
+    mensagem vazia) chegam por configuração fechada no partial pai. Consultas
+    permanecem nos casos de uso; aqui há somente composição de apresentação.
 --}}
 <table class="Tabelinha-Table tabela-alerta-abertos-nao-encaminhados">
     <thead>

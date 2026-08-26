@@ -147,6 +147,36 @@ class RenderizaTemaV1Test extends TestCase
         $response->assertDontSeeText('Mercado Livre');
     }
 
+    public function test_alerta_sem_numero_de_serie_renderiza_a_tabela_historica_com_recebido(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante sem SN QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor sem SN QA']);
+        Rma::factory()->create([
+            'status' => Status::Recebido,
+            'sn' => null,
+            'recebido_em' => now()->subDays(3),
+            'origem' => 'Mercado Livre',
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+            'descricao' => 'Produto sem numero de serie QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="sem-numero-de-serie"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-abertos-nao-encaminhados"', false);
+        $response->assertSeeInOrder([
+            'RECEBIDO', 'T', 'ORIGEM', 'NF C', 'NF V', 'FORNECEDOR',
+            'FABRICANTE', 'DESCRICAO', 'MODELO', 'OS', 'A',
+        ]);
+        $response->assertSeeText('Mercado Livre');
+        $response->assertSeeText('Fornecedor sem SN QA');
+        $response->assertSeeText('Fabricante sem SN QA');
+        $response->assertSeeText('Produto sem numero de serie QA');
+    }
+
     public function test_novo_rma_v1_renderiza(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Operador]);

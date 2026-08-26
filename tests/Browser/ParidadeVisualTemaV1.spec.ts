@@ -188,6 +188,38 @@ test('TEMA V1 preserva as primitivas históricas das tabelas altas e compactas',
     await page.context().close();
 });
 
+test('Mostrar do protocolo abre tabela compacta com a familia Arial do legado', async ({ browser }) => {
+    const page = await loginV3(browser);
+    const legacy = await loginLegacy(browser);
+    await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => document.fonts.ready);
+    await legacy.locator('#pmostrar_pabertonaoencaminhado').click();
+
+    const grupo = page.locator('[data-alerta-tipo="protocolo-aberto-nao-encaminhado"]');
+    await expect(grupo.locator('.regra-de-alerta-dados')).toBeHidden();
+    await grupo.locator('.pmo').click();
+    await expect(grupo.locator('.pmo')).toHaveText('Ocultar');
+    await expect(grupo.locator('.pmo')).toHaveAttribute('aria-expanded', 'true');
+
+    const tabela = grupo.locator('.tabela-alerta-protocolo');
+    await expect(tabela).toBeVisible();
+    await expect(tabela.locator('thead th')).toHaveCount(11);
+    await expect(tabela.locator('tbody tr')).not.toHaveCount(0);
+    expect(await tabela.locator('.SuperTr').evaluate(el => getComputedStyle(el).fontFamily))
+        .toBe('Arial, "Open Sans", "Fira Mono"');
+    expect(await tabela.locator('tbody td').first().evaluate(el => getComputedStyle(el).fontFamily))
+        .toBe('Arial, "Open Sans", "Fira Mono"');
+    const alturaLinhaLegacy = Math.round((await legacy.locator(
+        '#dados_pabertonaoencaminhado tr:not(.SuperTr)',
+    ).first().boundingBox())!.height);
+    const alturaLinhaV3 = Math.round((await tabela.locator('tbody tr').first().boundingBox())!.height);
+    expect(Math.abs(alturaLinhaV3 - alturaLinhaLegacy)).toBeLessThanOrEqual(1);
+    await expect(tabela.locator('img[title="Ver"]').first()).toBeVisible();
+
+    await legacy.context().close();
+    await page.context().close();
+});
+
 test('captura matriz comparável Legacy V1 e V3 em 1440px', async ({ browser }) => {
     const legacy = await loginLegacy(browser);
     const v3 = await loginV3(browser);

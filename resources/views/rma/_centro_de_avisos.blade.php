@@ -16,16 +16,24 @@
 </div>
 
 @foreach ($grupos as $titulo => $rmas)
-    @php($alvo = 'centro-de-avisos-dados-' . $loop->index)
-    <div class="regra-de-alerta">
+    @php
+        $alvo = 'centro-de-avisos-dados-' . $loop->index;
+        $partialDaTabela = match ($titulo) {
+            'PROTOCOLO ESTA ABERTO E O PRODUTO NAO ENCAMINHADO' => 'rma.alertas._protocolo_aberto_nao_encaminhado',
+            default => null,
+        };
+    @endphp
+    <div class="regra-de-alerta" @if ($partialDaTabela) data-alerta-tipo="protocolo-aberto-nao-encaminhado" @endif>
         <div class="regra-de-alerta-cabecalho">
             <img src="{{ asset('images/rma/retornou.png') }}" alt="" width="20" height="20">
             <span class="regra-de-alerta-titulo">{{ Illuminate\Support\Str::upper($titulo) }}:</span>
         </div>
-        <span class="pmo" data-pmo-alvo="#{{ $alvo }}">Mostrar</span>
+        <span class="pmo" data-pmo-alvo="#{{ $alvo }}" aria-controls="{{ $alvo }}" aria-expanded="false">Mostrar</span>
         <div style="display:none;" id="{{ $alvo }}" class="regra-de-alerta-dados">
             @if ($rmas->isEmpty())
                 <p class="nenhumencontrado">Nenhum item foi encontrado</p>
+            @elseif ($partialDaTabela !== null)
+                @include($partialDaTabela, compact('rmas'))
             @else
                 <ul>
                     @foreach ($rmas as $registro)

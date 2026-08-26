@@ -5,8 +5,11 @@ namespace Tests\Feature\Temas;
 use App\Identidade\Dominio\Papel;
 use App\Identidade\Dominio\TemaPreferido;
 use App\Models\Cliente;
+use App\Models\Fabricante;
+use App\Models\Fornecedor;
 use App\Models\Rma;
 use App\Models\User;
+use App\Rma\Dominio\Status;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -68,6 +71,53 @@ class RenderizaTemaV1Test extends TestCase
 
         $response->assertOk();
         $response->assertSee('id="JS-Novo"', false);
+    }
+
+    public function test_pagina_inicial_v1_so_mostra_resultado_vazio_depois_de_busca(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+
+        $inicial = $this->actingAs($usuario)->get('/v1/rma');
+        $inicial->assertOk();
+        $inicial->assertDontSeeText('Nenhum RMA encontrado.');
+
+        $buscaSemResultado = $this->actingAs($usuario)->get('/v1/rma?tipo=texto&valor=INEXISTENTE');
+        $buscaSemResultado->assertOk();
+        $buscaSemResultado->assertSeeText('Nenhum RMA encontrado.');
+    }
+
+    public function test_alerta_de_protocolo_renderiza_a_tabela_historica_em_vez_da_lista_generica(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor QA']);
+        $rma = Rma::factory()->create([
+            'status' => Status::Recebido,
+            'recebido_em' => now()->subDays(5),
+            'protocolo' => 'PROTOCOLO-QA',
+            'nfcompra' => '123',
+            'nfvenda' => '456',
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+            'descricao' => 'Produto ficticio da tabela',
+            'modelo' => 'MODELO-QA',
+            'os' => '5901',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="protocolo-aberto-nao-encaminhado"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-protocolo"', false);
+        $response->assertSeeInOrder([
+            'RECEBIDO', 'T', 'ORIGEM', 'NF C', 'NF V', 'FORNECEDOR',
+            'FABRICANTE', 'DESCRICAO', 'MODELO', 'OS', 'A',
+        ]);
+        $response->assertSeeText('Fornecedor QA');
+        $response->assertSeeText('Fabricante QA');
+        $response->assertSeeText('Produto ficticio da tabela');
+        $response->assertSee(rota_tema('rmas.show', ['rma' => $rma->id]), false);
+        $response->assertDontSee("#{$rma->id} — Produto ficticio da tabela", false);
     }
 
     public function test_novo_rma_v1_renderiza(): void

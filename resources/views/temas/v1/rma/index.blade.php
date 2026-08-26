@@ -24,6 +24,7 @@
     foreach ($ordemHistoricaCentroDeAvisosV1 as $chaveInterna => $tituloLiteral) {
         $gruposCentroDeAvisosV1[$tituloLiteral] = $grupos[$chaveInterna] ?? collect();
     }
+    $buscaExecutadaV1 = (string) ($valor ?? '') !== '' || (string) ($solucao ?? '%') !== '%';
 @endphp
 
 @section('conteudo')
@@ -34,6 +35,7 @@
     CP7 — o painel Localizar (antes um `<form>` fixo só desta view) virou global em
     `temas/v1/layout.blade.php` (`#JS-Localizar`, sempre no DOM, igual ao `#JS-Novo`,
     aberto por padrão só na Página Inicial) — ver `_form_localizar.blade.php`. --}}
+    @if ($buscaExecutadaV1)
     @if (count($rmas) === 0)
         <p class="nenhumencontrado">Nenhum RMA encontrado.</p>
     @else
@@ -65,6 +67,7 @@
                 @endforeach
             </tbody>
         </table>
+    @endif
     @endif
 
     {{-- "QUADRO DE ANOTACOES" + sidebar de contadores por solução — correção de
@@ -115,5 +118,7 @@
     <img src="{{ asset('images/tema-v1/separador2.png') }}" alt="Separador" title="Separador" height="40" class="separador2-inicial">
     <div class="both"></div>
 
-    @include('rma._centro_de_avisos', ['grupos' => $gruposCentroDeAvisosV1])
+    @include('rma._centro_de_avisos', [
+        'grupos' => $gruposCentroDeAvisosV1,
+    ])
 @endsection

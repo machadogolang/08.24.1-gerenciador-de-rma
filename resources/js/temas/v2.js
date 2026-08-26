@@ -21,7 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
         gatilho.addEventListener('click', () => {
             const alvo = document.querySelector(gatilho.getAttribute('data-pmo-alvo'));
             if (alvo) {
-                alvo.style.display = alvo.style.display === 'none' ? 'block' : 'none';
+                const abrir = alvo.style.display === 'none';
+                alvo.style.display = abrir ? 'block' : 'none';
+                gatilho.textContent = abrir ? 'Ocultar' : 'Mostrar';
+                gatilho.setAttribute('aria-expanded', abrir ? 'true' : 'false');
             }
         });
     });

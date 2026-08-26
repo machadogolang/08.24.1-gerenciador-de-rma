@@ -63,7 +63,9 @@
             {{-- `rma._centro_de_avisos` já renderiza o ícone/título/hr do Centro de
             Avisos (`lembrete.png`/"CENTRO DE AVISOS E RELATORIOS"/`hrup`) — não
             duplicar aqui. --}}
-            @include('rma._centro_de_avisos', ['grupos' => $gruposCentroDeAvisosV2])
+            @include('rma._centro_de_avisos', [
+                'grupos' => $gruposCentroDeAvisosV2,
+            ])
         </div>
 
         <div id="pesquisar" class="tab-pane fade">

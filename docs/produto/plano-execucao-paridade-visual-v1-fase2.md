@@ -26,9 +26,9 @@ parecer sobre a percepção de largura — já investigada e descartada como bug
   `CSS.getPlatformFontsForNode` para fonte realmente rasterizada.
 - Specs de paridade do V1 rodam no host (não no container — ver
   `docs/produto/handoff-sessao-2026-08-25.md`, "Topologia importante dos testes").
-  Scripts de diagnóstico Playwright são ferramentas descartáveis (criar em
-  `scripts/_tmp-*.mjs`, rodar, apagar depois — não versionar), como já praticado em
-  CMP-V1-002 a CMP-V1-007.
+  Scripts ad hoc de diagnóstico podem ser descartáveis (`scripts/_tmp-*.mjs`), mas
+  todo gerador que produz evidência usada para aprovar/reprovar um checkpoint deve
+  ser versionado em `scripts/qa/`, com raw ignorado e saída sanitizada repetível.
 
 ## CP6 — Página Inicial sem conteúdo artificial
 
@@ -476,10 +476,22 @@ Fonte: `legacy-source/14.6.1/inc/startpage.php` (lista de includes) e cada
 - [x] CP12-04 — criar presenter/ordenação específica da apresentação V1 que respeite
       a ordem histórica, sem alterar a ordem usada por outros consumidores do caso
       de uso (ex.: TEMA V2), se eles dependerem de ordem diferente.
-- [ ] CP12-05 — **deixado em aberto, não implementado — ver justificativa no
-      diário.** Classificação completa (CP12-02) feita e documentada; a
-      implementação (10 presenters + read-models) fica pra uma frente futura
-      dedicada.
+- [~] CP12-05 — **REABERTO em 2026-08-26 por evidência visual do usuário.** O grupo
+      “PROTOCOLO ESTA ABERTO E O PRODUTO NAO ENCAMINHADO” foi exibido no V3 como
+      lista vertical genérica, enquanto o print Legacy comprova tabela compacta com
+      11 colunas. Esse grupo é bloqueante e está em correção/validação neste ciclo;
+      os outros 9 continuam classificados e pendentes em tarefas separadas.
+- [x] CP12-05A — protocolo: partial de tabela, nomes de fornecedor/fabricante,
+      11 colunas, fonte Arial, ícone Ver, teste de clique e par visual expandido.
+- [ ] CP12-05B — prioridade alta sem encaminhar.
+- [ ] CP12-05C — sem número de série.
+- [ ] CP12-05D — sem nota fiscal.
+- [ ] CP12-05E — prazo do destinatário estourado.
+- [ ] CP12-05F — recebidos há mais de 30 dias sem encaminhar.
+- [ ] CP12-05G — garantia do fornecedor expirada.
+- [ ] CP12-05H — garantia expirando em até 30 dias.
+- [ ] CP12-05I — não vai dar garantia.
+- [ ] CP12-05J — NF de retorno pendente.
 - [x] CP12-06 — verificar estado inicial real (Mostrar/Ocultar) de cada grupo no
       runtime Legacy; não assumir que todos começam ocultos — reproduzir por grupo.
 - [x] CP12-07 — capturar/reabrir/comparar Centro de Avisos completo (todos os
@@ -703,13 +715,13 @@ Item de investigação, não de implementação garantida — só alterar
 
 ## CP15 — Gate final da fase 2
 
-- [ ] CP15-01 — inventariar todos os usos V1 dos componentes corrigidos nesta fase
+- [x] CP15-01 — inventariar todos os usos V1 dos componentes corrigidos nesta fase
       (Localizar/Novo/Anotações/Contadores/Centro de Avisos) fora da Página Inicial,
       se algum existir.
-- [ ] CP15-02 — rodar suíte PHP completa e Vite build.
-- [ ] CP15-03 — rodar Playwright visual completo (specs de paridade no host, demais
+- [x] CP15-02 — rodar suíte PHP completa e Vite build.
+- [~] CP15-03 — rodar Playwright visual completo (specs de paridade no host, demais
       no container) e confirmar V2 sem regressão.
-- [ ] CP15-04 — comparar em 1440×1000, 1562×1400 e 1700×1000 (as duas viewports
+- [~] CP15-04 — comparar em 1440×1000, 1562×1400 e 1700×1000 (as duas viewports
       secundárias, não executadas na fase 1, ficam obrigatórias aqui).
 - [ ] CP15-05 — abrir cada par final e registrar uma entrada no diário.
 - [ ] CP15-06 — produzir tabela final por elemento (mesmo formato de CMP-V1-007 da
@@ -724,3 +736,109 @@ caminhos dos prints; elementos abertos; tabela de medidas Legacy/V3; fonte
 rasterizada; diferença perceptível; seletor responsável; decisão; testes/build;
 commit. Sem esses campos, o item permanece aberto. (Nenhuma entrada ainda — plano
 recém-criado.)
+
+### CMP-V1-2-010 — CP15, gate final em execução (checkpoint de continuidade)
+
+Estado em 2026-08-26: **EM EXECUÇÃO — NÃO APROVADO AINDA**. Esta entrada é
+intencionalmente persistida antes do fechamento para que uma interrupção de sessão não
+apague descobertas nem leve o próximo agente a repetir conclusões antigas.
+
+- Inventário CP15-01: `#JS-Novo` e `#JS-Localizar` são superfícies globais do layout
+  V1; Anotações, Contadores e `separador2` são exclusivos da Página Inicial; o Centro
+  de Avisos vem de `resources/views/rma/_centro_de_avisos.blade.php` e é compartilhado
+  com o Tema V2. Qualquer correção estrutural no último exige regressão dos dois temas.
+- Regressão funcional: suíte PHP completa verde, **364 testes/821 asserções**; build
+  Vite verde. O primeiro comando PHP no host falhou antes dos testes por ausência do
+  driver MySQL; a execução válida foi feita no container.
+- Regressão Browser: `ParidadeVisualTemaV1.spec.ts` no host, **4/4 verde**. O conjunto
+  restante produziu 9 passados, 1 skip esperado e 1 falha no spec do painel Novo. A
+  causa era o próprio teste: depois do CP8 o input nativo `#marcarestoque` fica oculto
+  sob o toggle histórico, mas o teste ainda usava `page.uncheck()` no input invisível.
+  Corrigido localmente para clicar o `label[for=marcarestoque]` visível e comprovar o
+  estado; repetição isolada **2/2 verde**. Rodada ampla final ainda pendente.
+- Primeira matriz CP15 gerada em 1440×1000, 1562×1400 e 1700×1000, DPR 1. Os seis
+  originais estão no diretório local/ignorado `screenshots-paridade-v1/`; o par 1440
+  foi efetivamente aberto e inspecionado. Os pares secundários ainda precisam ser
+  reabertos depois da última correção, portanto CP15-04/05 permanecem parciais.
+- Achado novo do gate: a Página Inicial V3 imprimia `Nenhum RMA encontrado.` sem uma
+  busca executada. A mensagem não existe em `14.6.1/inc/startpage.php` e deslocava
+  Anotações/Contadores em **17 px**. A view foi corrigida localmente para exibir esse
+  vazio só depois de uma busca real; teste focado verde (12 testes/32 asserções). A
+  matriz precisa ser regenerada e reinspecionada antes de aprovar.
+- Medida anterior à correção: Localizar tinha delta 0 (984×72), select delta 0
+  (186×52), header/base com largura delta 0. Anotações e Contadores ainda mostravam
+  diferença de 3 px de altura, que deve ser reavaliada após a regeneração; não assumir
+  resolvida pelo deslocamento de 17 px.
+- Divergência estrutural confirmada visualmente: o Centro de Avisos V3 ainda usa dez
+  blocos genéricos recolhíveis, enquanto cada `subp/listar_*.php` Legacy tem tabela e
+  colunas próprias. Isso aumenta a página V3/empurra o rodapé em aproximadamente
+  152 px na captura atual. É o CP12-05 já classificado e **continua não implementado**;
+  o gate final não pode chamar essa superfície de pixel-perfect.
+- **Evidência visual direta recebida em 2026-08-26:** o print V3 expandido mostra o
+  grupo de protocolo como uma lista `#id — descrição`, em Open Sans e uma linha por
+  item. O print Legacy da Página Inicial mostra, no mesmo estado “Mostrar”, a tabela
+  compacta `RECEBIDO|T|ORIGEM|NF C|NF V|FORNECEDOR|FABRICANTE|DESCRICAO|MODELO|OS|A`,
+  em Arial. A evidência invalida a classificação anterior de CP12-05 como
+  “não bloqueante”. Correção local em curso: partial específico, primitivas
+  `.SuperTr`/`.Tabelinha-TDD`, teste Browser de clique/fonte e captura expandida
+  adicionada ao gerador versionado. **Não aprovar antes de abrir o novo par.**
+- Evidência trazida pelo usuário: três anexos da sessão anterior (1579×1360, 517×298
+  e 1652×1320) foram apontados como tela que "não parece igual ao legado". Nesta
+  sessão eles só estão visíveis como chips dentro de um print de conversa; os arquivos
+  originais não estão nos anexos Codex nem no repositório. Registrar como evidência
+  pendente, provavelmente relacionada ao CP12-05, e pedir/reusar os originais antes de
+  qualquer futura declaração de fechamento dessa superfície.
+- Experiência operacional permanente: screenshots e medidas não podem depender de
+  script descartável. O gerador deve ser versionado e permitir loops após cada
+  correção. Evidência sanitizada/fixture fictícia deve ser versionada; screenshot cru
+  do Legacy com dado real permanece obrigatoriamente gitignorado, com o gerador
+  produzindo também uma versão estrutural sanitizada. Nunca versionar dado real para
+  cumprir o requisito de evidência.
+- Pendências exatas para retomar: (1) versionar o gerador CP15; (2) gerar evidências
+  sanitizadas nas três viewports; (3) abrir os seis novos prints; (4) reavaliar os
+  deltas de 3 px; (5) rodar Browser amplo e suíte final; (6) produzir tabela final;
+  (7) atualizar checklist/runtime, plano de ataque, parecer e handoff; (8) commit local.
+- Escopo adicional determinado pelo usuário: depois de estabilizar a Home, executar
+  auditoria navegacional e visual menu a menu/link a link, registrando cada tela. A
+  matriz e a granularidade são fonte de verdade em
+  `docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`; não substituir
+  isso por uma navegação informal sem screenshot, resultado e diário.
+
+### CMP-V1-2-011 — CP12-05A, protocolo expandido reconstruído e revisado
+
+- Ambiente: Chromium headless, DPR 1, viewport 1440×1000; Página Inicial Legacy
+  14.6.1 × V3 `/v1/rma`. Comparação final efetivamente aberta em prancha lado a lado
+  depois da correção. As três Home recolhidas (1440×1000, 1562×1400 e 1700×1000)
+  também foram abertas antes deste registro.
+- Evidência que reabriu o item: print do usuário mostrou a lista genérica vertical
+  `#id — descrição` e fonte errada no V3, enquanto o Legacy mostra tabela compacta.
+  Fonte de código confirmada: `15.8.1/subp/listar_pabertonaoencaminhado.php`.
+- Correção: partial compartilhado próprio com as 11 colunas históricas, resolução de
+  fornecedor/fabricante na apresentação, zebra `TrZebrada2/1`, `.SuperTr`,
+  `.Tabelinha-TDD`, ícone `ver.png` byte-idêntico ao histórico e toggle que troca
+  “Mostrar” por “Ocultar”/`aria-expanded=true`. O arquivo histórico deste grupo não
+  seleciona os dados necessários aos branches de alerta; portanto a zebra direta é
+  fiel e não mistura a decisão CP14.
+- Gerador permanente: `scripts/qa/paridade-v1-fase2.mjs`. Raw com dado real fica em
+  `docs/produto/screenshots-paridade-v1/` (ignorado); a versão Git remove linhas
+  adicionais, substitui todas as células por fixture estrutural e preserva uma linha.
+- Prints versionados abertos:
+  `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-protocolo-expandido-1440x1000.png`.
+- Medidas (`cp15-medidas.json`): tabela `x=228,width=984` nos dois; header
+  `x=228.5,width=983,height=34` nos dois; fonte do header/célula
+  `Arial,"Open Sans","Fira mono/Mono"`, 12px/11px; primeira célula
+  `78.53×30` Legacy × `78.50×31` V3 (delta `-0.03/+1px`, arredondamento de
+  rasterização aceito). `y` da tabela: `925.94` × `930.19` (delta `+4.25px`).
+  A altura raw total `65×407` não é delta de CSS: Legacy tem 1 registro real e a
+  fixture V3 tem 12; a evidência sanitizada normaliza ambos para uma linha.
+- Inspeção visual: estrutura, proporções das colunas, cor, fonte, densidade, rótulo
+  Ocultar e ação ficaram equivalentes ao Legacy. **CP12-05A APROVADO.** Os outros 9
+  grupos continuam bloqueantes em CP12-05B–J; por isso CP12-05 e CP15 permanecem
+  abertos e a Home ainda não recebe declaração global de pixel-perfect.
+- Regressões: feature focada 13 testes/41 asserções verde; Browser específico
+  Legacy×V3 1/1 verde; Tema V2 feature 6/23 verde e Browser 2 passados/1 skip
+  esperado; Vite build verde. Suítes amplas ficam no gate CP15.
+- Commit: imediato após este registro, conforme disciplina de ciclos pequenos.
+- **Próximo item exato após o commit:** CP12-05B — reconstruir “PRODUTOS COM MAIOR
+  PRIORIDADE SEM ENCAMINHAMENTO”, começando pela releitura integral do seu
+  `listar_*.php`, depois teste, geração, abertura do par e nova entrada `CMP-*`.

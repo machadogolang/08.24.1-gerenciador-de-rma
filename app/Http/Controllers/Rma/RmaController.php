@@ -79,6 +79,11 @@ class RmaController extends Controller
             'concluido' => $repositorio->listarPorPainel(PainelDeStatus::Concluidos),
         ];
         $todosOsRegistrosDasAbas = array_merge($rmas, ...array_values($porStatusV2));
+        $grupos = $listarGruposDeAlertas->listar();
+        $todosOsRegistrosDaPagina = array_merge(
+            $todosOsRegistrosDasAbas,
+            ...array_map(static fn ($grupo) => $grupo->all(), array_values($grupos)),
+        );
 
         return view_do_tema('rma.index', [
             'titulo' => 'RMAs',
@@ -96,16 +101,17 @@ class RmaController extends Controller
             // fabricante/destinatário, não só o id; mesmo padrão de
             // `ListagensPorStatusController::mapaDeFabricantes()`/
             // `mapaDeDestinatarios()`, agora cobrindo busca + as 4 abas por status.
-            'fabricantes' => $this->mapaDeFabricantes($todosOsRegistrosDasAbas),
+            'fabricantes' => $this->mapaDeFabricantes($todosOsRegistrosDaPagina),
+            'fornecedores' => $this->mapaDeFornecedores($todosOsRegistrosDaPagina),
             'destinatarios' => $this->mapaDeDestinatarios($todosOsRegistrosDasAbas),
             // "CENTRO DE AVISOS E RELATORIOS" (correção de fidelidade Fase 8,
             // 2026-08-25) — a aba "Início"/"Pág. Inicial" dos dois temas mostra as
-            // mesmas 11 regras da Fase 5 (`PainelDeAlertasController`), sempre
+            // mesmas 10 regras da Fase 5 (`PainelDeAlertasController`), sempre
             // presente no HTML (mesmo mecanismo de abas client-side documentado no
             // design.md). `ListarGruposDeAlertas` é a mesma composição usada por
             // `PainelDeAlertasController` — nenhuma regra de negócio nova, nenhuma
             // duplicação de lógica entre as duas telas.
-            'grupos' => $listarGruposDeAlertas->listar(),
+            'grupos' => $grupos,
             // Sidebar "contadores por solução" — só consumida pelo TEMA V1
             // (`14.6.1/index.php`, achado confirmado por captura de referência),
             // fonte real: contagem de RMAs por `status`/`solucao`. Consulta de
@@ -120,9 +126,31 @@ class RmaController extends Controller
      */
     private function mapaDeFabricantes(array $registros): array
     {
-        $ids = array_unique(array_filter(array_map(fn ($r) => $r->fabricanteId, $registros)));
+        $ids = array_unique(array_filter(array_map(
+            fn ($r) => $r instanceof Rma ? $r->fabricanteId : $r->fabricante_id,
+            $registros,
+        )));
 
         return $ids === [] ? [] : Fabricante::query()->whereIn('id', $ids)->pluck('nome', 'id')->all();
+    }
+
+    /**
+     * CP12-05 (fase 2 V1) — as tabelas históricas do Centro de Avisos mostram o
+     * nome do fornecedor. Resolve ids na apresentação sem acoplar o domínio ao
+     * Eloquent e incluindo os registros dos grupos, que não necessariamente estão
+     * nas quatro abas carregadas na mesma requisição.
+     *
+     * @param  Rma[]  $registros
+     * @return array<int, string>
+     */
+    private function mapaDeFornecedores(array $registros): array
+    {
+        $ids = array_unique(array_filter(array_map(
+            fn ($r) => $r instanceof Rma ? $r->fornecedorId : $r->fornecedor_id,
+            $registros,
+        )));
+
+        return $ids === [] ? [] : Fornecedor::query()->whereIn('id', $ids)->pluck('nome', 'id')->all();
     }
 
     /**

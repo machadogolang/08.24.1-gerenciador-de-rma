@@ -344,7 +344,8 @@ $largura-quadro-de-anotacoes: 675px;
 $largura-sidebar-contadores: 280px;
 
 .painel-inicial-v1 {
-    margin-top: 15px;
+    // `startpage.php` insere um clear com `padding-top:12px` antes do painel.
+    margin-top: 27px;
 }
 
 .quadro-de-anotacoes {
@@ -369,6 +370,7 @@ $largura-sidebar-contadores: 280px;
     letter-spacing: 3px;
     color: #fff;
     font-weight: 700;
+    line-height: 14px;
 }
 
 .imganotacao {
@@ -416,6 +418,7 @@ $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scs
     margin-top: -15px;
 
     .formLabelStats {
+        line-height: 12px;
         margin: 0 5px 0 0;
         font-size: 11px;
         text-align: right;
@@ -433,7 +436,12 @@ $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scs
         }
     }
 
+    > .both {
+        margin-bottom: 5px;
+    }
+
     .formValorStats {
+        line-height: 12px;
         width: $largura-valor-stats;
         border: 1px solid rgba(0, 0, 0, 0.3);
         background-color: #26251f;
@@ -451,6 +459,15 @@ $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scs
 .separador2-inicial {
     float: right;
     margin-top: 50px;
+}
+
+.separador2-inicial + .both + .centro-de-avisos {
+    margin-top: 15px;
+
+    .centro-de-avisos-titulo {
+        margin-left: 0;
+        font-weight: 700;
+    }
 }
 
 // Port consciente da estrutura autenticada do TEMA V1. Fonte:
@@ -553,6 +570,7 @@ li {
     font-family: Arial, "Fira Mono", sans-serif;
     font-size: 14px;
     font-weight: 700;
+    line-height: 14px;
 }
 
 .Tabelinha-Table {

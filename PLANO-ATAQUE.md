@@ -39,10 +39,9 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
 5. [x] CP10 — sidebar de contadores (box model, links reais pras 4 listagens +
    filtro por solução);
 6. [x] CP11 — separador antes do Centro de Avisos (`separador2.png`);
-7. [x] CP12 — Centro de Avisos (ordem/títulos históricos corrigidos; CP12-05,
-   redesenho das 10 tabelas por-grupo, deixado em aberto — classificação completa
-   documentada, implementação é frente futura dedicada, risco de regressão no
-   componente compartilhado com o TEMA V2 já fechado);
+7. [~] CP12 — Centro de Avisos: ordem/títulos históricos corrigidos; CP12-05 foi
+   reaberto pelo print do usuário. Protocolo aberto não encaminhado fechado e
+   comparado em CP12-05A/CMP-V1-2-011; outras 9 tabelas permanecem CP12-05B–J;
 8. [x] CP13 — fixture de QA com comprimento de dado realista (`os`/`descricao`
    encurtados; 1 registro com `solucao=PendenteCredito`, Aguardando Crédito deixa
    de ficar sempre vazia);
@@ -53,6 +52,11 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
    `[INVESTIGAR]` no CP23 do TEMA V2, agora com evidência completa. Ver
    `CMP-V1-2-009`;
 10. [ ] CP15 — gate final da fase 2 (três viewports, prova final, checklist).
+
+Próximo checkpoint após o commit corrente: **CP12-05B**, tabela “Produtos com maior
+prioridade sem encaminhamento”. Depois da Home: auditoria integral menu a menu/link a
+link, com commit local e próximo item explícito por tela/grupo fechado, em
+`docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`.
 
 Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da
 alteração, gerar e abrir o novo par normalizado. Toda comparação entra no Diário do MD

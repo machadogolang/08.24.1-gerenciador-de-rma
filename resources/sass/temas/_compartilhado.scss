@@ -286,6 +286,31 @@ table {
     border-collapse: collapse !important;
 }
 
+// CP12-05 (fase 2 V1) — primitivas que as tabelas do Centro de Avisos usam no
+// `pattern/15.9.7.css:49-76,148-161`. Tinham ficado de fora enquanto o partial
+// compartilhado renderizava listas genéricas.
+.Tabelinha-TDD {
+    height: 18px;
+    text-align: center;
+}
+
+.SuperTr {
+    height: 34px;
+    padding: 0;
+    border: 0;
+    background-color: #2a2a2a;
+    color: #f8c18b !important;
+    font-family: "Arial", "Open Sans", "Fira Mono" !important;
+    font-size: 12px !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    &:hover {
+        background-color: #2a2a2a;
+        color: #f8c18b !important;
+    }
+}
+
 td {
     text-align: center;
     height: 18px;

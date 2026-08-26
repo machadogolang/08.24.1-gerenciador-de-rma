@@ -93,8 +93,10 @@ test('submit do painel Novo persiste os campos do Grupo A e PN/SNID', async ({ p
     await page.fill('#JS-Novo input[name=nfvenda_emissao]', '2026-04-02');
     await page.fill('#JS-Novo input[name=pn]', 'PN-PLAYWRIGHT');
     await page.fill('#JS-Novo input[name=snid]', 'SNID-PLAYWRIGHT');
-    // Desmarca o checkbox pré-marcado — prova que "desmarcado" persiste false.
-    await page.uncheck('#marcarestoque');
+    // CP8 tornou o input nativo invisível sob o toggle histórico. Clica no label,
+    // que é o controle realmente exposto ao usuário, e prova o estado resultante.
+    await page.click('#JS-Novo label[for=marcarestoque]');
+    await expect(page.locator('#marcarestoque')).not.toBeChecked();
 
     await page.click('#JS-Novo button.formButtonEnviarNovo');
     await page.waitForURL('**/rmas/*');

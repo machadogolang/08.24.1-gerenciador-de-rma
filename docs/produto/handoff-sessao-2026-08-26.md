@@ -167,8 +167,27 @@ explícita do próprio checklist ("não é correção às cegas").
 
 ## Próximo passo imediato
 
-**CP15 — gate final da fase 2** (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`,
-linha ~639). Precisa: rodar suíte PHP completa + Vite build; rodar Playwright visual
+### Atualização viva — 2026-08-26, retomada após o handoff
+
+- O print do usuário reabriu CP12-05 como bloqueante. CP12-05A (protocolo aberto não
+  encaminhado) foi reconstruído como tabela histórica e aprovado após abrir o par
+  sanitizado; ver `CMP-V1-2-011`. CP12-05B–J (outros 9 grupos) continuam pendentes.
+- Gerador/evidência agora são permanentes em `scripts/qa/paridade-v1-fase2.mjs`,
+  `screenshots-evidencias-v1-fase2/` e `evidencias-v1-fase2/cp15-medidas.json`.
+- Nova matriz obrigatória menu a menu/link a link está em
+  `plano-execucao-auditoria-navegacional-visual-v1.md`; o primeiro item registrado é
+  `CMP-NAV-V1-001`.
+- Disciplina reforçada pelo usuário: **commit local imediato por ciclo pequeno**
+  (código + teste + evidência + diário), nunca acumular tudo para o final. Antes de
+  cada commit, deixar no plano o próximo item exato e as instruções de retomada.
+  Nunca push sem autorização.
+- Próximo item exato deste checkpoint: **CP12-05B**, tabela “Produtos com maior
+  prioridade sem encaminhamento”; reler o respectivo `listar_*.php`, implementar,
+  testar, gerar e abrir o par, documentar `CMP-V1-2-012`, então commitar.
+
+**Depois de CP12-05B–J, retomar CP15 — gate final da fase 2**
+(`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`). Precisa: rodar suíte PHP
+completa + Vite build; rodar Playwright visual
 completo (specs de paridade do host, demais no container) e confirmar TEMA V2 sem
 regressão; comparar em 1440×1000, 1562×1400 e 1700×1000 (as duas viewports
 secundárias, não executadas na fase 1, ficam obrigatórias aqui); abrir cada par final e
@@ -203,8 +222,9 @@ commits desta rodada de trabalho (CP25/V2 até CP14/V1):
   infraestrutura acima) — `ComparacaoVisualTemaV2Test.spec.ts` continua rodando dentro
   do container (`docker compose exec laravel.test npx playwright test ...`), são specs
   diferentes com necessidades diferentes de rede.
-- Scripts de medição Playwright são descartáveis: criar em `scripts/_tmp-*.mjs`, usar,
-  apagar antes do commit — nunca versionar.
+- Scripts ad hoc de diagnóstico podem ser descartáveis em `scripts/_tmp-*.mjs`.
+  Geradores que sustentam loops/evidência de checkpoint são obrigatoriamente
+  versionados em `scripts/qa/`, junto da saída sanitizada e das instruções de uso.
 - Screenshot com dado real de cliente/produto (Legacy) nunca vai pro diretório
   versionado (`screenshots-vis-v1-001/`) — só fictício/QA ou estrutural sem dado de
   negócio. Real vai pro par gitignorado (`screenshots-paridade-v1/` ou

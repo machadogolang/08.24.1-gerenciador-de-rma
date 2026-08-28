@@ -69,6 +69,14 @@ const gruposExpandidos = [
         dadosLegacy: '#dados_prazodestinatario',
         grupoV3: '[data-alerta-tipo="prazo-destinatario-estourado"]',
     },
+    {
+        chave: 'recebidosMaisDe30DiasExpandido',
+        arquivo: 'recebidos-mais-de-30-dias-expandido',
+        mostrarLegacy: '#pmostrar_naoencaminhadoprazoestourado',
+        ocultarLegacy: '#pocultar_naoencaminhadoprazoestourado',
+        dadosLegacy: '#dados_naoencaminhadoprazoestourado',
+        grupoV3: '[data-alerta-tipo="recebidos-sem-encaminhar-30-dias"]',
+    },
 ];
 
 const elementos = [

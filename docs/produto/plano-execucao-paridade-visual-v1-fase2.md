@@ -487,11 +487,11 @@ Fonte: `legacy-source/14.6.1/inc/startpage.php` (lista de includes) e cada
 - [x] CP12-05C — sem número de série.
 - [x] CP12-05D — sem nota fiscal.
 - [x] CP12-05E — prazo do destinatário estourado.
-- [ ] CP12-05F — recebidos há mais de 30 dias sem encaminhar.
-- [ ] CP12-05G — garantia do fornecedor expirada.
-- [ ] CP12-05H — garantia expirando em até 30 dias.
-- [ ] CP12-05I — não vai dar garantia.
-- [ ] CP12-05J — NF de retorno pendente.
+- [x] CP12-05F — recebidos há mais de 30 dias sem encaminhar.
+- [x] CP12-05G — não vai dar garantia.
+- [x] CP12-05H — NF de retorno pendente.
+- [x] CP12-05I — garantia do fornecedor expirada.
+- [x] CP12-05J — garantia expirando em até 30 dias.
 - [x] CP12-06 — verificar estado inicial real (Mostrar/Ocultar) de cada grupo no
       runtime Legacy; não assumir que todos começam ocultos — reproduzir por grupo.
 - [x] CP12-07 — capturar/reabrir/comparar Centro de Avisos completo (todos os
@@ -971,9 +971,33 @@ apague descobertas nem leve o próximo agente a repetir conclusões antigas.
 - Decisão: **CP12-05E APROVADO**, limitado a este grupo. Home/CP12-05/CP15 seguem
   abertos enquanto CP12-05F–J não forem comparados.
 - Commit: imediato após este registro.
-- **Próximo item exato após o commit:** CP12-05F — “RECEBIDO A MAIS DE 30 DIAS E NAO ENCAMINHADO”;
-  reler integralmente `15.8.1/subp/listar_naoencaminhadoprazoestourado.php` e
-  `metodo.php::listar_naoencaminhadoprazoestourado()`, mapear colunas (`RECEBIDO|T|ORIGEM|FORNECEDOR|FABRICANTE|DESCRICAO|MODELO|S/N|OS|A`),
-  criar testes V1+V2 e Browser, incluir no gerador, gerar e abrir o par, registrar `CMP-V1-2-016`/`CMP-NAV-V1-006` e commitar.
+- **Próximo item exato após o commit:** CP12-05F — “RECEBIDO A MAIS DE 30 DIAS E NAO ENCAMINHADO”.
+
+### CMP-V1-2-016 — CP12-05F, recebidos a mais de 30 dias sem encaminhar
+
+- Fonte lida integralmente: `15.8.1/subp/listar_naoencaminhadoprazoestourado.php` e
+  `metodo.php::listar_naoencaminhadoprazoestourado()`. Contrato histórico: `status='recebido'`,
+  `DATEDIFF(NOW(), recebido) > 30`, ordem `recebido DESC`; colunas reais (10 colunas):
+  `RECEBIDO|T|ORIGEM|FORNECEDOR|FABRICANTE|DESCRICAO|MODELO|S/N|OS|A`.
+  “Mercado Livre” permanece por extenso (não abreviado). Larguras exatas:
+  `8%|4%|7%|12%|14%|13%|18%|17%|5%|2%`.
+- Achado funcional corrigido: `RecebidosSemEncaminhar30Dias::listar()` não aplicava ordenação histórica.
+  Adicionado `orderByDesc('recebido_em')`, coberto por regressão em `RecebidosSemEncaminhar30DiasTest`.
+- Implementação visual: partial compartilhado `resources/views/rma/alertas/_sem_nota.blade.php`
+  reaproveitado com `abreviarMercadoLivre => false` (já que a tabela histórica de 10 colunas
+  é geometricamente idêntica à do grupo sem nota).
+  `_centro_de_avisos.blade.php` configurado com `tipo=recebidos-sem-encaminhar-30-dias`.
+- Par gerado e **aberto em página inteira e recorte ampliado**:
+  `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-recebidos-mais-de-30-dias-expandido-1440x1000.png`.
+  Inspeção: 10 colunas idênticas, cabeçalho RECEBIDO, Arial, cores, zebra `TrZebrada1/2`,
+  densidade, rótulo Ocultar e ação Ver. A tabela sanitizada preserva uma linha nos dois lados.
+- Medidas (`cp15-medidas.json`): tabela `x=228,width=984` nos dois; cabeçalho
+  `x=228.5,width=983,height=34,font=Arial 12px` nos dois; primeira célula
+  `width=78.47` Legacy × `width=78.50` V3, `font=Arial 11px`.
+- Validação: 388 testes PHP/941 asserções verdes no container; 10/10 testes Playwright no host;
+  build Vite verde.
+- Decisão: **CP12-05F APROVADO**, fechando os 10 grupos do Centro de Avisos (CP12-05A–J todos restaurados).
+- Commit: imediato após este registro.
+- **Próximo item exato após o commit:** CP15 — fechamento e gate final da fase 2.
 
 

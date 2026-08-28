@@ -380,6 +380,47 @@ test('Mostrar de prazo do destinatário estourado abre a tabela ENCAMINHADO comp
     await page.context().close();
 });
 
+test('Mostrar de recebidos a mais de 30 dias abre a tabela RECEBIDO compacta de 10 colunas do legado', async ({ browser }) => {
+    const page = await loginV3(browser);
+    const legacy = await loginLegacy(browser);
+    await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => document.fonts.ready);
+    await legacy.locator('#pmostrar_naoencaminhadoprazoestourado').click();
+
+    const grupo = page.locator('[data-alerta-tipo="recebidos-sem-encaminhar-30-dias"]');
+    await grupo.locator('.pmo').click();
+    await expect(grupo.locator('.pmo')).toHaveText('Ocultar');
+
+    const tabela = grupo.locator('.tabela-alerta-sem-nota');
+    await expect(tabela).toBeVisible();
+    await expect(tabela.locator('thead th')).toHaveCount(10);
+    await expect(tabela.locator('thead th').first()).toHaveText('RECEBIDO');
+    await expect(tabela.locator('tbody tr')).not.toHaveCount(0);
+    expect(await tabela.locator('.SuperTr').evaluate(el => getComputedStyle(el).fontFamily))
+        .toBe('Arial, "Open Sans", "Fira Mono"');
+    expect(await tabela.locator('tbody td').first().evaluate(el => getComputedStyle(el).fontFamily))
+        .toBe('Arial, "Open Sans", "Fira Mono"');
+
+    const alturaV3 = Math.round((await tabela.locator('tbody tr').first().boundingBox())!.height);
+    expect(alturaV3).toBeGreaterThanOrEqual(30);
+    expect(alturaV3).toBeLessThanOrEqual(31);
+
+    const linhasLegacy = legacy.locator('#dados_naoencaminhadoprazoestourado tr:not(.SuperTr)');
+    if (await linhasLegacy.count() > 0) {
+        const alturasLegacy = await linhasLegacy.evaluateAll(trs =>
+            trs.map(tr => Math.round(tr.getBoundingClientRect().height))
+        );
+        const alturaBaseLegacy = Math.min(...alturasLegacy);
+        expect(Math.abs(alturaV3 - alturaBaseLegacy)).toBeLessThanOrEqual(1);
+    } else {
+        await expect(legacy.locator('#dados_naoencaminhadoprazoestourado')).toContainText('Nenhum item foi encontrado');
+    }
+    await expect(tabela.locator('img[title="Ver"]').first()).toBeVisible();
+
+    await legacy.context().close();
+    await page.context().close();
+});
+
 test('captura matriz comparável Legacy V1 e V3 em 1440px', async ({ browser }) => {
     const legacy = await loginLegacy(browser);
     const v3 = await loginV3(browser);

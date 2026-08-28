@@ -19,6 +19,7 @@ final class RecebidosSemEncaminhar30Dias
         return Rma::query()
             ->where('status', Status::Recebido)
             ->where('recebido_em', '<', now()->subDays(30))
+            ->orderByDesc('recebido_em')
             ->get();
     }
 }

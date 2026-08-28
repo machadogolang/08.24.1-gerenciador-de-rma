@@ -26,7 +26,7 @@
                     : \Carbon\CarbonImmutable::instance($registro->recebido_em)->startOfDay();
                 $tempo = $dataDaLinha?->diffInDays(today()) ?? 0;
                 $urlDetalhe = rota_tema('rmas.show', ['rma' => $registro->id]);
-                $origemExibida = mb_strtoupper((string) $registro->origem) === 'MERCADO LIVRE'
+                $origemExibida = ($abreviarMercadoLivre ?? true) && mb_strtoupper((string) $registro->origem) === 'MERCADO LIVRE'
                     ? 'M LIVRE'
                     : $registro->origem;
             @endphp

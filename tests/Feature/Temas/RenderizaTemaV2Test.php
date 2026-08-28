@@ -131,6 +131,23 @@ class RenderizaTemaV2Test extends TestCase
         $response->assertSeeText('Prazo destinatario compartilhado QA');
     }
 
+    public function test_tabela_compartilhada_recebidos_sem_encaminhar_30_dias_tambem_renderiza_no_tema_v2(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        Rma::factory()->create([
+            'status' => Status::Recebido,
+            'recebido_em' => now()->subDays(35),
+            'descricao' => 'Recebido mais de 30 dias compartilhado QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v2/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="recebidos-sem-encaminhar-30-dias"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-sem-nota"', false);
+        $response->assertSeeText('Recebido mais de 30 dias compartilhado QA');
+    }
+
     public function test_detalhe_de_rma_v2_renderiza(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Leitura]);
@@ -164,5 +181,70 @@ class RenderizaTemaV2Test extends TestCase
         $response->assertOk();
         $response->assertViewIs('temas.v2.identidade.perfil');
         $response->assertSeeText('Nota V2');
+    }
+
+    public function test_alerta_nao_vai_dar_garantia_renderiza_a_tabela_historica(): void
+    {
+        // CP12-05G V2 — mesmo _centro_de_avisos.blade.php compartilhado
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        Rma::factory()->create([
+            'status' => Status::Entrada,
+            'nfvenda_emissao' => now()->subDays(400)->toDateString(),
+            'descricao' => 'Produto nao vai dar garantia V2 QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v2/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="nao-vai-dar-garantia"', false);
+    }
+
+    public function test_alerta_nf_retorno_pendente_de_lancar_renderiza_a_tabela_historica(): void
+    {
+        // CP12-05H V2
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        Rma::factory()->create([
+            'status' => Status::Concluido,
+            'lancadoretorno' => \App\Rma\Dominio\StatusDeLancamento::Pendente,
+            'concluido_em' => now()->subDays(5),
+            'descricao' => 'Produto nf retorno pendente V2 QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v2/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="nf-retorno-pendente-de-lancar"', false);
+    }
+
+    public function test_alerta_garantia_fornecedor_expirada_renderiza_a_tabela_historica(): void
+    {
+        // CP12-05I V2
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        Rma::factory()->create([
+            'status' => Status::Entrada,
+            'nfcompra_emissao' => now()->subDays(400)->toDateString(),
+            'descricao' => 'Produto garantia expirada V2 QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v2/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="garantia-fornecedor-expirada"', false);
+    }
+
+    public function test_alerta_garantia_fornecedor_expirando_em_30_dias_renderiza_a_tabela_historica(): void
+    {
+        // CP12-05J V2
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        Rma::factory()->create([
+            'status' => Status::Entrada,
+            'nfcompra_emissao' => now()->subDays(350)->toDateString(),
+            'descricao' => 'Produto garantia expirando 30 dias V2 QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v2/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="garantia-fornecedor-expirando-30-dias"', false);
     }
 }

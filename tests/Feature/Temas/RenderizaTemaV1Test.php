@@ -242,6 +242,37 @@ class RenderizaTemaV1Test extends TestCase
         $response->assertSeeText('Produto prazo destinatario QA');
     }
 
+    public function test_alerta_recebidos_sem_encaminhar_30_dias_renderiza_a_tabela_historica(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante 30 Dias QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor 30 Dias QA']);
+        Rma::factory()->create([
+            'status' => Status::Recebido,
+            'recebido_em' => now()->subDays(35),
+            'origem' => 'Mercado Livre',
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+            'sn' => 'SN-30-DIAS-123',
+            'descricao' => 'Produto 30 dias sem encaminhar QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="recebidos-sem-encaminhar-30-dias"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-sem-nota"', false);
+        $response->assertSeeInOrder([
+            'RECEBIDO', 'T', 'ORIGEM', 'FORNECEDOR',
+            'FABRICANTE', 'DESCRICAO', 'MODELO', 'S/N', 'OS', 'A',
+        ]);
+        $response->assertSeeText('Mercado Livre');
+        $response->assertSeeText('Fabricante 30 Dias QA');
+        $response->assertSeeText('Fornecedor 30 Dias QA');
+        $response->assertSeeText('SN-30-DIAS-123');
+        $response->assertSeeText('Produto 30 dias sem encaminhar QA');
+    }
+
     public function test_novo_rma_v1_renderiza(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Operador]);
@@ -285,5 +316,131 @@ class RenderizaTemaV1Test extends TestCase
         $response->assertOk();
         $response->assertViewIs('temas.v1.identidade.perfil');
         $response->assertSeeText('Nota V1');
+    }
+
+    public function test_alerta_nao_vai_dar_garantia_renderiza_a_tabela_historica(): void
+    {
+        // CP12-05G — listar_naovaidargarantia.php: 11 colunas ENTRADA|ORIGEM|NF C|T C|NF V|...
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante NaoGarantia QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor NaoGarantia QA']);
+        Rma::factory()->create([
+            'status' => Status::Entrada,
+            'nfvenda_emissao' => now()->subDays(400)->toDateString(),
+            'nfcompra' => 'NFC-NAOGAR-001',
+            'nfvenda' => 'NFV-NAOGAR-001',
+            'descricao' => 'Produto nao vai dar garantia QA',
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="nao-vai-dar-garantia"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-nao-vai-dar-garantia"', false);
+        $response->assertSeeInOrder([
+            'ENTRADA', 'ORIGEM', 'NF C', 'T C', 'NF V',
+            'FORNECEDOR', 'FABRICANTE', 'DESCRICAO', 'MODELO', 'OS', 'A',
+        ]);
+        $response->assertSeeText('Fabricante NaoGarantia QA');
+        $response->assertSeeText('Fornecedor NaoGarantia QA');
+        $response->assertSeeText('NFC-NAOGAR-001');
+        $response->assertSeeText('Produto nao vai dar garantia QA');
+    }
+
+    public function test_alerta_nf_retorno_pendente_de_lancar_renderiza_a_tabela_historica(): void
+    {
+        // CP12-05H — listar_nfpendentelancar.php: 11 colunas CONCLUIDO|T|ORIGEM|NF C|NF V|...
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante NfRetorno QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor NfRetorno QA']);
+        Rma::factory()->create([
+            'status' => Status::Concluido,
+            'lancadoretorno' => \App\Rma\Dominio\StatusDeLancamento::Pendente,
+            'concluido_em' => now()->subDays(5),
+            'nfcompra' => 'NFC-NFRET-001',
+            'nfvenda' => 'NFV-NFRET-001',
+            'descricao' => 'Produto nf retorno pendente QA',
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="nf-retorno-pendente-de-lancar"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-nf-retorno-pendente"', false);
+        $response->assertSeeInOrder([
+            'CONCLUIDO', 'T', 'ORIGEM', 'NF C', 'NF V',
+            'FORNECEDOR', 'FABRICANTE', 'DESCRICAO', 'MODELO', 'OS', 'A',
+        ]);
+        $response->assertSeeText('Fabricante NfRetorno QA');
+        $response->assertSeeText('Fornecedor NfRetorno QA');
+        $response->assertSeeText('NFC-NFRET-001');
+        $response->assertSeeText('Produto nf retorno pendente QA');
+    }
+
+    public function test_alerta_garantia_fornecedor_expirada_renderiza_a_tabela_historica(): void
+    {
+        // CP12-05I — listar_pgarantiafornecedorexpirado.php: 11 colunas ENTRADA|ORIGEM|NF C|T C|NF V|...
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante GarExpir QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor GarExpir QA']);
+        Rma::factory()->create([
+            'status' => Status::Entrada,
+            'nfcompra_emissao' => now()->subDays(400)->toDateString(),
+            'nfcompra' => 'NFC-GAREXP-001',
+            'nfvenda' => 'NFV-GAREXP-001',
+            'descricao' => 'Produto garantia expirada QA',
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="garantia-fornecedor-expirada"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-garantia-fornecedor-expirada"', false);
+        $response->assertSeeInOrder([
+            'ENTRADA', 'ORIGEM', 'NF C', 'T C', 'NF V',
+            'FORNECEDOR', 'FABRICANTE', 'DESCRICAO', 'MODELO', 'OS', 'A',
+        ]);
+        $response->assertSeeText('Fabricante GarExpir QA');
+        $response->assertSeeText('Fornecedor GarExpir QA');
+        $response->assertSeeText('NFC-GAREXP-001');
+        $response->assertSeeText('Produto garantia expirada QA');
+    }
+
+    public function test_alerta_garantia_fornecedor_expirando_em_30_dias_renderiza_a_tabela_historica(): void
+    {
+        // CP12-05J — listar_pmenosde30.php: 11 colunas ENTRADA|ORIGEM|NF C|T E|NF V|...
+        // T E = dias restantes (janela: 336 < dias_decorridos < 365 → emissão entre -364d e -337d)
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante GarExpir30 QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor GarExpir30 QA']);
+        Rma::factory()->create([
+            'status' => Status::Entrada,
+            'nfcompra_emissao' => now()->subDays(350)->toDateString(),
+            'nfcompra' => 'NFC-GAREX30-001',
+            'nfvenda' => 'NFV-GAREX30-001',
+            'descricao' => 'Produto garantia expirando 30 dias QA',
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="garantia-fornecedor-expirando-30-dias"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-garantia-fornecedor-expirando"', false);
+        $response->assertSeeInOrder([
+            'ENTRADA', 'ORIGEM', 'NF C', 'T E', 'NF V',
+            'FORNECEDOR', 'FABRICANTE', 'DESCRICAO', 'MODELO', 'OS', 'A',
+        ]);
+        $response->assertSeeText('Fabricante GarExpir30 QA');
+        $response->assertSeeText('Fornecedor GarExpir30 QA');
+        $response->assertSeeText('NFC-GAREX30-001');
+        $response->assertSeeText('Produto garantia expirando 30 dias QA');
     }
 }

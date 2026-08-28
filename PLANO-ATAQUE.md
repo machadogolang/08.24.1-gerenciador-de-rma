@@ -39,10 +39,13 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
 5. [x] CP10 — sidebar de contadores (box model, links reais pras 4 listagens +
    filtro por solução);
 6. [x] CP11 — separador antes do Centro de Avisos (`separador2.png`);
-7. [~] CP12 — Centro de Avisos: ordem/títulos históricos corrigidos; CP12-05 foi
-   reaberto pelo print do usuário. Protocolo, prioridade, sem S/N, sem NF e prazo
-   estourado fechados e comparados em CP12-05A–E/CMP-V1-2-011–015; outras 5 tabelas
-   permanecem CP12-05F–J;
+7. [x] CP12 — Centro de Avisos: ordem/títulos históricos corrigidos; CP12-05A–J
+   todos fechados. Grupos A–E (Protocolo, Prioridade, SemSN, SemNF, PrazoDestinatário)
+   e F (Recebido 30 dias) com partials históricos verificados por PHPUnit V1+V2;
+   grupos G–J (NaoVaiDarGarantia, NfRetornoPendente, GarantiaFornecedorExpirada,
+   GarantiaFornecedorExpirando30Dias) com partials de 11 colunas criados,
+   matches no _centro_de_avisos.blade.php inseridos e 4+4 testes adicionados;
+   suíte V1+V2: 34 testes / 158 assertions, verde;
 8. [x] CP13 — fixture de QA com comprimento de dado realista (`os`/`descricao`
    encurtados; 1 registro com `solucao=PendenteCredito`, Aguardando Crédito deixa
    de ficar sempre vazia);
@@ -54,12 +57,10 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
    `CMP-V1-2-009`;
 10. [ ] CP15 — gate final da fase 2 (três viewports, prova final, checklist).
 
-Próximo checkpoint após o commit corrente: **CP12-05F**, tabela “RECEBIDO A MAIS DE
-30 DIAS E NAO ENCAMINHADO”. Começar lendo `listar_naoencaminhadoprazoestourado.php` e a
-consulta compartilhada; depois teste V1/V2+Browser, gerador, abertura do par e diário
-`CMP-V1-2-016`, antes de um commit próprio. Depois da Home: auditoria integral menu a menu/
-link a link, com commit local e próximo item explícito por tela/grupo fechado, em
-`docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`.
+Próximo checkpoint: **CP15** — gate final da fase 2 (três viewports, prova final,
+checklist de CP6–CP14 + CP12-05A–J fechados). Depois da Home: auditoria integral menu
+a menu/link a link, com commit local e próximo item explícito por tela/grupo fechado,
+em `docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`.
 
 Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da
 alteração, gerar e abrir o novo par normalizado. Toda comparação entra no Diário do MD

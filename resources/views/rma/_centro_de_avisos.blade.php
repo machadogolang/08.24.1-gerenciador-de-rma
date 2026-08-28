@@ -48,6 +48,32 @@
                 'partial' => 'rma.alertas._prazo_destinatario',
                 'mensagemVazio' => 'Nenhum item foi encontrado',
             ],
+            'RECEBIDO A MAIS DE 30 DIAS E NAO ENCAMINHADO' => [
+                'tipo' => 'recebidos-sem-encaminhar-30-dias',
+                'partial' => 'rma.alertas._sem_nota',
+                'abreviarMercadoLivre' => false,
+                'mensagemVazio' => 'Nenhum item foi encontrado',
+            ],
+            'NAO VAI DAR GARANTIA' => [
+                'tipo' => 'nao-vai-dar-garantia',
+                'partial' => 'rma.alertas._nao_vai_dar_garantia',
+                'mensagemVazio' => 'Nenhum item foi encontrado',
+            ],
+            'PRODUTOS COM PENDENCIA DE LANCAR NF DO RETORNO' => [
+                'tipo' => 'nf-retorno-pendente-de-lancar',
+                'partial' => 'rma.alertas._nf_retorno_pendente',
+                'mensagemVazio' => 'Nenhum item foi encontrado',
+            ],
+            'PRAZO DE GARANTIA COM O FORNECEDOR EXPIRADO MAIS DE 1 ANO' => [
+                'tipo' => 'garantia-fornecedor-expirada',
+                'partial' => 'rma.alertas._garantia_fornecedor_expirada',
+                'mensagemVazio' => 'Nenhum item foi encontrado',
+            ],
+            'FALTA MENOS DE 30 DIAS PARA EXPIRAR GARANTIA DE 1 ANO COM O FORNECEDOR' => [
+                'tipo' => 'garantia-fornecedor-expirando-30-dias',
+                'partial' => 'rma.alertas._garantia_fornecedor_expirando',
+                'mensagemVazio' => 'Nenhum item foi encontrado',
+            ],
             default => null,
         };
         $partialDaTabela = $configuracaoDaTabela === null

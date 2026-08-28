@@ -485,7 +485,7 @@ Fonte: `legacy-source/14.6.1/inc/startpage.php` (lista de includes) e cada
       11 colunas, fonte Arial, ícone Ver, teste de clique e par visual expandido.
 - [x] CP12-05B — prioridade alta sem encaminhar.
 - [x] CP12-05C — sem número de série.
-- [ ] CP12-05D — sem nota fiscal.
+- [x] CP12-05D — sem nota fiscal.
 - [ ] CP12-05E — prazo do destinatário estourado.
 - [ ] CP12-05F — recebidos há mais de 30 dias sem encaminhar.
 - [ ] CP12-05G — garantia do fornecedor expirada.
@@ -911,3 +911,35 @@ apague descobertas nem leve o próximo agente a repetir conclusões antigas.
   `metodo.php::listar_semnota()`, classificar colunas/empty-state/branches, criar
   teste V1+V2 e Browser, incluir o grupo no gerador, gerar e abrir o par, registrar
   `CMP-V1-2-014`/`CMP-NAV-V1-004` e então commitar separadamente.
+
+### CMP-V1-2-014 — CP12-05D, sem NF de compra e NF de venda
+
+- Fonte lida integralmente: `15.8.1/subp/listar_semnota.php` e
+  `metodo.php::listar_semnota()`. Contrato histórico: `status='recebido'`,
+  `nfcompra < 1 AND nfvenda < 1`, ordem `recebido DESC`; colunas reais (10 colunas):
+  `RECEBIDO|T|ORIGEM|FORNECEDOR|FABRICANTE|DESCRICAO|MODELO|S/N|OS|A`.
+  “Mercado Livre” abreviado para `M LIVRE`. Larguras exatas:
+  `8%|4%|7%|12%|14%|13%|18%|17%|5%|2%`.
+- Achado funcional corrigido: `SemNotaFiscal::listar()` não aplicava ordenação histórica.
+  Adicionado `orderByDesc('recebido_em')`, coberto por regressão em `SemNotaFiscalTest`.
+- Implementação visual: partial dedicado `resources/views/rma/alertas/_sem_nota.blade.php`
+  com as 10 colunas exatas, sem colunas de NF, exibindo S/N e formatando data/tempo/origem.
+  `_centro_de_avisos.blade.php` configurado para despachar esse partial com `tipo=sem-nota-fiscal`.
+- Par gerado e **aberto em página inteira e recorte ampliado**:
+  `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-sem-nota-fiscal-expandido-1440x1000.png`.
+  Inspeção: 10 colunas idênticas, cabeçalho RECEBIDO, Arial, cores, zebra `TrZebrada1/2`,
+  densidade, rótulo Ocultar e ação Ver. A tabela sanitizada preserva uma linha nos dois lados.
+- Medidas (`cp15-medidas.json`): tabela `x=228,width=984` nos dois; cabeçalho
+  `x=228.5,width=983,height=34,font=Arial 12px` nos dois; primeira célula
+  `width=78.47` Legacy × `width=78.50` V3, `font=Arial 11px`. Altura raw da tabela
+  reflete 69 linhas históricas no Legacy × 12 na fixture V3.
+- Validação: 374 testes PHP/873 asserções verdes no container; 8/8 testes Playwright no host;
+  build Vite verde.
+- Decisão: **CP12-05D APROVADO**, limitado a este grupo. Home/CP12-05/CP15 seguem
+  abertos enquanto CP12-05E–J não forem comparados.
+- Commit: imediato após este registro.
+- **Próximo item exato após o commit:** CP12-05E — “O DESTINATARIO ESTOUROU O PRAZO DE 30 DIAS PARA RETORNAR”;
+  reler integralmente `15.8.1/subp/listar_destinatarioestourou.php` e
+  `metodo.php::listar_destinatarioestourou()`, mapear colunas (`ENCAMINHADO|T|ORIGEM|FABRICANTE|DESCRICAO|MODELO|PROTOCOLO|DESTINATARIO|OS|A`),
+  criar testes V1+V2 e Browser, incluir no gerador, gerar e abrir o par, registrar `CMP-V1-2-015`/`CMP-NAV-V1-005` e commitar.
+

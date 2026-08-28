@@ -57,4 +57,24 @@ class SemNotaFiscalTest extends TestCase
 
         $this->assertFalse($resultado->contains('id', $rma->id));
     }
+
+    public function test_ordena_por_recebimento_mais_recente_como_o_legado(): void
+    {
+        $maisAntigo = Rma::factory()->create([
+            'status' => Status::Recebido,
+            'nfcompra' => null,
+            'nfvenda' => null,
+            'recebido_em' => now()->subDays(10),
+        ]);
+        $maisRecente = Rma::factory()->create([
+            'status' => Status::Recebido,
+            'nfcompra' => '',
+            'nfvenda' => '',
+            'recebido_em' => now()->subDay(),
+        ]);
+
+        $resultado = (new SemNotaFiscal())->listar();
+
+        $this->assertSame([$maisRecente->id, $maisAntigo->id], $resultado->pluck('id')->all());
+    }
 }

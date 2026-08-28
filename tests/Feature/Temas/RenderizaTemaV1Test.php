@@ -177,6 +177,39 @@ class RenderizaTemaV1Test extends TestCase
         $response->assertSeeText('Produto sem numero de serie QA');
     }
 
+    public function test_alerta_sem_nota_fiscal_renderiza_a_tabela_historica(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante sem NF QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor sem NF QA']);
+        Rma::factory()->create([
+            'status' => Status::Recebido,
+            'nfcompra' => null,
+            'nfvenda' => null,
+            'sn' => 'SN-SEM-NF-123',
+            'recebido_em' => now()->subDays(2),
+            'origem' => 'Mercado Livre',
+            'fabricante_id' => $fabricante->id,
+            'fornecedor_id' => $fornecedor->id,
+            'descricao' => 'Produto sem nota fiscal QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="sem-nota-fiscal"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-sem-nota"', false);
+        $response->assertSeeInOrder([
+            'RECEBIDO', 'T', 'ORIGEM', 'FORNECEDOR',
+            'FABRICANTE', 'DESCRICAO', 'MODELO', 'S/N', 'OS', 'A',
+        ]);
+        $response->assertSeeText('M LIVRE');
+        $response->assertSeeText('Fornecedor sem NF QA');
+        $response->assertSeeText('Fabricante sem NF QA');
+        $response->assertSeeText('Produto sem nota fiscal QA');
+        $response->assertSeeText('SN-SEM-NF-123');
+    }
+
     public function test_novo_rma_v1_renderiza(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Operador]);

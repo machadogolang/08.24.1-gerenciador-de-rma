@@ -61,7 +61,7 @@ posterior. “A rota respondeu” não equivale a paridade visual.
       (`CMP-NAV-V1-001`/`CMP-V1-2-011`).
 - [x] NAV-03-03A — prioridade alta sem encaminhar (`CMP-NAV-V1-002`).
 - [x] NAV-03-03B — sem número de série (`CMP-NAV-V1-003`).
-- [ ] NAV-03-03C — sem nota fiscal.
+- [x] NAV-03-03C — sem nota fiscal (`CMP-NAV-V1-004`).
 - [ ] NAV-03-03D — prazo do destinatário estourado.
 - [ ] NAV-03-03E — recebidos há mais de 30 dias sem encaminhar.
 - [ ] NAV-03-03F — garantia do fornecedor expirada.
@@ -141,6 +141,20 @@ criar commit afirmando conclusão parcial como aprovada.
 - Artefatos: gerador `scripts/qa/paridade-v1-fase2.mjs`; screenshots
   `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-sem-numero-de-serie-expandido-1440x1000.png`;
   medidas `docs/produto/evidencias-v1-fase2/cp15-medidas.json`.
-- Próximo item: CP12-05D/CMP-NAV-V1-004, grupo “SEM NF DE COMPRA E NF DE VENDA”;
+- **Próximo item:** CP12-05D/CMP-NAV-V1-004, grupo “SEM NF DE COMPRA E NF DE VENDA”;
   começar pela leitura integral de `listar_semnota.php`, sem reaproveitar a tabela
   comum antes de provar sua estrutura.
+
+### CMP-NAV-V1-004 — Página Inicial, sem NF de compra e NF de venda
+
+- Estado: **APROVADO somente para este grupo**, em 2026-08-28.
+- Funcional: Mostrar/Ocultar, tabela de 10 colunas e ação Ver exercitados; ordenação
+  `recebido_em DESC` coberta por teste unitário. Browser Legacy×V3 verde (8/8 testes).
+- Visual: par sanitizado gerado e aberto em página inteira e recorte ampliado;
+  10 colunas históricas (sem colunas de NF, incluindo S/N), cabeçalho RECEBIDO, Arial,
+  largura 984px, zebra e linha compacta equivalentes. Deltas e achados completos em `CMP-V1-2-014`.
+- Artefatos: gerador `scripts/qa/paridade-v1-fase2.mjs`; screenshots
+  `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-sem-nota-fiscal-expandido-1440x1000.png`;
+  medidas `docs/produto/evidencias-v1-fase2/cp15-medidas.json`.
+- Próximo item: CP12-05E/CMP-NAV-V1-005, grupo “O DESTINATARIO ESTOUROU O PRAZO DE 30 DIAS PARA RETORNAR”;
+  reler `listar_destinatarioestourou.php`, mapear colunas, implementar partial, testar, gerar e abrir par.

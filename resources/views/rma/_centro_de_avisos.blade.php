@@ -38,11 +38,16 @@
                 'abreviarMercadoLivre' => false,
                 'mensagemVazio' => 'Nenhum item foi encontrado sem identificação',
             ],
+            'SEM NF DE COMPRA E NF DE VENDA' => [
+                'tipo' => 'sem-nota-fiscal',
+                'partial' => 'rma.alertas._sem_nota',
+                'mensagemVazio' => 'Nenhum item foi encontrado',
+            ],
             default => null,
         };
         $partialDaTabela = $configuracaoDaTabela === null
             ? null
-            : 'rma.alertas._abertos_nao_encaminhados';
+            : ($configuracaoDaTabela['partial'] ?? 'rma.alertas._abertos_nao_encaminhados');
     @endphp
     <div class="regra-de-alerta" @if ($configuracaoDaTabela) data-alerta-tipo="{{ $configuracaoDaTabela['tipo'] }}" @endif>
         <div class="regra-de-alerta-cabecalho">

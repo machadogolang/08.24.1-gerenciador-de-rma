@@ -96,6 +96,24 @@ class RenderizaTemaV2Test extends TestCase
         $response->assertSeeText('Sem numero de serie compartilhado QA');
     }
 
+    public function test_tabela_compartilhada_sem_nota_fiscal_tambem_renderiza_no_tema_v2(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        Rma::factory()->create([
+            'status' => Status::Recebido,
+            'nfcompra' => null,
+            'nfvenda' => null,
+            'descricao' => 'Sem nota fiscal compartilhado QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v2/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="sem-nota-fiscal"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-sem-nota"', false);
+        $response->assertSeeText('Sem nota fiscal compartilhado QA');
+    }
+
     public function test_detalhe_de_rma_v2_renderiza(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Leitura]);

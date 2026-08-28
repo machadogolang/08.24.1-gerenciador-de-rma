@@ -53,6 +53,14 @@ const gruposExpandidos = [
         dadosLegacy: '#dados_semsn',
         grupoV3: '[data-alerta-tipo="sem-numero-de-serie"]',
     },
+    {
+        chave: 'semNotaFiscalExpandida',
+        arquivo: 'sem-nota-fiscal-expandido',
+        mostrarLegacy: '#pmostrar_semnota',
+        ocultarLegacy: '#pocultar_semnota',
+        dadosLegacy: '#dados_semnota',
+        grupoV3: '[data-alerta-tipo="sem-nota-fiscal"]',
+    },
 ];
 
 const elementos = [
@@ -163,7 +171,7 @@ async function sanitizar(page, seletorTabela = null) {
 
 async function capturarGrupoExpandido(legacy, v3, grupo) {
     const tabelaLegacy = `${grupo.dadosLegacy} .Tabelinha-Table`;
-    const tabelaV3 = `${grupo.grupoV3} .tabela-alerta-abertos-nao-encaminhados`;
+    const tabelaV3 = `${grupo.grupoV3} .Tabelinha-Table`;
     const grupoV3 = v3.locator(grupo.grupoV3);
 
     await legacy.locator(grupo.mostrarLegacy).click();

@@ -18,6 +18,7 @@ final class SemNotaFiscal
             ->where('status', Status::Recebido)
             ->where(fn ($query) => $query->whereNull('nfcompra')->orWhere('nfcompra', ''))
             ->where(fn ($query) => $query->whereNull('nfvenda')->orWhere('nfvenda', ''))
+            ->orderByDesc('recebido_em')
             ->get();
     }
 }

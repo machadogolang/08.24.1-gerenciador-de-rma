@@ -62,7 +62,7 @@ posterior. “A rota respondeu” não equivale a paridade visual.
 - [x] NAV-03-03A — prioridade alta sem encaminhar (`CMP-NAV-V1-002`).
 - [x] NAV-03-03B — sem número de série (`CMP-NAV-V1-003`).
 - [x] NAV-03-03C — sem nota fiscal (`CMP-NAV-V1-004`).
-- [ ] NAV-03-03D — prazo do destinatário estourado.
+- [x] NAV-03-03D — prazo do destinatário estourado (`CMP-NAV-V1-005`).
 - [ ] NAV-03-03E — recebidos há mais de 30 dias sem encaminhar.
 - [ ] NAV-03-03F — garantia do fornecedor expirada.
 - [ ] NAV-03-03G — garantia expirando em até 30 dias.
@@ -158,3 +158,19 @@ criar commit afirmando conclusão parcial como aprovada.
   medidas `docs/produto/evidencias-v1-fase2/cp15-medidas.json`.
 - Próximo item: CP12-05E/CMP-NAV-V1-005, grupo “O DESTINATARIO ESTOUROU O PRAZO DE 30 DIAS PARA RETORNAR”;
   reler `listar_destinatarioestourou.php`, mapear colunas, implementar partial, testar, gerar e abrir par.
+
+### CMP-NAV-V1-005 — Página Inicial, prazo do destinatário estourado
+
+- Estado: **APROVADO somente para este grupo**, em 2026-08-28.
+- Funcional: Mostrar/Ocultar, tabela de 10 colunas e ação Ver exercitados; ordenação
+  `encaminhado_em DESC` e resolução polimórfica de destinatário cobertas por testes.
+  Browser Legacy×V3 verde (9/9 testes).
+- Visual: par sanitizado gerado e aberto em página inteira e recorte ampliado;
+  10 colunas históricas (`ENCAMINHADO|T|ORIGEM|FABRICANTE|DESCRICAO|MODELO|PROTOCOLO|DESTINATARIO|OS|A`),
+  cabeçalho ENCAMINHADO, Arial, largura 984px, zebra e linha compacta equivalentes.
+  Deltas e achados completos em `CMP-V1-2-015`.
+- Artefatos: gerador `scripts/qa/paridade-v1-fase2.mjs`; screenshots
+  `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-prazo-destinatario-expandido-1440x1000.png`;
+  medidas `docs/produto/evidencias-v1-fase2/cp15-medidas.json`.
+- Próximo item: CP12-05F/CMP-NAV-V1-006, grupo “RECEBIDO A MAIS DE 30 DIAS E NAO ENCAMINHADO”;
+  reler `listar_naoencaminhadoprazoestourado.php`, mapear colunas, implementar partial, testar, gerar e abrir par.

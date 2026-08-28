@@ -103,7 +103,7 @@ class RmaController extends Controller
             // `mapaDeDestinatarios()`, agora cobrindo busca + as 4 abas por status.
             'fabricantes' => $this->mapaDeFabricantes($todosOsRegistrosDaPagina),
             'fornecedores' => $this->mapaDeFornecedores($todosOsRegistrosDaPagina),
-            'destinatarios' => $this->mapaDeDestinatarios($todosOsRegistrosDasAbas),
+            'destinatarios' => $this->mapaDeDestinatarios($todosOsRegistrosDaPagina),
             // "CENTRO DE AVISOS E RELATORIOS" (correção de fidelidade Fase 8,
             // 2026-08-25) — a aba "Início"/"Pág. Inicial" dos dois temas mostra as
             // mesmas 10 regras da Fase 5 (`PainelDeAlertasController`), sempre
@@ -164,8 +164,10 @@ class RmaController extends Controller
     {
         $idsPorTipo = [];
         foreach ($registros as $registro) {
-            if ($registro->destinatarioType !== null && $registro->destinatarioId !== null) {
-                $idsPorTipo[$registro->destinatarioType][] = $registro->destinatarioId;
+            $tipo = $registro instanceof Rma ? $registro->destinatarioType : $registro->destinatario_type;
+            $id = $registro instanceof Rma ? $registro->destinatarioId : $registro->destinatario_id;
+            if ($tipo !== null && $id !== null) {
+                $idsPorTipo[$tipo][] = $id;
             }
         }
 

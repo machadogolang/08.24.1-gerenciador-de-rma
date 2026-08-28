@@ -210,6 +210,38 @@ class RenderizaTemaV1Test extends TestCase
         $response->assertSeeText('SN-SEM-NF-123');
     }
 
+    public function test_alerta_prazo_destinatario_estourado_renderiza_a_tabela_historica(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante Destinatario QA']);
+        $fornecedor = Fornecedor::factory()->create(['nome' => 'Destinatario Fornecedor QA']);
+        Rma::factory()->create([
+            'status' => Status::Encaminhado,
+            'encaminhado_em' => now()->subDays(35),
+            'origem' => 'Mercado Livre',
+            'fabricante_id' => $fabricante->id,
+            'destinatario_type' => Fornecedor::class,
+            'destinatario_id' => $fornecedor->id,
+            'protocolo' => 'PROT-DEST-123',
+            'descricao' => 'Produto prazo destinatario QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v1/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="prazo-destinatario-estourado"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-prazo-destinatario"', false);
+        $response->assertSeeInOrder([
+            'ENCAMINHADO', 'T', 'ORIGEM', 'FABRICANTE',
+            'DESCRICAO', 'MODELO', 'PROTOCOLO', 'DESTINATARIO', 'OS', 'A',
+        ]);
+        $response->assertSeeText('M LIVRE');
+        $response->assertSeeText('Fabricante Destinatario QA');
+        $response->assertSeeText('Destinatario Fornecedor QA');
+        $response->assertSeeText('PROT-DEST-123');
+        $response->assertSeeText('Produto prazo destinatario QA');
+    }
+
     public function test_novo_rma_v1_renderiza(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Operador]);

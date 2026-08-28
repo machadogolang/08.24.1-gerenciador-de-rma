@@ -114,6 +114,23 @@ class RenderizaTemaV2Test extends TestCase
         $response->assertSeeText('Sem nota fiscal compartilhado QA');
     }
 
+    public function test_tabela_compartilhada_prazo_destinatario_estourado_tambem_renderiza_no_tema_v2(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+        Rma::factory()->create([
+            'status' => Status::Encaminhado,
+            'encaminhado_em' => now()->subDays(35),
+            'descricao' => 'Prazo destinatario compartilhado QA',
+        ]);
+
+        $response = $this->actingAs($usuario)->get('/v2/rma');
+
+        $response->assertOk();
+        $response->assertSee('data-alerta-tipo="prazo-destinatario-estourado"', false);
+        $response->assertSee('class="Tabelinha-Table tabela-alerta-prazo-destinatario"', false);
+        $response->assertSeeText('Prazo destinatario compartilhado QA');
+    }
+
     public function test_detalhe_de_rma_v2_renderiza(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Leitura]);

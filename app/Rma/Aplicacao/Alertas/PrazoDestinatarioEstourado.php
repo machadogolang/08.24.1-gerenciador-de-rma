@@ -17,6 +17,7 @@ final class PrazoDestinatarioEstourado
         return Rma::query()
             ->where('status', Status::Encaminhado)
             ->where('encaminhado_em', '<', now()->subDays(30))
+            ->orderByDesc('encaminhado_em')
             ->get();
     }
 }

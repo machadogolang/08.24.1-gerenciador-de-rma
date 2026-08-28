@@ -47,4 +47,20 @@ class PrazoDestinatarioEstouradoTest extends TestCase
 
         $this->assertFalse($resultado->contains('id', $rma->id));
     }
+
+    public function test_ordena_por_encaminhamento_mais_recente_como_o_legado(): void
+    {
+        $maisAntigo = Rma::factory()->create([
+            'status' => Status::Encaminhado,
+            'encaminhado_em' => now()->subDays(45),
+        ]);
+        $maisRecente = Rma::factory()->create([
+            'status' => Status::Encaminhado,
+            'encaminhado_em' => now()->subDays(32),
+        ]);
+
+        $resultado = (new PrazoDestinatarioEstourado())->listar();
+
+        $this->assertSame([$maisRecente->id, $maisAntigo->id], $resultado->pluck('id')->all());
+    }
 }

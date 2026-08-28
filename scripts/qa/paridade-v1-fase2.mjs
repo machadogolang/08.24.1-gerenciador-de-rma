@@ -61,6 +61,14 @@ const gruposExpandidos = [
         dadosLegacy: '#dados_semnota',
         grupoV3: '[data-alerta-tipo="sem-nota-fiscal"]',
     },
+    {
+        chave: 'prazoDestinatarioExpandido',
+        arquivo: 'prazo-destinatario-expandido',
+        mostrarLegacy: '#pmostrar_prazodestinatario',
+        ocultarLegacy: '#pocultar_prazodestinatario',
+        dadosLegacy: '#dados_prazodestinatario',
+        grupoV3: '[data-alerta-tipo="prazo-destinatario-estourado"]',
+    },
 ];
 
 const elementos = [

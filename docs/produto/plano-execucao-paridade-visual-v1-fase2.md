@@ -486,7 +486,7 @@ Fonte: `legacy-source/14.6.1/inc/startpage.php` (lista de includes) e cada
 - [x] CP12-05B — prioridade alta sem encaminhar.
 - [x] CP12-05C — sem número de série.
 - [x] CP12-05D — sem nota fiscal.
-- [ ] CP12-05E — prazo do destinatário estourado.
+- [x] CP12-05E — prazo do destinatário estourado.
 - [ ] CP12-05F — recebidos há mais de 30 dias sem encaminhar.
 - [ ] CP12-05G — garantia do fornecedor expirada.
 - [ ] CP12-05H — garantia expirando em até 30 dias.
@@ -942,4 +942,38 @@ apague descobertas nem leve o próximo agente a repetir conclusões antigas.
   reler integralmente `15.8.1/subp/listar_destinatarioestourou.php` e
   `metodo.php::listar_destinatarioestourou()`, mapear colunas (`ENCAMINHADO|T|ORIGEM|FABRICANTE|DESCRICAO|MODELO|PROTOCOLO|DESTINATARIO|OS|A`),
   criar testes V1+V2 e Browser, incluir no gerador, gerar e abrir o par, registrar `CMP-V1-2-015`/`CMP-NAV-V1-005` e commitar.
+
+### CMP-V1-2-015 — CP12-05E, prazo do destinatário estourado
+
+- Fonte lida integralmente: `15.8.1/subp/listar_prazodestinatario.php` e
+  `metodo.php::listar_prazodestinatario()`. Contrato histórico: `status='encaminhado'`,
+  ordem `encaminhado DESC`, filtro `tempo > 30` dias; colunas reais (10 colunas):
+  `ENCAMINHADO|T|ORIGEM|FABRICANTE|DESCRICAO|MODELO|PROTOCOLO|DESTINATARIO|OS|A`.
+  “Mercado Livre” abreviado para `M LIVRE`. Larguras exatas:
+  `10%|4%|7%|13%|13%|16%|14%|16%|5%|2%`.
+- Achado funcional corrigido: `PrazoDestinatarioEstourado::listar()` não ordenava por
+  `encaminhado_em DESC`. Adicionado `orderByDesc('encaminhado_em')`, coberto por teste unitário.
+- Achado de apresentação corrigido: `RmaController::mapaDeDestinatarios()` não resolvia
+  model Eloquent (`destinatario_type`/`destinatario_id`) nem recebia os registros dos grupos de alerta.
+  Ajustado para resolver tanto domínio quanto Eloquent e receber `$todosOsRegistrosDaPagina`.
+- Implementação visual: partial dedicado `resources/views/rma/alertas/_prazo_destinatario.blade.php`
+  com as 10 colunas exatas, cálculo de tempo decorrido, resolução de fabricante e destinatário.
+  `_centro_de_avisos.blade.php` configurado com `tipo=prazo-destinatario-estourado`.
+- Par gerado e **aberto em página inteira e recorte ampliado**:
+  `docs/produto/screenshots-evidencias-v1-fase2/{legacy,v3}-cp15-prazo-destinatario-expandido-1440x1000.png`.
+  Inspeção: 10 colunas idênticas, cabeçalho ENCAMINHADO, Arial, cores, zebra `TrZebrada1/2`,
+  densidade, rótulo Ocultar e ação Ver. A tabela sanitizada preserva uma linha nos dois lados.
+- Medidas (`cp15-medidas.json`): tabela `x=228,width=984` nos dois; cabeçalho
+  `x=228.5,width=983,height=34,font=Arial 12px` nos dois; primeira célula
+  `width=105.34` Legacy × `width=108.00` V3, `font=Arial 11px`.
+- Validação: 375 testes PHP/875 asserções verdes no container; 9/9 testes Playwright no host;
+  build Vite verde.
+- Decisão: **CP12-05E APROVADO**, limitado a este grupo. Home/CP12-05/CP15 seguem
+  abertos enquanto CP12-05F–J não forem comparados.
+- Commit: imediato após este registro.
+- **Próximo item exato após o commit:** CP12-05F — “RECEBIDO A MAIS DE 30 DIAS E NAO ENCAMINHADO”;
+  reler integralmente `15.8.1/subp/listar_naoencaminhadoprazoestourado.php` e
+  `metodo.php::listar_naoencaminhadoprazoestourado()`, mapear colunas (`RECEBIDO|T|ORIGEM|FORNECEDOR|FABRICANTE|DESCRICAO|MODELO|S/N|OS|A`),
+  criar testes V1+V2 e Browser, incluir no gerador, gerar e abrir o par, registrar `CMP-V1-2-016`/`CMP-NAV-V1-006` e commitar.
+
 

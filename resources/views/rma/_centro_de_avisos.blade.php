@@ -43,6 +43,11 @@
                 'partial' => 'rma.alertas._sem_nota',
                 'mensagemVazio' => 'Nenhum item foi encontrado',
             ],
+            'O DESTINATARIO ESTOUROU O PRAZO DE 30 DIAS PARA RETORNAR' => [
+                'tipo' => 'prazo-destinatario-estourado',
+                'partial' => 'rma.alertas._prazo_destinatario',
+                'mensagemVazio' => 'Nenhum item foi encontrado',
+            ],
             default => null,
         };
         $partialDaTabela = $configuracaoDaTabela === null

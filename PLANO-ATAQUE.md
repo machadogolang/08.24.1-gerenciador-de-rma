@@ -40,9 +40,9 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
    filtro por solução);
 6. [x] CP11 — separador antes do Centro de Avisos (`separador2.png`);
 7. [~] CP12 — Centro de Avisos: ordem/títulos históricos corrigidos; CP12-05 foi
-   reaberto pelo print do usuário. Protocolo, prioridade, sem S/N e sem NF fechados e
-   comparados em CP12-05A–D/CMP-V1-2-011–014; outras 6 tabelas permanecem
-   CP12-05E–J;
+   reaberto pelo print do usuário. Protocolo, prioridade, sem S/N, sem NF e prazo
+   estourado fechados e comparados em CP12-05A–E/CMP-V1-2-011–015; outras 5 tabelas
+   permanecem CP12-05F–J;
 8. [x] CP13 — fixture de QA com comprimento de dado realista (`os`/`descricao`
    encurtados; 1 registro com `solucao=PendenteCredito`, Aguardando Crédito deixa
    de ficar sempre vazia);
@@ -54,10 +54,10 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
    `CMP-V1-2-009`;
 10. [ ] CP15 — gate final da fase 2 (três viewports, prova final, checklist).
 
-Próximo checkpoint após o commit corrente: **CP12-05E**, tabela “O DESTINATARIO ESTOUROU
-O PRAZO DE 30 DIAS PARA RETORNAR”. Começar lendo `listar_destinatarioestourou.php` e a
+Próximo checkpoint após o commit corrente: **CP12-05F**, tabela “RECEBIDO A MAIS DE
+30 DIAS E NAO ENCAMINHADO”. Começar lendo `listar_naoencaminhadoprazoestourado.php` e a
 consulta compartilhada; depois teste V1/V2+Browser, gerador, abertura do par e diário
-`CMP-V1-2-015`, antes de um commit próprio. Depois da Home: auditoria integral menu a menu/
+`CMP-V1-2-016`, antes de um commit próprio. Depois da Home: auditoria integral menu a menu/
 link a link, com commit local e próximo item explícito por tela/grupo fechado, em
 `docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`.
 

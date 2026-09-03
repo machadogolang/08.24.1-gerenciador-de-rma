@@ -175,6 +175,7 @@ $cor-alerta: #904141;
 .designedby {
     font-size: 12px;
     font-weight: 300;
+    line-height: 14px;
     text-shadow: 1px 1px 10px gray;
     clear: both;
     text-align: right;
@@ -248,7 +249,10 @@ $cor-titulo-regra-de-alerta: #efe6c0; // fonte: inline style real `color:#EFE6C0
 
 .regra-de-alerta {
     text-align: left;
-    padding: 10px 0;
+    // `14.6.1/inc/startpage.php` intercala cada include com um `separador.png`
+    // de 40px. Com o cabeçalho + `.pmo` históricos, o bloco precisa medir 50px:
+    // 8px de padding em cada lado mantém o passo total em 90px, igual ao runtime.
+    padding: 8px 0;
 
     .regra-de-alerta-cabecalho {
         display: flex;
@@ -279,7 +283,7 @@ $cor-titulo-regra-de-alerta: #efe6c0; // fonte: inline style real `color:#EFE6C0
 .separador-alerta {
     display: block;
     height: 40px;
-    margin: 5px 0;
+    margin: 0;
 }
 
 table {

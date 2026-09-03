@@ -421,6 +421,64 @@ test('Mostrar de recebidos a mais de 30 dias abre a tabela RECEBIDO compacta de 
     await page.context().close();
 });
 
+test('Centro de Avisos recolhido preserva o passo vertical histórico entre grupos', async ({ browser }) => {
+    const legacy = await loginLegacy(browser);
+    const v3 = await loginV3(browser);
+    await v3.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+    await legacy.evaluate(() => document.fonts.ready);
+    await v3.evaluate(() => document.fonts.ready);
+
+    const posicoesLegacy = await legacy.locator('.pmo').evaluateAll(elementos => elementos
+        .filter(elemento => getComputedStyle(elemento).display !== 'none')
+        .map(elemento => elemento.getBoundingClientRect().y));
+    const posicoesV3 = await v3.locator('.regra-de-alerta .pmo').evaluateAll(elementos => elementos
+        .map(elemento => elemento.getBoundingClientRect().y));
+
+    expect(posicoesV3).toHaveLength(10);
+    expect(posicoesLegacy).toHaveLength(10);
+
+    const passos = (posicoes: number[]) => posicoes.slice(1).map((posicao, indice) =>
+        Math.round(posicao - posicoes[indice])
+    );
+
+    // include histórico (50px) + `separador.png` (40px), em todas as regras.
+    // A rasterização da fonte no Legacy varia 1–3px entre contextos Chromium; o
+    // contrato é passo uniforme e diferença máxima de 3px por grupo, não o valor
+    // acidental de uma execução isolada.
+    const passosLegacy = passos(posicoesLegacy);
+    const passosV3 = passos(posicoesV3);
+    expect(new Set(passosLegacy).size).toBe(1);
+    expect(new Set(passosV3).size).toBe(1);
+    passosV3.forEach((passo, indice) => {
+        expect(Math.abs(passo - passosLegacy[indice])).toBeLessThanOrEqual(3);
+    });
+
+    await legacy.context().close();
+    await v3.context().close();
+});
+
+test('rodapé preserva a altura de linha histórica', async ({ browser }) => {
+    const legacy = await loginLegacy(browser);
+    const v3 = await loginV3(browser);
+    await v3.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+    await legacy.evaluate(() => document.fonts.ready);
+    await v3.evaluate(() => document.fonts.ready);
+
+    const medir = async (page: Page, seletor: string) => page.locator(seletor).first().evaluate(elemento => {
+        const retangulo = elemento.getBoundingClientRect();
+        return { height: Math.round(retangulo.height) };
+    });
+
+    expect(await medir(legacy, '#RODAPE .p-rodape:not([style*="display:none"])'))
+        .toEqual(await medir(v3, '#RODAPE .p-rodape'));
+    expect(await medir(legacy, '#RODAPE .designedby:first-of-type'))
+        .toEqual(await medir(v3, '#RODAPE .designedby:first-of-type'));
+    expect(await medir(legacy, '#RODAPE')).toEqual(await medir(v3, '#RODAPE'));
+
+    await legacy.context().close();
+    await v3.context().close();
+});
+
 test('captura matriz comparável Legacy V1 e V3 em 1440px', async ({ browser }) => {
     const legacy = await loginLegacy(browser);
     const v3 = await loginV3(browser);

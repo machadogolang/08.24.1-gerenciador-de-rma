@@ -90,7 +90,13 @@ const elementos = [
     ['valor-contador', '.formInputStats', '.formValorStats'],
     ['separador-principal', 'img[title="Separador"]', 'img[title="Separador"]'],
     ['titulo-centro-avisos', '.centrodeavisos h5', '.centro-de-avisos-titulo'],
+    ['conteudo', '#CONTEUDO', '#CONTEUDO'],
+    ['ultimo-separador-alerta', '#CONTEUDO img[title="Separador"]:last-of-type', '.separador-alerta:last-of-type'],
     ['rodape', '#RODAPE', '#RODAPE'],
+    ['rodape-usuario', '#RODAPE .p-rodape', '#RODAPE .p-rodape'],
+    ['rodape-usuario-visivel', '#RODAPE .p-rodape:not([style*="display:none"])', '#RODAPE .p-rodape'],
+    ['rodape-designedby-1', '#RODAPE .designedby:first-of-type', '#RODAPE .designedby:first-of-type'],
+    ['rodape-designedby-2', '#RODAPE .designedby:last-of-type', '#RODAPE .designedby:last-of-type'],
 ];
 
 async function medir(page, seletor) {

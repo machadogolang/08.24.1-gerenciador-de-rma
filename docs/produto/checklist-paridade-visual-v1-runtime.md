@@ -1,5 +1,7 @@
 # Checklist de paridade visual/interação — TEMA V1 runtime (reabertura 2026-08-25)
 
+Última atualização: 2026-08-30 16:24 (America/Sao_Paulo).
+
 Documento auxiliar indexado pela seção F10 visual do `checklist-master-v3.md`, criado
 por `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT-problemas-no-layout.md`. Fonte de
 verdade: runtime real `http://localhost:8094/14.6.1/` (Legacy) × `http://localhost:8095`
@@ -16,6 +18,17 @@ substituído pela fidelidade literal do Tema V1.
 
 Checklist/diário: `docs/produto/plano-execucao-paridade-estrutural-v1.md`. Parecer:
 `docs/pareceres/parecer-paridade-estrutural-v1-falhas-layout.md`.
+
+## CP15 — gate final da fase 2 (concluído)
+
+- [x] Matriz sanitizada e inspeção dos pares Legacy×V3 em 1440×1000, 1562×1400 e
+  1700×1000; gerador e medidas em `scripts/qa/paridade-v1-fase2.mjs` e
+  `docs/produto/evidencias-v1-fase2/cp15-medidas.json`.
+- [x] Regressão completa: PHP 388/941, Vite, Browser V1 12/12 e Browser restante
+  10/10 (1 skip V2 esperado).
+- [x] Aprovar o gate: a altura de `#RODAPE` foi equalizada (984×122), cadência dos 10
+  grupos do Centro de Avisos uniforme coberta por teste automatizado, geometrias dos
+  viewports aprovadas sem divergência estrutural. Fase 2 do Tema V1 encerrada.
 
 ## Estratégia de evidência visual (prints comparativos Legado×V3)
 

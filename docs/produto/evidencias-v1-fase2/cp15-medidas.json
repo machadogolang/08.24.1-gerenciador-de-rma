@@ -55,7 +55,7 @@
           "x": 218,
           "y": 0,
           "width": 1004,
-          "height": 1992.19,
+          "height": 1843.19,
           "display": "block",
           "fontFamily": "\"Open Sans\", Arial, Roboto",
           "fontSize": "12px",
@@ -289,6 +289,62 @@
           "color": "rgb(246, 227, 163)"
         }
       },
+      "conteudo": {
+        "legacy": {
+          "x": 228,
+          "y": 147,
+          "width": 984,
+          "height": 1551.94,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 228,
+          "y": 164,
+          "width": 984,
+          "height": 1547.19,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      "ultimo-separador-alerta": {
+        "legacy": {
+          "x": 228,
+          "y": 1645.94,
+          "width": 294.19,
+          "height": 40,
+          "display": "inline",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 228,
+          "y": 1661.19,
+          "width": 294.19,
+          "height": 40,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
       "rodape": {
         "legacy": {
           "x": 228,
@@ -305,9 +361,9 @@
         },
         "v3": {
           "x": 228,
-          "y": 1861.19,
+          "y": 1721.19,
           "width": 984,
-          "height": 131,
+          "height": 122,
           "display": "block",
           "fontFamily": "\"Open Sans\", Arial, Roboto",
           "fontSize": "12px",
@@ -315,6 +371,118 @@
           "lineHeight": "normal",
           "backgroundColor": "rgba(0, 0, 0, 0)",
           "color": "rgb(255, 255, 255)"
+        }
+      },
+      "rodape-usuario": {
+        "legacy": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "display": "none",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 238,
+          "y": 1731.19,
+          "width": 161,
+          "height": 14,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.7)"
+        }
+      },
+      "rodape-usuario-visivel": {
+        "legacy": {
+          "x": 238,
+          "y": 1718.94,
+          "width": 140.77,
+          "height": 14,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.7)"
+        },
+        "v3": {
+          "x": 238,
+          "y": 1731.19,
+          "width": 161,
+          "height": 14,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.7)"
+        }
+      },
+      "rodape-designedby-1": {
+        "legacy": {
+          "x": 238,
+          "y": 1772.94,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
+        },
+        "v3": {
+          "x": 238,
+          "y": 1785.19,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
+        }
+      },
+      "rodape-designedby-2": {
+        "legacy": {
+          "x": 238,
+          "y": 1796.94,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
+        },
+        "v3": {
+          "x": 238,
+          "y": 1809.19,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
         }
       }
     },
@@ -335,7 +503,7 @@
         },
         "v3": {
           "x": 228,
-          "y": 930.19,
+          "y": 914.19,
           "width": 984,
           "height": 407,
           "display": "table",
@@ -363,7 +531,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 930.69,
+          "y": 914.69,
           "width": 983,
           "height": 34,
           "display": "table-row",
@@ -391,7 +559,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 964.69,
+          "y": 948.69,
           "width": 78.5,
           "height": 31,
           "display": "table-cell",
@@ -409,7 +577,7 @@
         "legacy": null,
         "v3": {
           "x": 228,
-          "y": 823.19,
+          "y": 821.19,
           "width": 984,
           "height": 283,
           "display": "table",
@@ -425,7 +593,7 @@
         "legacy": null,
         "v3": {
           "x": 228.5,
-          "y": 823.69,
+          "y": 821.69,
           "width": 983,
           "height": 34,
           "display": "table-row",
@@ -441,7 +609,7 @@
         "legacy": null,
         "v3": {
           "x": 228.5,
-          "y": 857.69,
+          "y": 855.69,
           "width": 78.41,
           "height": 31,
           "display": "table-cell",
@@ -471,7 +639,7 @@
         },
         "v3": {
           "x": 228,
-          "y": 513.19,
+          "y": 1001.19,
           "width": 984,
           "height": 66,
           "display": "table",
@@ -499,7 +667,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 513.69,
+          "y": 1001.69,
           "width": 983,
           "height": 34,
           "display": "table-row",
@@ -527,7 +695,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 547.69,
+          "y": 1035.69,
           "width": 78.5,
           "height": 31,
           "display": "table-cell",
@@ -557,7 +725,7 @@
         },
         "v3": {
           "x": 228,
-          "y": 620.19,
+          "y": 513.19,
           "width": 984,
           "height": 407,
           "display": "table",
@@ -585,7 +753,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 620.69,
+          "y": 513.69,
           "width": 983,
           "height": 34,
           "display": "table-row",
@@ -613,7 +781,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 654.69,
+          "y": 547.69,
           "width": 78.5,
           "height": 31,
           "display": "table-cell",
@@ -643,7 +811,7 @@
         },
         "v3": {
           "x": 228,
-          "y": 727.19,
+          "y": 606.19,
           "width": 984,
           "height": 407,
           "display": "table",
@@ -671,7 +839,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 727.69,
+          "y": 606.69,
           "width": 983,
           "height": 34,
           "display": "table-row",
@@ -699,7 +867,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 761.69,
+          "y": 640.69,
           "width": 108,
           "height": 31,
           "display": "table-cell",
@@ -729,7 +897,7 @@
         },
         "v3": {
           "x": 228,
-          "y": 834.19,
+          "y": 699.19,
           "width": 984,
           "height": 407,
           "display": "table",
@@ -757,7 +925,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 834.69,
+          "y": 699.69,
           "width": 983,
           "height": 34,
           "display": "table-row",
@@ -785,7 +953,7 @@
         },
         "v3": {
           "x": 228.5,
-          "y": 868.69,
+          "y": 733.69,
           "width": 78.5,
           "height": 31,
           "display": "table-cell",
@@ -855,7 +1023,7 @@
           "x": 279,
           "y": 0,
           "width": 1004,
-          "height": 1992.19,
+          "height": 1843.19,
           "display": "block",
           "fontFamily": "\"Open Sans\", Arial, Roboto",
           "fontSize": "12px",
@@ -1089,6 +1257,62 @@
           "color": "rgb(246, 227, 163)"
         }
       },
+      "conteudo": {
+        "legacy": {
+          "x": 289,
+          "y": 147,
+          "width": 984,
+          "height": 1551.94,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 289,
+          "y": 164,
+          "width": 984,
+          "height": 1547.19,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      "ultimo-separador-alerta": {
+        "legacy": {
+          "x": 289,
+          "y": 1645.94,
+          "width": 294.19,
+          "height": 40,
+          "display": "inline",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 289,
+          "y": 1661.19,
+          "width": 294.19,
+          "height": 40,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
       "rodape": {
         "legacy": {
           "x": 289,
@@ -1105,9 +1329,9 @@
         },
         "v3": {
           "x": 289,
-          "y": 1861.19,
+          "y": 1721.19,
           "width": 984,
-          "height": 131,
+          "height": 122,
           "display": "block",
           "fontFamily": "\"Open Sans\", Arial, Roboto",
           "fontSize": "12px",
@@ -1115,6 +1339,118 @@
           "lineHeight": "normal",
           "backgroundColor": "rgba(0, 0, 0, 0)",
           "color": "rgb(255, 255, 255)"
+        }
+      },
+      "rodape-usuario": {
+        "legacy": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "display": "none",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 299,
+          "y": 1731.19,
+          "width": 161,
+          "height": 14,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.7)"
+        }
+      },
+      "rodape-usuario-visivel": {
+        "legacy": {
+          "x": 299,
+          "y": 1718.94,
+          "width": 140.77,
+          "height": 14,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.7)"
+        },
+        "v3": {
+          "x": 299,
+          "y": 1731.19,
+          "width": 161,
+          "height": 14,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.7)"
+        }
+      },
+      "rodape-designedby-1": {
+        "legacy": {
+          "x": 299,
+          "y": 1772.94,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
+        },
+        "v3": {
+          "x": 299,
+          "y": 1785.19,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
+        }
+      },
+      "rodape-designedby-2": {
+        "legacy": {
+          "x": 299,
+          "y": 1796.94,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
+        },
+        "v3": {
+          "x": 299,
+          "y": 1809.19,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
         }
       }
     },
@@ -1181,7 +1517,7 @@
           "x": 348,
           "y": 0,
           "width": 1004,
-          "height": 1992.19,
+          "height": 1843.19,
           "display": "block",
           "fontFamily": "\"Open Sans\", Arial, Roboto",
           "fontSize": "12px",
@@ -1415,6 +1751,62 @@
           "color": "rgb(246, 227, 163)"
         }
       },
+      "conteudo": {
+        "legacy": {
+          "x": 358,
+          "y": 147,
+          "width": 984,
+          "height": 1551.94,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 358,
+          "y": 164,
+          "width": 984,
+          "height": 1547.19,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      "ultimo-separador-alerta": {
+        "legacy": {
+          "x": 358,
+          "y": 1645.94,
+          "width": 294.19,
+          "height": 40,
+          "display": "inline",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 358,
+          "y": 1661.19,
+          "width": 294.19,
+          "height": 40,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
       "rodape": {
         "legacy": {
           "x": 358,
@@ -1431,9 +1823,9 @@
         },
         "v3": {
           "x": 358,
-          "y": 1861.19,
+          "y": 1721.19,
           "width": 984,
-          "height": 131,
+          "height": 122,
           "display": "block",
           "fontFamily": "\"Open Sans\", Arial, Roboto",
           "fontSize": "12px",
@@ -1441,6 +1833,118 @@
           "lineHeight": "normal",
           "backgroundColor": "rgba(0, 0, 0, 0)",
           "color": "rgb(255, 255, 255)"
+        }
+      },
+      "rodape-usuario": {
+        "legacy": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "display": "none",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        },
+        "v3": {
+          "x": 368,
+          "y": 1731.19,
+          "width": 161,
+          "height": 14,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.7)"
+        }
+      },
+      "rodape-usuario-visivel": {
+        "legacy": {
+          "x": 368,
+          "y": 1718.94,
+          "width": 140.77,
+          "height": 14,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.7)"
+        },
+        "v3": {
+          "x": 368,
+          "y": 1731.19,
+          "width": 161,
+          "height": 14,
+          "display": "block",
+          "fontFamily": "\"Open Sans\", Arial, Roboto",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.7)"
+        }
+      },
+      "rodape-designedby-1": {
+        "legacy": {
+          "x": 368,
+          "y": 1772.94,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
+        },
+        "v3": {
+          "x": 368,
+          "y": 1785.19,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
+        }
+      },
+      "rodape-designedby-2": {
+        "legacy": {
+          "x": 368,
+          "y": 1796.94,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "normal",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
+        },
+        "v3": {
+          "x": 368,
+          "y": 1809.19,
+          "width": 964,
+          "height": 24,
+          "display": "block",
+          "fontFamily": "Arial, \"Open Sans\", \"Fira Mono\"",
+          "fontSize": "12px",
+          "fontWeight": "300",
+          "lineHeight": "14px",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgba(255, 255, 255, 0.2)"
         }
       }
     },

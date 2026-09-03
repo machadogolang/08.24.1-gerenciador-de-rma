@@ -1,6 +1,6 @@
 # Plano de ataque — CellSystem RMA
 
-Última atualização: 2026-08-26. Fonte granular:
+Última atualização: 2026-08-30 16:24 (America/Sao_Paulo). Fonte granular:
 `docs/produto/checklist-master-v3.md`.
 Handoff para nova sessão: `docs/produto/handoff-sessao-2026-08-26.md` (substitui o
 handoff de 2026-08-25, mantido só como histórico).
@@ -55,12 +55,16 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
    `TrInconformidade` em vez de `TrUrgente`); mesmo achado já registrado como
    `[INVESTIGAR]` no CP23 do TEMA V2, agora com evidência completa. Ver
    `CMP-V1-2-009`;
-10. [ ] CP15 — gate final da fase 2 (três viewports, prova final, checklist).
+10. [x] CP15 — gate final da fase 2 (três viewports, prova final, checklist) —
+    fechado com `#RODAPE` equalizado em 984×122, passo uniforme do Centro de Avisos
+    coberto por testes automatizados (V1 12/12, PHP 388/941) e evidências sanitizadas
+    versionadas (`CMP-V1-2-019`).
 
-Próximo checkpoint: **CP15** — gate final da fase 2 (três viewports, prova final,
-checklist de CP6–CP14 + CP12-05A–J fechados). Depois da Home: auditoria integral menu
-a menu/link a link, com commit local e próximo item explícito por tela/grupo fechado,
-em `docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`.
+Fase 2 do Tema V1 **concluída (CP6 a CP15 fechados)**.
+
+Próximo lote: **Auditoria integral navegacional e visual do Tema V1** (menu a menu, link
+a link, tela a tela), iniciando pela infraestrutura repetível do Lote NAV-00 e menu superior
+NAV-01 em `docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`.
 
 Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da
 alteração, gerar e abrir o novo par normalizado. Toda comparação entra no Diário do MD

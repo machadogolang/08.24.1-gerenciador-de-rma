@@ -562,6 +562,9 @@ li {
 .p-rodape {
     margin: 0 0 40px;
     color: rgba(255, 255, 255, 0.7);
+    // O runtime 14.6.1 rasteriza a linha do usuário em 14px; sem explicitar,
+    // a fonte local do V3 sobe para 17px e desloca as duas linhas seguintes.
+    line-height: 14px;
 }
 
 .titulo-v1 {

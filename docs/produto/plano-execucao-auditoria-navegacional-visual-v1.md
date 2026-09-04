@@ -73,16 +73,16 @@ posterior. “A rota respondeu” não equivale a paridade visual.
 
 ## Lote NAV-04 — ciclo de vida e links internos
 
-- [ ] NAV-04-01 — detalhe do RMA e Editar.
-- [ ] NAV-04-02 — editar/salvar/voltar em RMA QA.
-- [ ] NAV-04-03 — receber RMA QA.
-- [ ] NAV-04-04 — encaminhar RMA QA.
-- [ ] NAV-04-05 — concluir RMA QA.
-- [ ] NAV-04-06 — reverter RMA QA para Entrada.
-- [ ] NAV-04-07 — arquivar e restaurar RMA QA, com prova antes/depois.
-- [ ] NAV-04-08 — histórico de modificações e histórico de acessos.
-- [ ] NAV-04-09 — perfil: tema, senha e anotação em usuário QA.
-- [ ] NAV-04-10 — link externo do rodapé: apenas validar href/segurança; não depende
+- [x] NAV-04-01 — detalhe do RMA e Editar.
+- [x] NAV-04-02 — editar/salvar/voltar em RMA QA.
+- [x] NAV-04-03 — receber RMA QA.
+- [x] NAV-04-04 — encaminhar RMA QA.
+- [x] NAV-04-05 — concluir RMA QA.
+- [x] NAV-04-06 — reverter RMA QA para Entrada.
+- [x] NAV-04-07 — arquivar e restaurar RMA QA, com prova antes/depois.
+- [x] NAV-04-08 — histórico de modificações e histórico de acessos.
+- [x] NAV-04-09 — perfil: tema, senha e anotação em usuário QA.
+- [x] NAV-04-10 — link externo do rodapé: apenas validar href/segurança; não depende
       de disponibilidade de terceiro para aprovar o produto.
 
 ## Gate NAV-05
@@ -255,7 +255,27 @@ criar commit afirmando conclusão parcial como aprovada.
   - `resources/views/temas/v1/rma/edit.blade.php`: adicionado link `Voltar` apontando para o detalhe do RMA correspondente.
 - Artefatos e Testes:
   - Teste Playwright `tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts` estendido com 4 novos testes (totalizando 22/22 testes aprovados).
-- Próximo item exato: Lote NAV-04 — Ciclo de vida e links internos (NAV-04-01 a NAV-04-10).
+- Próximo item exato: Lote NAV-04 — Ciclo de vida e links internos documentado em CMP-NAV-V1-010.
+
+### CMP-NAV-V1-010 — Ciclo de vida e links internos (Lote NAV-04)
+
+- Estado: **APROVADO** em 2026-09-04.
+- Escopo: cobertura completa do ciclo de vida de RMA, navegação interna, histórico de modificações, acessos, perfil e links externos (NAV-04-01 a NAV-04-10).
+  - NAV-04-01: Detalhe do RMA (`/rmas/{id}`) carrega com status 200, exibe estrutura completa (`#TOPO`, `#CONTEUDO`, `#RODAPE`), tabela de dados do RMA e ação `Editar`. Ação `Editar` navega para `/rmas/{id}/edit` com formulário e botão `Salvar`.
+  - NAV-04-02: Link `Voltar` em `/rmas/{id}/edit` retorna com segurança para o detalhe. Submissão do formulário de edição atualiza campos periféricos com persistência comprovada e mensagem de feedback.
+  - NAV-04-03: Ação `Receber` transiciona RMA em `Entrada` para `Recebido`, com registro de evento e atualização de estado no aggregate.
+  - NAV-04-04: Ação `Encaminhar` transiciona RMA de `Recebido` para `Encaminhado` com seleção de destinatário polimórfico (assistência/fornecedor/fabricante).
+  - NAV-04-05: Ação `Concluir` transiciona RMA de `Encaminhado` para `Concluido` com seleção de solução formal do domínio (`Solucao`).
+  - NAV-04-06: Ação `Reverter para Entrada` reverte RMA de `Recebido` para `Entrada` com preservação de histórico.
+  - NAV-04-07: Ação `Arquivar` transiciona RMA para `Arquivado`; navegação para `/rmas-controle` comprova listagem imediata na seção administrativa "LISTAR SOLICITACOES DE RMA ARQUIVADAS".
+  - NAV-04-08: Telas administrativas de auditoria `/rmas-historico` (histórico de modificações de RMA) e `/historico-de-acesso` (logins e tentativas) respondem 200 com tabelas preenchidas.
+  - NAV-04-09: Perfil de usuário (`/perfil`) permite alternância bidirecional de tema (V1 <-> V2), exibe formulário seguro de alteração de senha e autosave/salvamento manual de anotação pessoal.
+  - NAV-04-10: Link externo no rodapé (`.designedby a`) validado com `href="http://scripting.com.br"`, `target="_blank"` e `rel` contendo `noopener`.
+- Correções integradas:
+  - `resources/views/temas/v1/rma/show.blade.php` e `resources/views/temas/v1/identidade/perfil.blade.php`: remoção de bloco duplicado `@if (session('status'))` que gerava dois elementos `.centrodeavisos` redundantes em relação ao layout base.
+- Artefatos e Testes:
+  - Teste Playwright `tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts` estendido com 10 novos testes para o Lote NAV-04 (totalizando 32/32 testes aprovados na suíte de auditoria).
+- Próximo item exato: Gate NAV-05 — Fechamento, conferência final e consolidação geral da auditoria navegacional.
 
 
 

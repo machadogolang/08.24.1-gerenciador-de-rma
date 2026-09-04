@@ -497,4 +497,349 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-03 (Pagina Inicial e 
     });
 });
 
+test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e Links Internos)', () => {
+    test('NAV-04-01 — detalhe do RMA e Editar: navegacao e estrutura', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/rmas-entrada`, { waitUntil: 'domcontentloaded' });
+        const primeiroLinkRma = page.locator('#CONTEUDO table.Tabelinha-Table a[href*="/rmas/"]').first();
+        await expect(primeiroLinkRma).toBeVisible();
+
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            primeiroLinkRma.click(),
+        ]);
+
+        expect(page.url()).toMatch(/\/rmas\/\d+$/);
+        await expect(page.locator('#TOPO')).toBeVisible();
+        await expect(page.locator('#CONTEUDO')).toBeVisible();
+        await expect(page.locator('#RODAPE')).toBeVisible();
+
+        const linkEditar = page.locator('#CONTEUDO a:has-text("Editar")');
+        await expect(linkEditar).toBeVisible();
+
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            linkEditar.click(),
+        ]);
+
+        expect(page.url()).toMatch(/\/rmas\/\d+\/edit$/);
+        await expect(page.locator('button.buttonSave')).toBeVisible();
+        await expect(page.locator('a:has-text("Voltar")')).toBeVisible();
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-04-02 — editar/salvar/voltar em RMA QA', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/rmas-entrada`, { waitUntil: 'domcontentloaded' });
+        const primeiroLinkRma = page.locator('#CONTEUDO table.Tabelinha-Table a[href*="/rmas/"]').first();
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            primeiroLinkRma.click(),
+        ]);
+
+        const urlDetalhe = page.url();
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('#CONTEUDO a:has-text("Editar")'),
+        ]);
+
+        // Testa o link "Voltar"
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('a:has-text("Voltar")'),
+        ]);
+        expect(page.url()).toBe(urlDetalhe);
+
+        // Edita e salva
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('#CONTEUDO a:has-text("Editar")'),
+        ]);
+
+        await page.fill('#CONTEUDO form input[name="modelo"]', 'MODELO QA AUDITORIA');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('button.buttonSave'),
+        ]);
+
+        expect(page.url()).toBe(urlDetalhe);
+        await expect(page.locator('.centrodeavisos')).toContainText('RMA atualizado.');
+        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('MODELO QA AUDITORIA');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-04-03 — receber RMA QA: transicao Entrada -> Recebido', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        // Cria RMA descartável pelo painel inline #JS-Novo
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        await page.click('#menu-novo');
+        await page.fill('#JS-Novo input[name="descricao"]', 'DISPOSITIVO QA RECEBER');
+        await page.fill('#JS-Novo input[name="defeito"]', 'DEFEITO QA TESTE');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('#JS-Novo button.formButtonEnviarNovo'),
+        ]);
+
+        expect(page.url()).toMatch(/\/rmas\/\d+$/);
+        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Entrada');
+
+        // Executa ação "Receber"
+        const formReceber = page.locator('form[action$="/receber"] button');
+        await expect(formReceber).toBeVisible();
+
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            formReceber.click(),
+        ]);
+
+        await expect(page.locator('.centrodeavisos')).toContainText('RMA recebido.');
+        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Recebido');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-04-04 — encaminhar RMA QA: transicao Recebido -> Encaminhado', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        // Cria e recebe RMA descartável
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        await page.click('#menu-novo');
+        await page.fill('#JS-Novo input[name="descricao"]', 'DISPOSITIVO QA ENCAMINHAR');
+        await page.fill('#JS-Novo input[name="defeito"]', 'DEFEITO QA TESTE');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('#JS-Novo button.formButtonEnviarNovo'),
+        ]);
+
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('form[action$="/receber"] button'),
+        ]);
+
+        // Executa ação "Encaminhar"
+        const formEncaminhar = page.locator('form[action$="/encaminhar"]');
+        await expect(formEncaminhar).toBeVisible();
+
+        await formEncaminhar.locator('input[name="destinatario_id"]').fill('1');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            formEncaminhar.locator('button[type="submit"]').click(),
+        ]);
+
+        await expect(page.locator('.centrodeavisos')).toContainText('RMA encaminhado.');
+        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Encaminhado');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-04-05 — concluir RMA QA: transicao Encaminhado -> Concluido', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        // Cria, recebe e encaminha RMA descartável
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        await page.click('#menu-novo');
+        await page.fill('#JS-Novo input[name="descricao"]', 'DISPOSITIVO QA CONCLUIR');
+        await page.fill('#JS-Novo input[name="defeito"]', 'DEFEITO QA TESTE');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('#JS-Novo button.formButtonEnviarNovo'),
+        ]);
+
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('form[action$="/receber"] button'),
+        ]);
+
+        const formEncaminhar = page.locator('form[action$="/encaminhar"]');
+        await formEncaminhar.locator('input[name="destinatario_id"]').fill('1');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            formEncaminhar.locator('button[type="submit"]').click(),
+        ]);
+
+        // Executa ação "Concluir"
+        const formConcluir = page.locator('form[action$="/concluir"]');
+        await expect(formConcluir).toBeVisible();
+
+        await formConcluir.locator('select[name="solucao"]').selectOption('REPARO');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            formConcluir.locator('button[type="submit"]').click(),
+        ]);
+
+        await expect(page.locator('.centrodeavisos')).toContainText('RMA concluído.');
+        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Concluido');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-04-06 — reverter RMA QA para Entrada', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        // Cria e recebe RMA descartável
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        await page.click('#menu-novo');
+        await page.fill('#JS-Novo input[name="descricao"]', 'DISPOSITIVO QA REVERTER');
+        await page.fill('#JS-Novo input[name="defeito"]', 'DEFEITO QA TESTE');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('#JS-Novo button.formButtonEnviarNovo'),
+        ]);
+
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('form[action$="/receber"] button'),
+        ]);
+
+        // Executa ação "Reverter para Entrada"
+        const formReverter = page.locator('form[action$="/reverter"] button');
+        await expect(formReverter).toBeVisible();
+
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            formReverter.click(),
+        ]);
+
+        await expect(page.locator('.centrodeavisos')).toContainText('RMA revertido para Entrada.');
+        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Entrada');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-04-07 — arquivar RMA QA e listar em Controle', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        // Cria RMA descartável
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        await page.click('#menu-novo');
+        await page.fill('#JS-Novo input[name="descricao"]', 'DISPOSITIVO QA ARQUIVAR');
+        await page.fill('#JS-Novo input[name="defeito"]', 'DEFEITO QA TESTE');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('#JS-Novo button.formButtonEnviarNovo'),
+        ]);
+
+        const match = page.url().match(/\/rmas\/(\d+)$/);
+        expect(match).not.toBeNull();
+        const rmaId = match![1];
+
+        // Executa "Arquivar"
+        const formArquivar = page.locator('form[action$="/arquivar"] button');
+        await expect(formArquivar).toBeVisible();
+
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            formArquivar.click(),
+        ]);
+
+        await expect(page.locator('.centrodeavisos')).toContainText('RMA arquivado.');
+        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Arquivado');
+
+        // Abre /rmas-controle e verifica listagem de arquivados
+        await page.goto(`${V3}/rmas-controle`, { waitUntil: 'domcontentloaded' });
+        const summaryArquivados = page.locator('summary:has-text("LISTAR SOLICITACOES DE RMA ARQUIVADAS")');
+        await summaryArquivados.click();
+
+        const itemArquivado = page.locator(`.tdcontrole1 a[href$="/rmas/${rmaId}"]`);
+        await expect(itemArquivado.first()).toBeVisible();
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-04-08 — histórico de modificações e histórico de acessos', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        // Histórico de modificações
+        await page.goto(`${V3}/rmas-historico`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/rmas-historico');
+        await expect(page.locator('h1')).toContainText('Histórico de modificações');
+        await expect(page.locator('table')).toBeVisible();
+
+        // Histórico de acessos
+        await page.goto(`${V3}/historico-de-acesso`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/historico-de-acesso');
+        await expect(page.locator('h1')).toContainText('Histórico de acesso');
+        await expect(page.locator('table')).toBeVisible();
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-04-09 — perfil: alternar tema, trocar senha e anotação em usuário QA', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/perfil`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/perfil');
+
+        // 1. Testa alternar tema e voltar
+        const botaoTema = page.locator('button:has-text("Alternar tema")');
+        await expect(botaoTema).toBeVisible();
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            botaoTema.click(),
+        ]);
+        // Alterna de volta para V1
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.locator('button:has-text("Alternar tema")').click(),
+        ]);
+
+        // 2. Formulário de troca de senha presente
+        await expect(page.locator('input[name="senha_atual"]')).toBeVisible();
+        await expect(page.locator('input[name="nova_senha"]')).toBeVisible();
+        await expect(page.locator('input[name="nova_senha_confirmation"]')).toBeVisible();
+
+        // 3. Salvar anotação pessoal
+        const textarea = page.locator('#anotacao-textarea');
+        await expect(textarea).toBeVisible();
+        await textarea.fill('Anotação de teste perfil QA');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('form[action$="/perfil/anotacao"] button'),
+        ]);
+        await expect(page.locator('#anotacao-textarea')).toHaveValue('Anotação de teste perfil QA');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-04-10 — link externo do rodapé: validar href e atributos de seguranca', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        const linkRodape = page.locator('#RODAPE .designedby a');
+        await expect(linkRodape).toBeVisible();
+
+        expect(await linkRodape.getAttribute('href')).toBe('http://scripting.com.br');
+        expect(await linkRodape.getAttribute('target')).toBe('_blank');
+        expect(await linkRodape.getAttribute('rel')).toContain('noopener');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+});
+
+
 

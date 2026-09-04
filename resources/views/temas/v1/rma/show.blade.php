@@ -1,10 +1,6 @@
 @extends('temas.v1.layout')
 
 @section('conteudo')
-    @if (session('status'))
-        <p class="centrodeavisos">{{ session('status') }}</p>
-    @endif
-
     <p><a href="{{ rota_tema('rmas.edit', ['rma' => $registro->id]) }}">Editar</a></p>
 
     @include('rma._acoes_de_transicao')

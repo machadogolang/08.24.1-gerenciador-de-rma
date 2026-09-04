@@ -3,10 +3,6 @@
 @section('conteudo')
     <p>{{ $usuario->name }} — {{ $usuario->email }} — papel: {{ $usuario->papel->name }}</p>
 
-    @if (session('status'))
-        <p class="centrodeavisos">{{ session('status') }}</p>
-    @endif
-
     @if ($errors->any())
         <ul>
             @foreach ($errors->all() as $erro)

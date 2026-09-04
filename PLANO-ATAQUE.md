@@ -67,8 +67,9 @@ Auditoria integral navegacional e visual do Tema V1 (`docs/produto/plano-execuca
 - [x] Lote NAV-01 — menu superior (10 alvos: logo, Pag. Inicial, Novo, Localizar, Entrada, Encaminhado, Aguardando crédito, Concluído, botão Menu e Logout).
 - [x] Lote NAV-02 — menu de sessão (8 alvos: Fornecedores, Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários).
 - [x] Lote NAV-03 — Página Inicial e Centro de Avisos (16 contadores laterais, 10 grupos do Centro de Avisos, formulário Localizar e autosave de anotações).
+- [x] Lote NAV-04 — Ciclo de vida e links internos (10 alvos: detalhe do RMA, edição, transições de estado, histórico, perfil e rodapé).
 
-Próximo lote: **Lote NAV-04 — Ciclo de vida e links internos** (NAV-04-01 a NAV-04-10: detalhe do RMA, edição, transições de estado, auditoria e perfil).
+Próximo item: **Gate NAV-05 — Fechamento, validação e consolidação geral** (revisão de pares, suíte PHP, build Vite e validação Playwright completa).
 
 Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da
 alteração, gerar e abrir o novo par normalizado. Toda comparação entra no Diário do MD

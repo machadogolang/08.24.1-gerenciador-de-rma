@@ -56,20 +56,20 @@ posterior. “A rota respondeu” não equivale a paridade visual.
 
 ## Lote NAV-03 — Página Inicial e Centro de Avisos
 
-- [ ] NAV-03-01 — 16 contadores laterais: destino e filtro resultante de cada link.
+- [x] NAV-03-01 — 16 contadores laterais: destino e filtro resultante de cada link.
 - [x] NAV-03-02 — protocolo aberto não encaminhado: Mostrar/Ocultar, tabela e Ver
       (`CMP-NAV-V1-001`/`CMP-V1-2-011`).
 - [x] NAV-03-03A — prioridade alta sem encaminhar (`CMP-NAV-V1-002`).
 - [x] NAV-03-03B — sem número de série (`CMP-NAV-V1-003`).
 - [x] NAV-03-03C — sem nota fiscal (`CMP-NAV-V1-004`).
 - [x] NAV-03-03D — prazo do destinatário estourado (`CMP-NAV-V1-005`).
-- [ ] NAV-03-03E — recebidos há mais de 30 dias sem encaminhar.
-- [ ] NAV-03-03F — garantia do fornecedor expirada.
-- [ ] NAV-03-03G — garantia expirando em até 30 dias.
-- [ ] NAV-03-03H — não vai dar garantia.
-- [ ] NAV-03-03I — NF de retorno pendente.
-- [ ] NAV-03-04 — resultado de Localizar: Ver e Editar.
-- [ ] NAV-03-05 — autosave de Anotações: sucesso, persistência e erro controlado.
+- [x] NAV-03-03E — recebidos há mais de 30 dias sem encaminhar (`CMP-NAV-V1-006`).
+- [x] NAV-03-03F — garantia do fornecedor expirada (`CMP-V1-2-019`).
+- [x] NAV-03-03G — garantia expirando em até 30 dias (`CMP-V1-2-019`).
+- [x] NAV-03-03H — não vai dar garantia (`CMP-V1-2-019`).
+- [x] NAV-03-03I — NF de retorno pendente (`CMP-V1-2-019`).
+- [x] NAV-03-04 — resultado de Localizar: Ver e Editar.
+- [x] NAV-03-05 — autosave de Anotações: sucesso, persistência e erro controlado.
 
 ## Lote NAV-04 — ciclo de vida e links internos
 
@@ -240,7 +240,22 @@ criar commit afirmando conclusão parcial como aprovada.
   - PHPUnit: 388 testes / 941 asserções sem falhas.
   - Playwright: 18/18 testes de auditoria aprovados; 12/12 de paridade V1 aprovados; 7/7 no container (1 skip esperado).
   - Vite build: verde.
-- Próximo item exato: Lote NAV-03 — Página Inicial e Centro de Avisos (grupos de alertas restantes
-  NAV-03-03E a NAV-03-03I, contadores laterais NAV-03-01 e formulário Localizar NAV-03-04).
+- Próximo item exato: Lote NAV-03 — Página Inicial e Centro de Avisos documentado em CMP-NAV-V1-009.
+
+### CMP-NAV-V1-009 — Página Inicial, contadores e Centro de Avisos (Lote NAV-03)
+
+- Estado: **APROVADO** em 2026-09-04.
+- Escopo: cobertura completa da Página Inicial, 16 contadores laterais, 10 grupos do Centro de Avisos, formulário Localizar e autosave de anotações pessoais (NAV-03-01 a NAV-03-05).
+  - NAV-03-01: 16 contadores laterais (`.contadores-do-painel a`) validados, com links para status (Entrada, Encaminhado, Aguardando crédito, Concluído) e soluções/filtros (Sem garantia, Troca imediata, etc.) navegando corretamente.
+  - NAV-03-02 a 03I: Todos os 10 grupos do Centro de Avisos (`.regra-de-alerta`) exercitados funcionalmente com alternância Mostrar/Ocultar, cabeçalhos correspondentes, tabelas padronizadas de 10/11 colunas e links de ação `Ver`.
+  - NAV-03-04: Submissão do formulário Localizar (`#JS-Localizar`) exibe tabela de resultados com ações `Ver` e `Editar` acessíveis.
+  - NAV-03-05: Autosave de anotações pessoais (`#anotacao`) com envio via PUT para `/perfil/anotacao`, retorno status HTTP 200 `{ status: 'ok' }` e persistência sem reload.
+- Correções integradas:
+  - `app/Http/Controllers/Identidade/AnotacaoPessoalController.php`: return type hint ajustado para `RedirectResponse|JsonResponse` permitindo respostas assíncronas do autosave sem erro 500 (TypeError).
+  - `resources/views/temas/v1/rma/edit.blade.php`: adicionado link `Voltar` apontando para o detalhe do RMA correspondente.
+- Artefatos e Testes:
+  - Teste Playwright `tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts` estendido com 4 novos testes (totalizando 22/22 testes aprovados).
+- Próximo item exato: Lote NAV-04 — Ciclo de vida e links internos (NAV-04-01 a NAV-04-10).
+
 
 

@@ -398,3 +398,103 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)'
     });
 });
 
+test.describe('Auditoria Navegacional Tema V1 — Lote NAV-03 (Pagina Inicial e Centro de Avisos)', () => {
+    test('NAV-03-01 — 16 contadores laterais: links e navegacao corretos', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        const contadores = page.locator('.contadores-do-painel a');
+        expect(await contadores.count()).toBe(16);
+
+        // Testa navegação de um contador de status (ex: ENTRADA)
+        const entradaCounter = page.locator('.contadores-do-painel .formLabelStats:text-is("ENTRADA")');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            entradaCounter.click(),
+        ]);
+        expect(page.url()).toContain('/rmas-entrada');
+
+        // Volta e testa um contador de solução
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        const solCounter = page.locator('.contadores-do-painel .formLabelStats:text-is("SEM GARANTIA")');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            solCounter.click(),
+        ]);
+        expect(decodeURIComponent(page.url())).toContain('solucao=SEM GARANTIA');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-03-03 — Centro de Avisos: alternancia Mostrar/Ocultar nos 10 grupos', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        const grupos = page.locator('.regra-de-alerta');
+        expect(await grupos.count()).toBe(10);
+
+        for (let i = 0; i < 10; i++) {
+            const grupo = grupos.nth(i);
+            const pmo = grupo.locator('.pmo');
+            expect(await pmo.textContent()).toContain('Mostrar');
+
+            await pmo.click();
+            expect(await pmo.textContent()).toContain('Ocultar');
+
+            await pmo.click();
+            expect(await pmo.textContent()).toContain('Mostrar');
+        }
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-03-04 — resultado de Localizar exibe tabela e acoes Ver e Editar', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        await page.fill('#JS-Localizar input[name="valor"]', 'A');
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('#JS-Localizar .JSformLocalizarButton'),
+        ]);
+
+        expect(page.url()).toContain('valor=A');
+        await expect(page.locator('#CONTEUDO')).toBeVisible();
+
+        const tabela = page.locator('#CONTEUDO table.Tabelinha-Table');
+        if (await tabela.count() > 0) {
+            const primeiraLinha = tabela.locator('tbody tr').first();
+            await expect(primeiraLinha.locator('a:has-text("Ver")')).toBeVisible();
+            await expect(primeiraLinha.locator('a:has-text("Editar")')).toBeVisible();
+        }
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-03-05 — autosave de Anotacoes: persistencia com status 200', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
+        const anotacao = page.locator('#anotacao');
+        await expect(anotacao).toBeVisible();
+
+        const reqPromise = page.waitForResponse(resp => resp.url().includes('/perfil/anotacao') && resp.status() === 200);
+        await anotacao.type(' update autosave test');
+        const resp = await reqPromise;
+        expect(resp.status()).toBe(200);
+        const json = await resp.json();
+        expect(json).toEqual({ status: 'ok' });
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+});
+
+

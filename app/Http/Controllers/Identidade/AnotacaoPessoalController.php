@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Identidade;
 
 use App\Http\Controllers\Controller;
 use App\Identidade\Aplicacao\AtualizarAnotacaoPessoal;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class AnotacaoPessoalController extends Controller
     /**
      * Salva o bloco de notas pessoal do próprio usuário autenticado (LEG-RMA-042).
      */
-    public function update(Request $request, AtualizarAnotacaoPessoal $atualizarAnotacaoPessoal): RedirectResponse
+    public function update(Request $request, AtualizarAnotacaoPessoal $atualizarAnotacaoPessoal): RedirectResponse|JsonResponse
     {
         $dados = $request->validate([
             'anotacao' => ['nullable', 'string'],

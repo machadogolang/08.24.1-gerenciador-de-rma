@@ -143,12 +143,12 @@ achado anterior. Detalhe completo, evidências e critério de aceite de cada ite
 - [ ] **DOC F10-COB-02 — reclassificar "Controle" do MENU V1 (`VIS-V1-010`).** `VIS-V1-008`
   mapeou para `rmas.historico.index` (painel "Controle" do V2, logs), não para o painel
   real do V1 (7 ações). Corrigir a classificação antes de fechar `F10-V1-03`.
-- [ ] **DECISAO F10-COB-03 — ação "Deletar RMA" (`VIS-V1-011`).** Implementar hard delete
-  com o contrato do legado, ou registrar decisão explícita de não reconstruir (padrão
-  `LEG-RMA-016`/`034`) — hoje é omissão silenciosa, não decisão.
-- [ ] **DECISAO F10-COB-04 — ação "Deletar usuário" (`VIS-V1-012`).** Mesma decisão
-  pendente de `F10-COB-03`, cross-tema (V1 e V2 legado); alternativa é soft-delete
-  registrado como escolha.
+- [x] **DECISAO F10-COB-03 — ação "Deletar RMA" (`VIS-V1-011`).** Homologada em parecer de 2026-09-04:
+  hard-delete destrutivo formalmente rejeitado por conformidade contábil e fiscal; ciclo de
+  arquivamento (`Status::Arquivado`) preserva 100% da integridade e histórico.
+- [x] **DECISAO F10-COB-04 — ação "Deletar usuário" (`VIS-V1-012`).** Homologada em parecer de 2026-09-04:
+  hard-delete rejeitado para não quebrar a autoria histórica de boletins; desativação de conta via papel
+  `Bloqueado` (`Papel::Bloqueado`) supre o encerramento de acesso de forma imutável.
 - [ ] **DEV F10-COB-05 — listagem "RMAs arquivados" (`VIS-V1-013`).** Listagem/filtro de
   busca por `Status::Arquivado`; prioridade menor (dado já auditável via `rmas.historico`).
 - [ ] **DEV F10-COB-06 — tela de ajuda estática (`VIS-V1-014`).** Reproduzir o texto do
@@ -196,8 +196,9 @@ Gate: migração real em alvo descartável e reconciliação sem diferença inex
 
 ## C. Investigações e decisões
 
-- [ ] **DECISAO C-01 — `LEG-RMA-002`.** Convite seguro ou criação só por admin;
-  dependência: usuário; bloqueia F10-GATE-05.
+- [x] **DECISAO C-01 — `LEG-RMA-002`.** Homologada em parecer de 2026-09-04 (Opção B):
+  provisionamento restrito à administração via `UsuarioController` e `UserPolicy`; autocadastro
+  público com chave estática descontinuado por segurança; convite seguro deferido à Trilha B (`EVO-SEG-001`).
 - [ ] **ARQ C-02 — RN-12 no TEMA V1.** Busca dirigida; confirmar ausência/presença.
 - [ ] **ARQ C-03 — Lightbox2.** Uso funcional ou resíduo de template.
 - [ ] **ARQ C-04 — skin AdminLTE.** Identificar skin efetiva ou ausência comprovável.

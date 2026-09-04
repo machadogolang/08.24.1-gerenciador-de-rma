@@ -187,9 +187,9 @@ final class Rma
     public function classeDeAlerta(): ClasseDeAlerta
     {
         return match (true) {
-            $this->solucao === Solucao::SemGarantia => ClasseDeAlerta::Inconformidade,
-            $this->prioridade === Prioridade::Alta => ClasseDeAlerta::Inconformidade,
-            $this->origemEhTerceiroForaDoPrazo() => ClasseDeAlerta::Inconformidade,
+            $this->solucao === Solucao::SemGarantia => ClasseDeAlerta::SemGarantia,
+            $this->prioridade === Prioridade::Alta => ClasseDeAlerta::Urgente,
+            $this->origemEhTerceiroForaDoPrazo() => ClasseDeAlerta::Urgente,
             $this->marcarestoque === false
                 && in_array($this->origem, [Origem::Cliente->value, Origem::Licitacao->value], true)
                 => ClasseDeAlerta::Inconformidade,

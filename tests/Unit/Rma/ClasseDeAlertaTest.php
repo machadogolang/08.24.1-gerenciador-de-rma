@@ -58,21 +58,21 @@ class ClasseDeAlertaTest extends TestCase
         );
     }
 
-    public function test_criterio_1_sem_garantia_gera_inconformidade(): void
+    public function test_criterio_1_sem_garantia_gera_sem_garantia(): void
     {
         $rma = $this->rma(['solucao' => Solucao::SemGarantia]);
 
-        $this->assertSame(ClasseDeAlerta::Inconformidade, $rma->classeDeAlerta());
+        $this->assertSame(ClasseDeAlerta::SemGarantia, $rma->classeDeAlerta());
     }
 
-    public function test_criterio_2_prioridade_alta_gera_inconformidade(): void
+    public function test_criterio_2_prioridade_alta_gera_urgente(): void
     {
         $rma = $this->rma(['prioridade' => Prioridade::Alta]);
 
-        $this->assertSame(ClasseDeAlerta::Inconformidade, $rma->classeDeAlerta());
+        $this->assertSame(ClasseDeAlerta::Urgente, $rma->classeDeAlerta());
     }
 
-    public function test_criterio_3_origem_cliente_fora_de_estoque_fora_do_prazo_gera_inconformidade(): void
+    public function test_criterio_3_origem_cliente_fora_de_estoque_fora_do_prazo_gera_urgente(): void
     {
         $rma = $this->rma([
             'origem' => Origem::Cliente->value,
@@ -80,7 +80,7 @@ class ClasseDeAlertaTest extends TestCase
             'createdAt' => now()->subDays(31),
         ]);
 
-        $this->assertSame(ClasseDeAlerta::Inconformidade, $rma->classeDeAlerta());
+        $this->assertSame(ClasseDeAlerta::Urgente, $rma->classeDeAlerta());
     }
 
     public function test_criterio_3_dentro_do_prazo_nao_dispara_isoladamente(): void
@@ -140,6 +140,6 @@ class ClasseDeAlertaTest extends TestCase
             'createdAt' => null,
         ]);
 
-        $this->assertSame(ClasseDeAlerta::Inconformidade, $rma->classeDeAlerta());
+        $this->assertSame(ClasseDeAlerta::SemGarantia, $rma->classeDeAlerta());
     }
 }

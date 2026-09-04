@@ -24,9 +24,9 @@ Executar sequencialmente, um item por vez, com teste, evidência e commit atômi
 - [x] **ETA-02** — Reconciliar a matriz completa de 48 IDs em `docs/produto/paridade-v2-v3.md` e fechar `F10-FUN-07` e `F10-FUN-08` no `checklist-master-v3.md`.
 
 #### 2. Decisões e Refinamentos de Domínio / Produto
-- [ ] **ETA-03** — Formalizar decisão `LEG-RMA-002` (`DECISAO C-01`): modelo seguro de provisionamento (admin-only via `UsuarioController` / convite administrativo, sem chave estática exposta).
-- [ ] **ETA-04** — Formalizar decisão `VIS-V1-011` / `VIS-V1-012` (`F10-COB-03` e `F10-COB-04`): proteção de integridade referencial e auditoria imutável (arquivamento e soft-delete seguro contra hard-delete destrutivo).
-- [ ] **ETA-05** — Resolver achado CP14 (`Rma::classeDeAlerta()` com `ClasseDeAlerta::Urgente` para prioridade alta e prazo 30 dias estourado), com prova automatizada em teste unitário e de feature.
+- [x] **ETA-03** — Formalizar decisão `LEG-RMA-002` (`DECISAO C-01`): modelo seguro de provisionamento (admin-only via `UsuarioController` / convite administrativo, sem chave estática exposta; parecer de 2026-09-04).
+- [x] **ETA-04** — Formalizar decisão `VIS-V1-011` / `VIS-V1-012` (`F10-COB-03` e `F10-COB-04`): proteção de integridade referencial e auditoria imutável (arquivamento e soft-delete seguro contra hard-delete destrutivo; parecer de 2026-09-04).
+- [x] **ETA-05** — Resolver achado CP14 (`Rma::classeDeAlerta()` com `ClasseDeAlerta::Urgente` para prioridade alta e prazo 30 dias estourado), com prova automatizada em teste unitário e de feature.
 
 #### 3. Eixo de Dados (`F10-DAD`)
 - [ ] **ETA-06** — Viabilizar rede Docker V3→Legacy (`OPS F10-DAD-01` a `03`) conectando `rma-v3-laravel.test-1` à rede `rma-legacy_legacy-lab` do MariaDB na porta 3306/3309.

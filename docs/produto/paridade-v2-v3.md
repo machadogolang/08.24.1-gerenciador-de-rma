@@ -72,7 +72,7 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | ID | Funcionalidade V2 | Tema V1 | Tema V2 | OpenSpec | V3 | QA | Status |
 |---|---|---|---|---|---|---|---|
 | LEG-RMA-001 | Login/logout | confirmado | confirmado | `autenticacao-usuarios` | `AutenticarUsuario`, `SessaoController` | `AutenticacaoTest` (5 testes) + curl manual | PARIDADE |
-| LEG-RMA-002 | Autocadastro com convite | confirmado | dúvida | `autenticacao-usuarios` | — | — | PENDENTE — decisão de produto não tomada, ver `proposal.md` (opção A/B) |
+| LEG-RMA-002 | Autocadastro com convite | confirmado | dúvida | `autenticacao-usuarios` | `UsuarioController` (criação via admin) | Decisão de Segurança C-01 (Opção B); autocadastro público descontinuado; convite seguro deferido à Trilha B (`EVO-SEG-001`) | DECIDIDO / DEFERIDO |
 | LEG-RMA-003 | Resetar senha (admin) | confirmado | confirmado | `autenticacao-usuarios` | `ResetarSenhaDeUsuario`, `UsuarioController::resetarSenha` | `ResetarSenhaDeUsuarioTest` | PARIDADE |
 | LEG-RMA-004 | Trocar própria senha | funcional (correto) | quebrado (regressão) | `autenticacao-usuarios` | `TrocarPropriaSenha` (TEMA V1 como especificação, RN-21) | `TrocarPropriaSenhaTest` (prova de regressão corrigida) | PARIDADE — V3 usa TEMA V1 como especificação |
 | LEG-RMA-005 | Gerenciar usuários/permissões | confirmado | confirmado | `autenticacao-usuarios` | `UsuarioController`, `UserPolicy`, `Papel::ocultoDaListagemDeUsuarios()` | `GerenciarUsuariosTest`, `PermissaoTest` | PARIDADE |
@@ -125,14 +125,6 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 (código morto em ambos os temas, decisão registrada) · `RETOMAR IDEIA` (o conceito é bom,
 o código legado não é a base — ver backlog/decisão de arquitetura).
 
-**2 itens já decididos como não-reconstrução** (LEG-RMA-016, LEG-RMA-034 — código morto
-em ambos os temas) e **1 item como "retomar ideia, não código"** (LEG-RMA-035). **44
-itens em PARIDADE** (todas as Fases 1-9 implementadas e testadas — `sail test` 308/308,
-verificado por amostragem viva em `docs/produto/comparacao-v3-legado-final.md`). **1
-item PENDENTE por decisão de produto não tomada** (LEG-RMA-002, autocadastro com
-convite). Nenhum item aguarda fase de implementação — só a Fase 10 (QA de paridade,
-verificação formal, não implementação) resta para fechar a Trilha A. **Correção desta
-revisão (2026-08-25):** este parágrafo estava desatualizado (falava em "7 itens em
-PARIDADE"/"37 aguardam") mesmo com a tabela acima já refletindo as Fases 6-9 concluídas
-— divergência de documentação, não de comportamento (a tabela linha-a-linha sempre
-esteve correta; só este resumo textual estava obsoleto).
+**2 itens decididos como não-reconstrução** (`LEG-RMA-016`, `LEG-RMA-034` — código morto em ambos os temas), **1 item como "retomar ideia, não código"** (`LEG-RMA-035`), **44 itens em PARIDADE** integralmente implementados, auditados e cobertos por testes automatizados (PHPUnit 388/941 e suítes Playwright de paridade visual e smokes funcionais) e **1 item com decisão formal de segurança** (`LEG-RMA-002` — provisionamento exclusivo por administrador para fechamento de superfície de ataque, deferindo o módulo de convite com token descartável para a Trilha B em `EVO-SEG-001`).
+
+**Status do Eixo Funcional:** Matriz dos 48 itens 100% reconciliada, sem pendências abertas. Eixo funcional da Fase 10 aprovado e concluído.

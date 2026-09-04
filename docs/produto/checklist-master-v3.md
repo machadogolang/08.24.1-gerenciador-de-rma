@@ -48,8 +48,8 @@ Gate: os 48 IDs têm prova explícita ou justificativa de exclusão.
 - [x] **QA F10-FUN-04 — mapear `LEG-RMA-021…030`.** Mesmo critério.
 - [x] **QA F10-FUN-05 — mapear `LEG-RMA-031…040`.** Mesmo critério.
 - [x] **QA F10-FUN-06 — mapear `LEG-RMA-041…048`.** Mesmo critério.
-- [ ] **QA F10-FUN-07 — executar passos manuais V2×V3.** Registrar observado/data.
-- [ ] **QA F10-FUN-08 — reconciliar matriz.** 44 paridade, 2 não reconstruir, 1
+- [x] **QA F10-FUN-07 — executar passos manuais V2×V3.** Registrar observado/data.
+- [x] **QA F10-FUN-08 — reconciliar matriz.** 44 paridade, 2 não reconstruir, 1
   retomar ideia; `LEG-RMA-002` decidido/deferido.
 - [x] **DOC F10-FUN-09 — corrigir F10 para Playwright `.spec.ts`.** Proposal/design/tasks.
 

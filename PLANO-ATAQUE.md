@@ -29,8 +29,8 @@ Executar sequencialmente, um item por vez, com teste, evidência e commit atômi
 - [x] **ETA-05** — Resolver achado CP14 (`Rma::classeDeAlerta()` com `ClasseDeAlerta::Urgente` para prioridade alta e prazo 30 dias estourado), com prova automatizada em teste unitário e de feature.
 
 #### 3. Eixo de Dados (`F10-DAD`)
-- [ ] **ETA-06** — Viabilizar rede Docker V3→Legacy (`OPS F10-DAD-01` a `03`) conectando `rma-v3-laravel.test-1` à rede `rma-legacy_legacy-lab` do MariaDB na porta 3306/3309.
-- [ ] **ETA-07** — Executar `php artisan rma:migrar-legado --dry-run` contra a base de dados histórica, gerar relatório de reconciliação das 9 tabelas, auditar anomalias e provar idempotência (`QA F10-DAD-04` a `09`).
+- [x] **ETA-06** — Viabilizar rede Docker V3→Legacy (`OPS F10-DAD-01` a `03`) conectando `rma-v3-laravel.test-1` à rede `rma-legacy_legacy-lab` do MariaDB na porta 3306/3309 com usuário `rma_legacy_readonly` estrito.
+- [x] **ETA-07** — Executar `php artisan rma:migrar-legado --dry-run` contra a base de dados histórica, gerar relatório de reconciliação das 9 tabelas, auditar anomalias e provar idempotência no alvo descartável `rma_v3_descartavel` (`QA F10-DAD-04` a `09`).
 
 #### 4. Fechamento da Fase 10 e Gate da Trilha A (`F10-GATE`)
 - [ ] **ETA-08** — Rodar suíte completa de regressão técnica (PHPUnit 388+ testes e Playwright Browser no host e container).

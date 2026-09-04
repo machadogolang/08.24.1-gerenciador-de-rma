@@ -60,7 +60,7 @@ final class ConexaoLegado
 
     public function modificacao(): LazyCollection
     {
-        return DB::connection('rma_legacy')->table('modificacao')->orderBy('id')->cursor();
+        return DB::connection('rma_legacy')->table('modificacao')->orderBy('id_modificacao')->cursor();
     }
 
     public function contar(string $tabela): int

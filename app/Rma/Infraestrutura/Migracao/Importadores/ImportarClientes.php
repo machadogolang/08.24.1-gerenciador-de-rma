@@ -8,6 +8,7 @@ use App\Rma\Infraestrutura\Migracao\Concerns\ConcatenaObservacaoSgvFr;
 use App\Rma\Infraestrutura\Migracao\Concerns\ExecutaComRollbackEmDryRun;
 use App\Rma\Infraestrutura\Migracao\ConexaoLegado;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
+use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
 
 /**
  * `cliente` → `clientes` (`INV-RMA-06` §16). Dedup por nome normalizado (mesma regra de
@@ -51,7 +52,7 @@ final class ImportarClientes
                         'complemento' => $linha->complemento,
                         'bairro' => $linha->bairro,
                         'cidade' => $linha->cidade,
-                        'uf' => $linha->uf,
+                        'uf' => TabelaDeTraducao::uf($linha->uf),
                         'observacao' => $observacao,
                     ],
                     $linha->data_de_cadastro

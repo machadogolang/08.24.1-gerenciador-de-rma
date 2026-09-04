@@ -8,6 +8,7 @@ use App\Rma\Infraestrutura\Migracao\Concerns\ConcatenaObservacaoSgvFr;
 use App\Rma\Infraestrutura\Migracao\Concerns\ExecutaComRollbackEmDryRun;
 use App\Rma\Infraestrutura\Migracao\ConexaoLegado;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
+use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
 
 /**
  * `fornecedor` → `fornecedores` (`INV-RMA-06` §16). Dedup por nome normalizado.
@@ -52,7 +53,7 @@ final class ImportarFornecedores
                         'complemento' => $linha->complemento,
                         'bairro' => $linha->bairro,
                         'cidade' => $linha->cidade,
-                        'uf' => $linha->uf,
+                        'uf' => TabelaDeTraducao::uf($linha->uf),
                         'www' => $linha->www,
                         'frete' => $linha->frete,
                         'cfop' => $linha->cfop,

@@ -2,6 +2,7 @@
 
 namespace App\Rma\Infraestrutura\Migracao;
 
+use App\Compartilhado\Uf;
 use App\Identidade\Dominio\Papel;
 use App\Identidade\Dominio\TemaPreferido;
 use App\Rma\Dominio\Origem;
@@ -171,5 +172,20 @@ final class TabelaDeTraducao
             'T A' => 'Informatica',
             default => $bruto,
         };
+    }
+
+    /**
+     * Mapeia sigla de UF legada (ex: 'RS', 'SP') para o enum Uf.
+     * Converte para maiúsculas e remove espaços. Retorna null se não bater em nenhuma UF válida (ex: 'N/A').
+     */
+    public static function uf(?string $bruto): ?Uf
+    {
+        if ($bruto === null || trim($bruto) === '') {
+            return null;
+        }
+
+        $normalizado = mb_strtoupper(trim($bruto));
+
+        return Uf::tryFrom($normalizado);
     }
 }

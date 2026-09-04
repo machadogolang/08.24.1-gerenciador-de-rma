@@ -56,7 +56,7 @@ trait ComBancoLegadoDeTeste
         });
 
         $conexao->create('cliente', function ($table) {
-            $table->increments('id');
+            $table->increments('id_cliente');
             $table->string('nome', 50);
             $table->string('representante', 100)->nullable();
             $table->string('rgie', 50)->nullable();
@@ -80,7 +80,7 @@ trait ComBancoLegadoDeTeste
 
         foreach (['fabricante', 'fornecedor', 'assistencia_tecnica'] as $tabela) {
             $conexao->create($tabela, function ($table) use ($tabela) {
-                $table->increments('id');
+                $table->increments('id_'.$tabela);
                 $table->string('nome', 50);
                 $table->string('representante', 100)->nullable();
                 $table->string('rgie', 50)->nullable();
@@ -186,7 +186,7 @@ trait ComBancoLegadoDeTeste
         });
 
         $conexao->create('modificacao', function ($table) {
-            $table->increments('id');
+            $table->increments('id_modificacao');
             $table->integer('numero')->nullable();
             $table->string('nome', 100)->nullable();
             $table->string('email', 100)->nullable();

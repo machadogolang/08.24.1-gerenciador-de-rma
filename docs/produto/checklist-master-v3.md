@@ -174,15 +174,15 @@ achado anterior. Detalhe completo, evidências e critério de aceite de cada ite
 
 Gate: migração real em alvo descartável e reconciliação sem diferença inexplicada.
 
-- [ ] **OPS F10-DAD-01 — definir origem histórica somente leitura.** Host/schema/contagens.
-- [ ] **OPS F10-DAD-02 — preparar alvo V3 descartável e rollback.** Nunca a base corrente.
-- [ ] **OPS F10-DAD-03 — viabilizar rede V3→Legacy.** Só ambiente, não fonte histórica.
-- [ ] **QA F10-DAD-04 — executar `rma:migrar-legado --dry-run`.** Arquivar relatório.
-- [ ] **QA F10-DAD-05 — revisar datas inválidas.** Valor bruto rastreável como anomalia.
-- [ ] **QA F10-DAD-06 — verificar `status='retornou'`.** Decidir somente se existir.
-- [ ] **QA F10-DAD-07 — importar no alvo descartável.** Após dry-run explicado.
-- [ ] **QA F10-DAD-08 — reconciliar 9 tabelas.** Contagens, anomalias e descartes.
-- [ ] **QA F10-DAD-09 — provar idempotência real.** Segunda execução sem duplicação.
+- [x] **OPS F10-DAD-01 — definir origem histórica somente leitura.** Host `rma-legacy-mariadb-1:3306`, usuário `rma_legacy_readonly` com `GRANT SELECT` estrito (escrita bloqueada com SQLSTATE 1142).
+- [x] **OPS F10-DAD-02 — preparar alvo V3 descartável e rollback.** Banco isolado `rma_v3_descartavel` criado no MySQL 8.4; base principal mantida intacta.
+- [x] **OPS F10-DAD-03 — viabilizar rede V3→Legacy.** Container Sail conectado à rede `rma-legacy_legacy-lab`, portas e conexão PDO/Laravel validadas.
+- [x] **QA F10-DAD-04 — executar `rma:migrar-legado --dry-run`.** Dry-run executado com sucesso e relatório auditado.
+- [x] **QA F10-DAD-05 — revisar datas inválidas.** Sanitizadas 6 ocorrências de `0000-00-00` em `usuario` com fallback para `now()` e anomalia reportada; datas mal-formatadas em RMAs convertidas com fallback para `null` e log de anomalia.
+- [x] **QA F10-DAD-06 — verificar `status='retornou'`.** Verificado no dado real de 1.379 registros da tabela `bd`: zero registros com `status='retornou'` (status estritamente nos 4 valores canônicos).
+- [x] **QA F10-DAD-07 — importar no alvo descartável.** Importação real executada com sucesso no banco `rma_v3_descartavel`.
+- [x] **QA F10-DAD-08 — reconciliar 9 tabelas.** 100% de paridade nos agregados principais: `bd` 1.379 → `rmas` 1.379; `usuario` 10 → `users` 10; `cliente` 165 → `clientes` 165 (+127 descobertos em RMAs); `fabricante` 104 → `fabricantes` 104 (+123 descobertos); `fornecedor` 43 → `fornecedores` 43 (+26 descobertos); `assistencia_tecnica` 32 → `assistencias_tecnicas` 32; `log` 3.247 → `tentativas_de_acesso` 3.240 (7 anomalias); `modificacao` 3.568 → `modificacoes_de_rma` 2.039 (1.529 órfãs descartadas com log); `relatorio` vazia/não utilizada. Relatório salvo em `storage/app/private/migracao/relatorio-2026-09-04_185847.txt`.
+- [x] **QA F10-DAD-09 — provar idempotência real.** Segunda execução executada com sucesso absoluto: 0 duplicatas geradas em `rmas` (1.379), `users` (10), `tentativas_de_acesso` (3.240) e `modificacoes_de_rma` (2.039). Relatório em `storage/app/private/migracao/relatorio-2026-09-04_185906.txt`.
 
 ### F10 — fechamento
 

@@ -6,6 +6,7 @@ use App\Identidade\Dominio\Papel;
 use App\Models\User;
 use App\Rma\Infraestrutura\Migracao\Concerns\ExecutaComRollbackEmDryRun;
 use App\Rma\Infraestrutura\Migracao\ConexaoLegado;
+use App\Rma\Infraestrutura\Migracao\ParserDeDataLegado;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
 use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -81,7 +82,17 @@ final class ImportarUsuarios
                     // (idempotência não deve trocar a senha de quem já trocou desde a
                     // migração).
                     $user->password = Hash::make(Str::random(40));
-                    $user->created_at = $linha->data_de_cadastro;
+                    $parseData = ParserDeDataLegado::parse($linha->data_de_cadastro);
+                    if ($parseData->ok && $parseData->data !== null) {
+                        $user->created_at = $parseData->data;
+                    } else {
+                        $relatorio->registrarAnomalia(
+                            'usuario',
+                            $linha->id_usuario,
+                            "data_de_cadastro='{$linha->data_de_cadastro}' inválida no legado — fallback para now()"
+                        );
+                        $user->created_at = now();
+                    }
                 }
 
                 $user->save();

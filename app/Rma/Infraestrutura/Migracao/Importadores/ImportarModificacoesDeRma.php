@@ -55,8 +55,10 @@ final class ImportarModificacoesDeRma
                     ? RmaEloquent::query()->where('numero_legado', $linha->numero)->first()
                     : null;
 
+                $idModificacao = $linha->id_modificacao ?? $linha->id ?? $total;
+
                 if ($rma === null) {
-                    $relatorio->registrarAnomalia('modificacao', $linha->id, "numero={$linha->numero} não corresponde a nenhum RMA migrado — modificação órfã, descartada");
+                    $relatorio->registrarAnomalia('modificacao', $idModificacao, "numero={$linha->numero} não corresponde a nenhum RMA migrado — modificação órfã, descartada");
 
                     continue;
                 }
@@ -69,7 +71,7 @@ final class ImportarModificacoesDeRma
                 }
 
                 if ($userId === null) {
-                    $relatorio->registrarAnomalia('modificacao', $linha->id, "email='{$linha->email}' não bate com nenhum usuário migrado — modificação órfã (user_id obrigatório), descartada");
+                    $relatorio->registrarAnomalia('modificacao', $idModificacao, "email='{$linha->email}' não bate com nenhum usuário migrado — modificação órfã (user_id obrigatório), descartada");
 
                     continue;
                 }

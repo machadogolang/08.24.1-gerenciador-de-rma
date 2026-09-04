@@ -45,14 +45,14 @@ posterior. “A rota respondeu” não equivale a paridade visual.
 
 ## Lote NAV-02 — menu de sessão
 
-- [ ] NAV-02-01 — Fornecedores: índice, Novo, Editar e Voltar.
-- [ ] NAV-02-02 — Fabricantes: índice, Novo, Editar e Voltar.
-- [ ] NAV-02-03 — Assistências: índice, Novo, Editar e Voltar.
-- [ ] NAV-02-04 — Clientes: índice, Novo, Editar e Voltar.
-- [ ] NAV-02-05 — Controle: abas/painéis, links de RMA e formulários QA.
-- [ ] NAV-02-06 — Créditos: listagem, detalhes e ações QA disponíveis.
-- [ ] NAV-02-07 — Relatórios: filtros, geração e retorno vazio/preenchido.
-- [ ] NAV-02-08 — Usuários: listagem, alteração de papel e reset só em usuário QA.
+- [x] NAV-02-01 — Fornecedores: índice, Novo, Editar e Voltar.
+- [x] NAV-02-02 — Fabricantes: índice, Novo, Editar e Voltar.
+- [x] NAV-02-03 — Assistências: índice, Novo, Editar e Voltar.
+- [x] NAV-02-04 — Clientes: índice, Novo, Editar e Voltar.
+- [x] NAV-02-05 — Controle: abas/painéis, links de RMA e formulários QA.
+- [x] NAV-02-06 — Créditos: listagem, detalhes e ações QA disponíveis.
+- [x] NAV-02-07 — Relatórios: filtros, geração e retorno vazio/preenchido.
+- [x] NAV-02-08 — Usuários: listagem, alteração de papel e reset só em usuário QA.
 
 ## Lote NAV-03 — Página Inicial e Centro de Avisos
 
@@ -212,6 +212,35 @@ criar commit afirmando conclusão parcial como aprovada.
   - PHPUnit: 388 testes / 941 asserções sem falhas.
   - Playwright: 22/22 testes no host verde; 7 passados / 1 skip no container verde.
   - Vite build: verde.
-- Próximo item exato: Lote NAV-02 — menu de sessão (NAV-02-01 a NAV-02-08: Fornecedores,
-  Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários).
+- Próximo item exato: Lote NAV-02 documentado em CMP-NAV-V1-008.
+
+### CMP-NAV-V1-008 — Auditoria do menu de sessão (Lote NAV-02)
+
+- Estado: **APROVADO** em 2026-09-04.
+- Escopo: cobertura completa de todos os 8 alvos do menu de sessão (NAV-02-01 a NAV-02-08).
+  - NAV-02-01: Fornecedores (`/parceiros/fornecedores` abre com `#JS-Sessao` visível, `#menu-sessao` `.active`, lista registros, permite acessar `Novo`, `Editar` e retornar via `Voltar`).
+  - NAV-02-02: Fabricantes (`/parceiros/fabricantes` abre com `#JS-Sessao` ativo, formulários e `Voltar` operáveis).
+  - NAV-02-03: Assistências (`/parceiros/assistencias-tecnicas` abre com `#JS-Sessao` ativo, formulários e `Voltar` operáveis).
+  - NAV-02-04: Clientes (`/parceiros/clientes` abre com `#JS-Sessao` ativo, formulários e `Voltar` operáveis).
+  - NAV-02-05: Controle (`/rmas-controle` abre com `#JS-Sessao` ativo, 7 painéis administrativos `<details>/<summary>` operáveis e listagem de arquivados).
+  - NAV-02-06: Créditos (`/rmas-credito` responde 200, exibe fluxo de crédito e RMAs aguardando crédito).
+  - NAV-02-07: Relatórios (`/rmas-relatorios/rcd`, `/rmas-relatorios/rpec` e `/rmas-relatorios/rmpe` respondem 200 sem erro 4xx).
+  - NAV-02-08: Usuários (`/usuarios` abre com `#JS-Sessao` ativo, tabela com formulários de alteração de papel e reset de senha).
+- Correções integradas:
+  - `resources/views/temas/v1/layout.blade.php`: corrigido `$painelSessao` para reconhecer
+    `parceiros.*` e `identidade.usuarios.*` sem prefixo `v1.`, garantindo abertura de `#JS-Sessao`
+    em rotas normais pós-login.
+  - `resources/views/temas/v1/parceiros/_form.blade.php`: adicionado link `Voltar` apontando para o índice do tipo correspondente.
+- Artefatos gerados:
+  - Gerador versionado: `scripts/qa/auditoria-navegacional-v1.mjs` estendido para cobrir todos os 18 alvos.
+  - Manifesto JSON: `docs/produto/evidencias-auditoria-v1/manifesto-navegacional-v1.json` atualizado com as medições e status dos 18 alvos.
+  - Screenshots sanitizados: versionados em `docs/produto/screenshots-auditoria-v1/`.
+  - Teste de regressão Playwright: `tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts` (18/18 testes aprovados).
+- Validação ampla:
+  - PHPUnit: 388 testes / 941 asserções sem falhas.
+  - Playwright: 18/18 testes de auditoria aprovados; 12/12 de paridade V1 aprovados; 7/7 no container (1 skip esperado).
+  - Vite build: verde.
+- Próximo item exato: Lote NAV-03 — Página Inicial e Centro de Avisos (grupos de alertas restantes
+  NAV-03-03E a NAV-03-03I, contadores laterais NAV-03-01 e formulário Localizar NAV-03-04).
+
 

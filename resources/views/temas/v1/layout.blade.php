@@ -11,7 +11,9 @@
 <body>
     @php
         $painelSessao = request()->routeIs(
+            'parceiros.*',
             'v1.parceiros.*',
+            'identidade.usuarios.*',
             'v1.identidade.usuarios.*',
             'rmas.controle.*',
             'rmas.credito.*',

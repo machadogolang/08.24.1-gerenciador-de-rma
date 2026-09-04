@@ -110,5 +110,6 @@
         </table>
 
         <button type="submit" class="buttonSave">Salvar</button>
+        <a href="{{ rota_tema('parceiros.' . $tipo . '.index') }}">Voltar</a>
     </form>
 @endsection

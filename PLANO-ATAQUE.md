@@ -65,8 +65,9 @@ Fase 2 do Tema V1 **concluída (CP6 a CP15 fechados)**.
 Auditoria integral navegacional e visual do Tema V1 (`docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`):
 - [x] Lote NAV-00 — infraestrutura repetível (gerador, manifesto JSON e suíte de regressão Playwright).
 - [x] Lote NAV-01 — menu superior (10 alvos: logo, Pag. Inicial, Novo, Localizar, Entrada, Encaminhado, Aguardando crédito, Concluído, botão Menu e Logout).
+- [x] Lote NAV-02 — menu de sessão (8 alvos: Fornecedores, Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários).
 
-Próximo lote: **Lote NAV-02 — menu de sessão** (NAV-02-01 a NAV-02-08: Fornecedores, Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários).
+Próximo lote: **Lote NAV-03 — Página Inicial e Centro de Avisos** (grupos de alertas restantes NAV-03-03E a NAV-03-03I, contadores laterais NAV-03-01 e formulário Localizar NAV-03-04).
 
 Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da
 alteração, gerar e abrir o novo par normalizado. Toda comparação entra no Diário do MD

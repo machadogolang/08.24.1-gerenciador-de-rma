@@ -216,3 +216,185 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 });
+
+test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)', () => {
+    test('NAV-02-01 — Fornecedores: indice, Novo, Editar e Voltar', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/parceiros/fornecedores`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/parceiros/fornecedores');
+        await expect(page.locator('#JS-Sessao')).toBeVisible();
+        await expect(page.locator('#menu-sessao')).toHaveClass(/active/);
+
+        // Novo
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('.JS-SessaoLEFT a:has-text("Novo")'),
+        ]);
+        expect(page.url()).toContain('/parceiros/fornecedores/create');
+        await expect(page.locator('input[name="nome"]')).toBeVisible();
+
+        // Voltar
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('a:has-text("Voltar")'),
+        ]);
+        expect(page.url()).toContain('/parceiros/fornecedores');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-02-02 — Fabricantes: indice, Novo, Editar e Voltar', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/parceiros/fabricantes`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/parceiros/fabricantes');
+        await expect(page.locator('#JS-Sessao')).toBeVisible();
+        await expect(page.locator('#menu-sessao')).toHaveClass(/active/);
+
+        // Novo
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('.JS-SessaoLEFT a:has-text("Novo")'),
+        ]);
+        expect(page.url()).toContain('/parceiros/fabricantes/create');
+
+        // Voltar
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('a:has-text("Voltar")'),
+        ]);
+        expect(page.url()).toContain('/parceiros/fabricantes');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-02-03 — Assistencias: indice, Novo, Editar e Voltar', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/parceiros/assistencias-tecnicas`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/parceiros/assistencias-tecnicas');
+        await expect(page.locator('#JS-Sessao')).toBeVisible();
+        await expect(page.locator('#menu-sessao')).toHaveClass(/active/);
+
+        // Novo
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('.JS-SessaoLEFT a:has-text("Novo")'),
+        ]);
+        expect(page.url()).toContain('/parceiros/assistencias-tecnicas/create');
+
+        // Voltar
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('a:has-text("Voltar")'),
+        ]);
+        expect(page.url()).toContain('/parceiros/assistencias-tecnicas');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-02-04 — Clientes: indice, Novo, Editar e Voltar', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/parceiros/clientes`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/parceiros/clientes');
+        await expect(page.locator('#JS-Sessao')).toBeVisible();
+        await expect(page.locator('#menu-sessao')).toHaveClass(/active/);
+
+        // Novo
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('.JS-SessaoLEFT a:has-text("Novo")'),
+        ]);
+        expect(page.url()).toContain('/parceiros/clientes/create');
+
+        // Voltar
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.click('a:has-text("Voltar")'),
+        ]);
+        expect(page.url()).toContain('/parceiros/clientes');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-02-05 — Controle: abas/paineis, links de RMA e estrutura administrativa', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/rmas-controle`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/rmas-controle');
+        await expect(page.locator('#JS-Sessao')).toBeVisible();
+        await expect(page.locator('#menu-sessao')).toHaveClass(/active/);
+
+        // 7 ações administrativas no padrão details/summary
+        const paineis = page.locator('details');
+        expect(await paineis.count()).toBe(7);
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-02-06 — Creditos: listagem e fluxo unico acessiveis', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/rmas-credito`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/rmas-credito');
+        await expect(page.locator('h1')).toContainText('Fluxo de crédito');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-02-07 — Relatorios: rotas RCD, RPEC e RMPE acessiveis sem erro 4xx', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        // RCD
+        await page.goto(`${V3}/rmas-relatorios/rcd`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/rmas-relatorios/rcd');
+        await expect(page.locator('h1')).toContainText('RCD');
+
+        // RPEC
+        await page.goto(`${V3}/rmas-relatorios/rpec`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/rmas-relatorios/rpec');
+
+        // RMPE
+        await page.goto(`${V3}/rmas-relatorios/rmpe?data_inicio=2026-01-01&data_fim=2026-12-31`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/rmas-relatorios/rmpe');
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+
+    test('NAV-02-08 — Usuarios: listagem, edicao de papel e reset de senha', async ({ browser }) => {
+        const falhas: Falha[] = [];
+        const page = await loginV3(browser, falhas);
+
+        await page.goto(`${V3}/usuarios`, { waitUntil: 'domcontentloaded' });
+        expect(page.url()).toContain('/usuarios');
+        await expect(page.locator('#JS-Sessao')).toBeVisible();
+        await expect(page.locator('#menu-sessao')).toHaveClass(/active/);
+
+        const linhas = page.locator('.tabela-usuarios-v1 tbody tr');
+        expect(await linhas.count()).toBeGreaterThan(0);
+
+        // Confirma formulários de papel e reset presentes
+        await expect(linhas.first().locator('select[name="papel"]')).toBeVisible();
+        await expect(linhas.first().locator('input[name="nova_senha"]')).toBeVisible();
+
+        expect(falhas).toEqual([]);
+        await page.context().close();
+    });
+});
+

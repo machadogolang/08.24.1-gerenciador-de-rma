@@ -3,7 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
- * Auditoria navegacional e visual integral do Tema V1 — Lotes NAV-00 e NAV-01.
+ * Auditoria navegacional e visual integral do Tema V1 — Lotes NAV-00, NAV-01 e NAV-02.
  *
  * Gera duas camadas:
  * - raw em screenshots-paridade-v1/ (gitignorado, pode conter dado real);
@@ -122,11 +122,11 @@ async function auditarAlvo(legPage, v3Page, alvo) {
     if (alvo.tipo === 'navegacao') {
         if (alvo.acaoLeg) {
             const resp = await alvo.acaoLeg(legPage);
-            if (resp) statusLeg = resp.status();
+            if (resp && typeof resp.status === 'function') statusLeg = resp.status();
         }
         if (alvo.acaoV3) {
             const resp = await alvo.acaoV3(v3Page);
-            if (resp) statusV3 = resp.status();
+            if (resp && typeof resp.status === 'function') statusV3 = resp.status();
         }
     } else if (alvo.tipo === 'inline') {
         if (alvo.acaoLeg) await alvo.acaoLeg(legPage);
@@ -190,7 +190,8 @@ async function auditarAlvo(legPage, v3Page, alvo) {
     };
 }
 
-const alvosNav01 = [
+const alvos = [
+    // Lote NAV-01
     {
         id: 'NAV-01-01',
         nome: 'Logo -> Pagina Inicial',
@@ -352,6 +353,152 @@ const alvosNav01 = [
             await page.locator('#JS-Sessao').waitFor({ state: 'visible' });
         },
     },
+    // Lote NAV-02 — Menu de Sessão
+    {
+        id: 'NAV-02-01',
+        nome: 'Fornecedores',
+        descricao: 'Índice de Fornecedores',
+        tipo: 'navegacao',
+        painel: '#JS-Sessao',
+        acaoLeg: async page => {
+            await page.click('#menu-fornecedores');
+            await page.locator('#JS-Fornecedores').waitFor({ state: 'visible' });
+        },
+        acaoV3: async page => {
+            const [resp] = await Promise.all([
+                page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+                page.goto(`${v3Base}/parceiros/fornecedores`),
+            ]);
+            return resp;
+        },
+    },
+    {
+        id: 'NAV-02-02',
+        nome: 'Fabricantes',
+        descricao: 'Índice de Fabricantes',
+        tipo: 'navegacao',
+        painel: '#JS-Sessao',
+        acaoLeg: async page => {
+            await page.click('#menu-fabricantes');
+            await page.locator('#JS-Fabricantes').waitFor({ state: 'visible' });
+        },
+        acaoV3: async page => {
+            const [resp] = await Promise.all([
+                page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+                page.goto(`${v3Base}/parceiros/fabricantes`),
+            ]);
+            return resp;
+        },
+    },
+    {
+        id: 'NAV-02-03',
+        nome: 'Assistencias',
+        descricao: 'Índice de Assistências Técnicas',
+        tipo: 'navegacao',
+        painel: '#JS-Sessao',
+        acaoLeg: async page => {
+            await page.click('#menu-assistencia_tecnicas');
+            await page.locator('#JS-Assistencia_tecnicas').waitFor({ state: 'visible' });
+        },
+        acaoV3: async page => {
+            const [resp] = await Promise.all([
+                page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+                page.goto(`${v3Base}/parceiros/assistencias-tecnicas`),
+            ]);
+            return resp;
+        },
+    },
+    {
+        id: 'NAV-02-04',
+        nome: 'Clientes',
+        descricao: 'Índice de Clientes',
+        tipo: 'navegacao',
+        painel: '#JS-Sessao',
+        acaoLeg: async page => {
+            await page.click('#menu-clientes');
+            await page.locator('#JS-Clientes').waitFor({ state: 'visible' });
+        },
+        acaoV3: async page => {
+            const [resp] = await Promise.all([
+                page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+                page.goto(`${v3Base}/parceiros/clientes`),
+            ]);
+            return resp;
+        },
+    },
+    {
+        id: 'NAV-02-05',
+        nome: 'Controle',
+        descricao: 'Painel de Controle administrativo',
+        tipo: 'navegacao',
+        painel: '#JS-Sessao',
+        acaoLeg: async page => {
+            await page.click('#menu-controle');
+            await page.locator('#JS-Panel').waitFor({ state: 'visible' });
+        },
+        acaoV3: async page => {
+            const [resp] = await Promise.all([
+                page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+                page.goto(`${v3Base}/rmas-controle`),
+            ]);
+            return resp;
+        },
+    },
+    {
+        id: 'NAV-02-06',
+        nome: 'Creditos',
+        descricao: 'Painel de Fluxo de Créditos',
+        tipo: 'navegacao',
+        painel: '#JS-Sessao',
+        acaoLeg: async page => {
+            await page.click('#menu-creditos');
+            await page.locator('#JS-Creditos').waitFor({ state: 'visible' });
+        },
+        acaoV3: async page => {
+            const [resp] = await Promise.all([
+                page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+                page.goto(`${v3Base}/rmas-credito`),
+            ]);
+            return resp;
+        },
+    },
+    {
+        id: 'NAV-02-07',
+        nome: 'Relatorios',
+        descricao: 'Painel de Relatórios',
+        tipo: 'navegacao',
+        painel: '#JS-Sessao',
+        acaoLeg: async page => {
+            await page.click('#menu-relatorios');
+            await page.locator('#JS-Relatorios').waitFor({ state: 'visible' });
+        },
+        acaoV3: async page => {
+            const [resp] = await Promise.all([
+                page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+                page.goto(`${v3Base}/rmas-relatorios/rcd`),
+            ]);
+            return resp;
+        },
+    },
+    {
+        id: 'NAV-02-08',
+        nome: 'Usuarios',
+        descricao: 'Gestão de Usuários',
+        tipo: 'navegacao',
+        painel: '#JS-Sessao',
+        acaoLeg: async page => {
+            await page.click('#menu-usuarios');
+            await page.locator('#JS-Usuarios').waitFor({ state: 'visible' });
+        },
+        acaoV3: async page => {
+            const [resp] = await Promise.all([
+                page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+                page.goto(`${v3Base}/usuarios`),
+            ]);
+            return resp;
+        },
+    },
+    // Logout como último alvo para não invalidar sessão
     {
         id: 'NAV-01-10',
         nome: 'Sign Out (Logout)',
@@ -375,7 +522,7 @@ const alvosNav01 = [
 ];
 
 async function main() {
-    console.log('Iniciando auditoria navegacional do Tema V1 (Lote NAV-01)...');
+    console.log('Iniciando auditoria navegacional do Tema V1 (Lotes NAV-01 e NAV-02)...');
     const browser = await chromium.launch();
 
     let legPage = await entrarLegacy(browser);
@@ -383,16 +530,8 @@ async function main() {
 
     const resultados = [];
 
-    for (const alvo of alvosNav01) {
+    for (const alvo of alvos) {
         console.log(`Auditando [${alvo.id}] ${alvo.nome}...`);
-        
-        // Se a ação anterior foi logout, precisamos relogar
-        if (alvo.id === 'NAV-01-10') {
-            const res = await auditarAlvo(legPage, v3Page, alvo);
-            resultados.push(res);
-            break;
-        }
-
         const res = await auditarAlvo(legPage, v3Page, alvo);
         resultados.push(res);
     }

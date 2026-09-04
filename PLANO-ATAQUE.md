@@ -68,8 +68,10 @@ Auditoria integral navegacional e visual do Tema V1 (`docs/produto/plano-execuca
 - [x] Lote NAV-02 — menu de sessão (8 alvos: Fornecedores, Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários).
 - [x] Lote NAV-03 — Página Inicial e Centro de Avisos (16 contadores laterais, 10 grupos do Centro de Avisos, formulário Localizar e autosave de anotações).
 - [x] Lote NAV-04 — Ciclo de vida e links internos (10 alvos: detalhe do RMA, edição, transições de estado, histórico, perfil e rodapé).
+- [x] Gate NAV-05 — Fechamento, validação e consolidação geral (388 testes PHP, 32 testes Playwright host/container, build Vite, tabela completa de cobertura, parecer executivo).
 
-Próximo item: **Gate NAV-05 — Fechamento, validação e consolidação geral** (revisão de pares, suíte PHP, build Vite e validação Playwright completa).
+**Auditoria Navegacional e Visual do Tema V1 integralmente concluída e aprovada.**
+
 
 Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da
 alteração, gerar e abrir o novo par normalizado. Toda comparação entra no Diário do MD

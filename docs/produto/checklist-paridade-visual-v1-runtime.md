@@ -30,6 +30,16 @@ Checklist/diário: `docs/produto/plano-execucao-paridade-estrutural-v1.md`. Pare
   grupos do Centro de Avisos uniforme coberta por teste automatizado, geometrias dos
   viewports aprovadas sem divergência estrutural. Fase 2 do Tema V1 encerrada.
 
+## Auditoria Navegacional e Visual Integral do Tema V1 (Lotes NAV-00 a NAV-05 — concluída)
+
+- [x] Lote NAV-00 — Infraestrutura repetível: gerador `scripts/qa/auditoria-navegacional-v1.mjs`, manifesto JSON em `docs/produto/evidencias-auditoria-v1/manifesto-navegacional-v1.json`, screenshots versionados em `docs/produto/screenshots-auditoria-v1/` e suíte `tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts`.
+- [x] Lote NAV-01 — Menu superior (10 alvos auditados e aprovados): logo, Pag. Inicial, Novo inline, Localizar inline, Entrada, Encaminhado, Aguardando crédito, Concluído, botão Menu e Logout.
+- [x] Lote NAV-02 — Menu de sessão (8 alvos auditados e aprovados): Fornecedores, Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários.
+- [x] Lote NAV-03 — Página Inicial e Centro de Avisos (16 contadores laterais, 10 grupos do Centro de Avisos, formulário Localizar e autosave de anotações auditados e aprovados).
+- [x] Lote NAV-04 — Ciclo de vida e links internos (10 alvos auditados e aprovados): detalhe do RMA, edição com retorno seguro, transições de estado (receber/encaminhar/concluir/reverter/arquivar), históricos administrativos, perfil de usuário e link de rodapé.
+- [x] Gate NAV-05 — Fechamento geral aprovado: 388 testes PHPUnit (941 asserções) sem falhas, 32 testes de auditoria Playwright aprovados no host e container, build Vite verde, tabela completa de cobertura sem pendências e parecer executivo em `docs/pareceres/2026-09-04-parecer-auditoria-navegacional-visual-v1.md`.
+
+
 ## Estratégia de evidência visual (prints comparativos Legado×V3)
 
 Todo achado de divergência visual/estrutural registrado a partir de 2026-08-25 deve

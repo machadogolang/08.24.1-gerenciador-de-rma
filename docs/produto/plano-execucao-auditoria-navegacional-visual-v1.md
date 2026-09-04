@@ -87,11 +87,11 @@ posterior. “A rota respondeu” não equivale a paridade visual.
 
 ## Gate NAV-05
 
-- [ ] NAV-05-01 — revisar visualmente todos os pares versionados.
-- [ ] NAV-05-02 — executar suíte PHP, build e Browser completos.
-- [ ] NAV-05-03 — tabela final de cobertura sem célula “não verificada”.
-- [ ] NAV-05-04 — atualizar `PLANO-ATAQUE.md`, checklist runtime, parecer e handoff.
-- [ ] NAV-05-05 — commit local pequeno e coerente; nunca push sem autorização.
+- [x] NAV-05-01 — revisar visualmente todos os pares versionados.
+- [x] NAV-05-02 — executar suíte PHP, build e Browser completos.
+- [x] NAV-05-03 — tabela final de cobertura sem célula “não verificada”.
+- [x] NAV-05-04 — atualizar `PLANO-ATAQUE.md`, checklist runtime, parecer e handoff.
+- [x] NAV-05-05 — commit local pequeno e coerente; nunca push sem autorização.
 
 ## Diário de comparação
 
@@ -275,7 +275,67 @@ criar commit afirmando conclusão parcial como aprovada.
   - `resources/views/temas/v1/rma/show.blade.php` e `resources/views/temas/v1/identidade/perfil.blade.php`: remoção de bloco duplicado `@if (session('status'))` que gerava dois elementos `.centrodeavisos` redundantes em relação ao layout base.
 - Artefatos e Testes:
   - Teste Playwright `tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts` estendido com 10 novos testes para o Lote NAV-04 (totalizando 32/32 testes aprovados na suíte de auditoria).
-- Próximo item exato: Gate NAV-05 — Fechamento, conferência final e consolidação geral da auditoria navegacional.
+- Próximo item exato: Gate NAV-05 documentado em CMP-NAV-V1-011.
+
+### CMP-NAV-V1-011 — Fechamento e consolidação geral da auditoria navegacional (Gate NAV-05)
+
+- Estado: **APROVADO e CONCLUÍDO** em 2026-09-04.
+- Escopo: conferência final de todas as telas, navegações, links, suítes de teste e integridade geral do Tema V1.
+
+#### Tabela Final de Cobertura Navegacional e Visual
+
+| Lote | Alvo | Nome | Rota / Seletor | Status HTTP | URL Final | Link Ativo | Recursos 4xx | Teste Automatizado | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| NAV-01 | NAV-01-01 | Logo -> Home | `#TOPO a.image-up` | 200 | `/v1/rma` | Pag. Inicial | 0 | `NAV-01-01` | APROVADO |
+| NAV-01 | NAV-01-02 | Pag. Inicial | `li.menu-up:has-text("Pag. Inicial")` | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `NAV-01-02` | APROVADO |
+| NAV-01 | NAV-01-03 | Novo | `#menu-novo` -> `#JS-Novo` | 200 | Preserva URL | Novo (.active) | 0 | `NAV-01-03` | APROVADO |
+| NAV-01 | NAV-01-04 | Localizar | `#menu-localizar` -> `#JS-Localizar` | 200 | Preserva URL | Localizar (.active) | 0 | `NAV-01-04` | APROVADO |
+| NAV-01 | NAV-01-05 | Entrada | `/rmas-entrada` | 200 | `/rmas-entrada` | Entrada (.active) | 0 | `NAV-01-05` | APROVADO |
+| NAV-01 | NAV-01-06 | Encaminhado | `/rmas-encaminhados` | 200 | `/rmas-encaminhados` | Encaminhado (.active) | 0 | `NAV-01-06` | APROVADO |
+| NAV-01 | NAV-01-07 | Aguardando crédito | `/rmas-aguardando-credito` | 200 | `/rmas-aguardando-credito` | Aguardando crédito (.active) | 0 | `NAV-01-07` | APROVADO |
+| NAV-01 | NAV-01-08 | Concluído | `/rmas-concluidos` | 200 | `/rmas-concluidos` | Concluído! (.active) | 0 | `NAV-01-08` | APROVADO |
+| NAV-01 | NAV-01-09 | Botão Menu | `#menu-sessao` -> `#JS-Sessao` | 200 | Preserva URL | MENU (.active) | 0 | `NAV-01-09` | APROVADO |
+| NAV-01 | NAV-01-10 | Logout | `.formButtonSIGNOUT` | 302 -> 200 | `/login` | N/A | 0 | `NAV-01-10` | APROVADO |
+| NAV-02 | NAV-02-01 | Fornecedores | `/parceiros/fornecedores` | 200 | `/parceiros/fornecedores` | MENU (.active) | 0 | `NAV-02-01` | APROVADO |
+| NAV-02 | NAV-02-02 | Fabricantes | `/parceiros/fabricantes` | 200 | `/parceiros/fabricantes` | MENU (.active) | 0 | `NAV-02-02` | APROVADO |
+| NAV-02 | NAV-02-03 | Assistências | `/parceiros/assistencias-tecnicas` | 200 | `/parceiros/assistencias-tecnicas` | MENU (.active) | 0 | `NAV-02-03` | APROVADO |
+| NAV-02 | NAV-02-04 | Clientes | `/parceiros/clientes` | 200 | `/parceiros/clientes` | MENU (.active) | 0 | `NAV-02-04` | APROVADO |
+| NAV-02 | NAV-02-05 | Controle | `/rmas-controle` | 200 | `/rmas-controle` | MENU (.active) | 0 | `NAV-02-05` | APROVADO |
+| NAV-02 | NAV-02-06 | Créditos | `/rmas-credito` | 200 | `/rmas-credito` | MENU (.active) | 0 | `NAV-02-06` | APROVADO |
+| NAV-02 | NAV-02-07 | Relatórios | `/rmas-relatorios/rcd` | 200 | `/rmas-relatorios/rcd` | MENU (.active) | 0 | `NAV-02-07` | APROVADO |
+| NAV-02 | NAV-02-08 | Usuários | `/usuarios` | 200 | `/usuarios` | MENU (.active) | 0 | `NAV-02-08` | APROVADO |
+| NAV-03 | NAV-03-01 | 16 Contadores | `.contadores-do-painel a` | 200 | Rotas de status e filtros | Rótulos correspondentes | 0 | `NAV-03-01` | APROVADO |
+| NAV-03 | NAV-03-02 | Alerta Protocolo | `.regra-de-alerta` (01) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-NAV-V1-001` | APROVADO |
+| NAV-03 | NAV-03-03A | Alerta Prioridade | `.regra-de-alerta` (02) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-NAV-V1-002` | APROVADO |
+| NAV-03 | NAV-03-03B | Alerta Sem S/N | `.regra-de-alerta` (03) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-NAV-V1-003` | APROVADO |
+| NAV-03 | NAV-03-03C | Alerta Sem NF | `.regra-de-alerta` (04) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-NAV-V1-004` | APROVADO |
+| NAV-03 | NAV-03-03D | Alerta Prazo Destinatário | `.regra-de-alerta` (05) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-NAV-V1-005` | APROVADO |
+| NAV-03 | NAV-03-03E | Alerta 30 dias s/ encaminhar | `.regra-de-alerta` (06) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-NAV-V1-006` | APROVADO |
+| NAV-03 | NAV-03-03F | Alerta Garantia expirada | `.regra-de-alerta` (07) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-V1-2-019` | APROVADO |
+| NAV-03 | NAV-03-03G | Alerta Garantia expirando | `.regra-de-alerta` (08) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-V1-2-019` | APROVADO |
+| NAV-03 | NAV-03-03H | Alerta Não vai dar garantia | `.regra-de-alerta` (09) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-V1-2-019` | APROVADO |
+| NAV-03 | NAV-03-03I | Alerta NF Retorno pendente | `.regra-de-alerta` (10) | 200 | `/v1/rma` | Pag. Inicial (.active) | 0 | `CMP-V1-2-019` | APROVADO |
+| NAV-03 | NAV-03-04 | Resultado Localizar | `#JS-Localizar` submit | 200 | `/v1/rma?valor=...` | Pag. Inicial (.active) | 0 | `NAV-03-04` | APROVADO |
+| NAV-03 | NAV-03-05 | Autosave Anotações | `#anotacao` input | 200 | `/perfil/anotacao` (PUT) | N/A | 0 | `NAV-03-05` | APROVADO |
+| NAV-04 | NAV-04-01 | Detalhe e Edição RMA | `/rmas/{id}` -> `/edit` | 200 | `/rmas/{id}/edit` | N/A | 0 | `NAV-04-01` | APROVADO |
+| NAV-04 | NAV-04-02 | Edição/Salvar/Voltar | `form.buttonSave` / `a:Voltar` | 302 -> 200 | `/rmas/{id}` | N/A | 0 | `NAV-04-02` | APROVADO |
+| NAV-04 | NAV-04-03 | Receber RMA | `POST /rmas/{id}/receber` | 302 -> 200 | `/rmas/{id}` | N/A | 0 | `NAV-04-03` | APROVADO |
+| NAV-04 | NAV-04-04 | Encaminhar RMA | `POST /rmas/{id}/encaminhar` | 302 -> 200 | `/rmas/{id}` | N/A | 0 | `NAV-04-04` | APROVADO |
+| NAV-04 | NAV-04-05 | Concluir RMA | `POST /rmas/{id}/concluir` | 302 -> 200 | `/rmas/{id}` | N/A | 0 | `NAV-04-05` | APROVADO |
+| NAV-04 | NAV-04-06 | Reverter RMA | `POST /rmas/{id}/reverter` | 302 -> 200 | `/rmas/{id}` | N/A | 0 | `NAV-04-06` | APROVADO |
+| NAV-04 | NAV-04-07 | Arquivar e Listar Controle | `POST /rmas/{id}/arquivar` | 302 -> 200 | `/rmas-controle` | MENU (.active) | 0 | `NAV-04-07` | APROVADO |
+| NAV-04 | NAV-04-08 | Históricos Auditoria | `/rmas-historico`, `/historico-de-acesso` | 200 | Rotas correspondentes | N/A | 0 | `NAV-04-08` | APROVADO |
+| NAV-04 | NAV-04-09 | Perfil e Senha | `/perfil` | 200 | `/perfil` | N/A | 0 | `NAV-04-09` | APROVADO |
+| NAV-04 | NAV-04-10 | Link Rodapé | `#RODAPE .designedby a` | 200 | `http://scripting.com.br` | N/A | 0 | `NAV-04-10` | APROVADO |
+
+- Validação Técnica Final:
+  - PHPUnit: 388 testes / 941 asserções sem falhas.
+  - Playwright Browser (Host): 32/32 testes de auditoria navegacional verde; 12/12 testes de paridade visual verde.
+  - Playwright Browser (Container): 32/32 testes de auditoria navegacional verde; 2/2 testes de painel inline verde; 3/3 testes de comparação V1 verde.
+  - Build Vite: compilado com sucesso.
+  - Parecer Executivo: `docs/pareceres/2026-09-04-parecer-auditoria-navegacional-visual-v1.md`.
+- Conclusão: **Tema V1 integralmente auditado, validado e encerrado.**
+
 
 
 

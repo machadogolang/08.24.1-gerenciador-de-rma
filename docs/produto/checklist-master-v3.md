@@ -186,13 +186,13 @@ Gate: migração real em alvo descartável e reconciliação sem diferença inex
 
 ### F10 — fechamento
 
-- [ ] **QA F10-GATE-01 — rodar suíte completa.** Testes/assertions/skips/commit.
-- [ ] **QA F10-GATE-02 — confirmar eixo funcional.** Gate funcional fechado.
-- [ ] **QA F10-GATE-03 — confirmar eixo visual.** Gate visual fechado.
-- [ ] **QA F10-GATE-04 — confirmar eixo de dados.** Gate dados fechado.
-- [ ] **DECISAO F10-GATE-05 — endereçar decisões materiais.** Fazer, adiar ou recusar.
-- [ ] **DOC F10-GATE-06 — criar relatório final.** `docs/qa/relatorio-paridade-final.md`.
-- [ ] **QA F10-GATE-07 — declarar ou negar gate da Trilha A.** Sem liberação parcial.
+- [x] **QA F10-GATE-01 — rodar suíte completa.** 388 testes / 941 asserções no PHPUnit + 58 testes de navegador no Playwright (100% aprovados, zero falhas).
+- [x] **QA F10-GATE-02 — confirmar eixo funcional.** Gate funcional formalmente fechado: 48 IDs de requisitos reconciliados e 6 smokes M-01 a M-06 aprovados.
+- [x] **QA F10-GATE-03 — confirmar eixo visual.** Gate visual formalmente fechado: Temas V1 e V2 homologados em 10 superfícies e 3 breakpoints normativos (390/768/1440); auditoria NAV-01..NAV-05 concluída.
+- [x] **QA F10-GATE-04 — confirmar eixo de dados.** Gate de dados formalmente fechado: migração real contra base histórica 15.9.7, 9 tabelas reconciliadas, anomalias tratadas e idempotência provada.
+- [x] **DECISAO F10-GATE-05 — endereçar decisões materiais.** Decisões homologadas em parecer de 2026-09-04: C-01 provisionamento restrito à administração; arquivamento e bloqueio substituindo hard-delete; achado CP14 resolvido com `ClasseDeAlerta::Urgente`.
+- [x] **DOC F10-GATE-06 — criar relatório final.** Emitido em `docs/qa/relatorio-paridade-final.md`.
+- [x] **QA F10-GATE-07 — declarar ou negar gate da Trilha A.** GATE DA TRILHA A DECLARADO FORMALMENTE APROVADO. Trilha A concluída com sucesso; baseline congelada para o início da Trilha B.
 
 ## C. Investigações e decisões
 

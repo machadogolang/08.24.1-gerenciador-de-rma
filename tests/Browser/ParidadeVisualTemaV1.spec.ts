@@ -3,8 +3,8 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DESTINO = join(process.cwd(), 'docs/produto/screenshots-paridade-v1');
-const LEGACY = process.env.LEGACY_BASE_URL ?? 'http://host.docker.internal:8094/14.6.1/';
-const V3 = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost';
+const LEGACY = process.env.LEGACY_BASE_URL ?? (process.env.CI ? 'http://host.docker.internal:8094/14.6.1/' : 'http://localhost:8094/14.6.1/');
+const V3 = process.env.PLAYWRIGHT_BASE_URL ?? (process.env.CI ? 'http://localhost' : 'http://localhost:8095');
 const VIEWPORT = { width: 1440, height: 1000 };
 
 test.setTimeout(180_000);

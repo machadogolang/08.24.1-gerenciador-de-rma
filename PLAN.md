@@ -29,19 +29,20 @@ sobre Git, OpenSpec, investigações e documentos de planejamento.
 | F7 | Logística e histórico | concluída |
 | F8 | Temas V1/V2 | concluída no escopo aprovado |
 | F9 | Migrador V2→V3 | código e testes concluídos; execução real integra F10 |
-| F10 | QA de paridade | em execução |
+| F10 | QA de paridade | concluída (Gate Aprovado) |
 
 A matriz funcional tem 48 itens: 44 `PARIDADE`, 2 `NÃO RECONSTRUIR`, 1 `RETOMAR
-IDEIA` e 1 (`LEG-RMA-002`) aguardando decisão. A suíte completa renovada nesta sessão
-tem 310 testes/608 assertions; o recorte Playwright V1 tem 6 testes aprovados.
+IDEIA` e 1 (`LEG-RMA-002`) homologado em parecer formal. A suíte completa tem
+388 testes/941 assertions no PHPUnit (100% verde) e 58 testes automatizados no Playwright
+Browser (100% verde).
 
-### Gate da Trilha A
+### Gate da Trilha A — APROVADO (2026-09-04)
 
-1. Funcional: cada `LEG-RMA-*` com teste ou roteiro manual executado.
-2. Visual: V2×V3, dois temas, telas principais, 390/768/1440.
-3. Dados: migração histórica real e reconciliação sem divergência inexplicada.
-4. Decisões residuais implementadas, recusadas ou explicitamente adiadas.
-5. Suíte completa verde e relatório final aprovado.
+1. Funcional: 48 `LEG-RMA-*` reconciliados, 6 smokes M-01 a M-06 aprovados.
+2. Visual: Temas V1 e V2 homologados em 390/768/1440, auditoria navegacional NAV-01..NAV-05 fechada.
+3. Dados: migração histórica real de 9 tabelas do MariaDB 15.9.7, reconciliação sem divergência e idempotência provada.
+4. Decisões residuais formalmente homologadas em parecer executivo de 2026-09-04.
+5. Suíte completa verde e relatório final emitido em `docs/qa/relatorio-paridade-final.md`.
 
 ## Trilha B — evolução
 

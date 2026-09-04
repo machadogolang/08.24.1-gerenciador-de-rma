@@ -33,9 +33,9 @@ Executar sequencialmente, um item por vez, com teste, evidência e commit atômi
 - [x] **ETA-07** — Executar `php artisan rma:migrar-legado --dry-run` contra a base de dados histórica, gerar relatório de reconciliação das 9 tabelas, auditar anomalias e provar idempotência no alvo descartável `rma_v3_descartavel` (`QA F10-DAD-04` a `09`).
 
 #### 4. Fechamento da Fase 10 e Gate da Trilha A (`F10-GATE`)
-- [ ] **ETA-08** — Rodar suíte completa de regressão técnica (PHPUnit 388+ testes e Playwright Browser no host e container).
-- [ ] **ETA-09** — Produzir o relatório consolidado final em `docs/qa/relatorio-paridade-final.md` integrando os três eixos (funcional, visual e dados).
-- [ ] **ETA-10** — Atualizar `checklist-master-v3.md` declarando o cumprimento integral da Fase 10 e encerramento da Trilha A.
+- [x] **ETA-08** — Rodar suíte completa de regressão técnica: 388 testes / 941 asserções no PHPUnit e 58 testes no Playwright Browser (100% verde).
+- [x] **ETA-09** — Produzir o relatório consolidado final em `docs/qa/relatorio-paridade-final.md` integrando os três eixos (funcional, visual e dados).
+- [x] **ETA-10** — Atualizar `checklist-master-v3.md` declarando o cumprimento integral da Fase 10 e encerramento formal da Trilha A.
 
 ## CHECKPOINT INCORPORADO — ARQUITETURA, FRONT-END E PARIDADE DE TEMAS
 

@@ -1,0 +1,732 @@
+[
+  {
+    "id": "NAV-01-01",
+    "nome": "Logo -> Pagina Inicial",
+    "descricao": "Clique no logotipo do topo navega para a Pagina Inicial",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": "Pag. Inicial",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 147,
+          "width": 984,
+          "height": 1551.94,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 1708.94,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/v1/rma",
+      "titulo": "RMAs — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": "Pag. Inicial",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 164,
+          "width": 984,
+          "height": 1547.19,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 1721.19,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    }
+  },
+  {
+    "id": "NAV-01-02",
+    "nome": "Pagina Inicial",
+    "descricao": "Link Pag. Inicial no menu superior",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": "Pag. Inicial",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 147,
+          "width": 984,
+          "height": 1551.94,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 1708.94,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/v1/rma",
+      "titulo": "RMAs — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": "Pag. Inicial",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 164,
+          "width": 984,
+          "height": 1547.19,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 1721.19,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    }
+  },
+  {
+    "id": "NAV-01-03",
+    "nome": "Novo (Painel Inline)",
+    "descricao": "Clique em Novo expande o painel inline #JS-Novo",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php#",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": "Pag. Inicial",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 457.19,
+          "width": 984,
+          "height": 1551.94,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 2019.13,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": {
+          "x": 228,
+          "y": 147,
+          "width": 984,
+          "height": 300.19,
+          "display": "block",
+          "visibility": "visible"
+        }
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/v1/rma",
+      "titulo": "RMAs — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": "Pag. Inicial",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 463.19,
+          "width": 984,
+          "height": 1547.19,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 2020.38,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 289.19,
+          "display": "block",
+          "visibility": "visible"
+        }
+      }
+    }
+  },
+  {
+    "id": "NAV-01-04",
+    "nome": "Localizar (Painel Inline)",
+    "descricao": "Clique em Localizar expande o painel inline #JS-Localizar",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php#",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": "Pag. Inicial",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 457.19,
+          "width": 984,
+          "height": 1551.94,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 2019.13,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 72,
+          "display": "block",
+          "visibility": "visible"
+        }
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/v1/rma",
+      "titulo": "RMAs — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": "Pag. Inicial",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 463.19,
+          "width": 984,
+          "height": 1547.19,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 2020.38,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": {
+          "x": 228,
+          "y": 364.19,
+          "width": 984,
+          "height": 72,
+          "display": "block",
+          "visibility": "visible"
+        }
+      }
+    }
+  },
+  {
+    "id": "NAV-01-05",
+    "nome": "Entrada",
+    "descricao": "Listagem de Entrada",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php?page=entrada",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": "Entrada",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 4109.19,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 4184.19,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/rmas-entrada",
+      "titulo": "Entrada — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": "Entrada",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 1053.19,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 1128.19,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    }
+  },
+  {
+    "id": "NAV-01-06",
+    "nome": "Encaminhado",
+    "descricao": "Listagem de Encaminhados",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php?page=encaminhados",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": "Encaminhado",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 352.19,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 427.19,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/rmas-encaminhados",
+      "titulo": "Encaminhado — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": "Encaminhado",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 516.19,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 591.19,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    }
+  },
+  {
+    "id": "NAV-01-07",
+    "nome": "Aguardando credito",
+    "descricao": "Listagem de Aguardando credito",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php?page=aguardandocredito",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": "Aguardando credito",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 162.38,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 237.38,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/rmas-aguardando-credito",
+      "titulo": "Aguardando credito — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": "Aguardando credito",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 153.19,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 228.19,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    }
+  },
+  {
+    "id": "NAV-01-08",
+    "nome": "Concluido!",
+    "descricao": "Listagem de Concluidos",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php?page=concluidos",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": "Concluido!",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 36841.56,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 36916.56,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/rmas-concluidos",
+      "titulo": "Concluido — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": "Concluido!",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 65,
+          "width": 984,
+          "height": 626.56,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 701.56,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": null
+      }
+    }
+  },
+  {
+    "id": "NAV-01-09",
+    "nome": "Menu de Sessao (Painel Inline)",
+    "descricao": "Clique no botao MENU expande #JS-Sessao",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php?page=concluidos#",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": "Concluido!",
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 72.13,
+          "width": 984,
+          "height": 250.56,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 335.44,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": {
+          "x": 228,
+          "y": 64.61,
+          "width": 984,
+          "height": 9.97,
+          "display": "block",
+          "visibility": "visible"
+        }
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/rmas-concluidos",
+      "titulo": "Concluido — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": null,
+      "falhas": [],
+      "medidas": {
+        "topo": {
+          "x": 218,
+          "y": 0,
+          "width": 1004,
+          "height": 51,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "conteudo": {
+          "x": 228,
+          "y": 299,
+          "width": 984,
+          "height": 260.56,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "rodape": {
+          "x": 228,
+          "y": 569.56,
+          "width": 984,
+          "height": 122,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "painel": {
+          "x": 228,
+          "y": 52,
+          "width": 984,
+          "height": 237,
+          "display": "block",
+          "visibility": "visible"
+        }
+      }
+    }
+  },
+  {
+    "id": "NAV-01-10",
+    "nome": "Sign Out (Logout)",
+    "descricao": "Botao SIGN OUT executa logout e redireciona para a tela de autenticacao",
+    "legacy": {
+      "url": "http://localhost:8094/14.6.1/index.php",
+      "titulo": "Intranet : FIR 1.3 - 04/09/2026",
+      "status": 200,
+      "linkAtivo": null,
+      "falhas": [],
+      "medidas": {
+        "topo": null,
+        "conteudo": null,
+        "rodape": null,
+        "painel": null
+      }
+    },
+    "v3": {
+      "url": "http://localhost:8095/login",
+      "titulo": "Entrar — CellSystem RMA",
+      "status": 200,
+      "linkAtivo": null,
+      "falhas": [],
+      "medidas": {
+        "topo": null,
+        "conteudo": null,
+        "rodape": null,
+        "painel": null
+      }
+    }
+  }
+]

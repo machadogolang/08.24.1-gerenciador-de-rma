@@ -23,25 +23,25 @@ posterior. “A rota respondeu” não equivale a paridade visual.
 
 ## Lote NAV-00 — infraestrutura repetível
 
-- [ ] NAV-00-01 — estender/criar gerador versionado para percorrer a matriz abaixo.
-- [ ] NAV-00-02 — gerar manifesto JSON por alvo: origem/destino, status, URL final,
-      título, link ativo, recursos falhos, dimensões e fontes-chave.
-- [ ] NAV-00-03 — gerar screenshot raw ignorado + sanitizado versionado por tela.
-- [ ] NAV-00-04 — teste de regressão que falha para rota quebrada, destino incorreto,
-      recurso 4xx ou ausência do elemento principal.
+- [x] NAV-00-01 — estender/criar gerador versionado para percorrer a matriz abaixo (`scripts/qa/auditoria-navegacional-v1.mjs`).
+- [x] NAV-00-02 — gerar manifesto JSON por alvo: origem/destino, status, URL final,
+      título, link ativo, recursos falhos, dimensões e fontes-chave (`docs/produto/evidencias-auditoria-v1/manifesto-navegacional-v1.json`).
+- [x] NAV-00-03 — gerar screenshot raw ignorado + sanitizado versionado por tela (`docs/produto/screenshots-auditoria-v1/`).
+- [x] NAV-00-04 — teste de regressão que falha para rota quebrada, destino incorreto,
+      recurso 4xx ou ausência do elemento principal (`tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts`).
 
 ## Lote NAV-01 — menu superior
 
-- [ ] NAV-01-01 — logo → Página Inicial.
-- [ ] NAV-01-02 — Pag. Inicial.
-- [ ] NAV-01-03 — Novo: abrir painel inline, preencher/validar em QA e comparar.
-- [ ] NAV-01-04 — Localizar: abrir painel, testar cada opção suportada e comparar.
-- [ ] NAV-01-05 — Entrada.
-- [ ] NAV-01-06 — Encaminhado.
-- [ ] NAV-01-07 — Aguardando crédito.
-- [ ] NAV-01-08 — Concluído.
-- [ ] NAV-01-09 — botão Menu: abrir/fechar painel e estado ativo.
-- [ ] NAV-01-10 — logout, somente em sessão QA isolada.
+- [x] NAV-01-01 — logo → Página Inicial.
+- [x] NAV-01-02 — Pag. Inicial.
+- [x] NAV-01-03 — Novo: abrir painel inline, preencher/validar em QA e comparar.
+- [x] NAV-01-04 — Localizar: abrir painel, testar cada opção suportada e comparar.
+- [x] NAV-01-05 — Entrada.
+- [x] NAV-01-06 — Encaminhado.
+- [x] NAV-01-07 — Aguardando crédito.
+- [x] NAV-01-08 — Concluído.
+- [x] NAV-01-09 — botão Menu: abrir/fechar painel e estado ativo.
+- [x] NAV-01-10 — logout, somente em sessão QA isolada.
 
 ## Lote NAV-02 — menu de sessão
 
@@ -174,3 +174,44 @@ criar commit afirmando conclusão parcial como aprovada.
   medidas `docs/produto/evidencias-v1-fase2/cp15-medidas.json`.
 - Próximo item: CP12-05F/CMP-NAV-V1-006, grupo “RECEBIDO A MAIS DE 30 DIAS E NAO ENCAMINHADO”;
   reler `listar_naoencaminhadoprazoestourado.php`, mapear colunas, implementar partial, testar, gerar e abrir par.
+
+### CMP-NAV-V1-006 — Página Inicial, recebidos há mais de 30 dias sem encaminhar
+
+- Estado: **APROVADO**, em 2026-08-28 (commit `05ca2cbf`).
+- Funcional: Mostrar/Ocultar e tabela de 10 colunas exercitados; ordenação histórica provada.
+- Visual: par sanitizado gerado e inspecionado em 1440×1000; medidas em `cp15-medidas.json`.
+- Próximo item: Lote NAV-00 / NAV-01 (Auditoria navegacional e visual do menu superior).
+
+### CMP-NAV-V1-007 — Auditoria navegacional e visual do menu superior (Lotes NAV-00 e NAV-01)
+
+- Estado: **APROVADO** em 2026-09-04.
+- Escopo: cobertura completa de todos os 10 alvos do menu superior (NAV-01-01 a NAV-01-10).
+  - NAV-01-01: Logo → Pagina Inicial (`#TOPO a.image-up` navega sem erros de rede, status 200).
+  - NAV-01-02: Pag. Inicial (`li.menu-up:has-text("Pag. Inicial")` navega e define classe `.active`).
+  - NAV-01-03: Novo (expande painel inline `#JS-Novo` preservando tela e URL).
+  - NAV-01-04: Localizar (expande painel inline `#JS-Localizar` preservando tela e URL).
+  - NAV-01-05: Entrada (`/rmas-entrada` responde 200, menu `.active`, ausência de erros 4xx).
+  - NAV-01-06: Encaminhado (`/rmas-encaminhados` responde 200, menu `.active`, ausência de erros 4xx).
+  - NAV-01-07: Aguardando crédito (`/rmas-aguardando-credito` responde 200, menu `.active`).
+  - NAV-01-08: Concluído (`/rmas-concluidos` responde 200, menu `.active`).
+  - NAV-01-09: Menu de Sessão (`#menu-sessao` alterna visibilidade de `#JS-Sessao` e classe `.active`).
+  - NAV-01-10: Sign Out (`.formButtonSIGNOUT` submete logout seguro e redireciona para `/login`).
+- Correções integradas:
+  - `resources/views/temas/v1/layout.blade.php`: `request()->routeIs()` corrigido para reconhecer
+    tanto rotas prefixadas (`v1.rmas.*`) quanto sem prefixo (`rmas.*`), garantindo a marcação da
+    classe `.active` em `Pag. Inicial` e `Novo`.
+  - `resources/js/temas/v1.js`: adicionado `botaoSessao.classList.toggle('active', !aberto)` para
+    refletir o estado ativo visual do botão `#menu-sessao` idêntico ao runtime legado.
+- Artefatos gerados:
+  - Gerador versionado: `scripts/qa/auditoria-navegacional-v1.mjs`.
+  - Manifesto JSON: `docs/produto/evidencias-auditoria-v1/manifesto-navegacional-v1.json` com
+    URLs, status, links ativos, falhas e geometria de cada alvo.
+  - Screenshots sanitizados: 20 pares versionados em `docs/produto/screenshots-auditoria-v1/`.
+  - Teste de regressão Playwright: `tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts` (10/10 verde).
+- Validação ampla:
+  - PHPUnit: 388 testes / 941 asserções sem falhas.
+  - Playwright: 22/22 testes no host verde; 7 passados / 1 skip no container verde.
+  - Vite build: verde.
+- Próximo item exato: Lote NAV-02 — menu de sessão (NAV-02-01 a NAV-02-08: Fornecedores,
+  Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários).
+

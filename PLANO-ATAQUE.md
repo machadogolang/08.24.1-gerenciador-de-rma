@@ -62,9 +62,11 @@ Executar em ordem, um checkpoint por vez, commit local a cada checkpoint fechado
 
 Fase 2 do Tema V1 **concluída (CP6 a CP15 fechados)**.
 
-Próximo lote: **Auditoria integral navegacional e visual do Tema V1** (menu a menu, link
-a link, tela a tela), iniciando pela infraestrutura repetível do Lote NAV-00 e menu superior
-NAV-01 em `docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`.
+Auditoria integral navegacional e visual do Tema V1 (`docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`):
+- [x] Lote NAV-00 — infraestrutura repetível (gerador, manifesto JSON e suíte de regressão Playwright).
+- [x] Lote NAV-01 — menu superior (10 alvos: logo, Pag. Inicial, Novo, Localizar, Entrada, Encaminhado, Aguardando crédito, Concluído, botão Menu e Logout).
+
+Próximo lote: **Lote NAV-02 — menu de sessão** (NAV-02-01 a NAV-02-08: Fornecedores, Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários).
 
 Gate adicional: antes de concluir cada item, abrir os prints Legacy/V3; depois da
 alteração, gerar e abrir o novo par normalizado. Toda comparação entra no Diário do MD

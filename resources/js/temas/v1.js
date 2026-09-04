@@ -28,6 +28,7 @@ if (botaoSessao && painelSessao) {
         const aberto = painelSessao.style.display !== 'none';
         painelSessao.style.display = aberto ? 'none' : 'block';
         botaoSessao.setAttribute('aria-expanded', aberto ? 'false' : 'true');
+        botaoSessao.classList.toggle('active', !aberto);
     });
 }
 

@@ -54,14 +54,14 @@
                 <img src="{{ asset('images/tema-v1/ferramenta-logo.png') }}" height="35" alt="CellSystem RMA">
             </a>
             <ul>
-                <li class="menu-up {{ request()->routeIs('v1.rmas.index') ? 'active' : '' }}">
+                <li class="menu-up {{ request()->routeIs('rmas.index', 'v1.rmas.index') ? 'active' : '' }}">
                     <a href="{{ rota_tema('rmas.index') }}">Pag. Inicial</a>
                 </li>
                 {{-- VIS-V1-002 — `NovoMaximize()` original só expande `#JS-Novo`
                 (abaixo) sem navegar; `href` continua apontando pra rota real como
                 fallback funcional (sem JS, ou clique do meio/ctrl-clique), mas o
                 clique normal é interceptado por `v1.js`. --}}
-                <li id="menu-novo" class="menu-up {{ request()->routeIs('v1.rmas.create') ? 'active' : '' }}">
+                <li id="menu-novo" class="menu-up {{ request()->routeIs('rmas.create', 'v1.rmas.create') ? 'active' : '' }}">
                     <a href="{{ rota_tema('rmas.create') }}">Novo</a>
                 </li>
                 {{-- CP7 — fallback funcional sem JS aponta pra Página Inicial (onde o

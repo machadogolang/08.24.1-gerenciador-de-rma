@@ -59,6 +59,10 @@ class ContratoVisualAcoesRmaTest extends TestCase
         $response->assertViewIs("temas.{$tema->value}.rma.show");
         $response->assertSee('class="acao acao--primaria', false);
         $response->assertSee('>Editar</a>', false);
-        $response->assertSeeText('Detalhe contrato acoes');
+        if ($tema === TemaPreferido::V1) {
+            $response->assertSee('value="Detalhe contrato acoes"', false);
+        } else {
+            $response->assertSeeText('Detalhe contrato acoes');
+        }
     }
 }

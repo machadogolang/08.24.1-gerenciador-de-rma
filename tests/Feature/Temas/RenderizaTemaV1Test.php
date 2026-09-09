@@ -292,7 +292,7 @@ class RenderizaTemaV1Test extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('temas.v1.rma.show');
-        $response->assertSeeText('Detalhe tema V1');
+        $response->assertSee('value="Detalhe tema V1"', false);
     }
 
     public function test_clientes_v1_renderiza(): void

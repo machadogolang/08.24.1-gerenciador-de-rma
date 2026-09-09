@@ -75,14 +75,14 @@ class ParidadeDetalheRmaV1Test extends TestCase
             $response->assertSeeText($grupo);
         }
 
-        $response->assertSeeText('RMA detalhe V1 caracterizacao');
-        $response->assertSeeText('Fabricante Detalhe V1');
-        $response->assertSeeText('MODELO V1');
-        $response->assertSeeText('SN-V1-001');
-        $response->assertSeeText('PN-V1-001');
-        $response->assertSeeText('SNID-V1-001');
-        $response->assertSeeText('NFREMESSA-001');
-        $response->assertSeeText('NFRETORNO-001');
-        $response->assertSeeText('destinatario@example.test');
+        $response->assertSee('value="RMA detalhe V1 caracterizacao"', false);
+        $response->assertSee('>Fabricante Detalhe V1<', false);
+        $response->assertSee('value="MODELO V1"', false);
+        $response->assertSee('value="SN-V1-001"', false);
+        $response->assertSee('value="PN-V1-001"', false);
+        $response->assertSee('value="SNID-V1-001"', false);
+        $response->assertSee('value="NFREMESSA-001"', false);
+        $response->assertSee('value="NFRETORNO-001"', false);
+        $response->assertSee('value="destinatario@example.test"', false);
     }
 }

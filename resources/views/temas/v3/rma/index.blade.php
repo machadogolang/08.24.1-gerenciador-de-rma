@@ -60,6 +60,7 @@
                 <p><a href="{{ route('v3.rmas.index') }}">Limpar filtros</a></p>
             </div>
         @else
+            <div class="tabela-wrapper">
             <table class="tabela-v3">
                 <thead>
                     <tr>
@@ -84,6 +85,7 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
 
             <div class="cartoes-rma">
                 @foreach ($registros as $registro)

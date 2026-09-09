@@ -25,6 +25,10 @@
             </button>
             <a class="app-shell__brand" href="{{ route('v3.dashboard') }}">CellSystem RMA</a>
             <span>{{ auth()->user()?->name }}</span>
+            <form class="app-shell__logout" method="POST" action="{{ route('logout') }}">
+                
+                <button type="submit">Sair</button>
+            </form>
         </header>
 
         <div class="app-shell__body">

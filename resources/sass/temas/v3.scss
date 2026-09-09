@@ -516,3 +516,21 @@ a,
         display: none !important;
     }
 }
+
+// Auditoria AUD-V3-01: overflow horizontal da tabela no tablet fica local ao
+// wrapper, sem arrastar o body.
+.tabela-wrapper {
+    overflow-x: auto;
+}
+
+.app-shell__logout {
+    margin-left: auto;
+    display: inline-flex;
+
+    button {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+    }
+}

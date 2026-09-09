@@ -47,10 +47,13 @@ Browser (100% verde).
 
 ## Trilha B — evolução
 
-Investigação e especificação estão autorizadas; implementação permanece bloqueada pelo
-gate da Trilha A. Abrange SaaS/multiempresa, tema V3, arquivos, configuração, domínio,
-automação, relatórios, segurança, auditoria, performance e IA. Decisões de
-`INV-RMA-07/08/09` não equivalem a autorização para codificar.
+Trilha A encerrada em 2026-09-04 e Trilha B liberada para execução controlada em
+2026-09-09 (decisão do usuário nesta rodada). Primeira iniciativa:
+**EVO-SAAS-001 — fundação SaaS multiempresa**, em ondas pequenas com OpenSpec
+(`openspec/changes/saas-multiempresa/`), testes e commits atômicos. Abrange também
+tema V3, arquivos, configuração, domínio, automação, relatórios, segurança, auditoria,
+performance e IA, na ordem do backlog evolutivo; `EVO-SAAS-002/003` e demais frentes
+ficam depois da fundação multiempresa.
 
 ## Frente — Arquitetura, Front-end e Paridade de Temas
 

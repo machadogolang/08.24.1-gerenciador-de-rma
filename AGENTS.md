@@ -6,7 +6,9 @@ Reconstrução do CellSystem RMA como produto moderno, em duas trilhas separadas
   identidade visual, com arquitetura/segurança/tecnologia atuais (linha CONAHOM,
   proporcional ao domínio).
 - **Trilha B (depois):** evolução — SaaS multiempresa, automações, IA. Registrada em
-  `docs/produto/backlog-evolutivo.md`, nunca implementada durante a Trilha A.
+  `docs/produto/backlog-evolutivo.md`, nunca implementada durante a Trilha A. A Trilha A
+  foi encerrada em 2026-09-04 (`F10-GATE-07`); a partir de 2026-09-09 a Trilha B está
+  liberada para execução controlada por ondas pequenas com OpenSpec, testes e commits.
 
 ## Regras fixas
 
@@ -42,7 +44,8 @@ Reconstrução do CellSystem RMA como produto moderno, em duas trilhas separadas
 - `docs/legado/regras-negocio-rma-legado.md` — regras de negócio catalogadas (RN-01...).
 - `docs/investigacoes-pendente/INV-RMA-00-arqueologia-cellsystem-15.9.7.md` —
   investigação viva, move para `concluido/` só quando realmente terminada.
-- `docs/produto/backlog-evolutivo.md` — Trilha B, nunca implementada agora.
+- `docs/produto/backlog-evolutivo.md` — Trilha B (liberada para execução controlada
+  pós-gate; primeira iniciativa: EVO-SAAS-001).
 - `docs/pareceres/` — conclusões executivas, geradas só quando a investigação madura.
 - `PLAN.md` — estado macro. `PLANO-ATAQUE.md` — operacional (AGORA/DEPOIS/DEPENDÊNCIAS/
   CRITÉRIO DE SAÍDA/NÃO FAZER AINDA).

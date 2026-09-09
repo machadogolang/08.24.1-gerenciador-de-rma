@@ -1,8 +1,9 @@
 # Backlog evolutivo — CellSystem RMA (pós-reconstrução)
 
-Data: 2026-08-24. **Trilha B.** Nada aqui é implementado durante a Trilha A
-(reconstrução fiel). Cada item nasce de uma evidência concreta da arqueologia — nunca de
-uma ideia solta. Formato: ID · Título · Origem · Problema · Legado · Evolução ·
+Data: 2026-08-24 (atualizado 2026-09-09). **Trilha B.** Nada aqui foi implementado
+durante a Trilha A (reconstrução fiel). A Trilha A foi encerrada em 2026-09-04 e a
+Trilha B está liberada para execução controlada em ondas pequenas, com OpenSpec, testes
+e commits atômicos; `EVO-SAAS-001` é a primeira iniciativa desta rodada. Formato: ID · Título · Origem · Problema · Legado · Evolução ·
 Benefício · Impacto · Complexidade · Risco · Dependências · Prioridade · Fase.
 
 ## EVO-SAAS

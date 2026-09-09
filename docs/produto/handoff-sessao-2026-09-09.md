@@ -78,7 +78,7 @@ lacunas: `docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`.
 7. `da43f14` — `#DOC-RMA - Atualiza plano e tasks apos contrato visual de acoes`.
 8. `3351682` — `#DOC-RMA - Consolida handoff da frente de acoes`.
 
-**SHA final desta rodada:** `3351682` (origin/main local em `694732d`; PUSH NÃO REALIZADO).
+**SHA final de código/teste:** `da43f14`; fechamento de handoff iniciado em `3351682` e ajustado no commit de fechamento desta linha (origin/main local em `694732d`; PUSH NÃO REALIZADO).
 
 ### Testes
 - PHPUnit completo: **477 testes / 1242 assertions** (regressão ampla, incluindo

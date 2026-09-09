@@ -16,13 +16,13 @@ Baseline real reconferido: HEAD = origin/main = `24ffd4e`, working tree limpo.
 
 - [x] PAR-V2-THEME-01 - Troca V1 <-> V2 em rota prefixada corrigida (9fbeac1);
   testes PHPUnit 4/4 e Playwright 1/1 verdes.
-- [R] PAR-V2-NAV-02 - Navbar V2: texto centralizado (line-height 39px + padding do
-  Bootstrap desloca ~10px), Logout/Menu com seletor errado e breakpoints fixos em
-  1190px/11,1%.
-- [R] PAR-V2-DROPDOWN-02 - Dropdown Menu V2 com moldura/faixa branca (camada
-  Bootstrap visivel + geometria duplicada li/a).
-- [R] PAR-V2-CURSOR-02 - Reabertura de UI-09.3 (varredura ampla + residuo de
-  cursor default no link ativo da navbar V2).
+- [x] PAR-V2-NAV-02 - Navbar V2 corrigida (62cbb27): texto centralizado, Logout
+  com geometria de `<a>`, breakpoints 12,5%/11,1% iguais ao media.php.
+- [x] PAR-V2-DROPDOWN-02 - Dropdown Menu V2 sem moldura/faixa branca (62cbb27);
+  li dono dos 25px e item POST com mesma geometria dos links.
+- [R] PAR-V2-CURSOR-02 - UI-09.3 reaberta. Navbar/dropdown corrigidos (62cbb27,
+  causa: Bootstrap cursor:default no item ativo). Varredura ampla continua em
+  aberto ate as ondas 3/4 restaurarem as superficies.
 - [R] PAR-V2-DETAIL-02 - A6 reaberto: detalhe RMA V2 precisa voltar a ser
   formulario operacional editavel como 15.8.1 (nao leitura).
 - [R] PAR-V2-NOVO-01 - Novo RMA V2 inline na aba Novo com grade 3 colunas,
@@ -32,7 +32,8 @@ Baseline real reconferido: HEAD = origin/main = `24ffd4e`, working tree limpo.
 Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 
 - [x] ONDA 1 - PAR-V2-THEME-01 + testes de troca (9fbeac1).
-- [ ] ONDA 2 - PAR-V2-NAV-02 + PAR-V2-DROPDOWN-02 + PAR-V2-CURSOR-02.
+- [x] ONDA 2 - PAR-V2-NAV-02 + PAR-V2-DROPDOWN-02 + PAR-V2-CURSOR-02 (parcial;
+  varredura ampla segue em PAR-V2-CURSOR-02).
 - [ ] ONDA 3 - PAR-V2-DETAIL-02 (A6 funcional).
 - [ ] ONDA 4 - PAR-V2-NOVO-01 (Novo RMA inline).
 - [ ] ONDA 5 - PAR-V2-SWEEP-01.

@@ -236,3 +236,24 @@ registro da reproducao (regra do dono desta rodada).
 - PUSH NAO REALIZADO.
 
 Proximo: ONDA 2 (navbar/dropdown/cursor).
+
+## 14. Resultado pos-correcao - ONDA 2 (PAR-V2-NAV/DROPDOWN/CURSOR)
+
+- Commit local: `62cbb27` (#FRONT-RMA).
+- Navbar: `line-height:39px` removido; texto centraliza pelo Bootstrap como no
+  Legacy (probe pos: item e texto com centro dentro de 2px). Logout (POST) ganhou
+  regra propria com a caixa de `<a>` da navbar (height 39, padding 10/15,
+  line-height 20). Breakpoints: `.nav` 990/1190px e item 12,5%/11,1% seguindo
+  `media.php`.
+- Dropdown: `.dropdown-menu` da nav V2 resetado (padding 0, sem borda/sombra,
+  fundo transparente); `li` dono dos 25px/fundo/borda/hover; item POST com mesma
+  geometria dos links.
+- Cursor: causa do default no item ativo era Bootstrap
+  `.nav-tabs>li.active>a { cursor:default }`; corrigido no seletor ativo do tema
+  (regra universal `a[href]` nao vencia a especificidade do Bootstrap).
+- Teste novo: `tests/Browser/ParidadeNavbarDropdownV2.spec.ts` (4 testes).
+- Regressao dirigida: ConsistenciaVisualControles 9/9 + ParidadeDetalheRmaV2 3/3 +
+  ParidadeNavbarDropdownV2 4/4 = 16/16 verdes. Vite build verde.
+- PUSH NAO REALIZADO.
+
+Proximo: ONDA 3 (detalhe RMA V2 funcional - A6/PAR-V2-DETAIL-02).

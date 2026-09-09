@@ -57,6 +57,21 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
   - [ ] T3-20 - Performance.
   - [ ] T3-GATE - Liberar Tema V3 no seletor.
 
+
+## AUDITORIA E CORRECOES CONFIRMADAS (2026-09-09)
+
+- [x] A1 - Reconciliar T3-08/09/10 em plano e OpenSpec (commit 3ba4d12).
+- [x] A2 - Corrigir AUD-V3-01 (overflow 768) e AUD-V3-02 (logout V3) - commit 04a5634.
+- [R] A3 - T3-17 selecao explicita de tema. DECISAO-PENDENTE: persistir V3 antes do
+  T3-GATE quebra rotas canonicas sem view V3; caminho recomendado e V1/V2 explicito
+  + V3 por sessao de QA local ate a matriz fechar.
+- [R] A4 - Residuos de botoes: nenhum novo confirmado alem de V3 nao ter acoes de
+  detalhe (aguarda T3-11).
+- [R] A5/A6 - Restaurar paridade de detalhe RMA V1/V2 (matriz em
+  docs/produto/2026-09-09-auditoria-tranche-inicial-v3-e-detalhes-rma.md;
+  implementacao pendente).
+- [ ] A7/T3-11 - Detalhe operacional do RMA no Tema V3 (apos A5/A6).
+
 ## DEPOIS
 
 - [ ] UI-09.10/C7 + UI-08 - Varredura residual e regressao browser/print final.

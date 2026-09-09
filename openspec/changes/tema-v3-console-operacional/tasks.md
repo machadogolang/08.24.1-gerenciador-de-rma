@@ -28,12 +28,14 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
   Evidencia: 572d20b e Playwright TemaV3PrimeiraTranche.
 - [ ] T3-10 - RMAs listagem (tabela densa + cartoes mobile + filtros).
 - [ ] T3-11 - RMA detalhe (cabecalho operacional + secoes + historico).
+  Pre-requisito documentado em A5/A6 (matriz de campos Legacy) na auditoria de 2026-09-09.
 - [ ] T3-12 - RMA formularios (secoes, 2 colunas por relacao).
 - [ ] T3-13 - Parceiros (lista/busca/detalhe/form em secoes).
 - [ ] T3-14 - Usuarios/admin (listagem e acoes contextuais).
 - [ ] T3-15 - Relatorios (hub + RCD/RPEC/RMPE).
 - [ ] T3-16 - Secundarias (alertas, historicos, logistica, ajuda, perfil).
-- [ ] T3-17 - Selecao explicita de tema (enum/controller/UI).
+- [ ] T3-17 - Selecao explicita de tema (enum/controller/UI). DECISAO-PENDENTE:
+  persistir V3 exige matriz completa; QA local pode usar sessao ate T3-GATE.
 - [ ] T3-18 - Mobile/browser (viewports e cartoes).
 - [ ] T3-19 - Acessibilidade (teclado, ARIA, alvo 44px, estados).
 - [ ] T3-20 - Performance (bundle, consultas, build).

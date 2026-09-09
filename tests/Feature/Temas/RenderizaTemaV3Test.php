@@ -92,4 +92,41 @@ class RenderizaTemaV3Test extends TestCase
         $response->assertDontSeeText('v3');
         $response->assertSeeText('Alternar tema');
     }
+
+    public function test_detalhe_v3_renderiza_cabecalho_operacional_e_secoes(): void
+    {
+        $usuario = $this->usuarioV1();
+        $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante detalhe V3']);
+        $rma = Rma::factory()->create([
+            'status' => Status::Entrada,
+            'fabricante_id' => $fabricante->id,
+            'descricao' => 'RMA detalhe V3 operacional',
+            'modelo' => 'MODELO V3',
+            'sn' => 'SN-V3-001',
+            'nf_remessa' => 'NFREMESSA-V3',
+            'rastreio_ida' => 'RASTREIO-V3',
+        ]);
+
+        $response = $this->actingAs($usuario)->get("/v3/rma/{$rma->id}");
+
+        $response->assertOk();
+        $response->assertViewIs('temas.v3.rma.show');
+        $response->assertSeeText('RMA detalhe V3 operacional');
+        $response->assertSeeText('Proxima acao');
+        $response->assertSeeText('Receber');
+        foreach ([
+            'Resumo',
+            'Produto',
+            'Parceiros e origem',
+            'Fiscal',
+            'Destinatario e logistica',
+            'Solucao e credito',
+            'Historico e auditoria',
+        ] as $secao) {
+            $response->assertSeeText($secao);
+        }
+        $response->assertSeeText('MODELO V3');
+        $response->assertSeeText('SN-V3-001');
+        $response->assertSeeText('NFREMESSA-V3');
+    }
 }

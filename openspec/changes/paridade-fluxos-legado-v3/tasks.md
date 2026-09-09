@@ -24,14 +24,14 @@
 
 ## Addendum 2026-09-09 - paridade dos detalhes RMA e residuos V2 (A5/A6)
 
-- [R] A5 - Detalhe RMA Tema V1 - REABERTO (regressao funcional do dono,
-  PAR-DET-V1-EDIT-01/ACTION-01/STOCK-01). Visual OK, funcional pendente.
+- [x] A5 - Detalhe RMA Tema V1 - fechado com edicao inline, controles e QA
+  (2beecb3/70a2ed8).
   - [x] A5.1 - Reproducao documentada com metricas/screenshots (PAR-DET-V1-01).
   - [x] A5.2 - Estrutura visual/Blade/CSS do show V1.
   - [x] A5.3 - Campos com prova e lacunas documentadas.
-  - [ ] A5.4 - Edicao inline (inputs reais + persistencia backend seguro).
-  - [ ] A5.5 - Controles estoque/credito e rodape operacional.
-  - [ ] A5.6 - Regression funcional e visual V1.
+  - [x] A5.4 - Edicao inline (inputs reais + persistencia backend seguro).
+  - [x] A5.5 - Controles estoque/credito e rodape operacional.
+  - [x] A5.6 - Regression funcional e visual V1.
 - [x] A6 - Detalhe RMA Tema V2 (PAR-DET-V2-01): cabecalho operacional + grupos do
   show V2 read-only (6b78ac3/10f786f).
   - [x] A6.1 - Reproducao documentada com metricas/screenshots (PAR-DET-V2-01).

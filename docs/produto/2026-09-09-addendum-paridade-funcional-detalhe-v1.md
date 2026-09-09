@@ -88,3 +88,72 @@ Campos Legacy não editáveis: numero do BD (input desabilitado) e tempo/prazo
 - A rota `GET /v1/rma/{id}/edit` continua existindo como alternativa.
 - O Tema V2 nao muda automaticamente; cada tema compara com o proprio Legacy.
 - A7/T3-11 segue bloqueado ate A5 fechar.
+
+
+## 5. Resultado pos-correcao (mesma sessao)
+
+### Correcoes
+
+- PAR-DET-V1-EDIT-01: show V1 voltou a ser form real (POST+PUT em v1.rmas.update,
+  CSRF/Policy) com inputs TDDX/TDD_NF/TDD_DEFEITO e textarea TDD_TAOBSERVACAO.
+- PAR-DET-V1-STOCK-01: checkboxes reais de marcarestoque e creditoDisponivel com
+  rotulos alternando no JS.
+- PAR-DET-V1-ACTION-01: rodape com estoque/credito a esquerda e painel select
+  acao+OK a direita. As acoes especificas continuam em bloco recolhivel
+  (detalhe-bd-acoes-avancadas) para manter endpoints/contratos sem empilhar o topo.
+
+### Backend
+
+- Dominio/Rma passou a carregar e persistir os campos historicos editaveis
+  (nfentrada/retorno cliente, rastreios, nfremessa/nfretorno/chaves, emails/fone,
+  devolucao de venda, destinatario_nome_legado).
+- RmasEmBanco hidrata/grava esses campos pela mesma infra.
+- EditarRma aceita o boletim completo e so altera campos presentes (formularios
+  antigos de edit continuam seguros).
+- RmaController::update despacha acao do rodape para os casos de uso modernos
+  (receber/encaminhar/concluir/reverter/arquivar) depois de salvar os campos.
+- Solucao do detalhe e gravada via RegistrarSolucao (caso de uso moderno).
+
+### Matriz de campos (resumo)
+
+| Campo Legacy | Coluna/dominio V3 | Tipo V3 | Persiste? |
+|---|---|---|---|
+| fabricante | fabricante_id (select) | select moderno | sim |
+| descricao/modelo/os/origem/sn/empresa/pn/snid | colunas nucleo | input | sim |
+| cliente | cliente_id via cliente_nome | input | sim |
+| NF compra/venda + datas + chaves | rmas nfcompra*/nfvenda* | input | sim |
+| NF entrada/saida cliente | colunas legado | input | sim |
+| NF remessa/retorno + chaves | colunas legado | input | sim |
+| rastreios | colunas legado | input | sim |
+| destinatario | morph type/id via select seguro | select | sim |
+| email/fone destinatario | colunas legado | input | sim |
+| protocolo/valor/snretorno | nucleo | input | sim |
+| solucao | nucleo via RegistrarSolucao | select | sim |
+| defeito/observacao | nucleo | input/textarea | sim |
+| marcarestoque | boolean nucleo | checkbox | sim |
+| creditodisponivel | boolean nucleo | checkbox | sim |
+| numero do BD | legado/id | disabled | nao |
+| tempo | calculado | disabled | nao |
+| politica de garantia | parceiro | textarea disabled | nao |
+
+### Divergencias conscientes (documentadas, nao silenciosas)
+
+1. Fabricante e destinatario usam selects com entidades reais no lugar do texto
+   livre/datalist do Legacy (seguranca/tenant/polimorfismo modernos).
+2. O checkbox creditodisponivel pode ser gravado direto no detalhe V1, como no
+   Legacy; a rota moderna MarcarCreditoDisponivel permanece com sua regra propria.
+3. Bloco de acoes avancadas fica recolhido (details) para nao replicar a pilha
+   vertical que o dono reprovou, preservando os endpoints/testes.
+
+### Commits
+
+- 2beecb3 - #FRONT-RMA - Restaura edicao inline do boletim no Tema V1.
+- 70a2ed8 - #QA-RMA - Cobre edicao e alinhamento do detalhe RMA V1.
+
+### QA
+
+- PHPUnit completo: 523 testes / 1518 assertions, 100% verde.
+- Playwright EdicaoInlineDetalheV1: 3/3 (editar/salvar/reload, acao do rodape,
+  alinhamento esquerda/direita).
+- Regressao Playwright V1/V2/consistencia: 27/27 verdes.
+- Vite build verde; git diff --check limpo.

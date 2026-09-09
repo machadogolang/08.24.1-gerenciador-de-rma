@@ -67,14 +67,14 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
   + V3 por sessao de QA local ate a matriz fechar.
 - [R] A4 - Residuos de botoes: nenhum novo confirmado alem de V3 nao ter acoes de
   detalhe (aguarda T3-11).
-- [R] A5 - Paridade detalhe RMA Tema V1 (Legacy 14.6.1) - REABERTO por
-  regressao funcional (PAR-DET-V1-EDIT-01/ACTION-01/STOCK-01).
+- [x] A5 - Paridade detalhe RMA Tema V1 (Legacy 14.6.1) - fechado com edicao
+  inline, controles e QA (2beecb3/70a2ed8).
   - [x] A5.1 - Estrutura visual BOLETIM DE DEFEITO restaurada.
   - [x] A5.2 - Campos historicos apresentados.
-  - [ ] A5.3 - Restaurar edicao inline do detalhe (inputs reais + persistencia).
-  - [ ] A5.4 - Restaurar controles estoque/credito (checkboxes reais).
-  - [ ] A5.5 - Restaurar composicao operacional das acoes (rodape esquerda/direita).
-  - [ ] A5.6 - QA funcional + visual contra Legacy (digitar/salvar/reload).
+  - [x] A5.3 - Restaurar edicao inline do detalhe (inputs reais + persistencia) - 2beecb3.
+  - [x] A5.4 - Restaurar controles estoque/credito (checkboxes reais) - 2beecb3.
+  - [x] A5.5 - Restaurar composicao operacional das acoes (rodape esquerda/direita) - 2beecb3.
+  - [x] A5.6 - QA funcional + visual contra Legacy (digitar/salvar/reload) - 70a2ed8.
 - [x] A6 - Paridade detalhe RMA Tema V2 (Legacy 15.8.1).
   - [x] A6.1 - Reproducao/documentacao com metricas e screenshots
     (`docs/produto/2026-09-09-addendum-paridade-detalhe-rma-v1-v2.md`, PAR-DET-V2-01).

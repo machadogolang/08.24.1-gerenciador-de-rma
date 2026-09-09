@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             // tema resolvido por `ResolverTemaAtivo`, independente de `tema_preferido`.
             Route::middleware('web')->group(base_path('routes/tema-v1.php'));
             Route::middleware('web')->group(base_path('routes/tema-v2.php'));
+            Route::middleware('web')->group(base_path('routes/tema-v3.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

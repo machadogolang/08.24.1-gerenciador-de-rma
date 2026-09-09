@@ -1,0 +1,518 @@
+// Tema V3 - Console Operacional Adaptativa.
+// Stack: Sass semantico moderno (BEM-like), sem Bootstrap/Tailwind e sem import
+// de _v1-base/_v2-base. CSS base vale para telefone; media queries so ampliam.
+
+// Tokens (nomes semanticos, sem numeros magicos fora deste arquivo).
+
+@use "sass:color";
+$cor-fundo: #f3f5f7;
+$cor-superficie: #ffffff;
+$cor-texto: #1d2733;
+$cor-texto-suave: #5b6b7b;
+$cor-borda: #d7dee5;
+$cor-acento: #145a9e;
+$cor-acento-forte: #0e4376;
+$cor-rail: #12283a;
+$cor-rail-texto: #dbe7f0;
+$cor-status-entrada: #145a9e;
+$cor-status-recebido: #7a5b00;
+$cor-status-encaminhado: #5b2d8e;
+$cor-status-concluido: #177245;
+$cor-status-arquivado: #55606a;
+$cor-prioridade-alta: #b3261e;
+$cor-prioridade-media: #b76e00;
+$cor-prioridade-baixa: #177245;
+$cor-danger: #b3261e;
+$cor-sucesso: #177245;
+$cor-warning: #b76e00;
+$cor-foco: #f5b301;
+
+$fonte-base: "Instrument Sans", system-ui, -apple-system, sans-serif;
+$fonte-mono: "Fira Mono", ui-monospace, monospace;
+
+$espaco-1: 4px;
+$espaco-2: 8px;
+$espaco-3: 12px;
+$espaco-4: 16px;
+$espaco-5: 24px;
+$espaco-6: 32px;
+
+$raio-pequeno: 6px;
+$raio-medio: 10px;
+
+$alvo-toque: 44px;
+
+$quebra-md: 768px;
+$quebra-lg: 1024px;
+$quebra-xl: 1440px;
+
+$camada-base: 1;
+$camada-drawer: 20;
+
+$largura-rail: 240px;
+$largura-rail-recolhido: 68px;
+$largura-dados: 1280px;
+$largura-composicao: 1100px;
+
+// Base
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: $cor-fundo;
+    color: $cor-texto;
+    font-family: $fonte-base;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+a {
+    color: $cor-acento;
+
+    &:hover {
+        color: $cor-acento-forte;
+    }
+}
+
+button,
+select,
+input,
+textarea {
+    min-height: $alvo-toque;
+    font: inherit;
+}
+
+button,
+a,
+[role="button"] {
+    min-height: $alvo-toque;
+}
+
+:focus-visible {
+    outline: 2px solid $cor-foco;
+    outline-offset: 2px;
+}
+
+// App shell
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-shell__topbar {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    gap: $espaco-3;
+    padding: 0 $espaco-4;
+    background-color: $cor-superficie;
+    border-bottom: 1px solid $cor-borda;
+    position: sticky;
+    top: 0;
+    z-index: $camada-drawer - 1;
+}
+
+.app-shell__brand {
+    font-weight: 700;
+    color: $cor-texto;
+    text-decoration: none;
+    min-height: $alvo-toque;
+    display: inline-flex;
+    align-items: center;
+}
+
+.app-shell__menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 $espaco-3;
+    border: 1px solid $cor-borda;
+    border-radius: $raio-pequeno;
+    background-color: $cor-superficie;
+    color: $cor-texto;
+    cursor: pointer;
+}
+
+.app-shell__body {
+    display: flex;
+    flex: 1;
+    align-items: stretch;
+}
+
+.app-shell__rail {
+    background-color: $cor-rail;
+    color: $cor-rail-texto;
+    width: $largura-rail;
+    flex: 0 0 $largura-rail;
+    padding: $espaco-3;
+    display: flex;
+    flex-direction: column;
+    gap: $espaco-1;
+}
+
+.app-shell__rail.is-collapsed {
+    width: $largura-rail-recolhido;
+    flex-basis: $largura-rail-recolhido;
+}
+
+.app-shell__nav-link {
+    min-height: $alvo-toque;
+    display: flex;
+    align-items: center;
+    gap: $espaco-2;
+    padding: 0 $espaco-3;
+    border-radius: $raio-pequeno;
+    color: $cor-rail-texto;
+    text-decoration: none;
+
+    &:hover,
+    &[aria-current="page"] {
+        background-color: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
+    }
+}
+
+.app-shell__rail-toggle {
+    margin-top: auto;
+    background: transparent;
+    border: 0;
+    color: $cor-rail-texto;
+    cursor: pointer;
+    text-align: left;
+}
+
+.app-shell__main {
+    flex: 1;
+    min-width: 0;
+    padding: $espaco-4;
+}
+
+.app-shell__drawer {
+    position: fixed;
+    inset: 0;
+    z-index: $camada-drawer;
+    display: none;
+
+    &.is-open {
+        display: block;
+    }
+}
+
+.app-shell__drawer-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(18, 40, 58, 0.55);
+}
+
+.app-shell__drawer-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(86vw, 320px);
+    padding: $espaco-3;
+    background-color: $cor-rail;
+    color: $cor-rail-texto;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: $espaco-1;
+}
+
+// Paginas
+.pagina {
+    width: 100%;
+    max-width: $largura-composicao;
+    margin: 0 auto;
+}
+
+.pagina--dados {
+    max-width: $largura-dados;
+}
+
+.pagina__cabecalho {
+    margin-bottom: $espaco-5;
+}
+
+.pagina__titulo {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.pagina__resumo {
+    color: $cor-texto-suave;
+    margin: $espaco-1 0 0;
+}
+
+// Componentes
+.grade-filas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $espaco-3;
+}
+
+.cartao {
+    background-color: $cor-superficie;
+    border: 1px solid $cor-borda;
+    border-radius: $raio-medio;
+    padding: $espaco-4;
+}
+
+.cartao__titulo {
+    margin: 0 0 $espaco-2;
+    font-size: 1rem;
+}
+
+.cartao__valor {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.cartao--fila {
+    text-decoration: none;
+    color: $cor-texto;
+    display: block;
+
+    &:hover {
+        border-color: $cor-acento;
+    }
+}
+
+.painel-alertas {
+    margin-top: $espaco-5;
+}
+
+.painel-alertas__lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: $espaco-2;
+}
+
+.painel-alertas__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $espaco-3;
+}
+
+.painel-alertas__vazio {
+    color: $cor-texto-suave;
+}
+
+.barra-busca {
+    display: flex;
+    gap: $espaco-2;
+    margin-bottom: $espaco-5;
+}
+
+.barra-busca__campo {
+    flex: 1;
+    min-height: $alvo-toque;
+    padding: 0 $espaco-3;
+    border: 1px solid $cor-borda;
+    border-radius: $raio-pequeno;
+}
+
+.botao {
+    min-height: $alvo-toque;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 $espaco-5;
+    border: 0;
+    border-radius: $raio-pequeno;
+    background-color: $cor-acento;
+    color: #ffffff;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+        background-color: $cor-acento-forte;
+    }
+}
+
+.segmentos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $espaco-1;
+    margin-bottom: $espaco-5;
+}
+
+.segmento {
+    min-height: $alvo-toque;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 $espaco-4;
+    border: 1px solid $cor-borda;
+    border-radius: 999px;
+    color: $cor-texto-suave;
+    background-color: $cor-superficie;
+    text-decoration: none;
+
+    &:hover {
+        border-color: $cor-acento;
+        color: $cor-acento;
+    }
+
+    &[aria-current="true"] {
+        background-color: $cor-acento;
+        border-color: $cor-acento;
+        color: #ffffff;
+    }
+}
+
+.tabela-v3 {
+    display: none;
+    width: 100%;
+    border-collapse: collapse;
+    background-color: $cor-superficie;
+
+    th,
+    td {
+        text-align: left;
+        padding: $espaco-3;
+        border-bottom: 1px solid $cor-borda;
+        vertical-align: top;
+    }
+
+    th {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: $cor-texto-suave;
+    }
+}
+
+.cartoes-rma {
+    display: grid;
+    gap: $espaco-3;
+}
+
+.cartao-rma {
+    background-color: $cor-superficie;
+    border: 1px solid $cor-borda;
+    border-radius: $raio-medio;
+    padding: $espaco-4;
+
+    p {
+        margin: $espaco-1 0 0;
+    }
+}
+
+.cartao-rma__cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $espaco-3;
+}
+
+.estado-vazio {
+    color: $cor-texto-suave;
+    background-color: $cor-superficie;
+    border: 1px dashed $cor-borda;
+    border-radius: $raio-medio;
+    padding: $espaco-6;
+    text-align: center;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 $espaco-3;
+    border-radius: 999px;
+    background-color: $cor-borda;
+    color: $cor-texto;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge--entrada {
+    background-color: color.mix(#ffffff, $cor-status-entrada, 82%);
+    color: $cor-status-entrada;
+}
+
+.status-badge--recebido {
+    background-color: color.mix(#ffffff, $cor-status-recebido, 82%);
+    color: $cor-status-recebido;
+}
+
+.status-badge--encaminhado {
+    background-color: color.mix(#ffffff, $cor-status-encaminhado, 82%);
+    color: $cor-status-encaminhado;
+}
+
+.status-badge--concluido {
+    background-color: color.mix(#ffffff, $cor-status-concluido, 82%);
+    color: $cor-status-concluido;
+}
+
+.status-badge--arquivado {
+    background-color: color.mix(#ffffff, $cor-status-arquivado, 82%);
+    color: $cor-status-arquivado;
+}
+
+@media (min-width: $quebra-md) {
+    .app-shell__menu-button {
+        display: none;
+    }
+
+    .app-shell__drawer {
+        display: none !important;
+    }
+
+    .grade-filas {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .cartoes-rma {
+        display: none;
+    }
+
+    .tabela-v3 {
+        display: table;
+    }
+}
+
+@media (min-width: $quebra-lg) {
+    .grade-filas {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .pagina__titulo {
+        font-size: 1.75rem;
+    }
+}
+
+// Ajustes de cascata: rail so aparece no desktop; drawer some no desktop.
+.app-shell__rail {
+    display: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (min-width: $quebra-md) {
+    .app-shell__rail {
+        display: flex;
+    }
+
+    .app-shell__drawer {
+        display: none !important;
+    }
+}

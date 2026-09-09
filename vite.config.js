@@ -13,6 +13,8 @@ export default defineConfig({
                 // não precisa de plugin extra além de `sass` como devDependency).
                 'resources/js/temas/v1.js',
                 'resources/js/temas/v2.js',
+                // Tema V3 - Console Operacional Adaptativa (oculto, QA via /v3).
+                'resources/js/temas/v3.js',
                 // Gateway de login compartilhado (correção Fase 8, 2026-08-25) - não
                 // pertence a nenhum tema, ver resources/sass/identidade/login.scss.
                 'resources/js/identidade/login.js',

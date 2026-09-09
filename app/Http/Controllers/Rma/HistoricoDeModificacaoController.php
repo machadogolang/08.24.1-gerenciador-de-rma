@@ -24,7 +24,7 @@ class HistoricoDeModificacaoController extends Controller
             ->latest()
             ->paginate(20);
 
-        return view('rma.historico.index', [
+        return view_do_tema('rma.historico.index', [
             'titulo' => 'Histórico de modificações de RMA',
             'modificacoes' => $modificacoes,
         ]);

@@ -24,7 +24,7 @@ class HistoricoDeAcessoController extends Controller
             ->latest()
             ->paginate(20);
 
-        return view('identidade.historico-de-acesso.index', [
+        return view_do_tema('identidade.historico-de-acesso.index', [
             'titulo' => 'Histórico de acesso',
             'tentativas' => $tentativas,
         ]);

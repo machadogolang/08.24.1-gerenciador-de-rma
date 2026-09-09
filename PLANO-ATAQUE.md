@@ -82,8 +82,9 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   - [x] T3-08 - Implementar shell oculto.
   - [x] T3-09 - Dashboard.
   - [x] T3-10 - RMAs listagem.
-  - [ ] T3-11 - RMA detalhe.
-  - [ ] T3-12 - RMA formularios.
+  - [x] T3-11 - RMA detalhe (ver A7/T3-11 acima; linha da frente V3 reconciliada em 2026-09-09).
+  - [R] T3-12 - RMA formularios (em execucao nesta rodada).
+    Checkpoint: `docs/produto/2026-09-09-rodada-t3-12-formularios-rma-v3.md`.
   - [ ] T3-13 - Parceiros.
   - [ ] T3-14 - Usuarios/admin.
   - [ ] T3-15 - Relatorios.

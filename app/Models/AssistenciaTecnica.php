@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Compartilhado\Tenant\PertenceATenant;
+
 use App\Parceiros\Concerns\TemEnderecoEContato;
 use Database\Factories\AssistenciaTecnicaFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -31,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class AssistenciaTecnica extends Model
 {
+    use PertenceATenant;
     /** @use HasFactory<AssistenciaTecnicaFactory> */
     use HasFactory, TemEnderecoEContato;
 

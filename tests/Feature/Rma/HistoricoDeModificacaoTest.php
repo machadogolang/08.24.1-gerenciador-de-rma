@@ -23,7 +23,7 @@ class HistoricoDeModificacaoTest extends TestCase
         $supervisor = User::factory()->create(['papel' => Papel::Supervisor]);
         $autor = User::factory()->create(['papel' => Papel::Operador]);
         $rma = RmaEloquent::factory()->create();
-        ModificacaoDeRma::create([
+        $modificacao = new ModificacaoDeRma([
             'rma_id' => $rma->id,
             'user_id' => $autor->id,
             'acao' => AcaoDeModificacao::Criacao,
@@ -31,6 +31,9 @@ class HistoricoDeModificacaoTest extends TestCase
             'user_agent' => 'PHPUnit',
             'estado_apos' => ['descricao' => $rma->descricao],
         ]);
+        // S8 — modificacao herda o tenant do RMA pai (mesma regra do listener).
+        $modificacao->tenant_id = $rma->tenant_id;
+        $modificacao->save();
 
         $response = $this->actingAs($supervisor)->get('/rmas-historico');
 

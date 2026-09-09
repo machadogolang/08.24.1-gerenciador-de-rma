@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Compartilhado\Tenant\PertenceATenant;
+
 use App\Parceiros\Concerns\TemEnderecoEContato;
 use Database\Factories\FornecedorFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -31,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class Fornecedor extends Model
 {
+    use PertenceATenant;
     /** @use HasFactory<FornecedorFactory> */
     use HasFactory, TemEnderecoEContato;
 

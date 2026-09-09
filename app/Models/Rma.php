@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Compartilhado\Tenant\PertenceATenant;
+
 use App\Rma\Dominio\Prioridade;
 use App\Rma\Dominio\Solucao;
 use App\Rma\Dominio\Status;
@@ -79,6 +81,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 ])]
 class Rma extends Model
 {
+    use PertenceATenant;
     /** @use HasFactory<RmaFactory> */
     use HasFactory;
 

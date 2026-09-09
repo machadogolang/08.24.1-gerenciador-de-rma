@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Compartilhado\Tenant\PertenceATenant;
+
 use App\Rma\Dominio\AcaoDeModificacao;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['rma_id', 'user_id', 'acao', 'ip', 'user_agent', 'estado_apos'])]
 class ModificacaoDeRma extends Model
 {
+    use PertenceATenant;
     protected $table = 'modificacoes_de_rma';
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Rma\Aplicacao;
 
 use App\Models\ModificacaoDeRma;
+use App\Models\Rma as RmaEloquent;
 use App\Rma\Dominio\AcaoDeModificacao;
 use App\Rma\Dominio\Eventos\RmaArquivado;
 use App\Rma\Dominio\Eventos\RmaConcluido;
@@ -38,7 +39,14 @@ final class RegistrarModificacaoDeRma
 
     public function handle(object $evento): void
     {
-        ModificacaoDeRma::create([
+        // EVO-SAAS-001 (S7/S8) — a modificacao herda o tenant do RMA pai, mesmo quando
+        // o evento roda sem ContextoDeTenant (testes, jobs futuros). Nenhuma linha de
+        // auditoria pode nascer com tenant nulo se o RMA ja tem tenant.
+        $rma = RmaEloquent::query()
+            ->withoutGlobalScopes()
+            ->find($evento->rma->id);
+
+        $modificacao = new ModificacaoDeRma([
             'rma_id' => $evento->rma->id,
             'user_id' => $evento->ator->id,
             'acao' => $this->acaoParaEvento($evento),
@@ -46,6 +54,12 @@ final class RegistrarModificacaoDeRma
             'user_agent' => request()->userAgent(),
             'estado_apos' => $evento->rma->paraSnapshot(),
         ]);
+
+        if ($rma !== null) {
+            $modificacao->tenant_id = $rma->tenant_id;
+        }
+
+        $modificacao->save();
     }
 
     private function acaoParaEvento(object $evento): AcaoDeModificacao

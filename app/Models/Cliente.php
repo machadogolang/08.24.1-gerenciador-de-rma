@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Compartilhado\Tenant\PertenceATenant;
+
 use App\Compartilhado\Uf;
 use Database\Factories\ClienteFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -26,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class Cliente extends Model
 {
+    use PertenceATenant;
     /** @use HasFactory<ClienteFactory> */
     use HasFactory;
 

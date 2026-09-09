@@ -2,6 +2,8 @@
 
 namespace App\Rma\Infraestrutura\Migracao\Importadores;
 
+use App\Rma\Infraestrutura\Migracao\Concerns\GaranteContextoCellSystem;
+
 use App\Models\Cliente;
 use App\Rma\Infraestrutura\Migracao\Concerns\AtualizaOuCriaPorNomeNormalizado;
 use App\Rma\Infraestrutura\Migracao\Concerns\ConcatenaObservacaoSgvFr;
@@ -17,6 +19,7 @@ use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
  */
 final class ImportarClientes
 {
+    use GaranteContextoCellSystem;
     use AtualizaOuCriaPorNomeNormalizado;
     use ConcatenaObservacaoSgvFr;
     use ExecutaComRollbackEmDryRun;
@@ -27,6 +30,7 @@ final class ImportarClientes
 
     public function executar(RelatorioDeReconciliacao $relatorio, bool $dryRun = false): void
     {
+        $this->garantirContextoCellSystem();
         $origem = $this->conexao->cliente();
         $total = 0;
         $processados = 0;

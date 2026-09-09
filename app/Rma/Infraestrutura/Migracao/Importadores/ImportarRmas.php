@@ -2,6 +2,8 @@
 
 namespace App\Rma\Infraestrutura\Migracao\Importadores;
 
+use App\Rma\Infraestrutura\Migracao\Concerns\GaranteContextoCellSystem;
+
 use App\Models\Rma as RmaEloquent;
 use App\Models\User;
 use App\Parceiros\Aplicacao\EncontrarOuCriarCliente;
@@ -30,6 +32,7 @@ use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
  */
 final class ImportarRmas
 {
+    use GaranteContextoCellSystem;
     use ExecutaComRollbackEmDryRun;
 
     public function __construct(
@@ -42,6 +45,7 @@ final class ImportarRmas
 
     public function executar(RelatorioDeReconciliacao $relatorio, bool $dryRun = false, bool $forcar = false): void
     {
+        $this->garantirContextoCellSystem();
         $origem = $this->conexao->bd();
         $total = 0;
         $processados = 0;

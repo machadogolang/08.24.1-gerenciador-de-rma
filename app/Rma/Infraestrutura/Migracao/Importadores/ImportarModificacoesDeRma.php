@@ -2,6 +2,8 @@
 
 namespace App\Rma\Infraestrutura\Migracao\Importadores;
 
+use App\Rma\Infraestrutura\Migracao\Concerns\GaranteContextoCellSystem;
+
 use App\Models\ModificacaoDeRma;
 use App\Models\Rma as RmaEloquent;
 use App\Models\User;
@@ -26,6 +28,7 @@ use Illuminate\Support\Facades\Schema;
  */
 final class ImportarModificacoesDeRma
 {
+    use GaranteContextoCellSystem;
     use ExecutaComRollbackEmDryRun;
 
     public function __construct(
@@ -39,6 +42,7 @@ final class ImportarModificacoesDeRma
 
     public function executar(RelatorioDeReconciliacao $relatorio, bool $dryRun = false): void
     {
+        $this->garantirContextoCellSystem();
         if (! $this->disponivel()) {
             return;
         }

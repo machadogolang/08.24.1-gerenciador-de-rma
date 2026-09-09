@@ -24,6 +24,7 @@ class CompanyUserTest extends TestCase
     {
         $empresa = Company::factory()->create();
         $usuario = User::factory()->create();
+        $usuario->empresas()->detach();
 
         $usuario->empresas()->attach($empresa, ['papel' => Papel::Operador, 'ativo' => true]);
 
@@ -39,6 +40,7 @@ class CompanyUserTest extends TestCase
         $empresaA = Company::factory()->create(['nome' => 'Empresa A']);
         $empresaB = Company::factory()->create(['nome' => 'Empresa B']);
         $usuario = User::factory()->create();
+        $usuario->empresas()->detach();
 
         $usuario->empresas()->attach($empresaA, ['papel' => Papel::Supervisor]);
         $usuario->empresas()->attach($empresaB, ['papel' => Papel::Operador]);
@@ -51,6 +53,7 @@ class CompanyUserTest extends TestCase
     {
         $empresa = Company::factory()->create();
         $usuario = User::factory()->create();
+        $usuario->empresas()->detach();
         $usuario->empresas()->attach($empresa, ['papel' => Papel::Leitura]);
 
         $this->expectException(QueryException::class);

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Identidade\Dominio\Papel;
 use App\Identidade\Dominio\TemaPreferido;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -36,6 +37,25 @@ class UserFactory extends Factory
             'tema_preferido' => TemaPreferido::V1,
             'anotacao' => null,
         ];
+    }
+
+    /**
+     * EVO-SAAS-001 (S4) — todo usuário de teste nasce vinculado ao tenant semente
+     * CellSystem, preservando o papel do usuário no vínculo. Isso mantém a suíte atual
+     * autenticável quando o middleware de tenant passa a falhar sem vínculo.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (User $usuario): void {
+            $cell = Company::query()->firstOrCreate(
+                ['nome' => 'CellSystem'],
+                ['documento' => null, 'ativa' => true],
+            );
+
+            $usuario->empresas()->syncWithoutDetaching([
+                $cell->id => ['papel' => $usuario->papel, 'ativo' => true],
+            ]);
+        });
     }
 
     /**

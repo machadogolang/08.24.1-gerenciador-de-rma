@@ -20,6 +20,7 @@ use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Infraestrutura\RmasEmBanco;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
+use App\Compartilhado\Tenant\ContextoDeTenant;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(RepositorioDeRmas::class, RmasEmBanco::class);
+
+        // EVO-SAAS-001 (S4) — contexto de tenant por request, preenchido pelo
+        // middleware `ResolverTenantAtivo`.
+        $this->app->singleton(ContextoDeTenant::class);
     }
 
     /**

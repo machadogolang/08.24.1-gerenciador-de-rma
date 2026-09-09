@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\ResolverTemaAtivo;
+use App\Http\Middleware\ResolverTenantAtivo;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -27,6 +28,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // `temaAtivo` com as views; `view_do_tema()` (app/Support/view_do_tema.php)
         // usa esse valor para resolver `temas.{tema}.<view>`.
         $middleware->appendToGroup('web', ResolverTemaAtivo::class);
+        // EVO-SAAS-001 (S4) — resolve tenant depois do tema; roda antes dos
+        // controllers autenticados (guest continua sem contexto).
+        $middleware->appendToGroup('web', ResolverTenantAtivo::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

@@ -886,3 +886,11 @@ button:disabled {
         letter-spacing: 1px;
     }
 }
+
+// Foco por teclado de qualquer ação nativa dos dois temas (além do `.acao`) —
+// outline visível, sem remover substituto.
+button:focus-visible,
+a:focus-visible {
+    outline: 1px solid #fff;
+    outline-offset: 1px;
+}

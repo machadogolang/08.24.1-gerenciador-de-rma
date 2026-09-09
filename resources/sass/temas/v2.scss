@@ -244,3 +244,10 @@ button:disabled {
         letter-spacing: 1px;
     }
 }
+
+// Foco por teclado de qualquer ação nativa dos dois temas (além do `.acao`).
+button:focus-visible,
+a:focus-visible {
+    outline: 1px solid #f67d7d;
+    outline-offset: 1px;
+}

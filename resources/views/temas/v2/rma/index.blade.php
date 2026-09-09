@@ -73,7 +73,7 @@
         </div>
 
         <div id="novo_rma" class="tab-pane fade">
-            <p><a href="{{ rota_tema('rmas.create') }}" class="btn formSubmit">Abrir novo RMA</a></p>
+            <p><a href="{{ rota_tema('rmas.create') }}" class="acao acao--primaria btn formSubmit">Abrir novo RMA</a></p>
         </div>
 
         <div id="entrada" class="tab-pane fade">

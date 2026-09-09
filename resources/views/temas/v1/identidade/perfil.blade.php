@@ -13,7 +13,7 @@
 
     <form method="POST" action="{{ route('tema.alternar') }}">
         @csrf
-        <button type="submit">Alternar tema (atual: {{ $usuario->tema_preferido->value }})</button>
+        <button type="submit" class="acao acao--secundaria">Alternar tema (atual: {{ $usuario->tema_preferido->value }})</button>
     </form>
 
     <h2>Trocar senha</h2>

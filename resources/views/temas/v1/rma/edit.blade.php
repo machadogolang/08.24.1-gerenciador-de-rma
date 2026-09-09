@@ -14,6 +14,6 @@
         @method('PUT')
         @include('temas.v1.rma._campos', ['registro' => $registro, 'fabricantes' => $fabricantes, 'fornecedores' => $fornecedores])
         <button type="submit" class="buttonSave">Salvar</button>
-        <a href="{{ rota_tema('rmas.show', ['rma' => $registro->id]) }}">Voltar</a>
+        <a href="{{ rota_tema('rmas.show', ['rma' => $registro->id]) }}" class="acao acao--secundaria">Voltar</a>
     </form>
 @endsection

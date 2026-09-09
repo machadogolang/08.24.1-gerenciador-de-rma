@@ -33,5 +33,5 @@ marcado disponível abaixo.</p>
     <label>RMA
         <input type="number" name="rma_id" required>
     </label>
-    <button type="submit">Marcar crédito disponível</button>
+    <button type="submit" class="acao acao--primaria">Marcar crédito disponível</button>
 </form>

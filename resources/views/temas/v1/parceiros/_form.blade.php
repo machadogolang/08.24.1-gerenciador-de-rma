@@ -110,6 +110,6 @@
         </table>
 
         <button type="submit" class="buttonSave">Salvar</button>
-        <a href="{{ rota_tema('parceiros.' . $tipo . '.index') }}">Voltar</a>
+        <a href="{{ rota_tema('parceiros.' . $tipo . '.index') }}" class="acao acao--secundaria">Voltar</a>
     </form>
 @endsection

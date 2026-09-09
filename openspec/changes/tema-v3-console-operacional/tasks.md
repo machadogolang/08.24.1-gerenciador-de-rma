@@ -22,8 +22,10 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
 
 ## Implementacao futura (gate pendente)
 
-- [ ] T3-08 - Implementar shell oculto (entry Vite e layout base).
-- [ ] T3-09 - Dashboard (busca, filas, alertas, contadores acionaveis).
+- [x] T3-08 - Fundacao oculta e shell (entry Vite, tokens, layout, drawer/rail).
+  Evidencia: commits 06ed7a5/572d20b/1bc15ea e tests/Feature/Temas/RenderizaTemaV3Test.php.
+- [x] T3-09 - Dashboard operacional (busca, filas, alertas e contadores acionaveis).
+  Evidencia: 572d20b e Playwright TemaV3PrimeiraTranche.
 - [ ] T3-10 - RMAs listagem (tabela densa + cartoes mobile + filtros).
 - [ ] T3-11 - RMA detalhe (cabecalho operacional + secoes + historico).
 - [ ] T3-12 - RMA formularios (secoes, 2 colunas por relacao).

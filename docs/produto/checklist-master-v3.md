@@ -455,6 +455,12 @@ aprovados; nunca por mudança de cor sobre o Tema 1/2.
 - [ ] **QA H-045 (T3-20) - acessibilidade do Tema 3** (teclado, foco, ARIA, alvo mínimo,
   cor nunca como único indicador).
 
+- [x] **T3-08 - fundacao/shell oculto do Tema V3** (routes /v3, bundle Vite,
+  tokens, drawer/rail) - commit 06ed7a5 e tests Feature/Browser.
+- [x] **T3-09 - dashboard operacional do Tema V3** - commit 572d20b.
+- [x] **T3-10 - listagem operacional de RMAs do Tema V3** - commits 1bc15ea/2672847.
+- [ ] **T3-11+ e T3-GATE** - continuam pendentes; V3 nao selecionavel.
+
 ### H.7 Evoluções justificadas
 
 - [ ] **EVO H-046 (`EVO-UX-002`) - pesquisa global/lançador** (número, SN, NF, descrição,

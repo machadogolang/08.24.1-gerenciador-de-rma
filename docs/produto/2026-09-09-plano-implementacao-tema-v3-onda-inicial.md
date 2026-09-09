@@ -11,11 +11,11 @@ Data: 2026-09-09. Status: [R] REVISADO (aprovado para execucao desta tranche).
 
 ## Escopo desta rodada
 
-- [ ] T3-08 - Fundacao oculta: enum com caso V3 (sem toggle publico), prefixo de
+- [x] T3-08 - Fundacao oculta: enum com caso V3 (sem toggle publico), prefixo de
   rota `/v3`, middleware forcando V3, bundle Vite proprio, tokens e shell.
-- [ ] T3-09 - Dashboard operacional: busca rapida, filas e alertas com destino
+- [x] T3-09 - Dashboard operacional: busca rapida, filas e alertas com destino
   real; sem criar novo motor de busca.
-- [ ] T3-10 - Listagem operacional de RMAs com filtros enderecaveis e cartoes
+- [x] T3-10 - Listagem operacional de RMAs com filtros enderecaveis e cartoes
   mobile.
 
 Fora de escopo: detalhe/formulario/parceiros/admin/relatorios V3, selecao publica

@@ -42,9 +42,9 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
   - [x] T3-05 - Contrato de selecao explicita V1/V2/V3 (documental).
   - [x] T3-06 - Spike documental Tailwind x CSS semantico.
   - [x] T3-07 - OpenSpec `tema-v3-console-operacional`.
-  - [ ] T3-08 - Implementar shell oculto.
-  - [ ] T3-09 - Dashboard.
-  - [ ] T3-10 - RMAs listagem.
+  - [x] T3-08 - Implementar shell oculto.
+  - [x] T3-09 - Dashboard.
+  - [x] T3-10 - RMAs listagem.
   - [ ] T3-11 - RMA detalhe.
   - [ ] T3-12 - RMA formularios.
   - [ ] T3-13 - Parceiros.

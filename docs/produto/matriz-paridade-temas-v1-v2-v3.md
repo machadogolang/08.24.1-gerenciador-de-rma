@@ -88,3 +88,10 @@ A especificacao do Tema V3 foi refinada sem implementacao. Ver
 `docs/arquitetura/2026-09-09-spike-t3-tailwind-vs-css-semantico-v3.md` e
 OpenSpec `openspec/changes/tema-v3-console-operacional/`. V3 continua `planejado`
 na coluna Tema 3 e permanece nao selecionavel.
+
+## Primeira tranche V3 implementada (2026-09-09, oculta)
+
+T3-08 (fundacao/shell), T3-09 (dashboard) e T3-10 (listagem RMAs) foram
+implementados somente sob rotas `/v3`, sem alterar V1/V2, seletor ou preferencia
+de usuario. V3 permanece `planejado`/oculto enquanto a matriz nao fechar.
+Referencia: `docs/produto/2026-09-09-checkpoint-arquitetural-tema-v3.md`.

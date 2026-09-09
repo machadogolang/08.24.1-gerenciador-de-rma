@@ -360,11 +360,10 @@ avançar antes, código não sai do seletor.
   Fechado por evidência (CP23, commit `a8e0daa`): `RmaController::index` carrega
   as abas por status sempre, independente de termo de busca.
 - [~] **DEV H-013 (`FRONT-003`) — dar shell/navegação comuns + contrato de
-  ações/botões.** Em execução (2026-09-09): `/rmas-credito` integrado ao shell V1/V2
-  (commit `df0d02e`); UI-02B/C/D concluídas (contrato `.acao` aplicado em Parceiros,
-  RMA, ciclo de vida e crédito/formulários; ver `2026-09-09-investigacao-contrato-
-  visual-acoes-botoes.md`); RCD/RPEC/RMPE, alertas, históricos e logística pendentes
-  conforme OpenSpec da frente (UI-03/UI-04).
+  ações/botões.** Em execução (2026-09-09): `/rmas-credito` no shell V1/V2; UI-02B/C/D
+  concluídas (contrato `.acao`, incl. calibração de perigo V1); UI-03 (RCD/RPEC/RMPE)
+  e UI-04 (alertas, históricos, logística) concluídas em shell com impressão limpa
+  (`relatorio-print`) e filtros `.acao`. Restam UI-05…UI-08 no OpenSpec da frente.
 - [x] **DEV H-014 (`FRONT-004`) — remover scaffold `welcome`.** Fechado em 2026-09-09:
   `/` redireciona convidado para `login` e autenticado para `dashboard`;
   `welcome.blade.php` e os dois `ExampleTest` placeholders removidos; cobertura nova em

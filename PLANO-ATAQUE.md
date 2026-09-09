@@ -7,21 +7,18 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
 
 Frente ativa **FRONT-003** (shell dos temas em telas secundárias + contrato de
 ações/botões):
-- UI-01/UI-02 concluído: `/rmas-credito` com shell V1/V2 e teste de regressão.
-- UI-02B/C/D concluído: auditoria e contrato visual de ações documentados em
-  `docs/produto/2026-09-09-investigacao-contrato-visual-acoes-botoes.md`; Parceiros,
-  RMA listagens/detalhe, ciclo de vida e formulários/crédito/identidade aplicam o
-  contrato; Playwright dirigido cobre cursor/hover/TAB/semântica.
-- Próximo item: **UI-03** — RCD/RPEC/RMPE em shell com impressão limpa; filtros já
-  nascem com `.acao`.
-- Depois: UI-04 (alertas/históricos/logística), UI-05 (Controle V1), UI-06
-  (identificador RMA), UI-07 (FRONT-006), UI-08 (Playwright).
+- Concluído: UI-01/02 (crédito), UI-02B/C/D (auditoria/contrato + calibração de
+  perigo V1), UI-03 (RCD/RPEC/RMPE em shell com impressão limpa) e UI-04 (alertas,
+  históricos RMA/acesso, frete e boletins em shell).
+- Próximo item: **UI-05** — Controle V1: alinhamento do bloco representante e
+  overflow local, preservando fidelidade do painel do legado.
+- Depois: UI-06 (identificador RMA), UI-07 (FRONT-006), UI-08 (Playwright/print).
 
-Investigação/OpenSpec: `docs/produto/2026-09-09-investigacao-front-003-shell-telas-secundarias.md`,
-`docs/produto/2026-09-09-investigacao-contrato-visual-acoes-botoes.md` e
-`openspec/changes/front-003-shell-telas-secundarias/`.
+Investigação/OpenSpec: `docs/produto/2026-09-09-investigacao-contrato-visual-acoes-botoes.md`
+e `openspec/changes/front-003-shell-telas-secundarias/`.
 
-Suíte: **477 testes / 1242 assertions PHPUnit verdes** (após UI-02B/C/D).
+Suíte: **493 testes / 1318 assertions PHPUnit verdes**; Playwright dirigido verde
+(2 testes).
 
 ## DEPOIS
 
@@ -32,8 +29,8 @@ Suíte: **477 testes / 1242 assertions PHPUnit verdes** (após UI-02B/C/D).
 
 - S13.2/Playwright final depende da frente FRONT-003 fechada.
 - S14 depende de S13 e das pendências SaaS.
-- UI-08 incorpora a prova de ações (`computedStyle.cursor`, hover, TAB, semântica)
-  já iniciada em UI-02D.
+- UI-08 incorpora a prova de ações (cursor/hover/TAB/semântica) e o print dos
+  relatórios (UI-03).
 
 ## DECISÕES ADIADAS
 

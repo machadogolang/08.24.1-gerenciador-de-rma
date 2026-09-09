@@ -180,12 +180,16 @@ em `<form>` com CSRF/Gates/rotas — nenhum JS de navegação novo.
   foco global).
 - `7a17120` — `#QA-RMA`: Playwright dirigido (`ContratoVisualAcoes.spec.ts`).
 - Calibração desta revisão — Tema V1 danger-base `#CD5C5C` → `#904141` (hover
-  `#CD5C5C`); Tema V2 permanece `#904141`/`#F67D7D`.
+  `#CD5C5C`); Tema V2 permanece `#904141`/`#F67D7D` (commit `80891b2`).
+- `209309c` — `#FRONT-RMA`: UI-03 — RCD/RPEC/RMPE em shell V1/V2 com
+  `relatorio-print` e filtros `.acao`.
+- `838c7bf`/`8868a9e`/`75c110d` — `#FRONT-RMA`: UI-04 — alertas, históricos
+  RMA/acesso e logística (frete/boletins) em shell V1/V2.
 
 Prova: PHPUnit completo 477 testes / 1242 assertions; Playwright 2 testes (V1+V2:
 Parceiros com computed cursor/hover/TAB; detalhe RMA + crédito); Vite build verde.
 
 Resíduo classificado (sem contrato proposital): views genéricas órfãs (UI-07),
-relatórios standalone RPEC/RMPE (UI-03, nascerão com contrato), componentes
-históricos de geometria própria (`buttonSave`, `formSubmit`, `formButtonEnviarPanel`,
-`JSformLocalizarButton`) — agora com cursor/foco globais por tema.
+componentes históricos de geometria própria (`buttonSave`, `formSubmit`,
+`formButtonEnviarPanel`, `JSformLocalizarButton`) — agora com cursor/foco globais
+por tema. UI-05 (Controle V1) segue com fidelidade própria do painel.

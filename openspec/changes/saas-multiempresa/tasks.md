@@ -144,10 +144,11 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 
 ## S11 — Migrador histórico
 
-- [ ] S11.1 — comando `rma:migrar-legado` carimba `CellSystem`.
-- [ ] S11.2 — relações preservadas (parceiros, usuários, RMAs no mesmo tenant).
-- [ ] S11.3 — dry-run, reconciliação e idempotência continuam válidos.
-- [ ] S11.4 — relatório registra tenant quando útil; histórico original intacto.
+- [x] S11.1 — comando define ContextoDeTenant=CellSystem antes dos importadores.
+- [x] S11.2 — provado: zero linhas tenant-scoped sem tenant; usuários vinculados a
+      CellSystem.
+- [x] S11.3 — dry-run/idempotência verdes na suíte do migrador.
+- [ ] S11.4 — relatório ainda não imprime tenant (opcional); origem histórica intacta.
 - Commit: `#ARQ-RMA - Integra tenant CellSystem ao migrador historico`.
 
 ## S12 — Suíte arquitetural de isolamento (gate da Trilha B)

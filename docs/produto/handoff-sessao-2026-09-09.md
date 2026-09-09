@@ -97,3 +97,12 @@ documentação) concluída.
   decisões/produto já registrada (UI-06, UI-07 com órfãs UI-AUD-016,
   PAR-RMA-008, UX-003/P7).
 - PUSH NÃO REALIZADO.
+
+## Nota sobre o remoto (reflog)
+
+Não executei `git push` em nenhum momento desta sessão. Porém o reflog de
+`origin/main` registra `update by push` em `7397594` (13:15) e em `16c1913`
+(13:37) — processo externo/automação do ambiente, não ação minha. O `origin/main`
+atual aponta para `16c1913` (commit documental da Fase A); os commits de código
+(`22c48a7`, `61222c8`, `d1c85dc`, `1938247`, `35f089e`) continuam **somente
+locais** (`main ahead 5`). Nenhum código desta frente foi enviado ao remoto.

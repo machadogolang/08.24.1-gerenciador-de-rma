@@ -27,20 +27,21 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
       tentativas_de_acesso e tabelas de framework — mapa acima).
 - [x] S1.6 — mapear consumidores por model (grep por `use App\Models\...`; resultado
       no mapa acima).
-- [ ] S1.7 — registrar decisões adiadas (design §Decisões adiadas).
+- [x] S1.7 — registrar decisões adiadas (design §Decisões adiadas).
 - Commit documental sugerido: `#DOC-RMA - Especifica fundacao SaaS multiempresa`.
 
 ## S2 — Fundação de Company
 
-- [ ] S2.1 — migration `create_companies_table`.
-- [ ] S2.2 — model `App\Models\Company`.
-- [ ] S2.3 — migration `create_company_user_table` (unique company/user, índices).
-- [ ] S2.4 — relacionamento `User::empresas()`/`Company::usuarios()`.
-- [ ] S2.5 — coluna `papel` no pivô (mesmo enum Papel).
-- [ ] S2.6 — constraints/índices e testes de relacionamento
-      (`tests/Feature/Tenant/CompanyUserTest.php`).
-- [ ] S2.7 — factories/seeds determinísticas (`CompanyFactory`, `CompanyUserFactory`).
-- [ ] S2.8 — `users.papel` permanece; transição compatível registrada.
+- [x] S2.1 — migration `create_companies_table`.
+- [x] S2.2 — model `App\Models\Company`.
+- [x] S2.3 — migration `create_company_user_table` (unique company/user, índices).
+- [x] S2.4 — relacionamento `User::empresas()`/`Company::usuarios()` com pivot tipado `CompanyUser`.
+- [x] S2.5 — coluna `papel` no pivô (mesmo enum Papel).
+- [x] S2.6 — constraints/índices e testes de relacionamento
+      (`tests/Feature/Tenant/CompanyUserTest.php`, 4 testes verdes).
+- [x] S2.7 — factories/seeds determinísticas (`CompanyFactory`; pivot é tipado e testado sem
+      factory própria nesta onda — seeds/tenant aparecem na S3).
+- [x] S2.8 — `users.papel` permanece; transição compatível registrada no design.
 - Commit: `#ARQ-RMA - Introduz Company e vinculo de usuarios`.
 
 ## S3 — Tenant inicial e backfill

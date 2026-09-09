@@ -15,9 +15,9 @@ class CompanyUserTest extends TestCase
 
     public function test_factory_cria_empresa(): void
     {
-        $empresa = Company::factory()->create(['nome' => 'CellSystem']);
+        $empresa = Company::factory()->create(['nome' => 'Empresa de Teste']);
 
-        $this->assertDatabaseHas('companies', ['id' => $empresa->id, 'nome' => 'CellSystem', 'ativa' => true]);
+        $this->assertDatabaseHas('companies', ['id' => $empresa->id, 'nome' => 'Empresa de Teste', 'ativa' => true]);
     }
 
     public function test_usuario_participa_de_uma_empresa_com_papel_no_vinculo(): void

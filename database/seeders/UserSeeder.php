@@ -24,8 +24,10 @@ class UserSeeder extends Seeder
             throw new LogicException('O UserSeeder de QA nao pode ser executado em producao.');
         }
 
+        $cell = \App\Models\Company::query()->where('nome', 'CellSystem')->firstOrFail();
+
         foreach (Papel::cases() as $papel) {
-            User::query()->updateOrCreate(
+            $usuario = User::query()->updateOrCreate(
                 ['email' => sprintf('%s@rma.local', strtolower($papel->name))],
                 [
                     'name' => $papel->name,
@@ -35,6 +37,12 @@ class UserSeeder extends Seeder
                     'email_verified_at' => now(),
                 ]
             );
+
+            // EVO-SAAS-001 (S3.2/S3.3) — QA local: todo usuário entra na empresa
+            // semente com o papel atual preservado no vínculo.
+            $usuario->empresas()->syncWithoutDetaching([
+                $cell->id => ['papel' => $papel, 'ativo' => true],
+            ]);
         }
     }
 }

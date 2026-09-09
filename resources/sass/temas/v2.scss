@@ -765,3 +765,67 @@ select:disabled {
 .InputSeek {
   margin-left: -16px !important;
 }
+
+
+// PAR-RES-D-01..04 - formularios de parceiros V2 na composicao historica 15.8.1:
+// grade de colunas, controles escuros e rotulos claros; sem vazar para V1.
+.form-parceiro-v2 {
+  .form-group {
+    label {
+      color: #f8d6c1;
+      letter-spacing: 1px;
+    }
+
+    .formLabel {
+      float: left;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .formLabelTextArea {
+      float: left;
+      width: 100%;
+    }
+
+    .form-control {
+      clear: both;
+      background-color: rgba(0, 0, 0, 0.1);
+      color: #f8d6c1;
+      border: 1px solid #3e3b3a;
+      border-radius: 0;
+      box-shadow: none;
+      font-size: 12px;
+      height: 30px;
+      padding: 5px;
+
+      &:focus {
+        border-color: #f67d7d;
+        box-shadow: 0 0 0 1px rgba(246, 125, 125, 0.25);
+      }
+    }
+
+    textarea.form-control {
+      height: auto;
+      border: 1px solid #3f3d3d;
+      border-left: 0;
+      border-right: 0;
+    }
+  }
+
+  &__controle--curto {
+    width: 110px;
+  }
+
+  &__salvar {
+    float: right;
+    clear: both;
+    margin-top: 20px;
+    width: 88px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0 !important;
+    background-color: #224a5d !important;
+    color: #fff !important;
+  }
+}

@@ -7,15 +7,21 @@ de estado e lacunas: `docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`.
 
 ## Estado geral
 
-- Trilha A formalmente encerrada em 2026-09-04 (`F10-GATE-07`); nesta sessão os gates
-  `G-04..G-07` foram reconciliados como `[x]` no checklist com evidência.
-- `G-08` (liberação formal da Trilha B) permanece aberto e depende da escolha da
-  primeira iniciativa pelo usuário; nenhuma feature `EVO-*` foi implementada.
-- `main` local limpa e adiante de `origin/main` (nada foi enviado/pushado).
-- Suíte PHPUnit renovada nesta sessão: **396 testes / 967 assertions, 100% verde**
-  (baseline era 388/941; 2 placeholders removidos e 10 testes reais adicionados).
+- Trilha A formalmente encerrada em 2026-09-04 (`F10-GATE-07`); `G-04..G-07` fechados
+  e `G-08` (Trilha B liberada) fechado em 2026-09-09 no checklist, por decisão do
+  usuário para execução controlada do EVO-SAAS-001.
+- **EVO-SAAS-001 em execução**: S1–S8 implementadas e commitadas (OpenSpec/mapa,
+  Company/company_user, tenant CellSystem/backfill, TenantContext, isolamento por
+  construção, parceiros/RMA/auditoria A×B); restam S9–S14 e o hardening S3.6.
+- `main` local limpa e sincronizada com `origin/main` em `46c8204` nesta retomada
+  (nada foi enviado/pushado por agente).
+- Suíte PHPUnit corrente: **431 testes / 1023 assertions, 100% verde**.
 - Runtime Docker local iniciado para validação (`rma-v3-mysql-1`,
   `rma-v3-laravel.test-1`, `rma-v3-mailpit-1`); imagens locais disponíveis.
+
+O histórico dos primeiros ciclos da sessão (baseline FRONT-004/ARQ-004 etc., suíte
+396/967) permanece nas seções abaixo como registro da sessão — não compete com o
+estado corrente acima.
 
 ## Incidente operacional registrado
 

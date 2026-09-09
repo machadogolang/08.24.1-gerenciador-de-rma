@@ -34,7 +34,7 @@ sobre Git, OpenSpec, investigações e documentos de planejamento.
 
 A matriz funcional tem 48 itens: 44 `PARIDADE`, 2 `NÃO RECONSTRUIR`, 1 `RETOMAR
 IDEIA` e 1 (`LEG-RMA-002`) homologado em parecer formal. A suíte completa tem
-396 testes/967 assertions no PHPUnit (100% verde nesta sessão) e 58 testes automatizados no Playwright
+431 testes/1023 assertions no PHPUnit (100% verde nesta sessão) e 58 testes automatizados no Playwright
 Browser (100% verde).
 
 ### Gate da Trilha A — APROVADO (2026-09-04)

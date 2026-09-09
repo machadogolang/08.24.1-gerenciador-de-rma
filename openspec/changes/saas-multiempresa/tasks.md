@@ -117,14 +117,16 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 
 ## S9 — Papel por company_user
 
-- [ ] S9.1 — mapear consumidores de `users.papel`.
-- [ ] S9.2 — leitura do papel do vínculo ativo.
-- [ ] S9.3 — Policies/Gates adaptados.
-- [ ] S9.4 — preservar autorização atual (mesmos papéis, mesmo comportamento).
-- [ ] S9.5 — testes: mesmo usuário com papéis diferentes em empresas diferentes.
-- [ ] S9.6 — impedir escalada cross-tenant (Supervisor da A não opera na B sem vínculo).
-- [ ] S9.7 — compatibilidade antiga removida só quando não houver consumidor.
-- [ ] S9.8 — cleanup final de `users.papel` se seguro.
+- [x] S9.1 — mapear consumidores de `users.papel` (`docs/produto/matriz-consumidores-papel-2026-09-09.md`).
+- [x] S9.2 — leitura do papel do vínculo ativo (`ContextoDeTenant::papelAtivo`, `User::papelAtivo()`).
+- [x] S9.3 — Policies/casos de uso/controllers adaptados ao `papelAtivo()` e alvo `papelNaEmpresa()`.
+- [x] S9.4 — autorização single-company preservada (435 testes / 1029 assertions verdes).
+- [x] S9.5 — PapelPorVinculoTest: mesmo usuário Supervisor em A e Leitura em B.
+- [x] S9.6 — teste HTTP comprova 403 na B para Supervisor de A.
+- [~] S9.7 — compatibilidade antiga reduzida; consumidores restantes são intencionais
+      (migrador/backfill/factory/fallback sem contexto). Falta remoção final na S9.8.
+- [ ] S9.8 — cleanup final de `users.papel`; não executado: ainda há consumidores
+      intencionais de runtime e migrador (registrados na matriz).
 - Commits pequenos (ex.: `#ARQ-RMA - Migra Papel para vinculo company_user`).
 
 ## S10 — Numeração RMA por empresa

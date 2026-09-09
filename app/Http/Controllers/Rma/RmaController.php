@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\Fabricante;
 use App\Models\Fornecedor;
 use App\Models\Rma as RmaEloquent;
+use App\Rma\Infraestrutura\CamposDeExibicaoDoRmaEmBanco;
 use App\Rma\Aplicacao\Alertas\ListarGruposDeAlertas;
 use App\Rma\Aplicacao\BuscarRmas;
 use App\Rma\Aplicacao\CriarRma;
@@ -236,21 +237,104 @@ class RmaController extends Controller
         return redirect(rota_tema('rmas.show', ['rma' => $rma->id]))->with('status', 'RMA criado.');
     }
 
-    public function show(int $rma, VerDetalheDoRma $caso): View
-    {
+    public function show(
+        int $rma,
+        VerDetalheDoRma $caso,
+        CamposDeExibicaoDoRmaEmBanco $camposDeExibicao,
+    ): View {
         Gate::authorize('view', RmaEloquent::class);
 
         $registro = $caso->porId($rma);
 
         abort_if($registro === null, Response::HTTP_NOT_FOUND);
 
+        $legado = $camposDeExibicao->obter($rma);
+        $fabricante = $registro->fabricanteId ? Fabricante::find($registro->fabricanteId) : null;
+        $fornecedor = $registro->fornecedorId ? Fornecedor::find($registro->fornecedorId) : null;
+        $cliente = $registro->clienteId ? Cliente::find($registro->clienteId) : null;
+
         return view_do_tema('rma.show', [
             'titulo' => 'RMA #' . $registro->id,
             'registro' => $registro,
-            'fabricante' => $registro->fabricanteId ? Fabricante::find($registro->fabricanteId) : null,
-            'fornecedor' => $registro->fornecedorId ? Fornecedor::find($registro->fornecedorId) : null,
-            'cliente' => $registro->clienteId ? Cliente::find($registro->clienteId) : null,
+            'fabricante' => $fabricante,
+            'fornecedor' => $fornecedor,
+            'cliente' => $cliente,
+            // PAR-DET-V1-01/PAR-DET-V2-01 - campos historicos de apresentacao
+            // (colunas preservadas pela Fase 9; leitura exclusiva desta tela).
+            'legado' => $legado,
+            'numeroExibicao' => $legado['numero_legado']
+                ?? $legado['numero_da_empresa']
+                ?? $registro->id,
+            'clienteEmail' => $legado['cliente_email_legado'] ?: $cliente?->email,
+            'destinatarioEmail' => $legado['destinatario_email_legado'],
+            'destinatarioFone' => $legado['destinatario_fone_legado'],
+            'destinatario' => $legado['destinatario_nome'] !== null && $legado['destinatario_nome'] !== ''
+                ? [
+                    'type' => $legado['destinatario_type'],
+                    'id' => $legado['destinatario_id'],
+                    'nome' => $legado['destinatario_nome'],
+                ]
+                : null,
+            'politicaDeGarantia' => $this->politicaDeGarantiaParaDetalhe($legado, $registro, $fabricante, $fornecedor),
         ]);
+    }
+
+    /**
+     * PAR-DET-V1-01/PAR-DET-V2-01 - selecao historica da politica exibida no detalhe
+     * (14.6.1/page/detalhes.php e 15.8.1/page/rma.php): destinatario quando existe;
+     * sem destinatario, fabricante e depois fornecedor. Nenhuma regra de ciclo de
+     * vida e alterada; e somente escolha de leitura para a tela.
+     *
+     * @param  array<string, mixed>  $legado
+     * @return array{tipo: string, nome: string, texto: string}|null
+     */
+    private function politicaDeGarantiaParaDetalhe(
+        array $legado,
+        Rma $registro,
+        ?Fabricante $fabricante,
+        ?Fornecedor $fornecedor,
+    ): ?array {
+        $politicaDe = function (?string $tipo, ?int $id): ?array {
+            if ($tipo === null || $id === null || ! class_exists($tipo)) {
+                return null;
+            }
+
+            $entidade = $tipo::query()->find($id);
+            if ($entidade === null || empty($entidade->politica_de_garantia)) {
+                return null;
+            }
+
+            return [
+                'tipo' => 'destinatario',
+                'nome' => $entidade->nome,
+                'texto' => $entidade->politica_de_garantia,
+            ];
+        };
+
+        if ($legado['destinatario_type'] !== null || $legado['destinatario_id'] !== null) {
+            $politica = $politicaDe($legado['destinatario_type'], $legado['destinatario_id']);
+            if ($politica !== null) {
+                return $politica;
+            }
+        }
+
+        if ($fabricante !== null && ! empty($fabricante->politica_de_garantia)) {
+            return [
+                'tipo' => 'fabricante',
+                'nome' => $fabricante->nome,
+                'texto' => $fabricante->politica_de_garantia,
+            ];
+        }
+
+        if ($fornecedor !== null && ! empty($fornecedor->politica_de_garantia)) {
+            return [
+                'tipo' => 'fornecedor',
+                'nome' => $fornecedor->nome,
+                'texto' => $fornecedor->politica_de_garantia,
+            ];
+        }
+
+        return null;
     }
 
     public function edit(int $rma, VerDetalheDoRma $caso): View

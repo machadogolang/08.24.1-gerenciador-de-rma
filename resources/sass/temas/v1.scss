@@ -3,3 +3,111 @@
 // da especificação visual; não inverter nem fundir os módulos sem comparar o CSS final.
 @use "v1-base";
 @use "compartilhado";
+
+
+// PAR-DET-V1-01 - gramatica do detalhe historico (BOLETIM DE DEFEITO).
+// Fontes: pattern/14.6.1.css e pattern/15.9.7.css; mesmo resultado visual do
+// runtime 14.6.1 medido em 2048x1152/1440x1000. Aparece somente no show V1.
+.TRD {
+  background-color: #2d2b2b;
+  height: 30px;
+  font-size: 12px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font-weight: normal;
+  letter-spacing: 2px;
+  color: #c89f92;
+
+  th {
+    font-weight: normal;
+  }
+}
+
+.formTRDetailD {
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.3);
+  height: 14px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  td {
+    background-color: #222;
+    padding: 5px;
+  }
+}
+
+.C1 {
+  background-color: #26222c !important;
+}
+
+.C2 {
+  background-color: #45252b;
+}
+
+.TDDX {
+  display: block;
+  box-sizing: border-box;
+  color: #b9b4b0;
+  background-color: transparent;
+  border: 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px;
+  width: 100%;
+  text-align: center;
+  min-height: 16px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.TDD_NF,
+.TDD_DEFEITO,
+.TDD_TAPOLITICA,
+.TDD_TAOBSERVACAO {
+  display: block;
+  box-sizing: border-box;
+  color: #b9b4b0;
+  background-color: #222;
+  border: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  padding: 4px 2px;
+}
+
+.TDD_DEFEITO {
+  text-align: left;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
+.TDD_TAPOLITICA,
+.TDD_TAOBSERVACAO {
+  text-align: left;
+  font-family: "Arial", "Open Sans", "Fira Mono", sans-serif;
+  white-space: pre-wrap;
+}
+
+.polinput {
+  width: 100%;
+  padding-left: 10px;
+  font-weight: normal;
+  height: 30px;
+  color: #f8c18b;
+  letter-spacing: 2px;
+}
+
+.somente-leitura {
+  pointer-events: none;
+}
+
+.detalhe-bd-acoes {
+  margin-top: 15px;
+  clear: both;
+
+  .acoes-de-transicao {
+    margin-top: 8px;
+  }
+}

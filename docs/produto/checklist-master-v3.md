@@ -438,8 +438,10 @@ aprovados; nunca por mudança de cor sobre o Tema 1/2.
 
 - [x] **ARQ H-038 (T3-01) - conceito definido.** Mesa de trabalho por fila/exceção/
   status/próxima ação em `INV-RMA-10`; densidade desktop-first adaptável.
-- [ ] **ARQ H-039 (T3-02) - spike Tailwind 4 × CSS semântico** para a fundação
-  compartilhada dos 3 temas antes de decidir a stack visual do Tema 3.
+- [x] **ARQ H-039 (T3-02) - spike Tailwind 4 × CSS semântico** para a fundação
+  compartilhada dos 3 temas antes de decidir a stack visual do Tema 3. Evidencia:
+  `docs/arquitetura/2026-09-09-spike-t3-tailwind-vs-css-semantico-v3.md`
+  (recomendacao: Sass/CSS semantico; decisao final no gate de implementacao).
 - [ ] **DEV H-040 (T3-03) - criar shell/layout base do Tema 3**, oculto e fora do
   seletor.
 - [ ] **DEV H-041 (T3-04) - implementar navegação** (rail recolhível no desktop,

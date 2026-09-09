@@ -1,5 +1,50 @@
 # Handoff de sessão - CellSystem RMA V3
 
+
+## Checkpoint atual - detalhes RMA V1/V2 e geometria V2 (2026-09-09)
+
+Rodada do dono: reproduzir quatro prints, corrigir A5 (detalhe V1), A6 (detalhe
+V2) e os residuos V2 (Encaminhado/Pesquisar); A7/T3-11 somente depois. Baseline
+inicial 8939c8f.
+
+### Estado
+
+- [x] A5 - Paridade detalhe RMA V1 (BOLETIM DE DEFEITO + grupos 4 colunas).
+- [x] A6 - Paridade detalhe RMA V2 (cabecalho + grupos 15.8.1 em leitura).
+- [x] PAR-V2-GEO-01 - abas V2 a y=47 (tabela Encaminhado e demais panes).
+- [x] PAR-V2-PESQ-01 - Pesquisar com estrutura/cores/geometria historica.
+- [ ] A7/T3-11 - Detalhe operacional do RMA no Tema V3 (nao iniciado; proximo).
+
+### Commits
+
+1. 0d2ebfb - #DOC-RMA - Detalha paridade dos detalhes e geometria do Tema V2.
+2. e91cdae - #FRONT-RMA - Restaura paridade do detalhe RMA no Tema V1.
+3. 1fc2a86 - #QA-RMA - Cobre detalhe RMA do Tema V1.
+4. 6b78ac3 - #FRONT-RMA - Restaura paridade do detalhe RMA no Tema V2.
+5. 10f786f - #QA-RMA - Cobre detalhe RMA do Tema V2.
+6. c030e87 - #FRONT-RMA - Corrige geometria residual das telas RMA no Tema V2.
+7. a71a3d8 - #QA-RMA - Cobre paridade visual das abas do Tema V2.
+8. 65e8086 - #DOC-RMA - Reconcilia paridade de detalhes V1/V2 e geometria V2.
+
+### QA real desta rodada
+
+- PHPUnit completo: 521 testes / 1511 assertions, 100% verde.
+- Playwright novo ParidadeDetalheRmaV2.spec.ts: 3/3 verdes.
+- Regressao ParidadeVisualTemaV1.spec.ts + ConsistenciaVisualControles.spec.ts:
+  21/21 verdes.
+- Vite build verde; git diff --check limpo; PUSH NAO REALIZADO.
+
+### Referencias
+
+- Addendum com IDs/medidas: docs/produto/2026-09-09-addendum-paridade-detalhe-rma-v1-v2.md.
+- Evidencias/metricas: docs/produto/screenshots-paridade-detalhe-rma-2026-09-09/.
+
+### Proximo item exato
+
+A7/T3-11 - detalhe operacional do RMA no Tema V3 (fonte de informacao agora
+completa nos detalhes V1/V2), seguindo o checkpoint aprovado.
+
+
 Data do checkpoint: 2026-09-09. Frente: **paridade total dirigida por fluxos**.
 Fonte viva: `PLANO-ATAQUE.md` e `openspec/changes/paridade-fluxos-legado-v3/`.
 

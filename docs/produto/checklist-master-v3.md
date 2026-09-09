@@ -217,7 +217,8 @@ Gate: migração real em alvo descartável e reconciliação sem diferença inex
 - [x] **QA D-03 — seed QA V3.** Dados representativos e teste de idempotência.
 - [x] **QA D-04 — screenshots F8.** Nove PNGs versionados.
 - [ ] **DOC D-05 — atualizar contagens em resumos correntes.** Preservar logs históricos.
-- [ ] **QA D-06 — auditar `ExampleTest`.** Remover/substituir placeholders sem valor.
+- [x] **QA D-06 — auditar `ExampleTest`.** Fechado em 2026-09-09: placeholders sem
+  valor removidos e substituidos por teste real da raiz (`RaizRedirecionamentoTest`).
 - [ ] **DOC D-07 — fechar OpenSpec F10 por evidência.** Nunca por intenção.
 - [x] **DOC D-08 — registrar handoff da sessão.** Estado, evidências, riscos, pendências
   e ordem de retomada em `docs/produto/handoff-sessao-2026-08-25.md`.
@@ -349,8 +350,10 @@ avançar antes, código não sai do seletor.
 - [ ] **DEV H-013 (`FRONT-003`) — dar shell/navegação comuns.** Alertas, crédito,
   relatórios, histórico e logística hoje são documentos isolados; ações de ciclo também
   precisam de contrato visual.
-- [ ] **DEV H-014 (`FRONT-004`) — remover scaffold `welcome`.** `/` ainda retorna o
-  placeholder do Laravel; revisar `ExampleTest` junto (relacionado a `D-06`).
+- [x] **DEV H-014 (`FRONT-004`) — remover scaffold `welcome`.** Fechado em 2026-09-09:
+  `/` redireciona convidado para `login` e autenticado para `dashboard`;
+  `welcome.blade.php` e os dois `ExampleTest` placeholders removidos; cobertura nova em
+  `tests/Feature/RaizRedirecionamentoTest.php` (2 testes / 4 assertions verdes).
 - [ ] **DEV H-015 (`FRONT-005`) — unificar disclosure `.pmo`.** Hoje duplicado em V1/V2,
   sem teclado nem `aria-expanded`, manipulando `style.display` direto.
 - [ ] **ARQ H-016 (`FRONT-006`) — remover views genéricas órfãs.** Só após prova de

@@ -18,10 +18,13 @@ use App\Http\Controllers\Rma\LogisticaController;
 use App\Http\Controllers\Rma\PainelDeAlertasController;
 use App\Http\Controllers\Rma\RelatorioController;
 use App\Http\Controllers\Rma\RmaController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    // FRONT-004 (INV-RMA-10) — raiz nao e scaffold: convidado vai para o login e
+    // autenticado vai para o dashboard (que redireciona a listagem do tema ativo).
+    return redirect()->route(Auth::check() ? 'dashboard' : 'login');
 });
 
 // Sessão (login/logout) — território comum aos dois temas, fora de qualquer prefixo.

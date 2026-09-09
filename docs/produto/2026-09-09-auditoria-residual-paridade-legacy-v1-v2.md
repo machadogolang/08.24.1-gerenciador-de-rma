@@ -30,9 +30,9 @@ mesmo sem screenshot apontado nesta nova sessao.
 
 | ID | Tema | Tela | Legacy | Atual | Diferenca | Causa | Classificacao | Status | Teste |
 |---|---|---|---|---|---|---|---|---|---|
-| PAR-RES-001 | V2 | Entrada | Linhas sem garantia e prioridade alta usam `TrInconformidade`; nao existe `TrUrgente`; zebra `TrZebrada1/2` | `classe_css_de_alerta()` pode gerar `TrUrgente` (prioridade alta/prazo) e `TrSemGarantia1/2` | Classes de destaque incorretas na aba Entrada | Partial `_tabela_entrada` reutiliza regra generica de alerta que mistura criterios de Recebido/Encaminhado/Concluido | BUG-CONFIRMADO | [ ] | Playwright de classes/cores por linha |
-| PAR-RES-002 | V2 | Recebido | Sem garantia e sem NF usam `TrInconformidade`; prioridade alta e prazo de 30 dias usam `TrUrgente` | Sem garantia vira `TrSemGarantia1/2`; criterio "sem NF compra/venda" ausente | Classes incorretas e criterio faltante | Mesma regra generica + dominio nao carrega sem-NF como classe | BUG-CONFIRMADO | [ ] | Playwright de classes/cores por linha |
-| PAR-RES-003 | V2 | Encaminhado | Sem garantia usa `TrInconformidade`; prioridade alta e prazo de 30 dias usam `TrUrgente` | Sem garantia vira `TrSemGarantia1/2` | Classes incorretas no destaque sem garantia | Mesma regra generica | BUG-CONFIRMADO | [ ] | Playwright de classes/cores por linha |
+| PAR-RES-001 | V2 | Entrada | Linhas sem garantia e prioridade alta usam `TrInconformidade`; nao existe `TrUrgente`; zebra `TrZebrada1/2` | `classe_css_de_alerta()` pode gerar `TrUrgente` (prioridade alta/prazo) e `TrSemGarantia1/2` | Classes de destaque incorretas na aba Entrada | Partial `_tabela_entrada` reutiliza regra generica de alerta que mistura criterios de Recebido/Encaminhado/Concluido | BUG-CONFIRMADO | [x] | Playwright de classes/cores por linha |
+| PAR-RES-002 | V2 | Recebido | Sem garantia e sem NF usam `TrInconformidade`; prioridade alta e prazo de 30 dias usam `TrUrgente` | Sem garantia vira `TrSemGarantia1/2`; criterio "sem NF compra/venda" ausente | Classes incorretas e criterio faltante | Mesma regra generica + dominio nao carrega sem-NF como classe | BUG-CONFIRMADO | [x] | Playwright de classes/cores por linha |
+| PAR-RES-003 | V2 | Encaminhado | Sem garantia usa `TrInconformidade`; prioridade alta e prazo de 30 dias usam `TrUrgente` | Sem garantia vira `TrSemGarantia1/2` | Classes incorretas no destaque sem garantia | Mesma regra generica | BUG-CONFIRMADO | [x] | Playwright de classes/cores por linha |
 | PAR-RES-004 | V2 | Concluido | Zebra binaria `TrSemGarantia1/2`/`TrZebrada1/2` sem alertas | Mesma estrutura no partial proprio | Sem diferenca confirmada | - | SEM-PROBLEMA | [R] | ampliar prova com fixture SemGarantia |
 | PAR-RES-005 | V2 | listagens | Linhas de uma linha medem 26px; linhas com quebra medem ~32px | Linhas com quebra medem ~32px; base depende do conteudo | Sem diferenca sistematica confirmada alem de dados de QA mais longos | Conteudo de QA diferente do banco Legacy | SEM-PROBLEMA | [R] | fixture curto em Playwright |
 | PAR-RES-006 | V2 | Centro de Avisos e relatorios | Cada grupo tem tabela propria | Lista generica compartilhada | Composicao por grupo ainda nao reproduzida | gap documentado desde CP22/CMP-V2-004 | PARIDADE-LEGACY | [R] | auditado em onda E |
@@ -43,7 +43,8 @@ mesmo sem screenshot apontado nesta nova sessao.
 ## Plano de ondas
 
 - [ ] ONDA A - Shell/navbar/menu/dropdown/footer (V1/V2).
-- [ ] ONDA B - Listagens/pesquisa/tabelas/zebra/sidebar (PAR-RES-001..005).
+- [x] ONDA B - Listagens/pesquisa/tabelas/zebra/sidebar (77ec2ce; PAR-RES-001..003
+  corrigidos e testados; PAR-RES-004/005 seguem como prova residual).
 - [ ] ONDA C - Create/show/edit RMA e ciclo (V1/V2).
 - [ ] ONDA D - Parceiros/admin/Controle/usuarios.
 - [ ] ONDA E - Relatorios/Avisos/Anotacoes/secundarias (PAR-RES-006/007).
@@ -61,3 +62,16 @@ atualizar matriz/plano -> `git diff --check` -> commit atomico -> proxima onda.
   e serao reconciliados narrativamente junto deste checkpoint; o V3 permanece
   oculto e nao selecionavel ate T3-GATE.
 - Baseline de suíte atual: 536 testes / 1619 assertions (nao 515/1421).
+
+## Resultado - ONDA B (commit 77ec2ce)
+
+- PAR-RES-001/002/003 corrigidos: `classe_css_linha_v2()` reproduz por tela os
+  destaques do PHP fonte 15.8.1 (Entrada sem TrUrgente/TrSemGarantia; Recebido e
+  Encaminhado com sem-NF/sem-garantia corretos; Pesquisa sem TrSemGarantia fora
+  de concluido).
+- Teste novo: `ParidadeListagensV2Test` (6 testes / 14 assertions); PHPUnit
+  dirigido 36/36; Playwright abas V2 3/3 e consistencia dirigida verde.
+- Teste D de Usuarios V1 ficou deterministico com `/v1/usuarios` (estado de tema
+  compartilhado causava falsa falha).
+- Pendente na onda: PAR-RES-004/005 sao prova residual; nao foram encontradas
+  diferencas sistematicas alem do conteudo de QA.

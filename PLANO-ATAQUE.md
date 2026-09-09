@@ -15,7 +15,8 @@ push). Suíte completa atual: 536 testes / 1619 assertions.
 
 Ondas da auditoria (cada uma atomica):
 - [ ] ONDA A - Shell/navbar/menu/dropdown/footer.
-- [ ] ONDA B - Listagens/pesquisa/tabelas/zebra/sidebar (PAR-RES-001..005).
+- [x] ONDA B - Listagens/pesquisa/tabelas/zebra/sidebar (77ec2ce; PAR-RES-001..003
+  corrigidos e testados; PAR-RES-004/005 continuam como prova residual).
 - [ ] ONDA C - Create/show/edit RMA e ciclo.
 - [ ] ONDA D - Parceiros/admin/Controle/usuarios.
 - [ ] ONDA E - Relatorios/Avisos/Anotacoes/secundarias.

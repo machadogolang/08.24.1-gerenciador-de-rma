@@ -56,28 +56,32 @@ class ContratoVisualAcoesCicloDeVidaTest extends TestCase
             ->get("/{$tema->value}/rma/{$rma->id}")
             ->assertOk();
 
-        // Bloco avancado usa o contrato `.acao`; o formulario do detalhe V2 tem
-        // SALVAR/OK nativos do 15.8.1 (contrato funcional PAR-V2-DETAIL-02) e nao
-        // participa desta assercao de transicao.
-        $response->assertSee('detalhe-bd-acoes-avancadas', false);
-        $response->assertSee('class="acao acao--primaria">Salvar solução</button>', false);
+        // PAR-RES-C-01 - no V1 o bloco avancado continua (partial de ciclo); no V2
+        // o formulario unico do 15.8.1 e a fonte das acoes (select SALVAR/RECEBER/...),
+        // sem partial `.acao` extra.
+        if ($tema === TemaPreferido::V1) {
+            $response->assertSee('detalhe-bd-acoes-avancadas', false);
+            $response->assertSee('class="acao acao--primaria">Salvar solução</button>', false);
 
-        if ($acaoPrincipal !== null) {
-            $response->assertSee("class=\"acao acao--operacional\">{$acaoPrincipal}</button>", false);
-        }
-
-        if ($arquivarVisivel) {
-            $response->assertSee('class="acao acao--operacional">Arquivar</button>', false);
+            if ($acaoPrincipal !== null) {
+                $response->assertSee("class=\"acao acao--operacional\">{$acaoPrincipal}</button>", false);
+            }
+            if ($arquivarVisivel) {
+                $response->assertSee('class="acao acao--operacional">Arquivar</button>', false);
+            } else {
+                $response->assertDontSee('Arquivar', false);
+            }
+            if ($reverterVisivel) {
+                $response->assertSee('class="acao acao--operacional">Reverter para Entrada</button>', false);
+            } else {
+                $response->assertDontSee('Reverter para Entrada', false);
+            }
+            $response->assertSee('action="' . route('rmas.solucao', $rma->id) . '"', false);
         } else {
-            $response->assertDontSee('Arquivar', false);
+            $response->assertDontSee('detalhe-bd-acoes-avancadas', false);
+            $response->assertDontSee('Salvar solução</button>', false);
+            $response->assertSee('<select name="acao"', false);
+            $response->assertSee('option value="salvar">SALVAR', false);
         }
-
-        if ($reverterVisivel) {
-            $response->assertSee('class="acao acao--operacional">Reverter para Entrada</button>', false);
-        } else {
-            $response->assertDontSee('Reverter para Entrada', false);
-        }
-
-        $response->assertSee('action="' . route('rmas.solucao', $rma->id) . '"', false);
     }
 }

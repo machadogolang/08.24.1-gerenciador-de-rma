@@ -411,7 +411,4 @@ de negocio nova nesta view. --}}
         </div>
     @endif
 
-    <p style="margin-top:10px;">
-        <a href="{{ rota_tema('rmas.edit', ['rma' => $registro->id]) }}" class="acao acao--secundaria">Abrir pagina de edicao</a>
-    </p>
 </form>

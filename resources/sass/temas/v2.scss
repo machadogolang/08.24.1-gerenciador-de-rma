@@ -506,7 +506,26 @@ select:disabled {
 
   &__acoes-finais {
     margin-top: 20px;
+    margin-bottom: 24px;
     clear: both;
+
+    // PAR-RES-C-01 - select/OK do rodape com a geometria e cor do Legacy
+    // (`formSelect2` em 15.8.1: fundo #224A5D, 200px, 30px).
+    .formSelect {
+      width: 200px !important;
+      height: 30px !important;
+      padding: 0 5px;
+      border: 0;
+      border-radius: 0;
+      background-color: #224a5d !important;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .formSelect option {
+      background-color: #224a5d;
+      color: #fff;
+    }
   }
 }
 

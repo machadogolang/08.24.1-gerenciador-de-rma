@@ -73,4 +73,15 @@ test('detalhe RMA V2 edita controles reais, salva e persiste apos reload', async
     expect(await page.inputValue('form.detalhe-rma-v2__form select[name="marcarestoque"]')).toBe('0');
     expect(await page.inputValue('form.detalhe-rma-v2__form select[name="credito_disponivel"]')).toBe('1');
     expect(await page.inputValue('form.detalhe-rma-v2__form textarea[name="observacao"]')).toContain('Observacao persistida pelo detalhe funcional V2.');
+
+    // PAR-RES-C-01 - rodape sem extras modernos e com select historico azul.
+    await expect(page.locator('a:has-text("Abrir pagina de edicao")')).toHaveCount(0);
+    await expect(page.locator('details.detalhe-bd-acoes-avancadas')).toHaveCount(0);
+    const selectAcao = page.locator('.detalhe-rma-v2__acoes-finais select[name="acao"]');
+    await expect(selectAcao).toBeVisible();
+    await expect(selectAcao).toHaveCSS('background-color', 'rgb(34, 74, 93)');
+    const rodapeY = await page.locator('.designedby').first().evaluate((el) => el.getBoundingClientRect().y);
+    const acoesBox = await page.locator('.detalhe-rma-v2__acoes-finais').boundingBox();
+    expect(acoesBox).not.toBeNull();
+    expect(rodapeY).toBeGreaterThan(acoesBox!.y + acoesBox!.height);
 });

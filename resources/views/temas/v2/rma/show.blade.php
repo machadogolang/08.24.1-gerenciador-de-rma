@@ -51,11 +51,4 @@
         @include('temas.v2.rma._form_detalhe')
     </div>
 
-    {{-- PAR-V2-DETAIL-02 - acoes avancadas/ciclo de vida preservadas em bloco
-    recolhivel (mesmo padrao do detalhe V1); o rodape do formulario cobre as acoes
-    do Legacy 15.8.1 e este bloco mantem os endpoints especificos acessiveis. --}}
-    <details class="detalhe-bd-acoes-avancadas">
-        <summary>Mais acoes de ciclo de vida</summary>
-        @include('rma._acoes_de_transicao')
-    </details>
 @endsection

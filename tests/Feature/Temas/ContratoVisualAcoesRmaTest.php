@@ -69,7 +69,10 @@ class ContratoVisualAcoesRmaTest extends TestCase
             // edicao dedicada.
             $response->assertSee('detalhe-rma-v2__form', false);
             $response->assertSee('name="acao" value="salvar"', false);
-            $response->assertSee('>Abrir pagina de edicao</a>', false);
+            // PAR-RES-C-01 - V2 nao tem link moderno de edicao nem bloco avancado;
+            // o formulario unico do 15.8.1 ja carrega SALVAR e as acoes no rodape.
+            $response->assertDontSee('Abrir pagina de edicao', false);
+            $response->assertDontSee('detalhe-bd-acoes-avancadas', false);
             $response->assertSee('value="Detalhe contrato acoes"', false);
         }
     }

@@ -24,6 +24,20 @@ class AssistenciaTecnicaController extends Controller
         ]);
     }
 
+
+    public function show(AssistenciaTecnica $assistenciaTecnica, \App\Parceiros\Aplicacao\ListarRmasDeParceiro $rmasDoParceiro): View
+    {
+        Gate::authorize('view', $assistenciaTecnica);
+
+        return view_do_tema('parceiros.show', [
+            'tipo' => 'assistencias-tecnicas',
+            'titulo' => $assistenciaTecnica->nome,
+            'registro' => $assistenciaTecnica,
+            'comEnderecoEContato' => true,
+            'rmas' => $rmasDoParceiro->listar($assistenciaTecnica),
+        ]);
+    }
+
     public function create(): View
     {
         Gate::authorize('create', AssistenciaTecnica::class);

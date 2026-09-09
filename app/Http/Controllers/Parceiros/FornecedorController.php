@@ -24,6 +24,20 @@ class FornecedorController extends Controller
         ]);
     }
 
+
+    public function show(Fornecedor $fornecedor, \App\Parceiros\Aplicacao\ListarRmasDeParceiro $rmasDoParceiro): View
+    {
+        Gate::authorize('view', $fornecedor);
+
+        return view_do_tema('parceiros.show', [
+            'tipo' => 'fornecedores',
+            'titulo' => $fornecedor->nome,
+            'registro' => $fornecedor,
+            'comEnderecoEContato' => true,
+            'rmas' => $rmasDoParceiro->listar($fornecedor),
+        ]);
+    }
+
     public function create(): View
     {
         Gate::authorize('create', Fornecedor::class);

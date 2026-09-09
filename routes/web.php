@@ -57,17 +57,13 @@ Route::middleware('auth')->group(function () {
     // Parceiros (LEG-RMA-030 a 033) — cadastro de cliente/fabricante/fornecedor/
     // assistência técnica. Autorização checada dentro de cada controller via Policy.
     Route::resource('parceiros/clientes', ClienteController::class)
-        ->except(['show'])
         ->names('parceiros.clientes');
     Route::resource('parceiros/fabricantes', FabricanteController::class)
-        ->except(['show'])
         ->names('parceiros.fabricantes');
     Route::resource('parceiros/fornecedores', FornecedorController::class)
-        ->except(['show'])
         ->parameters(['fornecedores' => 'fornecedor'])
         ->names('parceiros.fornecedores');
     Route::resource('parceiros/assistencias-tecnicas', AssistenciaTecnicaController::class)
-        ->except(['show'])
         ->parameters(['assistencias-tecnicas' => 'assistenciaTecnica'])
         ->names('parceiros.assistencias-tecnicas');
 

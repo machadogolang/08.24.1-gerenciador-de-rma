@@ -24,6 +24,20 @@ class FabricanteController extends Controller
         ]);
     }
 
+
+    public function show(Fabricante $fabricante, \App\Parceiros\Aplicacao\ListarRmasDeParceiro $rmasDoParceiro): View
+    {
+        Gate::authorize('view', $fabricante);
+
+        return view_do_tema('parceiros.show', [
+            'tipo' => 'fabricantes',
+            'titulo' => $fabricante->nome,
+            'registro' => $fabricante,
+            'comEnderecoEContato' => true,
+            'rmas' => $rmasDoParceiro->listar($fabricante),
+        ]);
+    }
+
     public function create(): View
     {
         Gate::authorize('create', Fabricante::class);

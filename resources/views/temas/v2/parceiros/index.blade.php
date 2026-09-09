@@ -22,6 +22,7 @@
                         <td>{{ $registro->nome }}</td>
                         <td>{{ $registro->cidade }}{{ $registro->uf ? '/' . $registro->uf->value : '' }}</td>
                         <td class="acoes-de-tabela">
+                            <a href="{{ rota_tema('parceiros.' . $tipo . '.show', $registro) }}" class="acao acao--secundaria acao--compacta">Ver</a>
                             <a href="{{ rota_tema('parceiros.' . $tipo . '.edit', $registro) }}" class="acao acao--secundaria acao--compacta">Editar</a>
                             <form method="POST" action="{{ rota_tema('parceiros.' . $tipo . '.destroy', $registro) }}" style="display:inline">
                                 @csrf

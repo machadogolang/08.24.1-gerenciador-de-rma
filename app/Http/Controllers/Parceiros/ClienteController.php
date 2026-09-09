@@ -24,6 +24,20 @@ class ClienteController extends Controller
         ]);
     }
 
+
+    public function show(Cliente $cliente, \App\Parceiros\Aplicacao\ListarRmasDeParceiro $rmasDoParceiro): View
+    {
+        Gate::authorize('view', $cliente);
+
+        return view_do_tema('parceiros.show', [
+            'tipo' => 'clientes',
+            'titulo' => $cliente->nome,
+            'registro' => $cliente,
+            'comEnderecoEContato' => false,
+            'rmas' => $rmasDoParceiro->listar($cliente),
+        ]);
+    }
+
     public function create(): View
     {
         Gate::authorize('create', Cliente::class);

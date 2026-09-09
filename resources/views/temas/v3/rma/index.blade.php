@@ -75,7 +75,7 @@
                 <tbody>
                     @foreach ($registros as $registro)
                         <tr>
-                            <td>{{ $registro->numero_da_empresa ?? $registro->id }}</td>
+                            <td><a href="{{ route('v3.rmas.show', ['rma' => $registro->id]) }}">{{ $registro->numero_da_empresa ?? $registro->id }}</a></td>
                             <td><span class="{{ $statusClasse($registro) }}">{{ $registro->status->name }}</span></td>
                             <td>{{ $registro->descricao }}</td>
                             <td>{{ $parceiro($registro) }}</td>
@@ -91,7 +91,7 @@
                 @foreach ($registros as $registro)
                     <article class="cartao-rma">
                         <div class="cartao-rma__cabecalho">
-                            <strong>{{ $registro->numero_da_empresa ?? $registro->id }}</strong>
+                            <a href="{{ route('v3.rmas.show', ['rma' => $registro->id]) }}"><strong>{{ $registro->numero_da_empresa ?? $registro->id }}</strong></a>
                             <span class="{{ $statusClasse($registro) }}">{{ $registro->status->name }}</span>
                         </div>
                         <p>{{ $registro->descricao }}</p>

@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Rma;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
+use App\Models\Fabricante;
+use App\Models\Fornecedor;
 use App\Models\Rma as RmaEloquent;
+use App\Rma\Aplicacao\VerDetalheDoRma;
+use App\Rma\Infraestrutura\CamposDeExibicaoDoRmaEmBanco;
 use App\Rma\Aplicacao\Alertas\ListarGruposDeAlertas;
 use App\Rma\Aplicacao\BuscarRmas;
 use App\Rma\Dominio\CriterioDeBusca;
@@ -12,6 +17,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Console Operacional Adaptativa - dashboard e listagem de RMAs do TEMA V3.
@@ -54,6 +60,31 @@ final class V3ConsoleController extends Controller
                 ->filter(fn (array $alerta) => $alerta['contagem'] > 0)
                 ->values()
                 ->all(),
+        ]);
+    }
+    public function detalhe(
+        int $rma,
+        VerDetalheDoRma $caso,
+        CamposDeExibicaoDoRmaEmBanco $camposDeExibicao,
+    ): View {
+        Gate::authorize('view', RmaEloquent::class);
+
+        $registro = $caso->porId($rma);
+
+        abort_if($registro === null, Response::HTTP_NOT_FOUND);
+
+        $legado = $camposDeExibicao->obter($rma);
+
+        return view_do_tema('rma.show', [
+            'titulo' => 'RMA #' . $registro->id,
+            'registro' => $registro,
+            'legado' => $legado,
+            'numeroExibicao' => $legado['numero_legado']
+                ?? $legado['numero_da_empresa']
+                ?? $registro->id,
+            'fabricante' => $registro->fabricanteId ? Fabricante::find($registro->fabricanteId) : null,
+            'fornecedor' => $registro->fornecedorId ? Fornecedor::find($registro->fornecedorId) : null,
+            'cliente' => $registro->clienteId ? Cliente::find($registro->clienteId) : null,
         ]);
     }
 

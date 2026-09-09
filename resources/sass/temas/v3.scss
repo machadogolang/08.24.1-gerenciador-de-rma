@@ -534,3 +534,163 @@ a,
         cursor: pointer;
     }
 }
+
+
+// T3-11 - detalhe operacional do RMA: cabecalho denso no desktop e secoes que
+// empilham no mobile.
+.botao--secundario {
+    background-color: transparent;
+    border: 1px solid $cor-borda;
+    color: $cor-texto;
+
+    &:hover {
+        border-color: $cor-acento;
+        background-color: color.mix(#ffffff, $cor-acento, 92%);
+        color: $cor-acento;
+    }
+}
+
+.detalhe-v3__cabecalho {
+    display: grid;
+    gap: $espaco-4;
+    margin-bottom: $espaco-5;
+}
+
+.detalhe-v3__rotulo {
+    margin: 0 0 $espaco-1;
+    color: $cor-texto-suave;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.detalhe-v3__numero {
+    margin: 0;
+    font-size: 2rem;
+    font-family: $fonte-mono;
+}
+
+.detalhe-v3__descricao {
+    margin: $espaco-2 0 0;
+    color: $cor-texto-suave;
+}
+
+.detalhe-v3__meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $espaco-3;
+    margin: 0;
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: $espaco-3;
+        border-top: 1px solid $cor-borda;
+        padding-top: $espaco-2;
+    }
+
+    dt {
+        color: $cor-texto-suave;
+    }
+
+    dd {
+        margin: 0;
+        text-align: right;
+    }
+}
+
+.detalhe-v3__secoes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $espaco-4;
+}
+
+.detalhe-v3__secao--larga {
+    grid-column: 1 / -1;
+}
+
+.detalhe-v3__titulo {
+    margin: 0 0 $espaco-4;
+    font-size: 1rem;
+}
+
+.detalhe-v3__grade {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $espaco-2 $espaco-5;
+    margin: 0;
+
+    div {
+        border-bottom: 1px solid #eef2f5;
+        padding-bottom: $espaco-2;
+    }
+
+    dt {
+        color: $cor-texto-suave;
+        font-size: 0.8rem;
+    }
+
+    dd {
+        margin: $espaco-1 0 0;
+        word-break: break-word;
+    }
+}
+
+.detalhe-v3__observacao {
+    white-space: pre-wrap;
+}
+
+.mono {
+    font-family: $fonte-mono;
+}
+
+.prioridade-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 $espaco-3;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.prioridade-badge--baixa {
+    background-color: color.mix(#ffffff, $cor-prioridade-baixa, 82%);
+    color: $cor-prioridade-baixa;
+}
+
+.prioridade-badge--media {
+    background-color: color.mix(#ffffff, $cor-prioridade-media, 82%);
+    color: $cor-prioridade-media;
+}
+
+.prioridade-badge--alta {
+    background-color: color.mix(#ffffff, $cor-prioridade-alta, 82%);
+    color: $cor-prioridade-alta;
+}
+
+@media (min-width: $quebra-md) {
+    .detalhe-v3__cabecalho {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+
+    .detalhe-v3__meta {
+        border-left: 1px solid $cor-borda;
+        padding-left: $espaco-5;
+    }
+
+    .detalhe-v3__secoes {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .detalhe-v3__grade {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .detalhe-v3__grade--fiscal {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

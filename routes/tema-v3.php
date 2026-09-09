@@ -17,4 +17,5 @@ Route::prefix('v3')
     ->group(function (): void {
         Route::get('/', [V3ConsoleController::class, 'dashboard'])->name('dashboard');
         Route::get('/rmas', [V3ConsoleController::class, 'rmas'])->name('rmas.index');
+        Route::get('/rma/{rma}', [V3ConsoleController::class, 'detalhe'])->name('rmas.show');
     });

@@ -165,16 +165,18 @@ Acoes:
 
 Checklist da nova frente (marcadores canonicos):
 
-- [R] PAR-V2-NOVO-01 - Novo RMA 15.8.1
+- [x] PAR-V2-NOVO-01 - Novo RMA 15.8.1 (fechado em e46fd3f)
   - [x] NOVO-01.1 - investigacao fonte/runtime (evidencia acima).
-  - [ ] NOVO-01.2 - restaurar formulario inline na aba Novo.
-  - [ ] NOVO-01.3 - restaurar grade de 3 colunas.
-  - [ ] NOVO-01.4 - restaurar controles/valores/opcoes.
-  - [ ] NOVO-01.5 - comportamento condicional por Origem.
-  - [ ] NOVO-01.6 - estoque.
-  - [ ] NOVO-01.7 - validacao/store modernos.
-  - [ ] NOVO-01.8 - fallback da rota `/create` coerente.
-  - [ ] NOVO-01.9 - QA browser + funcional.
+  - [x] NOVO-01.2 - formulario inline restaurado na aba Novo (e46fd3f).
+  - [x] NOVO-01.3 - grade de 3 colunas restaurada (e46fd3f).
+  - [x] NOVO-01.4 - controles/valores/opcoes restaurados; autocomplete historico
+    virou selects modernos com os mesmos valores/opcoes (decisao arquitetural de
+    seguranca, sem SQL/JS legado).
+  - [x] NOVO-01.5 - comportamento condicional por Origem (v2.js).
+  - [x] NOVO-01.6 - estoque (checkbox marcado por padrao).
+  - [x] NOVO-01.7 - validacao/store modernos (CriarRma + CSRF).
+  - [x] NOVO-01.8 - fallback da rota `/create` usa o mesmo partial.
+  - [x] NOVO-01.9 - QA browser + funcional (Playwright 1/1; PHPUnit 2 novos).
 
 Nao reintroduzir vulnerabilidades/SQL/JS legado; reproduzir comportamento e
 aparencia por cima da arquitetura moderna (mesmo caso de uso `CriarRma`/store).
@@ -281,3 +283,22 @@ Proximo: ONDA 3 (detalhe RMA V2 funcional - A6/PAR-V2-DETAIL-02).
 - PUSH NAO REALIZADO.
 
 Proximo: ONDA 4 (Novo RMA V2 inline - PAR-V2-NOVO-01).
+
+## 16. Resultado pos-correcao - ONDA 4 (PAR-V2-NOVO-01)
+
+- Commit local: `e46fd3f` (#FRONT-RMA).
+- `#novo_rma` do indice V2 agora inclui o formulario operacional (`_form_novo_v2`)
+  com grade 3 colunas, Origem/Empresa/Prioridade, bloco condicional
+  NF Venda (Cliente) x NF Compra (outras origens), DANFE, defeito/observacao,
+  estoque e botao CRIAR BD. `/create` usa o mesmo partial (fallback coerente).
+- Backend: `CriarRma` passou a persistir `prioridade` e chaves de NF; a index V2
+  fornece listas para os selects do formulario.
+- Autocomplete/datalists historicos nao foram reproduzidos como input livre:
+  usam-se selects modernos com os mesmos valores (sem SQL/JS legado) - decisao
+  registrada em NOVO-01.4.
+- Testes: `ParidadeNovoRmaV2Test` (2 testes / 24 assertions) e
+  `ParidadeNovoRmaV2.spec.ts` (1 teste browser). PHPUnit dirigido 17/17 (com
+  CriarRmaTest e PainelNovoTemaV1Test), Playwright 1/1, Vite build verde.
+- PUSH NAO REALIZADO.
+
+Proximo: ONDA 5 (varredura residual V2 - PAR-V2-SWEEP-01).

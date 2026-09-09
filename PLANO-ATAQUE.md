@@ -25,8 +25,8 @@ Baseline real reconferido: HEAD = origin/main = `24ffd4e`, working tree limpo.
   aberto ate as ondas 3/4 restaurarem as superficies.
 - [x] PAR-V2-DETAIL-02 - Detalhe RMA V2 restaurado como formulario operacional
   editavel (127b94d); leitura via Policy com controles desabilitados.
-- [R] PAR-V2-NOVO-01 - Novo RMA V2 inline na aba Novo com grade 3 colunas,
-  condicionais, estoque e store moderno.
+- [x] PAR-V2-NOVO-01 - Novo RMA V2 inline na aba Novo (e46fd3f): grade 3
+  colunas, condicional Origem/NF, estoque, CRIAR BD e store moderno.
 - [ ] PAR-V2-SWEEP-01 - Varredura residual 15.8.1 x V2 nas superfícies do addendum.
 
 Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
@@ -35,7 +35,7 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 - [x] ONDA 2 - PAR-V2-NAV-02 + PAR-V2-DROPDOWN-02 + PAR-V2-CURSOR-02 (parcial;
   varredura ampla segue em PAR-V2-CURSOR-02).
 - [x] ONDA 3 - PAR-V2-DETAIL-02 (A6 funcional, 127b94d).
-- [ ] ONDA 4 - PAR-V2-NOVO-01 (Novo RMA inline).
+- [x] ONDA 4 - PAR-V2-NOVO-01 (Novo RMA inline, e46fd3f).
 - [ ] ONDA 5 - PAR-V2-SWEEP-01.
 
 ## AGORA - UI/paridade corrente

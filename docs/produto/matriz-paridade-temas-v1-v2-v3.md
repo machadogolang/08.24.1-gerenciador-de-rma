@@ -24,10 +24,10 @@ atingir paridade integral.
 | Perfil/senha/anotação | sim | sim | sim | planejado | contrato comum; anotação pode mudar de posição |
 | Menu principal | filas/ações/módulos | parcial: 3 itens | parcial: abas sem módulos secundários | planejado | PAR-V1-001; PAR-NAV-001; T3-02 |
 | Dashboard/avisos | filas, alertas, atalhos | alertas+contadores+anotação, sem filas acionáveis | alertas+abas, sem painel lateral | planejado | UX-01; PAR-V1-002; PAR-V2-003 |
-| Busca por texto | ampla, cerca de 23 campos | parcial: 6 campos | parcial: 6 campos | planejado | PAR-RMA-003; contrato e testes |
+| Busca por texto | ampla, cerca de 23 campos | parcial: campos diretos cobertos; nomes via relacionamento pendente | idem | planejado | PAR-RMA-003 (avanço 2026-09-09; integral em aberto) |
 | Busca por serial | sim | `sn` | `sn` | planejado | confirmar PN/SNID em INV-LEGADO-RMA-001 |
 | Busca por NF | compra/venda/remessa | sim (campos fiscais reais) | sim (campos fiscais reais) | planejado | ARQ-004/PAR-RMA-001 fechado 2026-09-09; remessa/retorno cobertos no mesmo critério |
-| Busca por número | número histórico | ausente | ausente | planejado | PAR-RMA-002/004 |
+| Busca por número | número histórico | sim (`CHAVE`→`numero_legado`; texto TUDO) | sim (texto/Qualquer campo inclui `numero_legado`) | planejado | PAR-RMA-002/004 fechado 2026-09-09 |
 | Filtro por status | filas | ausente como ação | abas vazias sem busca | planejado | PAR-V1-001; FRONT-002/PAR-V2-001 |
 | Filtro por solução | sim no V1 legado | ausente | ausente | planejado | PAR-V1-002; avaliar apresentação equivalente nos demais |
 | Novo RMA | completo | 11 campos | 11 campos; aba só linka página | planejado | PAR-RMA-005/007; PAR-V2-002 |

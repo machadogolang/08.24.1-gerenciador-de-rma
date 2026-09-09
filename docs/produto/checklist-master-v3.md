@@ -387,10 +387,15 @@ Gate por linha definido na matriz. Código `PAR-*` de cada item está na coluna
   `nfvenda`/`nf_remessa`/`nf_retorno_numero`/campos fiscais históricos e `os`
   virou critério próprio; rastreio legado 14.6.1 `page/localizar.php:9` e
   15.8.1 `banco.php::pesquisar()`; 8 testes / 23 assertions verdes.
-- [ ] **PAR H-022 (`PAR-RMA-002`/`PAR-RMA-004`) — implementar busca por número** nos dois
-  temas, hoje ausente.
+- [x] **PAR H-022 (`PAR-RMA-002`/`PAR-RMA-004`) — implementar busca por número** nos dois
+  temas. Fechado em 2026-09-09 (commit `3b9e016`): `CHAVE` do V1 mapeia para
+  `numero_legado`; o modo texto (TUDO do V1/Qualquer campo do V2) passou a incluir
+  `numero_legado` e os demais campos diretos do legado.
 - [ ] **PAR H-023 (`PAR-RMA-003`) — ampliar busca por texto** além dos 6 campos atuais
-  (legado tinha ~23), com contrato e testes.
+  (legado tinha ~23). Parcialmente fechado em 2026-09-09 (commit `3b9e016`): campos
+  diretos (`sn/pn/snid/os/protocolo/rastreio/nf*/numero_legado` etc.) já entram no
+  texto; falta mapear nomes via relacionamento (fabricante/cliente/destinatario) e
+  contrato/testes do escopo integral.
 - [ ] **PAR H-024 (`PAR-RMA-005`/`007`/`PAR-V2-002`) — completar novo RMA** nos dois
   temas; aba do Tema 2 hoje só linka a página.
 - [ ] **PAR H-025 (`PAR-RMA-004`/`005`/`006`/`009`) — completar campos/detalhe do RMA**

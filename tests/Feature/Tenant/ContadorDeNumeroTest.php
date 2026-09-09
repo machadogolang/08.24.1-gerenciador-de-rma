@@ -4,6 +4,8 @@ namespace Tests\Feature\Tenant;
 
 use App\Models\Company;
 use App\Models\ContadorDeRma;
+use App\Models\Rma as RmaEloquent;
+use App\Models\User;
 use App\Rma\Aplicacao\ReservarNumeroDeRma;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -46,4 +48,24 @@ class ContadorDeNumeroTest extends TestCase
         $this->assertSame(2, ContadorDeRma::query()->count());
     }
 
+    public function test_rmas_criados_na_mesma_empresa_recebem_sequencia(): void
+    {
+        $usuario = User::factory()->create();
+
+        foreach ([1, 2] as $indice) {
+            $this->actingAs($usuario)->post('/rmas', [
+                'descricao' => 'RMA sequencial '.$indice,
+                'defeito' => 'Teste',
+                'cliente_nome' => 'Cliente sequencial '.$indice,
+            ])->assertRedirect();
+        }
+
+        $numeros = RmaEloquent::query()->withoutGlobalScopes()
+            ->where('descricao', 'like', 'RMA sequencial %')
+            ->orderBy('numero_da_empresa')
+            ->pluck('numero_da_empresa')
+            ->all();
+
+        $this->assertSame([1, 2], $numeros);
+    }
 }

@@ -91,11 +91,15 @@ $vermelho-hover-v2: #f67d7d;
     }
 }
 
+// PAR-V2-NAV-02 - alinhamento vertical igual ao 15.8.1: `height:39px` sem
+// `line-height` proprio (Bootstrap fornece line-height 20px + padding 10px e
+// centraliza o texto). A largura dos itens por faixa vem de v2.scss (media.php),
+// nao fica fixa aqui.
 .nav-tabs.nav-v2 {
     border-bottom: 0;
     width: $shell-largura-v2;
 
-    li {
+    > li {
         border: 0;
         padding: 0;
         position: relative;
@@ -105,30 +109,21 @@ $vermelho-hover-v2: #f67d7d;
         display: block;
         margin: 0;
         border-right-width: 0;
-        width: 11.1%; // 1190px / 9 itens ≈ 132px cada, medido no runtime
 
         &:hover {
             border: 0;
         }
 
-        > a,
-        .logoutx .link-como-item-dropdown {
+        > a {
             margin: 0;
             border: 0;
             border-radius: 0;
             color: #fff;
             height: 39px;
-            line-height: 39px;
-        }
-
-        .logoutx .link-como-item-dropdown {
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         > a,
-        .logoutx .link-como-item-dropdown {
+        > form .link-como-item-dropdown {
             &:active,
             &:hover,
             &:focus {
@@ -142,7 +137,36 @@ $vermelho-hover-v2: #f67d7d;
             background-color: $vermelho-aba-ativa-v2;
             color: #eee;
             font-weight: 700;
+            // PAR-V2-CURSOR-02 - o Bootstrap declara `cursor:default` para o item
+            // ativo de `.nav-tabs`; o item continua clicavel no Tema V2 e precisa
+            // de pointer (mesmo papel dos demais itens da barra).
+            cursor: pointer;
         }
+    }
+}
+
+// PAR-V2-NAV-02 - Logout nao pode ser `<a>` (POST/CSRF); o botao deve reproduzir
+// exatamente a caixa visual de um `<a>` da navbar (height 39, padding 10 15 e
+// line-height do Bootstrap), com hover igual ao item comum.
+.nav-tabs.nav-v2 > li.logoutx > form .link-como-item-dropdown {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 39px;
+    margin: 0;
+    padding: 10px 15px;
+    border: 0;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 20px;
+
+    &:hover,
+    &:active,
+    &:focus {
+        background-color: $vermelho-hover-v2;
     }
 }
 
@@ -167,30 +191,31 @@ $vermelho-hover-v2: #f67d7d;
     min-width: 100% !important;
 }
 
+// PAR-V2-DROPDOWN-02 - o `li.lidropdown` continua sendo a camada dona dos 25px,
+// texto e borda; o fundo/hover alternado e aplicado no proprio li pelo override
+// escopado de v2.scss (sem HTML invalido `<a><li>` do Legacy e sem duplicar
+// geometria entre li e a).
 .lidropdown {
     width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 25px !important;
+    border-bottom: 1px solid #323131 !important;
     text-transform: uppercase !important;
     text-align: left !important;
-    background-color: #555 !important;
-    border-bottom: 1px solid #323131 !important;
     font-size: 12px !important;
-    padding: 3px 5px !important;
-    margin: 0 !important;
-    height: 25px !important;
     letter-spacing: 1px !important;
 
-    &:hover {
-        background-color: #111 !important;
-    }
-
     > a,
-    > form {
+    > form .link-como-item-dropdown {
         display: block;
+        box-sizing: border-box;
+        width: 100%;
+        height: 25px;
+        padding: 3px 5px;
+        color: #fff;
+        text-decoration: none;
     }
-}
-
-.menuz {
-    background-color: #444 !important;
 }
 
 .logoutx a {

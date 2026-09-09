@@ -46,6 +46,28 @@ $larguras-container-tema-v2: (
     "xxxl": 990px,
 );
 
+// PAR-V2-NAV-02 - largura do `.nav`/`.nav-tabs` e dos itens por faixa, 1:1 do
+// `15.8.1/css/media.php`: `.nav` 990px em 992/1080 e 1190px a partir de 1280;
+// item 12,5% ate 1279px e 11,1% a partir de 1280px. Abaixo de 992 o Legacy nao
+// define `.nav`; o wrapper do header (1190px) define a base.
+$larguras-nav-tema-v2: (
+    "sm": 1190px,
+    "md": 1190px,
+    "lg": 990px,
+    "xl": 990px,
+    "xxl": 1190px,
+    "xxxl": 1190px,
+);
+
+$larguras-item-nav-tema-v2: (
+    "sm": 12.5%,
+    "md": 12.5%,
+    "lg": 12.5%,
+    "xl": 12.5%,
+    "xxl": 11.1%,
+    "xxxl": 11.1%,
+);
+
 body {
     margin: 0 auto;
     padding: 0px;
@@ -121,6 +143,14 @@ $largura-padding-box-content: 15px; // mesmo valor do `padding:15px` inline em `
             width: map.get($larguras-container-tema-v2, $nome);
             padding: 0px;
             margin: 0 auto;
+        }
+
+        .nav-tabs.nav-v2 {
+            width: map.get($larguras-nav-tema-v2, $nome);
+        }
+
+        .nav-tabs.nav-v2 > li {
+            width: map.get($larguras-item-nav-tema-v2, $nome);
         }
     }
 }
@@ -229,6 +259,13 @@ button:disabled {
     }
 }
 
+// PAR-V2-CURSOR-02 - links e botoes clicaveis comunicam pointer explicitamente;
+// inputs de digitacao continuam text (nenhuma regra global muda isso).
+a[href],
+[role="button"] {
+    cursor: pointer;
+}
+
 // Superfície das ações de ciclo de vida (partial compartilhado) - só empacotamento
 // e fluxo de leitura; a aparência de cada ação vem de `.acao--*` acima.
 .acoes-de-transicao {
@@ -312,16 +349,46 @@ select:disabled {
     }
 }
 
-// UI-AUD-009 - override explícito do dropdown: `.nav-v2 li > a` alcança também os
-// itens do menu (o `li` é descendente). Aqui a regra de maior especificidade limita
-// os itens do dropdown a 25px, sem sobreposição de área clicável.
+// UI-AUD-009/PAR-V2-DROPDOWN-02 - camada Bootstrap do `.dropdown-menu` resetada no
+// escopo da nav (sem moldura/faixa branca): padding 0, sem borda/sombra/raio e
+// fundo transparente. O `li` e dono dos 25px/fundo/borda/hover; o `a`/botao POST
+// preenche exatamente os 25px (HTML valido, sem `<a><li>`).
+.nav-v2 .dropdown-menu {
+    min-width: 100% !important;
+    padding: 0 !important;
+    margin: -1px 0 0;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.nav-v2 .dropdown-menu > li {
+    height: 25px;
+    margin: 0;
+    padding: 0 !important;
+    background-color: #555 !important;
+    border-bottom: 1px solid #323131;
+
+    &:hover {
+        background-color: #111 !important;
+    }
+}
+
+.nav-v2 .dropdown-menu > li.menuz {
+    background-color: #444 !important;
+}
+
 .nav-v2 .dropdown-menu > li > a,
 .nav-v2 .dropdown-menu > li > form .link-como-item-dropdown {
     display: block;
     box-sizing: border-box;
+    width: 100%;
     height: 25px;
     padding: 3px 5px;
     line-height: 19px;
+    color: #fff;
+    text-decoration: none;
 }
 
 

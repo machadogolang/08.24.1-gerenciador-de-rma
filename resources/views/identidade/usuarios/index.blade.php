@@ -33,7 +33,7 @@
                             @method('PUT')
                             <select name="papel">
                                 @foreach (\App\Identidade\Dominio\Papel::cases() as $papel)
-                                    <option value="{{ $papel->name }}" @selected($usuario->papel === $papel)>
+                                    <option value="{{ $papel->name }}" @selected((($empresa_id ?? null) !== null ? ($usuario->papelNaEmpresa($empresa_id) ?? $usuario->papel) : $usuario->papel) === $papel)>
                                         {{ $papel->name }}
                                     </option>
                                 @endforeach

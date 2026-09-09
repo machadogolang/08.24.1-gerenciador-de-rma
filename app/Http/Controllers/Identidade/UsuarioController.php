@@ -33,7 +33,13 @@ class UsuarioController extends Controller
                 fn ($usuarios) => $usuarios->reject(fn (User $u) => ($u->papelNaEmpresa(app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId()) ?? $u->papel)->ocultoDaListagemDeUsuarios())
             );
 
-        return view_do_tema('identidade.usuarios', ['titulo' => 'Usuários', 'usuarios' => $usuarios]);
+        $empresaIdView = app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId();
+
+        return view_do_tema('identidade.usuarios', [
+            'titulo' => 'Usuários',
+            'usuarios' => $usuarios,
+            'empresa_id' => $empresaIdView,
+        ]);
     }
 
     /**

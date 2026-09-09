@@ -34,7 +34,11 @@ class QaSeeder extends Seeder
         $fabricantes = Fabricante::factory()->count(10)->create();
         $fornecedores = Fornecedor::factory()->count(10)->create();
         $assistencias = AssistenciaTecnica::factory()->count(5)->create();
-        $operador = User::query()->where('papel', Papel::Operador)->sole();
+        $operador = User::query()
+            ->whereHas('empresas', fn ($query) => $query
+                ->where('company_user.papel', Papel::Operador->name)
+                ->where('company_user.ativo', true))
+            ->sole();
 
         $inicio = CarbonImmutable::create(2026, 1, 1, 0, 0, 0, 'America/Sao_Paulo');
         $status = Status::cases();

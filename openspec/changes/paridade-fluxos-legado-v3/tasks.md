@@ -24,18 +24,17 @@
 
 ## Addendum 2026-09-09 - paridade dos detalhes RMA e residuos V2 (A5/A6)
 
-- [ ] A5 - Detalhe RMA Tema V1 (PAR-DET-V1-01): restaurar BOLETIM DE DEFEITO, grupos
-  4 colunas, densidade e informacao do show V1 (apos documento do addendum).
+- [x] A5 - Detalhe RMA Tema V1 (PAR-DET-V1-01): BOLETIM DE DEFEITO, grupos 4
+  colunas e informacao restaurados (e91cdae/1fc2a86).
   - [x] A5.1 - Reproducao documentada com metricas/screenshots (PAR-DET-V1-01).
-  - [ ] A5.2 - Blade/CSS do show V1.
-  - [ ] A5.3 - Campos com prova e lacunas documentadas.
-  - [ ] A5.4 - Regression browser V1.
-- [ ] A6 - Detalhe RMA Tema V2 (PAR-DET-V2-01): cabecalho operacional + grupos do
-  show V2 read-only.
+  - [x] A5.2 - Blade/CSS do show V1.
+  - [x] A5.3 - Campos com prova e lacunas documentadas.
+  - [x] A5.4 - Regression browser V1.
+- [x] A6 - Detalhe RMA Tema V2 (PAR-DET-V2-01): cabecalho operacional + grupos do
+  show V2 read-only (6b78ac3/10f786f).
   - [x] A6.1 - Reproducao documentada com metricas/screenshots (PAR-DET-V2-01).
-  - [ ] A6.2 - Blade/CSS do show V2.
-  - [ ] A6.3 - Acoes/cabecalho integrados.
-  - [ ] A6.4 - Regression browser V2.
-- [ ] PAR-V2-GEO-01 - geometria das abas/listagens V2 (delta real -7px e rodape).
-- [ ] PAR-V2-PESQ-01 - composicao Pesquisar V2 (estrutura submenu-subpage + port das
-  regras historicas ausentes do CSS compilado).
+  - [x] A6.2 - Blade/CSS do show V2.
+  - [x] A6.3 - Acoes/cabecalho integrados.
+  - [x] A6.4 - Regression browser V2.
+- [x] PAR-V2-GEO-01 - geometria das abas/listagens V2 (c030e87/a71a3d8).
+- [x] PAR-V2-PESQ-01 - composicao Pesquisar V2 (c030e87/a71a3d8).

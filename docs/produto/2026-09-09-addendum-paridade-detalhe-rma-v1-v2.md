@@ -188,3 +188,31 @@ Sem criacao de coluna: nenhuma correcao precisa de migration nova.
 - Regra de comparacao obedecida: 14.6.1 x Tema V1 e 15.8.1 x Tema V2.
 - V3/T3-11 somente depois de A5/A6 verdes.
 - PUSH NAO REALIZADO.
+
+
+## 7. Resultado pos-correcao (mesma sessao)
+
+Screenshots finais em screenshots-paridade-detalhe-rma-2026-09-09/v3-*-apos-correcao-*.png.
+
+| ID | Medida alvo Legacy | V3 pos-correcao | Status |
+|---|---|---|---|
+| PAR-DET-V1-01 | titulo BOLETIM y=85; primeira TRD y=138.69; celulas 29/30px | titulo y=85; primeira TRD y=139.69; acoes movidas para o fim do conteudo | OK (+1px) |
+| PAR-DET-V2-01 | breadcrumb y=37; primeiro formgroup y=84.14 | breadcrumb y=37; primeiro formgroup y=83.98; acao no cabecalho | OK (+-0,16px) |
+| PAR-V2-GEO-01 | tabela #encaminhado y=47; linha 2 y=81.5 | tabela y=47; linha 2 y=81.5 (2048 e 1440) | OK |
+| PAR-V2-PESQ-01 | h3 y=91,2; input x=428 y=125 w=183; botao x=615 y=125 | h3 y=91,2; input x=428 y=125 w=183 bg rgb(45,45,45); botao x=615 y=125 bg rgb(51,51,51) | OK |
+
+Commits da correcao:
+
+- e91cdae - #FRONT-RMA - Restaura paridade do detalhe RMA no Tema V1.
+- 1fc2a86 - #QA-RMA - Cobre detalhe RMA do Tema V1.
+- 6b78ac3 - #FRONT-RMA - Restaura paridade do detalhe RMA no Tema V2.
+- 10f786f - #QA-RMA - Cobre detalhe RMA do Tema V2.
+- c030e87 - #FRONT-RMA - Corrige geometria residual das telas RMA no Tema V2.
+- a71a3d8 - #QA-RMA - Cobre paridade visual das abas do Tema V2.
+
+Regressao:
+
+- PHPUnit completo: 521 testes / 1511 assertions, 100% verde.
+- Playwright dirigido novo: 3/3 verdes (ParidadeDetalheRmaV2).
+- Regressao dirigida Legacy V1 + consistencia: 21/21 verdes.
+- Vite build verde; git diff --check limpo.

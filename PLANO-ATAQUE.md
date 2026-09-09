@@ -67,29 +67,31 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
   + V3 por sessao de QA local ate a matriz fechar.
 - [R] A4 - Residuos de botoes: nenhum novo confirmado alem de V3 nao ter acoes de
   detalhe (aguarda T3-11).
-- [R] A5 - Paridade detalhe RMA Tema V1 (Legacy 14.6.1).
+- [x] A5 - Paridade detalhe RMA Tema V1 (Legacy 14.6.1).
   - [x] A5.1 - Reproducao/documentacao com metricas e screenshots
     (`docs/produto/2026-09-09-addendum-paridade-detalhe-rma-v1-v2.md`, PAR-DET-V1-01).
-  - [ ] A5.2 - Restaurar estrutura/identidade do `show` V1 (BOLETIM DE DEFEITO,
-    grupos 4 colunas, celulas densas historicas).
-  - [ ] A5.3 - Restaurar informacoes com prova de campo (dominio/relacionamento/
-    snapshot legado; sem migration nova).
-  - [ ] A5.4 - Browser regression V1 (listagens/show/edit/acoes).
-- [R] A6 - Paridade detalhe RMA Tema V2 (Legacy 15.8.1).
+  - [x] A5.2 - Restaurar estrutura/identidade do `show` V1 (BOLETIM DE DEFEITO,
+    grupos 4 colunas, celulas densas historicas) - e91cdae.
+  - [x] A5.3 - Restaurar informacoes com prova de campo (dominio/relacionamento/
+    snapshot legado; sem migration nova) - e91cdae.
+  - [x] A5.4 - Browser regression V1 (listagens/show/edit/acoes) - 1fc2a86 +
+    regressao 21/21 Playwright.
+- [x] A6 - Paridade detalhe RMA Tema V2 (Legacy 15.8.1).
   - [x] A6.1 - Reproducao/documentacao com metricas e screenshots
     (`docs/produto/2026-09-09-addendum-paridade-detalhe-rma-v1-v2.md`, PAR-DET-V2-01).
-  - [ ] A6.2 - Restaurar cabecalho operacional e grupos/colunas do `show` V2.
-  - [ ] A6.3 - Acoes/cabecalho integrados sem duplicar regra de negocio.
-  - [ ] A6.4 - Browser regression V2 (abas, show/edit/acoes).
-- [R] PAR-V2-GEO-01 - Geometria das abas/listagens V2 (delta medido: tabela -7px;
+  - [x] A6.2 - Restaurar cabecalho operacional e grupos/colunas do `show` V2 - 6b78ac3.
+  - [x] A6.3 - Acoes/cabecalho integrados sem duplicar regra de negocio - 6b78ac3.
+  - [x] A6.4 - Browser regression V2 (abas, show/edit/acoes) - 10f786f +
+    a71a3d8.
+- [x] PAR-V2-GEO-01 - Geometria das abas/listagens V2 (delta medido: tabela -7px;
   documento no addendum).
-  - [ ] V2-GEO-01.1 - Alinhar conteudo das abas V2 a y=47px e reconferir rodape.
-  - [ ] V2-GEO-01.2 - Playwright de geometria por aba.
-- [R] PAR-V2-PESQ-01 - Composicao Pesquisar V2 (classes historicas ausentes do CSS
+  - [x] V2-GEO-01.1 - Alinhar conteudo das abas V2 a y=47px e reconferir rodape - c030e87.
+  - [x] V2-GEO-01.2 - Playwright de geometria por aba - a71a3d8.
+- [x] PAR-V2-PESQ-01 - Composicao Pesquisar V2 (classes historicas ausentes do CSS
   compilado).
-  - [ ] V2-PESQ-01.1 - Estrutura `submenu-subpage` + port de `.boxtop-subpage`,
-    `.box-subpage`, `.buttonSearch`, `.InputSeek`.
-  - [ ] V2-PESQ-01.2 - Playwright de bounding boxes/cores da composicao.
+  - [x] V2-PESQ-01.1 - Estrutura `submenu-subpage` + port de `.boxtop-subpage`,
+    `.box-subpage`, `.buttonSearch`, `.InputSeek` - c030e87.
+  - [x] V2-PESQ-01.2 - Playwright de bounding boxes/cores da composicao - a71a3d8.
 - [ ] A7/T3-11 - Detalhe operacional do RMA no Tema V3 (apos A5/A6).
 
 ## DEPOIS

@@ -329,6 +329,13 @@ select:disabled {
 // pattern/15.8.1.css (formgroupnf/Label1/inputs) + 15.9.7 (fontes/final). Aparece
 // somente no show V2; o edit do Tema V2 usa o mesmo bootstrap/form-control existente.
 .detalhe-rma-v2 {
+  ol.breadcrumb {
+    // Cabecalho do detalhe V2: mesmos valores do runtime 15.8.1 (topo efetivo y=37).
+    margin-top: -3px;
+    margin-bottom: 0;
+    padding-top: 15px;
+  }
+
   .numerodobd {
     letter-spacing: 1px;
     color: #fff;
@@ -343,11 +350,9 @@ select:disabled {
   .formgroupnf {
     padding: 15px 0;
     background-color: #272822;
-    margin: -20px 0 0 0;
-
-    + .formgroupnf {
-      margin-top: 0;
-    }
+    // No detalhe V2 o formgroup ja entra depois do cabecalho; o -20px do form
+    // historico era absorvido pela estrutura do formulario, aqui nao.
+    margin: 3px 0 0 0;
   }
 
   .Label1 {
@@ -436,4 +441,86 @@ select:disabled {
     margin-top: 20px;
     clear: both;
   }
+}
+
+
+// PAR-V2-PESQ-01 - composicao Pesquisar V2. Regras ausentes do CSS compilado,
+// portadas de pattern/15.8.1.css + pattern/15.9.7.css. Declaradas depois do
+// Bootstrap no bundle final, como no runtime Legacy (15.8.1/15.9.7 apos o CDN).
+.submenu-subpage {
+  margin-top: -5px;
+  text-align: right;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.boxtop-subpage {
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.3em;
+  color: #fff;
+
+  h3 {
+    line-height: 1.3em;
+    font-weight: 700;
+    text-align: left;
+    letter-spacing: 2px;
+    font-size: 12px;
+    margin: 0;
+    margin-bottom: 10px;
+    margin-left: 1px;
+    font-family: "Arial", "Open Sans", "Fira Mono", sans-serif !important;
+  }
+}
+
+.box-subpage {
+  text-align: left;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.formInputSearch {
+  border-radius: 0;
+  border: 1px solid #f9fcd5;
+}
+
+.InputSeek {
+  border: 1px solid #3f3d3d !important;
+  margin-left: -20px !important;
+  background-color: rgb(45, 45, 45) !important;
+  color: #fff !important;
+  width: 183px !important;
+}
+
+.buttonSearch {
+  background-color: #333 !important;
+  color: #e1deac !important;
+  border: 1px solid #3f3d3d !important;
+
+  &:hover {
+    background-color: #185a78 !important;
+    color: #e1deac !important;
+    border: 1px solid #757575 !important;
+  }
+}
+
+
+// PAR-V2-GEO-01 - residuo vertical das abas V2. No Legacy a camada col-md-12 soma
+// 7px de padding-top sobre o tab-content; aqui o container ja nao tem a coluna, entao
+// o 7px e aplicado so nas abas do indice. Detalhe V2 nao usa .tab-content.
+.shell-v2 > .container > .tab-content {
+  margin-top: 7px;
+}
+
+
+// PAR-V2-PESQ-01 (ajuste horizontal) - no Legacy o botao acompanha o input dentro do
+// fluxo inline do form; em V3 o wrapper form-group nao deve reservar espaco proprio
+// (senão empurra o botao). Visual sem alterar markup semantico.
+.shell-v2 .navbar-form .form-group {
+  display: contents;
+}
+
+// Input com a mesma largura medida do runtime Legacy (15.8.1/pesquisar).
+.InputSeek {
+  margin-left: -16px !important;
 }

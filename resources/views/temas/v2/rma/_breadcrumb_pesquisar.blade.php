@@ -1,8 +1,7 @@
-{{-- CP20 (paridade visual V2) - fonte real `legacy-source/15.8.1/inc/menu_pesquisar.php`.
-"Qualquer campo"/"Nota fiscal"/"Número de série" mapeiam para os 3 critérios já
-existentes em `CriterioDeBusca` (texto/nota_fiscal/serial) - nenhuma regra de busca
-nova, só a UI histórica (breadcrumb) no lugar do `<select>` genérico que existia
-antes. --}}
+{{-- CP20 (paridade visual V2) - fonte real legacy-source/15.8.1/page/pesquisar.php
++ subp/pesquisar_rma.php. O menu-subp fica DENTRO de submenu-subpage (alinhado a
++ direita no Legacy); o titulo Pesquisar: fica fora, como filho direto de
++ boxtop-subpage. --}}
 <div class="menu-subp">
     <ol class="breadcrumb">
         <li class="{{ $tipo === 'texto' ? 'active' : '' }}">
@@ -16,5 +15,3 @@ antes. --}}
         </li>
     </ol>
 </div>
-<h3 class="fl">Pesquisar:</h3>
-<div style="clear:both;"></div>

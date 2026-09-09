@@ -20,14 +20,16 @@ Baseline real reconferido: HEAD = origin/main = `24ffd4e`, working tree limpo.
   com geometria de `<a>`, breakpoints 12,5%/11,1% iguais ao media.php.
 - [x] PAR-V2-DROPDOWN-02 - Dropdown Menu V2 sem moldura/faixa branca (62cbb27);
   li dono dos 25px e item POST com mesma geometria dos links.
-- [R] PAR-V2-CURSOR-02 - UI-09.3 reaberta. Navbar/dropdown corrigidos (62cbb27,
-  causa: Bootstrap cursor:default no item ativo). Varredura ampla continua em
-  aberto ate as ondas 3/4 restaurarem as superficies.
+- [x] PAR-V2-CURSOR-02 - Fechado em 2026-09-09: item ativo corrigido (62cbb27),
+  varredura A inclui detalhe V1/V2 e Novo V2 (4e2294e); 0 selects com cursor
+  errado nas rotas cobertas.
 - [x] PAR-V2-DETAIL-02 - Detalhe RMA V2 restaurado como formulario operacional
   editavel (127b94d); leitura via Policy com controles desabilitados.
 - [x] PAR-V2-NOVO-01 - Novo RMA V2 inline na aba Novo (e46fd3f): grade 3
   colunas, condicional Origem/NF, estoque, CRIAR BD e store moderno.
-- [ ] PAR-V2-SWEEP-01 - Varredura residual 15.8.1 x V2 nas superfícies do addendum.
+- [x] PAR-V2-SWEEP-01 - Varredura residual V2 executada nas superfícies
+  implementadas + regressao; residuos conhecidos classificados no addendum
+  (secao 17), sem BUG-CONFIRMADO residual novo nos fluxos cobertos.
 
 Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 
@@ -36,7 +38,8 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   varredura ampla segue em PAR-V2-CURSOR-02).
 - [x] ONDA 3 - PAR-V2-DETAIL-02 (A6 funcional, 127b94d).
 - [x] ONDA 4 - PAR-V2-NOVO-01 (Novo RMA inline, e46fd3f).
-- [ ] ONDA 5 - PAR-V2-SWEEP-01.
+- [x] ONDA 5 - PAR-V2-SWEEP-01 (varredura + regressao; 532/532 PHPUnit e
+  Playwright dirigido verde).
 
 ## AGORA - UI/paridade corrente
 
@@ -45,8 +48,8 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   (UI-AUD-001..018), commit `16c1913`.
   - [x] UI-09.1 - Auditar superfícies (UI-AUD-001..018).
   - [x] UI-09.2 - Commit documental da Fase A (`16c1913`).
-  - [R] UI-09.3 - Cursor de selects + pontuacao operacional (onda C1; reaberta
-    2026-09-09 pela validacao manual do dono - ver PAR-V2-CURSOR-02).
+  - [x] UI-09.3 - Cursor de selects + pontuacao operacional (onda C1; reaberta
+    2026-09-09 e fechada com varredura A ampliada - ver PAR-V2-CURSOR-02).
   - [x] UI-09.4 - Geometria dos formularios V1 (onda C2).
   - [x] UI-09.5 - Gestao de usuarios V1/V2 (onda C3).
   - [x] UI-09.6 - Controle V1 (onda C4/UI-05).

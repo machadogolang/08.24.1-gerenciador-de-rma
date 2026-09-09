@@ -302,3 +302,31 @@ Proximo: ONDA 4 (Novo RMA V2 inline - PAR-V2-NOVO-01).
 - PUSH NAO REALIZADO.
 
 Proximo: ONDA 5 (varredura residual V2 - PAR-V2-SWEEP-01).
+
+## 17. Resultado pos-correcao - ONDA 5 (varredura residual e fechamento UI-09.3)
+
+- PHPUnit completo: 532 testes / 1582 assertions, 100% verde.
+- Playwright dirigido em serie: Fluxos/Tema 1/1, ConsistenciaVisualControles 9/9
+  (varredura A inclui detalhe V1/V2), EdicaoInlineDetalheV1 3/3,
+  ParidadeDetalheRmaV2 3/3, ParidadeDetalheRmaV2Funcional 1/1,
+  ParidadeNovoRmaV2 1/1, ParidadeNavbarDropdownV2 4/4 = 22/22 verdes (uma
+  execucao inicial falhou por seletor `input` x `textarea` no helper de criacao;
+  corrigido e isolado 1/1 verde).
+- Vite build verde; `git diff --check` limpo antes de cada commit.
+- UI-09.3/PAR-V2-CURSOR-02 fechados com varredura real.
+- PAR-V2-SWEEP-01 fechado no escopo das superficies implementadas; residuos
+  conhecidos e intencionais classificados abaixo, nenhum BUG-CONFIRMADO novo.
+
+### Classificacao dos residuos observados (nao bloqueiam esta rodada)
+
+- Novo RMA V2 usa selects modernos no lugar dos datalists/autocomplete do Legacy:
+  `PARIDADE-LEGACY`/decisao arquitetural de seguranca registrada em NOVO-01.4.
+- Detalhe V2 mantem link secundario para a pagina de edicao dedicada alem do
+  formulario operacional do show: `MELHORIA-NAVEGACAO`, sem duplicar regra.
+- Zebra fina das listagens V2 e `[INVESTIGAR]` pre-existente do plano de paridade
+  visual (CMP-V2-006), fora desta rodada.
+- Centro de Avisos com composicao por-grupo propria do Legacy e gap de pagina
+  "Anotacoes" seguem como trabalhos abertos ja registrados (CMP-V2-004/001).
+- Nenhum desses residuos contradiz a condicao de saida minima da rodada.
+
+Proximo da sessao: handoff final (unico commit apos esta atualizacao).

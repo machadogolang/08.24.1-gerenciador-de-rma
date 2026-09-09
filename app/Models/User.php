@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Compartilhado\Tenant\ContextoDeTenant;
 use App\Identidade\Dominio\Papel;
 use App\Identidade\Dominio\TemaPreferido;
 use Database\Factories\UserFactory;
@@ -41,5 +42,46 @@ class User extends Authenticatable
             ->using(CompanyUser::class)
             ->withPivot(['papel', 'ativo'])
             ->withTimestamps();
+    }
+
+    /**
+     * EVO-SAAS-001 (S9) — papel no contexto da empresa ativa (vínculo `company_user`),
+     * com fallback de compatibilidade para `users.papel` quando não há contexto web.
+     * O fallback é removido na etapa S9.7/S9.8, quando nenhum consumidor depender dele.
+     */
+    public function papelAtivo(): Papel
+    {
+        return app(ContextoDeTenant::class)->papelAtivo() ?? $this->papel;
+    }
+
+    /**
+     * Vínculo ativo do usuário na empresa corrente do contexto.
+     */
+    public function vinculoAtivo(): ?CompanyUser
+    {
+        $empresaId = app(ContextoDeTenant::class)->empresaId();
+        if ($empresaId === null) {
+            return null;
+        }
+
+        return CompanyUser::query()
+            ->where('company_id', $empresaId)
+            ->where('user_id', $this->id)
+            ->where('ativo', true)
+            ->first();
+    }
+
+    /**
+     * Papel do usuário em uma empresa específica (sem depender do contexto do ator);
+     * usado para o alvo em autorização/painel administrativo.
+     */
+    public function papelNaEmpresa(int $empresaId): ?Papel
+    {
+        $vinculo = CompanyUser::query()
+            ->where('company_id', $empresaId)
+            ->where('user_id', $this->id)
+            ->first();
+
+        return $vinculo?->papel;
     }
 }

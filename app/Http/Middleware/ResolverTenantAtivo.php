@@ -47,7 +47,8 @@ final class ResolverTenantAtivo
             }
         }
 
-        $contexto->definir($empresaEscolhida);
+        $vinculoEscolhido = $vinculos->firstWhere('id', $empresaEscolhida->id);
+        $contexto->definir($empresaEscolhida, $vinculoEscolhido?->pivot?->papel);
 
         return $next($request);
     }

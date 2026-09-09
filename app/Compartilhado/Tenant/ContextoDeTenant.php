@@ -2,6 +2,7 @@
 
 namespace App\Compartilhado\Tenant;
 
+use App\Identidade\Dominio\Papel;
 use App\Models\Company;
 
 /**
@@ -13,14 +14,23 @@ final class ContextoDeTenant
 {
     private ?Company $empresa = null;
 
-    public function definir(Company $empresa): void
+    private ?Papel $papel = null;
+
+    /**
+     * Define a empresa ativa e, quando disponível, o Papel do vínculo ativo
+     * (`company_user`) daquele usuário na empresa. `papel` é opcional para manter
+     * chamadas de teste/contexto manual simples; Policies usam `User::papelAtivo()`.
+     */
+    public function definir(Company $empresa, ?Papel $papel = null): void
     {
         $this->empresa = $empresa;
+        $this->papel = $papel;
     }
 
     public function limpar(): void
     {
         $this->empresa = null;
+        $this->papel = null;
     }
 
     public function empresa(): ?Company
@@ -36,5 +46,10 @@ final class ContextoDeTenant
     public function temEmpresa(): bool
     {
         return $this->empresa !== null;
+    }
+
+    public function papelAtivo(): ?Papel
+    {
+        return $this->papel;
     }
 }

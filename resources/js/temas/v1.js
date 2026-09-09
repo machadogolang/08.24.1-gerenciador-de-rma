@@ -18,6 +18,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // PAR-DET-V1-STOCK-01 - checkboxes de estoque/credito do detalhe trocam o rotulo
+    // como os labels historicos (data-texto-true/falso).
+    document.querySelectorAll('.checkbox-v1-detalhe').forEach((rotulo) => {
+        const caixa = rotulo.querySelector('input[type="checkbox"]');
+        const texto = rotulo.querySelector('span[data-texto-true]');
+        if (!caixa || !texto) {
+            return;
+        }
+        const atualizar = () => {
+            texto.textContent = caixa.checked
+                ? texto.dataset.textoTrue
+                : texto.dataset.textoFalso;
+        };
+        caixa.addEventListener('change', atualizar);
+        atualizar();
+    });
 });
 
 const botaoSessao = document.querySelector('#menu-sessao');

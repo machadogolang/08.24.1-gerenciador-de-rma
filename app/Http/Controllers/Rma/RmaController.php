@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Rma;
 
 use App\Http\Controllers\Controller;
+use App\Models\AssistenciaTecnica;
 use App\Models\Cliente;
 use App\Models\Fabricante;
 use App\Models\Fornecedor;
@@ -11,7 +12,13 @@ use App\Rma\Infraestrutura\CamposDeExibicaoDoRmaEmBanco;
 use App\Rma\Aplicacao\Alertas\ListarGruposDeAlertas;
 use App\Rma\Aplicacao\BuscarRmas;
 use App\Rma\Aplicacao\CriarRma;
+use App\Rma\Aplicacao\ArquivarRma;
+use App\Rma\Aplicacao\ConcluirRma;
 use App\Rma\Aplicacao\EditarRma;
+use App\Rma\Aplicacao\EncaminharRma;
+use App\Rma\Aplicacao\ReceberRma;
+use App\Rma\Aplicacao\RegistrarSolucao;
+use App\Rma\Aplicacao\ReverterRmaParaEntrada;
 use App\Rma\Aplicacao\VerDetalheDoRma;
 use App\Rma\Dominio\CriterioDeBusca;
 use App\Rma\Dominio\PainelDeStatus;
@@ -259,6 +266,11 @@ class RmaController extends Controller
             'fabricante' => $fabricante,
             'fornecedor' => $fornecedor,
             'cliente' => $cliente,
+            // PAR-DET-V1-EDIT-01 - listas para edicao inline do detalhe V1 (selects
+            // com nomes reais, sem resolver por texto arbitrario no servidor).
+            'fabricantesLista' => Fabricante::query()->orderBy('nome')->get(),
+            'fornecedoresLista' => Fornecedor::query()->orderBy('nome')->get(),
+            'assistenciasTecnicasLista' => AssistenciaTecnica::query()->orderBy('nome')->get(),
             // PAR-DET-V1-01/PAR-DET-V2-01 - campos historicos de apresentacao
             // (colunas preservadas pela Fase 9; leitura exclusiva desta tela).
             'legado' => $legado,
@@ -353,15 +365,111 @@ class RmaController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $rma, EditarRma $caso): RedirectResponse
-    {
+    public function update(
+        Request $request,
+        int $rma,
+        EditarRma $caso,
+        RegistrarSolucao $registrarSolucao,
+        ReceberRma $receberRma,
+        EncaminharRma $encaminharRma,
+        ConcluirRma $concluirRma,
+        ReverterRmaParaEntrada $reverterRma,
+        ArquivarRma $arquivarRma,
+    ): RedirectResponse {
         Gate::authorize('update', RmaEloquent::class);
 
         $dados = $this->validarDados($request);
 
         $registro = $caso->editar($rma, $dados);
 
-        return redirect(rota_tema('rmas.show', ['rma' => $registro->id]))->with('status', 'RMA atualizado.');
+        // PAR-DET-V1-EDIT-01 - o detalhe V1 envia o select de solucao junto com os
+        // demais campos; a gravacao usa o caso de uso moderno (RegistrarSolucao),
+        // nao SQL no blade nem endpoint monolitico do Legacy.
+        if ($request->filled('solucao')) {
+            $solucao = Solucao::tryFrom((string) $request->input('solucao'));
+            abort_if($solucao === null, 422);
+            $registro = $registrarSolucao->registrar($this->usuario(), $registro, $solucao);
+        }
+
+        $this->executarAcaoDoDetalhe(
+            (string) $request->input('acao', 'salvar'),
+            $request,
+            $registro,
+            $receberRma,
+            $encaminharRma,
+            $concluirRma,
+            $reverterRma,
+            $arquivarRma,
+        );
+
+        $mensagens = [
+            'receber' => 'RMA recebido.',
+            'encaminhar' => 'RMA encaminhado.',
+            'concluir' => 'RMA concluido.',
+            'reverter' => 'RMA revertido para Entrada.',
+            'arquivar' => 'RMA arquivado.',
+            'salvar' => 'RMA atualizado.',
+        ];
+
+        return redirect(rota_tema('rmas.show', ['rma' => $registro->id]))
+            ->with('status', $mensagens[(string) $request->input('acao', 'salvar')] ?? 'RMA atualizado.');
+    }
+
+    private function usuario(): \App\Models\User
+    {
+        /** @var \App\Models\User $usuario */
+        $usuario = auth()->user();
+
+        return $usuario;
+    }
+
+    private function executarAcaoDoDetalhe(
+        string $acao,
+        Request $request,
+        \App\Rma\Dominio\Rma $registro,
+        ReceberRma $receberRma,
+        EncaminharRma $encaminharRma,
+        ConcluirRma $concluirRma,
+        ReverterRmaParaEntrada $reverterRma,
+        ArquivarRma $arquivarRma,
+    ): void {
+        if ($acao === 'salvar') {
+            return;
+        }
+
+        $dados = match ($acao) {
+            'concluir' => $request->validate([
+                'solucao' => ['required', 'string'],
+            ]),
+            default => [],
+        };
+
+        if ($acao === 'encaminhar') {
+            $valorDestinatario = (string) $request->input('destinatario_tipo', '');
+            $partes = explode(':', $valorDestinatario, 2);
+            abort_if(count($partes) !== 2 || ! is_numeric($partes[1]), 422);
+
+            $encaminharRma->encaminhar(
+                $this->usuario(),
+                $registro,
+                $partes[0],
+                (int) $partes[1],
+            );
+
+            return;
+        }
+
+        match ($acao) {
+            'receber' => $receberRma->receber($this->usuario(), $registro),
+            'concluir' => $concluirRma->concluir(
+                $this->usuario(),
+                $registro,
+                Solucao::from($dados['solucao']),
+            ),
+            'reverter' => $reverterRma->reverter($this->usuario(), $registro),
+            'arquivar' => $arquivarRma->arquivar($this->usuario(), $registro),
+            default => abort(422),
+        };
     }
 
     /**
@@ -382,9 +490,12 @@ class RmaController extends Controller
         }
 
         $dados = $request->validate([
+            'acao' => ['nullable', 'string', 'in:salvar,receber,encaminhar,concluir,reverter,arquivar'],
             'descricao' => ['required', 'string', 'max:255'],
             'fabricante_id' => ['nullable', 'integer', 'exists:fabricantes,id'],
+            'fabricante_nome' => ['nullable', 'string', 'max:255'],
             'fornecedor_id' => ['nullable', 'integer', 'exists:fornecedores,id'],
+            'fornecedor_nome' => ['nullable', 'string', 'max:255'],
             'modelo' => ['nullable', 'string', 'max:255'],
             'sn' => ['nullable', 'string', 'max:255'],
             'os' => ['nullable', 'string', 'max:255'],
@@ -393,16 +504,36 @@ class RmaController extends Controller
             'cliente_nome' => ['nullable', 'string', 'max:255'],
             'defeito' => ['required', 'string', 'max:255'],
             'observacao' => ['nullable', 'string'],
-            // VIS-V1-003 (Grupo A) - já existiam no agregado (`App\Rma\Dominio\Rma`) e
-            // na coluna, mas nunca chegavam validados até `CriarRma`. `pn`/`snid`
-            // promovidos de coluna histórica para campo de primeira classe (ver
-            // docblock do construtor de `Rma`).
-            'nfcompra' => ['nullable', 'string', 'max:255'],
-            'nfcompra_emissao' => ['nullable', 'date'],
-            'nfvenda' => ['nullable', 'string', 'max:255'],
-            'nfvenda_emissao' => ['nullable', 'date'],
             'pn' => ['nullable', 'string', 'max:255'],
             'snid' => ['nullable', 'string', 'max:255'],
+            'protocolo' => ['nullable', 'string', 'max:255'],
+            'valor' => ['nullable', 'string', 'max:20'],
+            'snretorno' => ['nullable', 'string', 'max:255'],
+            'marcarestoque' => ['sometimes', 'boolean'],
+            'credito_disponivel' => ['sometimes', 'boolean'],
+            'solucao' => ['nullable', 'string', 'in:' . implode(',', array_column(Solucao::cases(), 'value'))],
+            'nfcompra' => ['nullable', 'string', 'max:255'],
+            'nfcompra_emissao' => ['nullable', 'date'],
+            'nfcompra_chave' => ['nullable', 'string', 'max:500'],
+            'nfvenda' => ['nullable', 'string', 'max:255'],
+            'nfvenda_emissao' => ['nullable', 'date'],
+            'nfvenda_chave' => ['nullable', 'string', 'max:500'],
+            'nf_entrada_cliente_legado' => ['nullable', 'string', 'max:255'],
+            'nf_retorno_cliente_legado' => ['nullable', 'string', 'max:255'],
+            'nf_devolucao_de_venda' => ['nullable', 'string', 'max:255'],
+            'nf_remessa' => ['nullable', 'string', 'max:255'],
+            'nf_remessa_emissao' => ['nullable', 'string', 'max:30'],
+            'nf_remessa_chave' => ['nullable', 'string', 'max:500'],
+            'nf_retorno_numero' => ['nullable', 'string', 'max:255'],
+            'nf_retorno_emissao' => ['nullable', 'string', 'max:30'],
+            'nf_retorno_chave' => ['nullable', 'string', 'max:500'],
+            'rastreio_ida' => ['nullable', 'string', 'max:255'],
+            'rastreio_retorno' => ['nullable', 'string', 'max:255'],
+            'cliente_email_legado' => ['nullable', 'string', 'max:255'],
+            'destinatario_email_legado' => ['nullable', 'string', 'max:255'],
+            'destinatario_fone_legado' => ['nullable', 'string', 'max:255'],
+            'destinatario_nome_legado' => ['nullable', 'string', 'max:255'],
+            'destinatario_tipo' => ['nullable', 'string', 'regex:/^[a-z_]+:\d+$/'],
         ]);
 
         return $dados;

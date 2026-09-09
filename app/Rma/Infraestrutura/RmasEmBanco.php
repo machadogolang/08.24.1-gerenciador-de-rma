@@ -206,6 +206,21 @@ final class RmasEmBanco implements RepositorioDeRmas
             'lancadoretorno' => $rma->lancadoretorno,
             'valor' => $rma->valor,
             'credito_disponivel' => $rma->creditoDisponivel,
+            'nf_entrada_cliente_legado' => $rma->nfEntradaClienteLegado,
+            'nf_retorno_cliente_legado' => $rma->nfRetornoClienteLegado,
+            'nf_devolucao_de_venda' => $rma->nfDevolucaoDeVenda,
+            'nf_remessa' => $rma->nfRemessa,
+            'nf_remessa_emissao' => $rma->nfRemessaEmissao,
+            'nf_remessa_chave' => $rma->nfRemessaChave,
+            'nf_retorno_numero' => $rma->nfRetornoNumero,
+            'nf_retorno_emissao' => $rma->nfRetornoEmissao,
+            'nf_retorno_chave' => $rma->nfRetornoChave,
+            'rastreio_ida' => $rma->rastreioIda,
+            'rastreio_retorno' => $rma->rastreioRetorno,
+            'cliente_email_legado' => $rma->clienteEmailLegado,
+            'destinatario_email_legado' => $rma->destinatarioEmailLegado,
+            'destinatario_fone_legado' => $rma->destinatarioFoneLegado,
+            'destinatario_nome_legado' => $rma->destinatarioNomeLegado,
         ];
     }
 
@@ -248,6 +263,21 @@ final class RmasEmBanco implements RepositorioDeRmas
             valor: $model->valor !== null ? (float) $model->valor : null,
             createdAt: $model->created_at,
             creditoDisponivel: $model->credito_disponivel,
+            nfEntradaClienteLegado: $model->nf_entrada_cliente_legado,
+            nfRetornoClienteLegado: $model->nf_retorno_cliente_legado,
+            nfDevolucaoDeVenda: $model->nf_devolucao_de_venda,
+            nfRemessa: $model->nf_remessa,
+            nfRemessaEmissao: $model->nf_remessa_emissao,
+            nfRemessaChave: $model->nf_remessa_chave,
+            nfRetornoNumero: $model->nf_retorno_numero,
+            nfRetornoEmissao: $model->nf_retorno_emissao,
+            nfRetornoChave: $model->nf_retorno_chave,
+            rastreioIda: $model->rastreio_ida,
+            rastreioRetorno: $model->rastreio_retorno,
+            clienteEmailLegado: $model->cliente_email_legado,
+            destinatarioEmailLegado: $model->destinatario_email_legado,
+            destinatarioFoneLegado: $model->destinatario_fone_legado,
+            destinatarioNomeLegado: $model->destinatario_nome_legado,
         );
     }
 }

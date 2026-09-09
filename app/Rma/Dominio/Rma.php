@@ -66,6 +66,24 @@ final class Rma
          * automática a partir de `solucao`. Ver Fase 6 (`rma-creditos-e-relatorios`).
          */
         public readonly bool $creditoDisponivel = false,
+        // PAR-DET-V1-EDIT-01 - colunas historicas que o detalhe V1 do Legacy edita
+        // em linha (preservadas pela Fase 9). Pass-through no agregado para permitir
+        // gravacao pela mesma infra/repositorio; nenhuma regra de dominio nova.
+        public readonly ?string $nfEntradaClienteLegado = null,
+        public readonly ?string $nfRetornoClienteLegado = null,
+        public readonly ?string $nfDevolucaoDeVenda = null,
+        public readonly ?string $nfRemessa = null,
+        public readonly ?string $nfRemessaEmissao = null,
+        public readonly ?string $nfRemessaChave = null,
+        public readonly ?string $nfRetornoNumero = null,
+        public readonly ?string $nfRetornoEmissao = null,
+        public readonly ?string $nfRetornoChave = null,
+        public readonly ?string $rastreioIda = null,
+        public readonly ?string $rastreioRetorno = null,
+        public readonly ?string $clienteEmailLegado = null,
+        public readonly ?string $destinatarioEmailLegado = null,
+        public readonly ?string $destinatarioFoneLegado = null,
+        public readonly ?string $destinatarioNomeLegado = null,
     ) {}
 
     /**
@@ -169,6 +187,21 @@ final class Rma
             'valor' => $this->valor,
             'createdAt' => $this->createdAt,
             'creditoDisponivel' => $this->creditoDisponivel,
+            'nfEntradaClienteLegado' => $this->nfEntradaClienteLegado,
+            'nfRetornoClienteLegado' => $this->nfRetornoClienteLegado,
+            'nfDevolucaoDeVenda' => $this->nfDevolucaoDeVenda,
+            'nfRemessa' => $this->nfRemessa,
+            'nfRemessaEmissao' => $this->nfRemessaEmissao,
+            'nfRemessaChave' => $this->nfRemessaChave,
+            'nfRetornoNumero' => $this->nfRetornoNumero,
+            'nfRetornoEmissao' => $this->nfRetornoEmissao,
+            'nfRetornoChave' => $this->nfRetornoChave,
+            'rastreioIda' => $this->rastreioIda,
+            'rastreioRetorno' => $this->rastreioRetorno,
+            'clienteEmailLegado' => $this->clienteEmailLegado,
+            'destinatarioEmailLegado' => $this->destinatarioEmailLegado,
+            'destinatarioFoneLegado' => $this->destinatarioFoneLegado,
+            'destinatarioNomeLegado' => $this->destinatarioNomeLegado,
         ];
     }
 

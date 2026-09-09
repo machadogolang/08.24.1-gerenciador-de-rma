@@ -479,23 +479,43 @@ Após a remoção visual do H1 duplicado, o H2 continuará no topo do conteúdo 
 tabela não muda de lugar; a eventual margem extra do painel deve ser medida de
 novo, não compensada por palpite.
 
-## 5. Plano de correção por ondas (após este commit documental)
+## 5. Plano de correção por ondas (após o commit documental)
 
-As ondas são temáticas e pequenas, com testes antes/junto e commit por onda:
+Ondas temáticas e pequenas, com testes antes/junto e commit por onda. Status no
+padrão canônico `[ ]`/`[R]`/`[x]`.
 
-- **C1** — UI-AUD-008 e UI-AUD-010: cursor de selects + pontuação operacional.
-- **C2** — UI-AUD-004/005: geometria de formulários V1 (parceiros + RMA
-  edição), com classe semântica escopada.
-- **C3** — UI-AUD-006/007: gestão de usuários V1/V2 (apresentação, sem negócio).
-- **C4** — UI-AUD-011 (FRONT-003/UI-05): Controle V1.
-- **C5** — UI-AUD-001/002/003/017: relatórios RCD/RPEC/RMPE (título único V1).
-- **C6** — UI-AUD-009/013 (+ opcional UI-AUD-012): menu/dropdown V2 e ações de
-  ciclo de vida.
-- **C7** — varredura residual das mesmas classes de inconsistência; UI-AUD-016
-  fica para a onda própria de UI-07, com prova de zero consumidor.
+- [x] C1 — Cursor de selects + pontuação operacional
+  - UI-AUD-008 e UI-AUD-010;
+  - implementado e commitado em `22c48a7`;
+  - contrato A do browser verde.
+- [x] C2 — Geometria dos formulários V1
+  - UI-AUD-004/005 (parceiros + edição RMA), classe `.tabela-form-v1`;
+  - implementado e commitado em `22c48a7`;
+  - contrato B do browser verde (4 tipos de parceiro).
+- [x] C3 — Gestão de usuários V1/V2
+  - UI-AUD-006/007;
+  - implementado e commitado em `22c48a7`;
+  - contratos D/D2 do browser verdes.
+- [x] C4 — Controle V1 (FRONT-003/UI-05)
+  - UI-AUD-011: causa raiz confirmada em `16c1913`;
+  - implementado e commitado em `22c48a7`;
+  - contrato E do browser verde;
+  - [ ] regressão viewport/UI-08 ainda em aberto.
+- [x] C5 — RCD/RPEC/RMPE (título único V1)
+  - UI-AUD-001/002/003/017: causa raiz confirmada em `16c1913`;
+  - correção commitada em `61222c8` + `1938247`;
+  - contrato C do browser verde.
+- [x] C6 — Dropdown V2 e ações de ciclo de vida
+  - UI-AUD-009/013 (+ UI-AUD-012 observado sem correção);
+  - implementado e commitado em `22c48a7`;
+  - contrato F do browser verde.
+- [ ] C7 — Varredura residual
+  - executar nas mesmas classes de inconsistência em mais superfícies e
+    viewports; UI-AUD-016 fica para a onda própria de UI-07, com prova de zero
+    consumidor.
 
-A task transversal nova entra em FRONT-003 como **UI-09 — consistência de
-formulários, selects e controles**; UI-05 permanece UI-05.
+A task transversal nova entra em FRONT-003 como **UI-09**; UI-05 permanece
+UI-05.
 
 ## 6. Evidência complementar
 

@@ -64,3 +64,21 @@ Após no máximo 2 variações equivalentes, trocar de mecanismo: usar prefixo d
 já aprovado (ex.: `cat`, `git log`, `git status`) ou escalar a leitura pontual com
 `sandbox_permissions: require_escalated` e prefixo estreito. Registro completo:
 `docs/operacao/incidentes/2026-09-09-sandbox-bwrap-loopback.md`.
+
+## Marcadores canônicos de status do plano (regra do dono, 2026-09-09)
+
+Todo `PLANO-ATAQUE.md`, checklist executável e lista de ondas/tasks deve usar
+obrigatoriamente os marcadores `[ ]` (PENDENTE), `[R]` (REVISADO) e
+`[x]` (CONCLUÍDO), conforme definição e regras em
+`docs/operacao/padrao-status-plano.md`.
+
+- Investigação fechada sem implementação = `[R]`.
+- Sem diagnóstico suficiente = `[ ]`.
+- `[x]` exige evidência real (código/teste/runtime/documentação).
+- Antes de continuar execução, normalize `PLANO-ATAQUE.md` se ele não estiver
+  no padrão; planos novos já nascem no padrão.
+- Documentos técnicos detalhados podem continuar em prosa, mas seções do tipo
+  “Plano de correção por ondas” também usam os marcadores.
+- Sequência padrão: INVESTIGAR → DOCUMENTAR → COMMIT DOCUMENTAL → EXECUTAR EM
+  CICLOS PEQUENOS → TESTAR/COMMITAR → RECONCILIAR → HANDOFF → COMMIT DO HANDOFF
+  POR ÚLTIMO.

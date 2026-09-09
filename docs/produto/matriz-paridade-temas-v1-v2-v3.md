@@ -77,3 +77,14 @@ Para fechar uma linha:
 4. diferença apenas de composição/visual explicitamente consciente;
 5. Tema 3 só muda de `planejado` para `sim` depois do gate integral e antes de aparecer
    no seletor.
+
+## Refinamento do Tema 3 (2026-09-09)
+
+A especificacao do Tema V3 foi refinada sem implementacao. Ver
+`docs/arquitetura/2026-09-09-refinamento-evo-ux-001-tema-v3-console-operacional.md`,
+`docs/produto/2026-09-09-matriz-aproveitamento-v1-v2-para-v3.md`,
+`docs/produto/2026-09-09-mapa-telas-tema-v3.md`,
+`docs/produto/2026-09-09-wireframes-tema-v3.md`,
+`docs/arquitetura/2026-09-09-spike-t3-tailwind-vs-css-semantico-v3.md` e
+OpenSpec `openspec/changes/tema-v3-console-operacional/`. V3 continua `planejado`
+na coluna Tema 3 e permanece nao selecionavel.

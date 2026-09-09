@@ -359,9 +359,12 @@ avançar antes, código não sai do seletor.
 - [x] **DEV H-012 (`FRONT-002`/`PAR-V2-001`) — corrigir abas por status do Tema 2.**
   Fechado por evidência (CP23, commit `a8e0daa`): `RmaController::index` carrega
   as abas por status sempre, independente de termo de busca.
-- [~] **DEV H-013 (`FRONT-003`) — dar shell/navegação comuns.** Em execução
-  (2026-09-09): `/rmas-credito` integrado ao shell V1/V2 (commit df0d02e); RCD/RPEC/
-  RMPE, alertas, históricos e logística pendentes conforme OpenSpec da frente.
+- [~] **DEV H-013 (`FRONT-003`) — dar shell/navegação comuns + contrato de
+  ações/botões.** Em execução (2026-09-09): `/rmas-credito` integrado ao shell V1/V2
+  (commit `df0d02e`); UI-02B/C/D concluídas (contrato `.acao` aplicado em Parceiros,
+  RMA, ciclo de vida e crédito/formulários; ver `2026-09-09-investigacao-contrato-
+  visual-acoes-botoes.md`); RCD/RPEC/RMPE, alertas, históricos e logística pendentes
+  conforme OpenSpec da frente (UI-03/UI-04).
 - [x] **DEV H-014 (`FRONT-004`) — remover scaffold `welcome`.** Fechado em 2026-09-09:
   `/` redireciona convidado para `login` e autenticado para `dashboard`;
   `welcome.blade.php` e os dois `ExampleTest` placeholders removidos; cobertura nova em

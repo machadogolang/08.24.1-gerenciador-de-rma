@@ -162,3 +162,25 @@ em `<form>` com CSRF/Gates/rotas — nenhum JS de navegação novo.
 - UX-002 (confirmação de remoção de parceiro) — permanece separada.
 - UX-003/UX-004, responsividade global do V1, modal genérico, biblioteca/framework.
 - Views genéricas órfãs — UI-07/FRONT-006.
+
+## 11. Execução registrada (UI-02B/C/D)
+
+- `694732d` — `#DOC-RMA`: auditoria/contrato (este documento + OpenSpec + plano).
+- `624e548` — `#FRONT-RMA`: Parceiros V1/V2 (Novo primary; Editar secondary compact;
+  Remover danger compact; cursor/hover/focus).
+- `1c1a1e6` — `#FRONT-RMA`: RMA listagens/detalhe (Ver/Editar compactos; Editar do
+  detalhe primário; V2 mantém ícone "Ver" no índice por fidelidade do legado).
+- `5ce8654` — `#FRONT-RMA`: ciclo de vida (`rma._acoes_de_transicao`) com papéis
+  semânticos, sem tocar rotas/CSRF/Gates.
+- `42a4235` — `#FRONT-RMA`: formulários/crédito/identidade (Alternar tema V1
+  secundária, Voltar V1 secundária, crédito primária, Abrir novo RMA V2 primária,
+  foco global).
+- `7a17120` — `#QA-RMA`: Playwright dirigido (`ContratoVisualAcoes.spec.ts`).
+
+Prova: PHPUnit completo 477 testes / 1242 assertions; Playwright 2 testes (V1+V2:
+Parceiros com computed cursor/hover/TAB; detalhe RMA + crédito); Vite build verde.
+
+Resíduo classificado (sem contrato proposital): views genéricas órfãs (UI-07),
+relatórios standalone RPEC/RMPE (UI-03, nascerão com contrato), componentes
+históricos de geometria própria (`buttonSave`, `formSubmit`, `formButtonEnviarPanel`,
+`JSformLocalizarButton`) — agora com cursor/foco globais por tema.

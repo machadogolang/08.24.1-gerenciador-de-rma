@@ -285,10 +285,9 @@ Gate comum: F10-GATE-07. Investigação/especificação pode avançar; código n
 - [x] **GATE G-07 — Trilha A encerrada.** Fechado por evidência: `F10-GATE-07`
   declara gate aprovado em 2026-09-04 e `docs/qa/relatorio-paridade-final.md`
   formaliza o encerramento.
-- [ ] **GATE G-08 — Trilha B liberada.** Somente após G-07 (que já está
-  fechado). Mantém-se em aberto: a liberação formal depende do plano da
-  primeira iniciativa com escolha do usuário; evoluções `EVO-*` não entram
-  em código antes disso.
+- [x] **GATE G-08 — Trilha B liberada.** Liberada em 2026-09-09 por decisão do usuário
+  para execução controlada por ondas pequenas. Primeira iniciativa: EVO-SAAS-001, com
+  OpenSpec em `openspec/changes/saas-multiempresa/` e gate de isolamento próprio.
 
 ## H. Frente — Arquitetura, Front-end e Paridade de Temas
 

@@ -1,6 +1,6 @@
 # CellSystem RMA V3 — estado macro
 
-Última atualização: 2026-08-25. **RMA V2 FINAL** = container 15.9.7; **TEMA V1** =
+Última atualização: 2026-09-09. **RMA V2 FINAL** = container 15.9.7; **TEMA V1** =
 14.6.1; **TEMA V2** = 15.8.1; **RMA V3** = este repositório.
 
 ## Fontes e ambientes
@@ -14,7 +14,8 @@ sobre Git, OpenSpec, investigações e documentos de planejamento.
 - V3 em `:8095`, com base local determinística de QA.
 - Ambientes simultâneos documentados em `docs/produto/ambientes-locais-v2-v3.md`.
 - Baseline auditada em `main`, commit `0b3f72d`.
-- Handoff completo da sessão: `docs/produto/handoff-sessao-2026-08-25.md`.
+- Handoff da sessão atual (2026-09-09): `docs/produto/handoff-sessao-2026-09-09.md`;
+  `handoff-sessao-2026-08-25.md` e `handoff-sessao-2026-08-26.md` ficam como histórico.
 
 ## Trilha A — reconstrução fiel
 
@@ -33,7 +34,7 @@ sobre Git, OpenSpec, investigações e documentos de planejamento.
 
 A matriz funcional tem 48 itens: 44 `PARIDADE`, 2 `NÃO RECONSTRUIR`, 1 `RETOMAR
 IDEIA` e 1 (`LEG-RMA-002`) homologado em parecer formal. A suíte completa tem
-388 testes/941 assertions no PHPUnit (100% verde) e 58 testes automatizados no Playwright
+396 testes/967 assertions no PHPUnit (100% verde nesta sessão) e 58 testes automatizados no Playwright
 Browser (100% verde).
 
 ### Gate da Trilha A — APROVADO (2026-09-04)

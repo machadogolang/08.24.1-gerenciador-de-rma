@@ -1,9 +1,40 @@
 # Plano de ataque — CellSystem RMA
 
-Última atualização: 2026-08-30 16:24 (America/Sao_Paulo). Fonte granular:
+Última atualização: 2026-09-09 (America/Sao_Paulo). Fonte granular:
 `docs/produto/checklist-master-v3.md`.
-Handoff para nova sessão: `docs/produto/handoff-sessao-2026-08-26.md` (substitui o
-handoff de 2026-08-25, mantido só como histórico).
+Handoff para nova sessão: `docs/produto/handoff-sessao-2026-09-09.md` (substitui o
+handoff de 2026-08-26, mantido só como histórico).
+
+## AGORA — sessão pós-gate (2026-09-09)
+
+Estado reconciliado e lacunas reais em
+`docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`. Trilha A encerrada
+(`G-04..G-07` fechados); `G-08` segue aberto aguardando a escolha da primeira
+iniciativa da Trilha B pelo usuário.
+
+Executado nesta sessão, em ciclos pequenos commitados:
+- FRONT-004/D-06: `/` redireciona (login/dashboard); scaffold `welcome` e
+  `ExampleTest` placeholders removidos; teste real de raiz.
+- ARQ-004/PAR-RMA-001: busca por NF usa campos fiscais reais; `os` virou critério
+  próprio; rastreio no legado 14.6.1/15.8.1.
+- PAR-RMA-002/PAR-RMA-003 parcial: busca pela chave histórica (`numero_legado`) e
+  campos diretos no texto (fonte `page/localizar.php`).
+- Reconciliados no checklist: G-04..G-07, H-011, H-012, H-014, H-021, H-022, D-06;
+  H-023 parcial com `[GAP]` explícito.
+- Suíte completa renovada: **396 testes / 967 assertions PHPUnit 100% verde**.
+
+### Próximo passo exato (retomada)
+
+1. Fechar a reconciliação documental residual das seções F10-V1/F10-VIS do
+   `checklist-master-v3.md` com ponteiros para CP0..CP15/CP16..CP25/NAV-00..05
+   (evidência já registrada no diário de cada frente).
+2. Abrir os próximos lotes pequenos da frente H com prova histórica:
+   `ARQ-008` (docblock), `ARQ-005` (destinatário/erros), `FRONT-005`
+   (disclosure `.pmo`), `PAR-PARCEIRO-001` (detalhe do parceiro) — um item por
+   commit, com teste/evidência.
+3. Investigar `C-02/C-03/C-04` residuais com evidência dirigida à fonte histórica.
+4. Apresentar a primeira iniciativa da Trilha B para decisão do usuário (sugestão:
+   `EVO-CONF-001`, OpenSpec completo em `openspec/changes/configuracao-admin/`).
 
 ## AGORA
 

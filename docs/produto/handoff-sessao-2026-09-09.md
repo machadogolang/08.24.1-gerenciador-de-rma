@@ -78,9 +78,9 @@ de estado e lacunas: `docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`.
 
 ## Atualização final — execução EVO-SAAS-001 (ondas S1 a S8)
 
-**SHA inicial da segunda rodada:** `64f1a31`. **SHA final:** `d763bd3` (após commits
-abaixo). Origin/main foi sincronizado por fora da sessão e está X commits atrás; nada
-foi pushado por este agente.
+**SHA inicial da segunda rodada:** `64f1a31`. **SHA final:** `012a479`. **origin/main
+no fechamento:** `d466829` (HEAD local 10 commits à frente). Nada foi pushado por
+este agente; a sincronização do origin aconteceu por fora da sessão.
 
 ### Commits desta segunda rodada (10 código/doc + tasks)
 - `6f80445` — Reconcilia estado pós-gate e abre Trilha B para execução controlada.

@@ -894,3 +894,35 @@ a:focus-visible {
     outline: 1px solid #fff;
     outline-offset: 1px;
 }
+
+// FRONT paridade (P1) — "Trocar p/ 15.8.1" como item de menu do TEMA V1, no mesmo
+// lugar visual do Legacy (`menuright.php`), mas POST/CSRF seguro (sem GET).
+.lisessao-form {
+    margin: 0;
+}
+
+.menu-trocar-tema {
+    display: block;
+    box-sizing: border-box;
+    width: 130px;
+    height: 25px;
+    margin: 0 0 2px -3px;
+    padding: 5px 0 0 5px;
+    border: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: inherit;
+    font-family: "Open Sans", "Arial", Roboto;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    line-height: normal;
+    text-align: left;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        background-color: #9b3949;
+        color: rgba(255, 255, 255, 0.8);
+    }
+}

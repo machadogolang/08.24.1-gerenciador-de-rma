@@ -113,6 +113,10 @@
                     @can('gerenciar', \App\Models\User::class)
                         <a class="lisessao" href="{{ rota_tema('identidade.usuarios.index') }}">Usuários</a>
                     @endcan
+                                    <form method="POST" action="{{ route('tema.alternar') }}" class="lisessao-form">
+                        @csrf
+                        <button type="submit" class="lisessao menu-trocar-tema">Trocar p/ 15.8.1</button>
+                    </form>
                 </nav>
                 <div class="JS-SessaoLEFT">
                     <div class="JS-DivLEFT">

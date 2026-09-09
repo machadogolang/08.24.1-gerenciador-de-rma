@@ -869,3 +869,20 @@ button:disabled {
         margin-left: 4px;
     }
 }
+
+// Superfície das ações de ciclo de vida (partial compartilhado) — só empacotamento
+// e fluxo de leitura; a aparência de cada ação vem de `.acao--*` acima.
+.acoes-de-transicao {
+    margin: 8px 0;
+
+    form {
+        margin: 0 0 8px;
+    }
+
+    label {
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+}

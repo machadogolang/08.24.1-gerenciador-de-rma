@@ -22,7 +22,7 @@ class LogisticaController extends Controller
     {
         Gate::authorize('viewAny', RmaEloquent::class);
 
-        return view('rma.logistica.frete-porto-alegre', [
+        return view_do_tema('rma.logistica.frete-porto-alegre', [
             'titulo' => 'Frete consolidado — Porto Alegre',
             'rmas' => $caso->listar(),
         ]);
@@ -36,7 +36,7 @@ class LogisticaController extends Controller
 
         abort_if($registro === null, Response::HTTP_NOT_FOUND);
 
-        return view('rma.logistica.boletins-relacionados', [
+        return view_do_tema('rma.logistica.boletins-relacionados', [
             'titulo' => "Boletins relacionados — RMA #{$registro->id}",
             'registro' => $registro,
             'relacionados' => $caso->listar($registro),

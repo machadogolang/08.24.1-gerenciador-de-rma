@@ -91,7 +91,8 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
   - [x] V2-PESQ-01.1 - Estrutura `submenu-subpage` + port de `.boxtop-subpage`,
     `.box-subpage`, `.buttonSearch`, `.InputSeek` - c030e87.
   - [x] V2-PESQ-01.2 - Playwright de bounding boxes/cores da composicao - a71a3d8.
-- [ ] A7/T3-11 - Detalhe operacional do RMA no Tema V3 (apos A5/A6).
+- [x] A7/T3-11 - Detalhe operacional do RMA no Tema V3
+  (5885073/9f2e492; checkpoint docs/produto/2026-09-09-checkpoint-t3-11-detalhe-rma-v3.md).
 
 ## DEPOIS
 

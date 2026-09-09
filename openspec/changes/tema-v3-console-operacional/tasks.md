@@ -26,9 +26,9 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
   Evidencia: commits 06ed7a5/572d20b/1bc15ea e tests/Feature/Temas/RenderizaTemaV3Test.php.
 - [x] T3-09 - Dashboard operacional (busca, filas, alertas e contadores acionaveis).
   Evidencia: 572d20b e Playwright TemaV3PrimeiraTranche.
-- [ ] T3-10 - RMAs listagem (tabela densa + cartoes mobile + filtros).
-- [ ] T3-11 - RMA detalhe (cabecalho operacional + secoes + historico).
-  Pre-requisito documentado em A5/A6 (matriz de campos Legacy) na auditoria de 2026-09-09.
+- [x] T3-10 - RMAs listagem (tabela densa + cartoes mobile + filtros).
+- [x] T3-11 - RMA detalhe (cabecalho operacional + secoes + historico).
+  Evidencia: 5885073/9f2e492 e checkpoint 2026-09-09.
 - [ ] T3-12 - RMA formularios (secoes, 2 colunas por relacao).
 - [ ] T3-13 - Parceiros (lista/busca/detalhe/form em secoes).
 - [ ] T3-14 - Usuarios/admin (listagem e acoes contextuais).

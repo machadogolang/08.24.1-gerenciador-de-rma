@@ -293,3 +293,71 @@ nenhum link publico aponta para `/v3`; preferencias V1/V2 preservadas.
   registra avanco externo de origin/main ate `b7f04d9` (automacao do ambiente).
 
 PUSH NAO REALIZADO.
+
+---
+
+# Checkpoint - Auditoria e correcoes pos-tranche V3 (2026-09-09)
+
+## Baseline
+
+- HEAD inicial: `b2795bd`; origin/main inicial: `b7f04d9`; working tree limpa.
+
+## Memoria
+
+- Bwrap ja registrado na memoria canonica RED e no runbook do repo; nenhuma falha
+  SSH/MySQL comprovada nesta sessao.
+- Checkpoint adicionado na memoria RED:
+  `~/.claude-red/projects/-home-legionario-github-08-24-1-gerenciador-de-rma/memory/checkpoint-2026-09-09-tranche-inicial-v3.md`.
+
+## Auditoria documentada
+
+- Arquivo: `docs/produto/2026-09-09-auditoria-tranche-inicial-v3-e-detalhes-rma.md`.
+- Confirmados: overflow horizontal 768 no /v3/rmas; shell V3 sem logout.
+- Matriz de campos do detalhe RMA V1/V2 vs Legacy: V1 e V2 estao simplificados
+  (faltam grupo, numero destacado, chaves/datas fiscais, rastreios, politicas e
+  outros campos); T3-11 depende dessa restauracao.
+
+## Correcoes executadas
+
+- `04a5634` #FRONT-RMA - Corrige navegacao e menu do Tema V3:
+  - wrapper com overflow local na tabela V3 (AUD-V3-01);
+  - Logout no shell V3 (AUD-V3-02).
+
+## Pendentes com decisao real
+
+- T3-17: selecao explicita V1/V2/V3. DECISAO-PENDENTE: persistir V3 antes do
+  T3-GATE quebra rotas canonicas sem view V3. Caminho recomendado: V1/V2
+  explicito + V3 por sessao de QA local.
+- A5/A6: restauracao de detalhe RMA V1/V2 (matriz pronta, implementacao pendente).
+- A7/T3-11: detalhe V3 apos A5/A6.
+
+## Commits desta rodada
+
+- `1a9f30a` #DOC-RMA - Audita tranche inicial V3 e detalhe de RMA V1 V2
+- `04a5634` #FRONT-RMA - Corrige navegacao e menu do Tema V3
+- `365dc53` #DOC-RMA - Reconcilia auditoria da tranche V3 no plano e OpenSpec
+- proximo: este commit do handoff
+
+## QA
+
+- Playwright V3 pos-correcao: 3/3 verdes (390/768/1440).
+- PHPUnit completo da tranche anterior: 519/1441 verdes (sem mudanca PHP nesta
+  rodada).
+- Vite build verde.
+
+## Gate
+
+[GATE-PENDENTE]
+
+TEMA V3 CONTINUA OCULTO E NAO SELECIONAVEL.
+
+## Proximo item exato
+
+- A5 (restaurar paridade do detalhe RMA no Tema V1) ou, com decisao do dono sobre
+  QA local de tema, T3-17 parcial (sessao V3).
+
+## Git final da rodada
+
+- Working tree limpa apos este commit. Nenhum push executado por mim.
+
+PUSH NAO REALIZADO.

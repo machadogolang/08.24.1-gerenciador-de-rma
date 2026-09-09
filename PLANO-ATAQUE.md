@@ -5,42 +5,45 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
 
 ## AGORA
 
-Frente ativa **FRONT-003** (shell dos temas em telas secundárias + contrato de
-ações/botões):
-- Concluído: UI-01/02 (crédito), UI-02B/C/D (auditoria/contrato + calibração de
-  perigo V1), UI-03 (RCD/RPEC/RMPE em shell com impressão limpa) e UI-04 (alertas,
-  históricos RMA/acesso, frete e boletins em shell).
-- Próximo item: **UI-05** — Controle V1: alinhamento do bloco representante e
-  overflow local, preservando fidelidade do painel do legado.
-- Depois: UI-06 (identificador RMA), UI-07 (FRONT-006), UI-08 (Playwright/print).
+Frente ativa: **Paridade total dirigida por fluxos** (Legacy executável × V3).
+- P0 concluído: baseline V3/Legacy confirmadas; mapa de fluxos
+  (`2026-09-09-mapa-fluxos-legado-v3.md`) e matriz de cobertura
+  (`2026-09-09-matriz-cobertura-legacy-v3.md`); OpenSpec
+  `openspec/changes/paridade-fluxos-legado-v3/`.
+- P1 concluído: troca V1→V2 pelo menu do Tema V1 (POST/CSRF) + Playwright.
+- Próximo item: **P5 — detalhe de parceiro/RMAs** (valor funcional alto, sem decisão
+  pendente) ou **P4 — varredura de menus/descobribilidade** se a investigação indicar.
+- P2/P3 são reconciliação de evidências já implementadas em FRONT-003 (UI-03/UI-04).
 
-Investigação/OpenSpec: `docs/produto/2026-09-09-investigacao-contrato-visual-acoes-botoes.md`
-e `openspec/changes/front-003-shell-telas-secundarias/`.
-
-Suíte: **493 testes / 1318 assertions PHPUnit verdes**; Playwright dirigido verde
-(2 testes).
+Suíte: **493 testes / 1318 assertions PHPUnit** (baseline) + 6 Feature P1 + 1
+Playwright de fluxo de tema verdes.
 
 ## DEPOIS
 
-- Retomar EVO-SAAS-001: S10.4, S11.4, S13.2 (Playwright), S14.
-- EVO-SAAS-001 permanece aberto (não fechar por conta da correção visual).
+- FRONT-003 permanece rastreável: restam UI-05 (Controle V1), UI-06, UI-07, UI-08.
+- EVO-SAAS-001: S10.4/S11.4/S13.2/S14.
 
 ## DEPENDÊNCIAS
 
-- S13.2/Playwright final depende da frente FRONT-003 fechada.
-- S14 depende de S13 e das pendências SaaS.
-- UI-08 incorpora a prova de ações (cursor/hover/TAB/semântica) e o print dos
-  relatórios (UI-03).
+- P5 depende de Policy/tenant atuais (sem relaxamento) e de testes A×B.
+- P6/P7 dependem de investigação dirigida Legacy antes de código.
+- P13 depende de P5–P12 fechados.
+- UI-08/S13.2 dependem do fechamento das frentes de paridade visual.
 
 ## DECISÕES ADIADAS
 
-- Identificador a exibir em crédito/controle (id × numero_legado × numero_da_empresa) —
-  onda UI-06, sem bloquear shell.
-- UX-002 (confirmação de remoção de parceiro) — fora da padronização visual.
-- Demais decisões conhecidas de EVO-SAAS-001 permanecem.
+- FLOW-EXT-003/004 (avisar alguém/enviar e-mail manuais), FLOW-EXT-006
+  (representantes como módulo) — exigem decisão/uso real do produto.
+- Identificador RMA em crédito/controle (UI-06).
+- UX-002 confirmação de remoção — parte de P8, sem nova decisão de segurança.
+
+## CRITÉRIO DE SAÍDA
+
+P0–P14 fechados, classificações A–J documentadas sem bloqueio, docs antigas
+reconciliadas, full suite verde, Playwright quatro quadrantes verde e handoff
+atualizado.
 
 ## NÃO FAZER AINDA
 
-- Reabrir Fase 8; responsividade global do Tema V1; remover views órfãs antes da
-  migração completa; push/merge/reescrita de histórico; design system/biblioteca
-  nova para o contrato de ações.
+Editar Legacy; reproduzir bugs/rota morta; relaxar Policy/tenant; copiar SQL
+inseguro; iniciar Tema V3; push/PR/merge.

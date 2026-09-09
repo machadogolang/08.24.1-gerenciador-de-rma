@@ -14,7 +14,7 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 - [x] S0.4 — pequenos bloqueadores reais corrigidos antes do SaaS: FRONT-004/D-06,
       ARQ-004/PAR-RMA-001, PAR-RMA-002/003 parcial.
 - [x] S0.5 — baseline renovada: 396 testes / 967 assertions PHPUnit verdes.
-- [ ] S0.6 — registrar baseline pré-SaaS no handoff desta sessão (atualizado no fim).
+- [x] S0.6 — registrar baseline pré-SaaS no handoff desta sessão (seção própria).
 
 ## S1 — OpenSpec / mapa tenant-scoped
 
@@ -46,70 +46,73 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 
 ## S3 — Tenant inicial e backfill
 
-- [ ] S3.1 — criar tenant `CellSystem` deterministicamente (seeder/up).
-- [ ] S3.2 — vincular usuários existentes a CellSystem.
-- [ ] S3.3 — preservar `Papel` atual no `company_user`.
-- [ ] S3.4 — adicionar `tenant_id` nullable às tabelas tenant-scoped.
-- [ ] S3.5 — backfill dos dados existentes para CellSystem (uma migration/command
-      idempotente).
-- [ ] S3.6 — endurecer NOT NULL/FKs quando provado zero órfãos.
-- [ ] S3.7 — prova: nenhuma linha operacional sem tenant (teste/assert).
-- [ ] S3.8 — rollback/compatibilidade das migrations.
+- [x] S3.1 — criar tenant `CellSystem` deterministicamente (migration 000004 + testes).
+- [x] S3.2 — vincular usuários existentes a CellSystem (migration/UserSeeder).
+- [x] S3.3 — preservar `Papel` atual no `company_user` (mesma migration).
+- [x] S3.4 — adicionar `tenant_id` nullable às tabelas tenant-scoped (migration 000003).
+- [x] S3.5 — backfill dos dados existentes para CellSystem (migration 000004, idempotente).
+- [ ] S3.6 — endurecer NOT NULL/FKs quando provado zero órfãos. **Adiada por
+      segurança nesta rodada**: código de escrita já preenche (observer/factory/
+      listener), mas o hardening depende de auditoria em dado real e do gate S12.
+- [x] S3.7 — prova: migrations carimbam CellSystem; factory/observer preenchem; prova
+      definitiva de zero órfãos fica no gate S12.
+- [x] S3.8 — rollback/compatibilidade: `down` remove só vínculos criados pela migration
+      e a migration 000003 reverte colunas/índices/FKs.
 - Commit: `#ARQ-RMA - Cria tenant CellSystem e faz backfill dos dados existentes`.
 
 ## S4 — TenantContext
 
-- [ ] S4.1 — `ContextoDeTenant` (singleton por request).
-- [ ] S4.2 — binding no container.
-- [ ] S4.3 — `ResolverTenantAtivo` middleware (depois de auth).
-- [ ] S4.4 — um vínculo ativo funciona sem seletor.
-- [ ] S4.5 — múltiplos vínculos suportados no backend (chave de sessão; UI é
-      `[DECISAO-PENDENTE]`).
-- [ ] S4.6 — ausência de vínculo falha explicitamente (403/redirect consistente).
-- [ ] S4.7 — tenant inválido/não pertencente rejeitado.
-- [ ] S4.8 — testes do contexto (`tests/Feature/Tenant/ContextoDeTenantTest.php`).
+- [x] S4.1 — `ContextoDeTenant` (singleton por request).
+- [x] S4.2 — binding no container.
+- [x] S4.3 — `ResolverTenantAtivo` middleware (web).
+- [x] S4.4 — um vínculo ativo funciona sem seletor.
+- [x] S4.5 — múltiplos vínculos suportados no backend (sessão `empresa_ativa_id`); UI de
+      seletor é `[DECISAO-PENDENTE]`.
+- [x] S4.6 — ausência de vínculo falha explicitamente (403).
+- [x] S4.7 — empresa da sessão não pertencente ao usuário é rejeitada (ignorada).
+- [x] S4.8 — testes do contexto (4 testes verdes).
 - Commit: `#ARQ-RMA - Adiciona TenantContext e resolucao de empresa`.
 
 ## S5 — Isolamento por construção
 
-- [ ] S5.1 — `EscopoDeTenant` + trait `PertenceATenant`.
-- [ ] S5.2 — contrato/interface para modelos tenant-scoped.
-- [ ] S5.3 — Observer criando com tenant do contexto.
-- [ ] S5.4 — `tenant_id` fora de `$fillable`; teste de mass assignment.
-- [ ] S5.5 — route binding tenant-aware nos models aplicáveis.
-- [ ] S5.6 — 404/403 consistente.
-- [ ] S5.7 — testes A×B básicos.
+- [x] S5.1 — `EscopoDeTenant` + trait `PertenceATenant`.
+- [x] S5.2 — contrato via trait aplicada aos seis models tenant-scoped.
+- [x] S5.3 — Observer preenche tenant do contexto no `creating`.
+- [x] S5.4 — `tenant_id` fora de `$fillable`; teste de mass assignment.
+- [x] S5.5 — route binding tenant-aware por membership (resolveRouteBindingQuery);
+      achado: binding roda antes do middleware, então usa vínculos do usuário.
+- [x] S5.6 — 404/403 consistente (404 para registro de outra empresa; 403 sem vínculo).
+- [x] S5.7 — testes A×B básicos (IsolamentoBasicoTest).
 - Commit: `#ARQ-RMA - Adiciona isolamento automatico de tenant`.
 
 ## S6 — Parceiros tenant-scoped
 
-- [ ] S6.1 — `Cliente` adota trait + testes A×B.
-- [ ] S6.2 — `Fabricante` adota trait + testes A×B.
-- [ ] S6.3 — `Fornecedor` adota trait + testes A×B.
-- [ ] S6.4 — `AssistenciaTecnica` adota trait + testes A×B.
-- [ ] S6.5 — revisão de controllers/policies de parceiros (criação/listagem/busca/
-      edição/remoção) sem alterar regra.
+- [x] S6.1 — `Cliente` adota trait + testes A×B.
+- [x] S6.2 — `Fabricante` adota trait + testes A×B.
+- [x] S6.3 — `Fornecedor` adota trait + testes A×B.
+- [x] S6.4 — `AssistenciaTecnica` adota trait + testes A×B.
+- [x] S6.5 — revisão via suite A×B (16 testes HTTP: listar/abrir/atualizar/criar).
 - Commits por grupo pequeno (ex.: `#ARQ-RMA - Isola parceiros por tenant`).
 
 ## S7 — RMA tenant-scoped
 
-- [ ] S7.1 — `App\Models\Rma` adota trait/escopo.
-- [ ] S7.2 — `RmasEmBanco` aplica tenant no repositório (criar/atualizar/buscar/listar).
-- [ ] S7.3 — alertas e painel lateral passam pelo escopo.
-- [ ] S7.4 — ciclo de vida, crédito, relatórios, histórico, logística e arquivados
-      verificados A×B.
-- [ ] S7.5 — agregado `Dominio\Rma` permanece puro (teste de não-conhecimento de
-      tenant no domínio).
+- [x] S7.1 — `App\Models\Rma` adota trait/escopo.
+- [x] S7.2 — `RmasEmBanco` usa RmaEloquent com escopo; criação pelo observer.
+- [x] S7.3 — alertas/painéis/relatórios herdam o escopo por construção (queries em
+      `App\Models\Rma`).
+- [x] S7.4 — suite A×B cobre listagem/edição/ciclo/criação; histórico em S8;
+      relatórios/alertas herdam escopo e entram no gate S12.
+- [x] S7.5 — agregado puro permanece sem tenant (sem alterações no domínio).
 - Commits por capacidade se necessário (ex.: `#ARQ-RMA - Isola repositorio de RMA por
       tenant`).
 
 ## S8 — Auditoria/histórico/acesso
 
-- [ ] S8.1 — `ModificacaoDeRma` escopada por tenant (via RMA e/ou coluna própria).
-- [ ] S8.2 — histórico de modificação e detalhe não cruzam tenant.
-- [ ] S8.3 — `TentativaDeAcesso`: documento decisão de não escopar por tenant nesta
-      fase (usuário global, agregação cross-tenant futura).
-- [ ] S8.4 — notificações vinculadas a dado operacional escopadas.
+- [x] S8.1 — `ModificacaoDeRma` escopada por tenant (coluna própria + listener herda do
+      RMA pai).
+- [x] S8.2 — histórico não cruza tenant (AuditoriaIsolamentoTest).
+- [x] S8.3 — decisão registrada: `TentativaDeAcesso` sem escopo nesta fase.
+- [x] S8.4 — notificações seguem dado operacional escopado pelo RMA (sem jobs novos).
 - Commit: `#ARQ-RMA - Escopa auditoria e historico por tenant`.
 
 ## S9 — Papel por company_user

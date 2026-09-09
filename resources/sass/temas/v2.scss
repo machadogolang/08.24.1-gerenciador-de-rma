@@ -124,3 +124,107 @@ $largura-padding-box-content: 15px; // mesmo valor do `padding:15px` inline em `
         }
     }
 }
+
+// FRONT-003/UI-02B — contrato visual mínimo de ações/botões (TEMA V2).
+// Mesma semântica `.acao`/papel do V1, com aparência do V2: azul petróleo #224A5D
+// (primária, mesma família do `.formSubmit` legado), hover #185A78, secundária na
+// gramática #333/#E1DEAC, perigo na família vermelha do tema. Após o `@import` do
+// Bootstrap para vencer as regras `.btn` quando classes coexistirem.
+button:not(:disabled) {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: default;
+    opacity: 0.55;
+}
+
+.acao {
+    display: inline-block;
+    box-sizing: border-box;
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    line-height: 28px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        background-color: #224a5d;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    &:focus-visible {
+        outline: 1px solid #f67d7d;
+        outline-offset: 1px;
+    }
+}
+
+.acao--primaria {
+    background-color: #224a5d;
+    color: #fff;
+
+    &:hover,
+    &:focus-visible {
+        background-color: #185a78;
+        color: #fff;
+    }
+}
+
+.acao--secundaria {
+    background-color: #333;
+    color: #e1deac;
+
+    &:hover,
+    &:focus-visible {
+        background-color: #185a78;
+        color: #fff;
+    }
+}
+
+.acao--perigo {
+    background-color: #904141;
+    color: #fff;
+
+    &:hover,
+    &:focus-visible {
+        background-color: #f67d7d;
+        color: #fff;
+    }
+}
+
+.acao--operacional {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.85);
+
+    &:hover,
+    &:focus-visible {
+        background-color: #224a5d;
+        color: #fff;
+    }
+}
+
+.acao--compacta {
+    height: 25px;
+    padding: 0 6px;
+    font-size: 11px;
+    line-height: 23px;
+}
+
+.acoes-de-tabela {
+    white-space: nowrap;
+
+    .acao + form {
+        margin-left: 4px;
+    }
+}

@@ -771,3 +771,101 @@ li {
     color: gold !important;
     font-weight: bold;
 }
+
+// FRONT-003/UI-02B — contrato visual mínimo de ações/botões (TEMA V1).
+// Semântica comum no HTML (`.acao` + papel); aparência própria do V1 com a gramática
+// do legado: cantos retos, superfície escura, hover na família vermelha do tema.
+// A regra global abaixo atende ao dono (botão habilitado sempre comunica cursor) e
+// respeita `disabled` (sem pointer + opacidade coerente).
+button:not(:disabled) {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: default;
+    opacity: 0.55;
+}
+
+.acao {
+    display: inline-block;
+    box-sizing: border-box;
+    height: 25px;
+    padding: 0 8px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 0;
+    background-color: #662d37;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    line-height: 23px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        background-color: #9b3949;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    &:focus-visible {
+        outline: 1px solid #fff;
+        outline-offset: 1px;
+    }
+}
+
+.acao--primaria {
+    background-color: #662d37;
+}
+
+.acao--secundaria {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+
+    &:hover,
+    &:focus-visible {
+        background-color: #9b3949;
+        color: #fff;
+    }
+}
+
+.acao--perigo {
+    border-color: rgba(0, 0, 0, 0.45);
+    background-color: #cd5c5c;
+    color: #fff;
+
+    &:hover,
+    &:focus-visible {
+        background-color: #e07474;
+        color: #fff;
+    }
+}
+
+.acao--operacional {
+    background-color: #26251f;
+    color: #fff;
+
+    &:hover,
+    &:focus-visible {
+        background-color: #904141;
+        color: #fff;
+    }
+}
+
+.acao--compacta {
+    height: 22px;
+    padding: 0 6px;
+    font-size: 10px;
+    line-height: 20px;
+}
+
+.acoes-de-tabela {
+    white-space: nowrap;
+
+    .acao + form {
+        margin-left: 4px;
+    }
+}

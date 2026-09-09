@@ -131,12 +131,15 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 
 ## S10 — Numeração RMA por empresa
 
-- [ ] S10.1 — tabela `contadores_de_rma` (company_id, próximo número).
-- [ ] S10.2 — serviço/caso de uso de próximo número com lock transacional.
-- [ ] S10.3 — nenhuma utilização de `MAX+1` (auditoria por grep).
-- [ ] S10.4 — teste concorrente (dois processos/transações não repetem número).
-- [ ] S10.5 — A e B têm RMA nº 1 independente; id técnico global preservado.
-- [ ] S10.6 — compatibilidade com `numero_legado` no migrador.
+- [x] S10.1 — tabela `contadores_de_rma` (migration 000005, unique por company).
+- [x] S10.2 — `ReservarNumeroDeRma` com transação e `lockForUpdate`.
+- [x] S10.3 — criação de RMA usa contador; sem `MAX+1` (RmasEmBanco).
+- [ ] S10.4 — teste concorrente real pendente: fork dentro do PHPUnit derruba a
+      conexão MySQL compartilhada; mecanismo usa lockForUpdate, mas falta prova de
+      processo externo (registrado como pendência S10.4).
+- [x] S10.5 — A/B reservam 1,1 e RMA criados na mesma empresa recebem 1,2 com id
+      técnico global.
+- [x] S10.6 — `numero_legado` permanece preservado (migrador não usa contador).
 - Commit: `#ARQ-RMA - Adiciona numeracao transacional de RMA por empresa`.
 
 ## S11 — Migrador histórico

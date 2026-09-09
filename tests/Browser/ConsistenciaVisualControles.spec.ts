@@ -47,6 +47,10 @@ test.describe('UI-AUD - consistência de formulários e controles', () => {
             '/v1/parceiros/fornecedores/create',
             '/v2/parceiros/fornecedores/create',
             '/v2/rma/create',
+            // PAR-V2-DETAIL-02/NOVO-01 - detalhe/editaveis voltaram a expor selects
+            // reais; a varredura de cursor cobre as superficies restauradas.
+            '/v2/rma/3',
+            '/v1/rma/3',
         ];
         for (const rota of rotas) {
             const page = await loginV3(browser);

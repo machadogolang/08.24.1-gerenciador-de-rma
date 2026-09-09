@@ -41,6 +41,8 @@ test('detalhe V1 edita input real, salva e persiste apos reload', async ({ page 
     await page.fill('.detalhe-bd-form input[name="nfcompra_chave"]', 'CHAVE-NF-PLAYWRIGHT');
     await page.fill('.detalhe-bd-form input[name="valor"]', '88,50');
     await page.uncheck('.detalhe-bd-form input[type="checkbox"][name="marcarestoque"]');
+    await page.check('.detalhe-bd-form input[type="checkbox"][name="credito_disponivel"]');
+    await page.fill('.detalhe-bd-form textarea[name="observacao"]', 'Observacao longa com quebra de linha e persistencia QA.');
 
     await Promise.all([
         page.waitForResponse((resposta) => resposta.request().method() === 'POST' && resposta.url().includes(`/rma/${id}`)),
@@ -52,13 +54,17 @@ test('detalhe V1 edita input real, salva e persiste apos reload', async ({ page 
     expect(await page.inputValue('.detalhe-bd-form input[name="nfcompra_chave"]')).toBe('CHAVE-NF-PLAYWRIGHT');
     expect(await page.inputValue('.detalhe-bd-form input[name="valor"]')).toBe('88.50');
     expect(await page.locator('.detalhe-bd-form input[type="checkbox"][name="marcarestoque"]').isChecked()).toBe(false);
+    expect(await page.locator('.detalhe-bd-form input[type="checkbox"][name="credito_disponivel"]').isChecked()).toBe(true);
     await expect(page.locator('.checkbox-v1-detalhe span[data-texto-falso]').first()).toHaveText('ITEM NAO E DO ESTOQUE');
+    await expect(page.locator('.checkbox-v1-detalhe span[data-texto-true]').last()).toHaveText('CREDITO DISPONIVEL');
 
     await page.reload({ waitUntil: 'domcontentloaded' });
     expect(await page.inputValue('.detalhe-bd-form input[name="os"]')).toBe('OS-PLAYWRIGHT');
     expect(await page.inputValue('.detalhe-bd-form input[name="nfcompra_chave"]')).toBe('CHAVE-NF-PLAYWRIGHT');
     expect(await page.inputValue('.detalhe-bd-form input[name="valor"]')).toBe('88.50');
     expect(await page.locator('.detalhe-bd-form input[type="checkbox"][name="marcarestoque"]').isChecked()).toBe(false);
+    expect(await page.locator('.detalhe-bd-form input[type="checkbox"][name="credito_disponivel"]').isChecked()).toBe(true);
+    expect(await page.inputValue('.detalhe-bd-form textarea[name="observacao"]')).toContain('Observacao longa com quebra de linha e persistencia QA.');
 
     const numero = page.locator('.Tabelinha-Table input[disabled]').first();
     await expect(numero).toBeDisabled();

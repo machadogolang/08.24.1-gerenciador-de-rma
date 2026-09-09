@@ -257,3 +257,27 @@ Proximo: ONDA 2 (navbar/dropdown/cursor).
 - PUSH NAO REALIZADO.
 
 Proximo: ONDA 3 (detalhe RMA V2 funcional - A6/PAR-V2-DETAIL-02).
+
+## 15. Resultado pos-correcao - ONDA 3 (PAR-V2-DETAIL-02 / A6)
+
+- Commit local: `127b94d` (#FRONT-RMA).
+- `show` V2 voltou a ser formulario operacional (`_form_detalhe.blade.php`) com
+  grupos 4 colunas, breadcrumb, SALVAR no cabecalho e rodape com acao (SALVAR/
+  RECEBER/ENCAMINHAR/CONCLUIR/ARQUIVAR/RETORNAR), seguindo `15.8.1/page/rma.php`
+  por cima dos casos de uso modernos (PUT + CSRF + Policy + EditarRma).
+- Controles reais: inputs/selects/textareas nos grupos produto, origem/
+  prioridade, estoque/credito, fiscal, destinatario/logistica, solucao e
+  observacao. Datas/Tempo permanecem somente leitura (calculo/persistencia de
+  transicao, como no Legacy). Usuario sem Policy de escrita ve os mesmos grupos
+  com controles desabilitados e nao consegue PUT (403).
+- Backend: `EditarRma` passou a gravar `prioridade` e `lancadoretorno` e a
+  normalizar booleanos '0'/'1' vindos de select (corrigido tambem o bug latente
+  de `DateTimeImmutable` sem import, exposto pelas datas do detalhe V2).
+- Testes: `ParidadeDetalheRmaV2Test` atualizado (o antigo formalizava "em
+  leitura"; 3 testes / 42 assertions) + `ParidadeDetalheRmaV2Funcional.spec.ts`
+  (editar, salvar, reload). Playwright dirigido: detalhe V2 funcional 1/1 +
+  ParidadeDetalheRmaV2 3/3 + EdicaoInlineDetalheV1 3/3 = 7/7 verdes. PHPUnit
+  dirigido 3/3 verde; Vite build verde.
+- PUSH NAO REALIZADO.
+
+Proximo: ONDA 4 (Novo RMA V2 inline - PAR-V2-NOVO-01).

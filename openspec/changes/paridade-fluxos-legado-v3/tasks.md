@@ -34,15 +34,15 @@
   - [x] A5.4 - Edicao inline (inputs reais + persistencia backend seguro).
   - [x] A5.5 - Controles estoque/credito e rodape operacional.
   - [x] A5.6 - Regression funcional e visual V1.
-- [R] A6 - Detalhe RMA Tema V2 (PAR-DET-V2-01/PAR-V2-DETAIL-02): reaberto em
-  2026-09-09. O show V2 ficou read-only e o Legacy 15.8.1 e formulario
-  operacional editavel. Addendum:
+- [x] A6 - Detalhe RMA Tema V2 (PAR-DET-V2-01/PAR-V2-DETAIL-02): fechado de novo
+  em 2026-09-09 (127b94d) como formulario operacional editavel, com leitura via
+  Policy desabilitada. Addendum:
   `docs/produto/2026-09-09-reabertura-paridade-v2-validacao-manual-dono.md`.
   - [x] A6.1 - Reproducao documentada com metricas/screenshots (PAR-DET-V2-01).
   - [x] A6.2 - Blade/CSS do show V2 (estrutura; contrato funcional reaberto).
   - [x] A6.3 - Acoes/cabecalho integrados (estrutura; contrato funcional reaberto).
   - [x] A6.4 - Regression browser V2 (estrutura; contrato funcional reaberto).
-  - [ ] A6.5 - Detalhe V2 funcional: campos editaveis, salvar, reload, acoes e
-    Policy de escrita/leitura (onda 3).
+  - [x] A6.5 - Detalhe V2 funcional: campos editaveis, salvar, reload, acoes e
+    Policy de escrita/leitura (onda 3, 127b94d).
 - [x] PAR-V2-GEO-01 - geometria das abas/listagens V2 (c030e87/a71a3d8).
 - [x] PAR-V2-PESQ-01 - composicao Pesquisar V2 (c030e87/a71a3d8).

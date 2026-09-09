@@ -23,8 +23,8 @@ Baseline real reconferido: HEAD = origin/main = `24ffd4e`, working tree limpo.
 - [R] PAR-V2-CURSOR-02 - UI-09.3 reaberta. Navbar/dropdown corrigidos (62cbb27,
   causa: Bootstrap cursor:default no item ativo). Varredura ampla continua em
   aberto ate as ondas 3/4 restaurarem as superficies.
-- [R] PAR-V2-DETAIL-02 - A6 reaberto: detalhe RMA V2 precisa voltar a ser
-  formulario operacional editavel como 15.8.1 (nao leitura).
+- [x] PAR-V2-DETAIL-02 - Detalhe RMA V2 restaurado como formulario operacional
+  editavel (127b94d); leitura via Policy com controles desabilitados.
 - [R] PAR-V2-NOVO-01 - Novo RMA V2 inline na aba Novo com grade 3 colunas,
   condicionais, estoque e store moderno.
 - [ ] PAR-V2-SWEEP-01 - Varredura residual 15.8.1 x V2 nas superfícies do addendum.
@@ -34,7 +34,7 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 - [x] ONDA 1 - PAR-V2-THEME-01 + testes de troca (9fbeac1).
 - [x] ONDA 2 - PAR-V2-NAV-02 + PAR-V2-DROPDOWN-02 + PAR-V2-CURSOR-02 (parcial;
   varredura ampla segue em PAR-V2-CURSOR-02).
-- [ ] ONDA 3 - PAR-V2-DETAIL-02 (A6 funcional).
+- [x] ONDA 3 - PAR-V2-DETAIL-02 (A6 funcional, 127b94d).
 - [ ] ONDA 4 - PAR-V2-NOVO-01 (Novo RMA inline).
 - [ ] ONDA 5 - PAR-V2-SWEEP-01.
 
@@ -109,10 +109,10 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   - [x] A5.4 - Restaurar controles estoque/credito (checkboxes reais) - 2beecb3.
   - [x] A5.5 - Restaurar composicao operacional das acoes (rodape esquerda/direita) - 2beecb3.
   - [x] A5.6 - QA funcional + visual contra Legacy (digitar/salvar/reload) - 70a2ed8.
-- [R] A6 - Paridade detalhe RMA Tema V2 (Legacy 15.8.1). Reaberto em 2026-09-09:
-  o dono confirmou no browser que o detalhe virou leitura (`show.blade.php` com
-  paragrafos) e o Legacy `page/rma.php` e formulario operacional editavel. Ver
-  PAR-V2-DETAIL-02.
+- [x] A6 - Paridade detalhe RMA Tema V2 (Legacy 15.8.1). Fechado de novo em
+  2026-09-09 com formulario operacional editavel (127b94d). Reabertura:
+  o detalhe tinha virado leitura (`show.blade.php` com paragrafos) e o Legacy
+  `page/rma.php` e formulario operacional editavel. Ver PAR-V2-DETAIL-02.
   - [x] A6.1 - Reproducao/documentacao com metricas e screenshots
     (`docs/produto/2026-09-09-addendum-paridade-detalhe-rma-v1-v2.md`, PAR-DET-V2-01).
   - [x] A6.2 - Restaurar cabecalho operacional e grupos/colunas do `show` V2 - 6b78ac3.
@@ -120,8 +120,8 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   - [x] A6.4 - Browser regression V2 (abas, show/edit/acoes) - 10f786f +
     a71a3d8 (evidencia invalidada para o contrato funcional; mantida como prova de
     estrutura).
-  - [ ] A6.5 - Detalhe V2 funcional: campos editaveis, salvar, reload, acoes e
-    Policy de escrita/leitura (PAR-V2-DETAIL-02, onda 3).
+  - [x] A6.5 - Detalhe V2 funcional: campos editaveis, salvar, reload, acoes e
+    Policy de escrita/leitura (PAR-V2-DETAIL-02, onda 3, 127b94d).
 - [x] PAR-V2-GEO-01 - Geometria das abas/listagens V2 (delta medido: tabela -7px;
   documento no addendum).
   - [x] V2-GEO-01.1 - Alinhar conteudo das abas V2 a y=47px e reconferir rodape - c030e87.

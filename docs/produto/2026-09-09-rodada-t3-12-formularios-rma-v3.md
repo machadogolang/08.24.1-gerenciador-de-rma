@@ -29,3 +29,18 @@ item exato registrado no handoff e T3-12 - RMA formularios no Tema V3.
 - Tema V3 continua oculto e nao selecionavel no perfil.
 - Nenhum push; commits locais por checkpoint; handoff por ultimo.
 - Hifen sempre simples; sem hifen longo em nenhum conteudo gerado.
+
+## Resultado
+
+- Commit local: `57f1c13` (#FRONT-RMA).
+- Rotas V3: `/v3/rmas/novo`, `POST /v3/rmas`, `/v3/rma/{id}/editar`,
+  `PUT/PATCH /v3/rma/{id}` usando o mesmo `RmaController`/casos de uso.
+- Views `create`/`edit` + partial `_form.blade.php` em secoes (Identificacao,
+  Origem e parceiros, Fiscal, Operacao, Observacoes), 1 coluna no mobile e 2-3
+  colunas por relacao no desktop; erros no topo; salvar/cancelar persistentes.
+- Listagem e detalhe V3 ganharam Novo RMA/Editar RMA apenas quando a Policy
+  permite. V3 continua oculto e nao selecionavel.
+- Testes: `FormulariosRmaV3Test` (4 testes / 37 assertions),
+  `FormulariosRmaV3.spec.ts` (2/2), PHPUnit completo 536 testes / 1619
+  assertions 100% verde, Vite build verde. PUSH NAO REALIZADO.
+- Proximo item do plano: T3-13 (Parceiros).

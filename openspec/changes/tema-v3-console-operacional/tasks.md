@@ -29,8 +29,9 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
 - [x] T3-10 - RMAs listagem (tabela densa + cartoes mobile + filtros).
 - [x] T3-11 - RMA detalhe (cabecalho operacional + secoes + historico).
   Evidencia: 5885073/9f2e492 e checkpoint 2026-09-09.
-- [R] T3-12 - RMA formularios (secoes, 2 colunas por relacao). Em execucao
-  na rodada de 2026-09-09.
+- [x] T3-12 - RMA formularios (secoes, 2 colunas por relacao).
+  Evidencia: 57f1c13, tests/Feature/Temas/FormulariosRmaV3Test.php,
+  tests/Browser/FormulariosRmaV3.spec.ts.
 - [ ] T3-13 - Parceiros (lista/busca/detalhe/form em secoes).
 - [ ] T3-14 - Usuarios/admin (listagem e acoes contextuais).
 - [ ] T3-15 - Relatorios (hub + RCD/RPEC/RMPE).

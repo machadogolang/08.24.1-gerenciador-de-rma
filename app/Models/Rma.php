@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 #[Fillable([
     'numero_legado',
+    'numero_da_empresa',
     'descricao',
     'fabricante_id',
     'fornecedor_id',

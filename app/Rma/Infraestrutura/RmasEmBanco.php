@@ -2,13 +2,16 @@
 
 namespace App\Rma\Infraestrutura;
 
+use App\Compartilhado\Tenant\ContextoDeTenant;
 use App\Models\Rma as RmaEloquent;
+use App\Rma\Aplicacao\ReservarNumeroDeRma;
 use App\Rma\Dominio\CriterioDeBusca;
 use App\Rma\Dominio\PainelDeStatus;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
 use App\Rma\Dominio\Solucao;
 use App\Rma\Dominio\Status;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Implementação Eloquent de `RepositorioDeRmas`. `App\Models\Rma` é uso interno desta
@@ -27,7 +30,19 @@ final class RmasEmBanco implements RepositorioDeRmas
 {
     public function criar(Rma $rma): Rma
     {
-        $model = RmaEloquent::create($this->paraArray($rma));
+        $model = DB::transaction(function () use ($rma): RmaEloquent {
+            $dados = $this->paraArray($rma);
+
+            // EVO-SAAS-001 (S10) — número operacional por empresa reservado em
+            // transação (nunca MAX+1). O observer preenche tenant_id do contexto.
+            $contexto = app(ContextoDeTenant::class);
+            if ($contexto->temEmpresa()) {
+                $dados['numero_da_empresa'] = app(ReservarNumeroDeRma::class)
+                    ->reservar($contexto->empresaId());
+            }
+
+            return RmaEloquent::create($dados);
+        });
 
         return $this->paraDominio($model);
     }

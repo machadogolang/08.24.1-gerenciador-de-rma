@@ -81,3 +81,11 @@ matriz-paridade-temas-v1-v2-v3.md`; tarefas atômicas: checklist mestre, seção
 - Não inventar comportamento histórico nem alterar fontes/backups históricos.
 - Não iniciar código da Trilha B antes do gate da Trilha A.
 - Não fazer push, PR, merge ou mudar visibilidade remota sem autorização explícita.
+
+- **EVO-UX-001 (Tema V3) refinado em 2026-09-09:** addendum
+  `docs/arquitetura/2026-09-09-refinamento-evo-ux-001-tema-v3-console-operacional.md`,
+  matriz `2026-09-09-matriz-aproveitamento-v1-v2-para-v3.md`, mapa de telas
+  `2026-09-09-mapa-telas-tema-v3.md`, wireframes, spike
+  `2026-09-09-spike-t3-tailwind-vs-css-semantico-v3.md` e OpenSpec
+  `openspec/changes/tema-v3-console-operacional/`. Implementacao segue em gate
+  futuro ([GATE-PENDENTE]); V3 nao selecionavel.

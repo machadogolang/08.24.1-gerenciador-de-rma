@@ -446,3 +446,18 @@ Cada achado novo durante a arqueologia que pareça uma oportunidade de melhoria 
 regra a preservar) entra aqui, imediatamente, com origem concreta. Revisão e priorização
 formal só acontecem depois que a Trilha A (reconstrução fiel) estiver validada — ver
 `PLANO-ATAQUE.md`.
+
+### Refinamento EVO-UX-001 (2026-09-09)
+
+Nova rodada de investigacao/planejamento do Tema V3 sem implementacao. Direcao:
+Console Operacional Adaptativa que usa o melhor de V1/V2 sem copiar limitacoes
+estruturais. Referencias:
+
+- `docs/arquitetura/2026-09-09-refinamento-evo-ux-001-tema-v3-console-operacional.md`;
+- `docs/produto/2026-09-09-matriz-aproveitamento-v1-v2-para-v3.md`;
+- `docs/produto/2026-09-09-mapa-telas-tema-v3.md`;
+- `docs/produto/2026-09-09-wireframes-tema-v3.md`;
+- `docs/arquitetura/2026-09-09-spike-t3-tailwind-vs-css-semantico-v3.md`;
+- OpenSpec `openspec/changes/tema-v3-console-operacional/`.
+
+Status: [R] REVISADO. Gate: [GATE-PENDENTE], V3 nao implementado nem selecionavel.

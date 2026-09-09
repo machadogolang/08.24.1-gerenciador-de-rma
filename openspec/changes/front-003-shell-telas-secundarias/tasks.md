@@ -13,7 +13,14 @@
   (commit `209309c`).
 - [x] UI-04 — alertas (`838c7bf`), históricos de RMA/acesso (`8868a9e`) e logística
   frete/boletins (`75c110d`) em shell V1/V2.
-- [ ] UI-05 — Controle V1: alinhamento do bloco representante, overflow local.
+- [ ] UI-05 — Controle V1: alinhamento do bloco representante, overflow local
+  (reaberta na auditoria de 2026-09-09, UI-AUD-011).
 - [ ] UI-06 — auditoria/decidir `id` × `numero_legado` × `numero_da_empresa`.
-- [ ] UI-07 — FRONT-006: remover views genéricas órfãs com zero consumidor.
+- [ ] UI-07 — FRONT-006: remover views genéricas órfãs com zero consumidor
+  (candidatas inventariadas em UI-AUD-016).
 - [ ] UI-08 — regressão browser V1/V2 e print media.
+- [ ] UI-09 — consistência de formulários, selects e controles (V1/V2), transversal.
+  Investigação: `docs/produto/2026-09-09-investigacao-consistencia-ui-formularios-controles.md`
+  (UI-AUD-001 a 018). Correções planejadas em ondas C1–C7 (cursor de selects,
+  pontuação operacional, parceiros V1, usuários V1/V2, Controle, relatórios,
+  dropdown/menu V2, varredura residual).

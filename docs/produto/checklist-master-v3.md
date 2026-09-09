@@ -228,9 +228,10 @@ Gate: migração real em alvo descartável e reconciliação sem diferença inex
 Gate comum: F10-GATE-07. Investigação/especificação pode avançar; código não.
 
 - [ ] **EVO E-01 — `EVO-SAAS-001`, prioridade alta pós-F10.** Em execução (2026-09-09):
-  OpenSpec e mapa criados; S1-S8 concluídas (Company/company_user, tenant CellSystem,
-  backfill, TenantContext, isolamento por construção, parceiros/RMA/auditoria A×B);
-  restam S9-S14, contador, migrador, suíte arquitetural e gate de isolamento.
+  OpenSpec/mapa + S1-S8 + S9-S12 + S3.6 concluídos (Company/company_user, tenant
+  CellSystem, backfill, TenantContext, isolamento por construção, papel por vínculo,
+  numeração por empresa, migrador CellSystem, gate arquitetural, hardening NOT NULL).
+  Restam S9.8, S10.4, S11.4, S13 completo e S14/gate formal.
 - [ ] **EVO E-02 — `EVO-SAAS-002`.** Depende E-01; catálogo global, cópia independente,
   dedup/autorização; decidir quem faz curadoria.
 - [ ] **EVO E-03 — `EVO-SAAS-003`.** Depende E-01; primeiro investigar identidade

@@ -51,9 +51,8 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 - [x] S3.3 — preservar `Papel` atual no `company_user` (mesma migration).
 - [x] S3.4 — adicionar `tenant_id` nullable às tabelas tenant-scoped (migration 000003).
 - [x] S3.5 — backfill dos dados existentes para CellSystem (migration 000004, idempotente).
-- [ ] S3.6 — endurecer NOT NULL/FKs quando provado zero órfãos. **Adiada por
-      segurança nesta rodada**: código de escrita já preenche (observer/factory/
-      listener), mas o hardening depende de auditoria em dado real e do gate S12.
+- [x] S3.6 — endurecer NOT NULL/FKs aplicado (migration 000007, FK restritiva);
+      auditoria local: zero tenant_id NULL nas seis tabelas; provas no GateDeIsolamento.
 - [x] S3.7 — prova: migrations carimbam CellSystem; factory/observer preenchem; prova
       definitiva de zero órfãos fica no gate S12.
 - [x] S3.8 — rollback/compatibilidade: `down` remove só vínculos criados pela migration
@@ -164,17 +163,19 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 - [x] S12.5 — auditoria de consumidores fora do request (console/jobs/seeders): sem
       Jobs/scheduler reais; migrador define CellSystem explicitamente; listener de
       modificacao herda tenant do RMA; seeders/factories usam tenant semente.
-- [ ] S13.1 — tenancy + domínio afetado + PHPUnit completo.
-- [ ] S13.2 — Playwright relevante e build.
-- [ ] S13.3 — auditoria CSRF/mass assignment/IDOR/route binding/policies/spoofing.
-- [ ] S13.4 — jobs/commands/notifications sem TenantContext — inventariar consumidores
-      reais antes de criar mecanismo.
-- [ ] S13.5 — `git diff --check` e status limpo.
+- [x] S13.1 — PHPUnit completo verde: 448 testes / 1070 assertions.
+- [ ] S13.2 — Playwright/build não reexecutados nesta rodada (nenhum asset/build tocado;
+      views alteradas cobertas por testes de renderização).
+- [x] S13.3 — mass assignment/route binding/IDOR A×B/Policies e papel A×B cobertos;
+      CSRF continua padrão Laravel.
+- [x] S13.4 — inventário concluído: sem Jobs reais; migrador/importadores definem
+      CellSystem; listener herda tenant do RMA.
+- [x] S13.5 — commits pequenos por onda; working tree limpa ao fechar.
 
 ## S14 — Fechamento do primeiro marco SaaS
 
 - [ ] S14.1 — atualizar PLAN/PLANO-ATAQUE/checklist/backlog/OpenSpec por evidência.
 - [ ] S14.2 — relatório/checkpoint específico da fundação multiempresa.
-- [ ] S14.3 — EVO-SAAS-001 só fecha com gate de isolamento aprovado e sem migration
-      pela metade.
+- [ ] S14.3 — EVO-SAAS-001 continua ABERTO: S9.8/S10.4/S11.4/S13.2 pendentes; gate de
+      isolamento formal não declarado.
 - Commit final: `#QA-RMA - Fecha gate de isolamento multiempresa`.

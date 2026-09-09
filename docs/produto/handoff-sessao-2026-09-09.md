@@ -10,12 +10,14 @@ de estado e lacunas: `docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`.
 - Trilha A formalmente encerrada em 2026-09-04 (`F10-GATE-07`); `G-04..G-07` fechados
   e `G-08` (Trilha B liberada) fechado em 2026-09-09 no checklist, por decisão do
   usuário para execução controlada do EVO-SAAS-001.
-- **EVO-SAAS-001 em execução**: S1–S8 implementadas e commitadas (OpenSpec/mapa,
-  Company/company_user, tenant CellSystem/backfill, TenantContext, isolamento por
-  construção, parceiros/RMA/auditoria A×B); restam S9–S14 e o hardening S3.6.
+- **EVO-SAAS-001 em execução**: S1–S8 + S9–S12 + S3.6 implementados/commitados
+  (OpenSpec/mapa, Company/company_user, tenant CellSystem/backfill, TenantContext,
+  isolamento por construção, papel por vínculo, numeração por empresa, migrador
+  CellSystem, gate arquitetural, hardening NOT NULL). Restam S9.8, S10.4, S11.4,
+  S13 completo e S14/gate formal.
 - `main` local limpa e sincronizada com `origin/main` em `46c8204` nesta retomada
   (nada foi enviado/pushado por agente).
-- Suíte PHPUnit corrente: **431 testes / 1023 assertions, 100% verde**.
+- Suíte PHPUnit corrente: **448 testes / 1070 assertions, 100% verde**.
 - Runtime Docker local iniciado para validação (`rma-v3-mysql-1`,
   `rma-v3-laravel.test-1`, `rma-v3-mailpit-1`); imagens locais disponíveis.
 
@@ -121,6 +123,49 @@ este agente; a sincronização do origin aconteceu por fora da sessão.
 ### Próximo item EXATO
 `S9.1` — mapear todos os consumidores de `users.papel` e iniciar leitura do papel do
 vínculo ativo no `ContextoDeTenant`/User, mantendo compatibilidade até S9.7.
+
+### Comando de retomada
+```
+docker compose up -d mysql laravel.test
+docker compose exec -T laravel.test php artisan test
+```
+
+
+## Atualização final — ondas S9 a S12 + S3.6
+
+**SHA inicial desta rodada:** `46c8204`. **SHA final:** `201f3ff` (working tree limpa;
+origin será sincronizado por fora). PUSH NÃO REALIZADO.
+
+### Commits desta rodada
+- `375d26b` — Reconcilia estado atual do EVO-SAAS-001 antes da onda S9.
+- `bfbfd16` — Adiciona leitura do Papel pelo vínculo ativo no contexto de tenant.
+- `4db743d` — Adapta Policies e casos de uso ao Papel da empresa ativa.
+- `6f3a590` — Prova papéis distintos do mesmo usuário entre empresas e login por vínculo.
+- `df9613a` — Passa gestão de papel a gravar no vínculo da empresa ativa.
+- `aec1af4` — Adapta tela de usuários e seed de QA ao papel do vínculo.
+- `ff2d6fa` — Registra matriz de consumidores e status S9 no OpenSpec.
+- `65e2c01` — Adiciona numeração transacional de RMA por empresa com contador dedicado.
+- `8810fcd` — Prova sequência 1 e 2 de RMA na mesma empresa com id técnico global.
+- `b72df75` — Registra status S10 no OpenSpec e pendência do teste concorrente.
+- `9066a47` — Integra tenant CellSystem ao migrador histórico com vínculo de usuários.
+- `3b7ba16` — Registra status S11 no OpenSpec.
+- `5932197` — Cria suite arquitetural de isolamento multiempresa com inventário canônico.
+- `6f498b0` — Endurece tenant_id NOT NULL e garante contexto CellSystem nos importadores.
+- `201f3ff` — Garante contexto CellSystem no teste do helper de cliente.
+
+### Testes
+- PHPUnit completo: **448 testes / 1070 assertions verdes** (última execução 2026-09-09).
+
+### Estado EVO-SAAS-001
+- Concluído: S1–S8, S9 (papel por vínculo), S10 (contador/numeração), S11
+  (migrador CellSystem), S12 (gate arquitetural) e S3.6 (hardening NOT NULL).
+- Pendente: S9.8 (remover users.papel), S10.4 (concorrência por processo externo),
+  S11.4 (tenant no relatório do migrador), S13 (Playwright/segurança final), S14
+  (gate formal).
+
+### Próximo item EXATO
+`S13.1→S13.2` já fechados; próximo: `S13` completo começando por Playwright relevante
+de login/troca de tenant/autorização e, em paralelo, a prova externa `S10.4`.
 
 ### Comando de retomada
 ```

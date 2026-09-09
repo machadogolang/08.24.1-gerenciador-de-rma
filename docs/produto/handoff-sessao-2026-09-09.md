@@ -76,6 +76,9 @@ lacunas: `docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`.
 5. `42a4235` — `#FRONT-RMA - Padroniza acoes de formularios credito e identidade`.
 6. `7a17120` — `#QA-RMA - Cobre contrato visual de acoes no browser`.
 7. `da43f14` — `#DOC-RMA - Atualiza plano e tasks apos contrato visual de acoes`.
+8. `3351682` — `#DOC-RMA - Consolida handoff da frente de acoes`.
+
+**SHA final desta rodada:** `3351682` (origin/main local em `694732d`; PUSH NÃO REALIZADO).
 
 ### Testes
 - PHPUnit completo: **477 testes / 1242 assertions** (regressão ampla, incluindo

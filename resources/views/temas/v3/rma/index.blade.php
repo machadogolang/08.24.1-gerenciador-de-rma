@@ -24,8 +24,9 @@
 @section('conteudo')
     <div class="pagina pagina--dados">
         <div class="pagina__cabecalho">
-            <h1 class="pagina__titulo">RMAs</h1>
-            <p class="pagina__resumo">
+            <div class="pagina__cabecalho-conteudo">
+                <h1 class="pagina__titulo">RMAs</h1>
+                <p class="pagina__resumo">
                 @if ($temBusca)
                     Resultados para "{{ $q }}"
                 @elseif ($filaAtual === 'aguardando-credito')
@@ -35,7 +36,11 @@
                 @else
                     Todas as filas
                 @endif
-            </p>
+                </p>
+            </div>
+            @can('create', \App\Models\Rma::class)
+                <a class="botao pagina__cabecalho-acao" href="{{ route('v3.rmas.create') }}">Novo RMA</a>
+            @endcan
         </div>
 
         <form class="barra-busca" method="GET" action="{{ route('v3.rmas.index') }}" role="search">

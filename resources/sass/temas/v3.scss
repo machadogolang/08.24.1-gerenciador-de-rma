@@ -100,6 +100,7 @@ a,
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 .app-shell__topbar {
@@ -113,6 +114,13 @@ a,
     position: sticky;
     top: 0;
     z-index: $camada-drawer - 1;
+
+    > span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 .app-shell__brand {
@@ -525,6 +533,7 @@ a,
 
 .app-shell__logout {
     margin-left: auto;
+    flex: 0 0 auto;
     display: inline-flex;
 
     button {
@@ -691,6 +700,125 @@ a,
     }
 
     .detalhe-v3__grade--fiscal {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+// T3-12 - formularios de RMA V3 em secoes: 1 coluna no mobile, 2 colunas no
+// desktop, salvar/cancelar persistentes e resumo de erros acessivel.
+.resumo-erros {
+    color: $cor-danger;
+    border-color: $cor-danger;
+    margin-bottom: $espaco-5;
+
+    .resumo-erros__titulo {
+        margin: 0 0 $espaco-2;
+        font-weight: 700;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: $espaco-5;
+    }
+}
+
+.pagina__cabecalho {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $espaco-3;
+    margin-bottom: $espaco-5;
+}
+
+.form-v3__secoes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $espaco-4;
+}
+
+.form-v3__secao--larga {
+    grid-column: 1 / -1;
+}
+
+.form-v3__titulo {
+    margin: 0 0 $espaco-4;
+    font-size: 1rem;
+}
+
+.form-v3__grade {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $espaco-4 $espaco-5;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: $espaco-1;
+}
+
+.campo--caixa {
+    flex-direction: row;
+    align-items: center;
+    gap: $espaco-2;
+    min-height: $alvo-toque;
+}
+
+.campo__rotulo {
+    color: $cor-texto-suave;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.campo__rotulo--inline {
+    text-transform: none;
+    letter-spacing: normal;
+    color: $cor-texto;
+}
+
+.campo__controle {
+    width: 100%;
+    min-height: $alvo-toque;
+    padding: $espaco-2 $espaco-3;
+    border: 1px solid $cor-borda;
+    border-radius: $raio-pequeno;
+    background-color: $cor-superficie;
+    color: $cor-texto;
+
+    &--mono {
+        font-family: $fonte-mono;
+    }
+
+    &[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        min-height: 20px;
+        accent-color: $cor-acento;
+    }
+}
+
+.form-v3__acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: $espaco-3;
+    margin-top: $espaco-5;
+    padding: $espaco-4 0;
+    background-color: rgba(255, 255, 255, 0.92);
+    border-top: 1px solid $cor-borda;
+    position: sticky;
+    bottom: 0;
+    z-index: $camada-base;
+}
+
+@media (min-width: $quebra-md) {
+    .form-v3__grade {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-v3__grade--fiscal {
         grid-template-columns: repeat(3, 1fr);
     }
 }

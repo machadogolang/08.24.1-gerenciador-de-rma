@@ -22,7 +22,12 @@
 
 @section('conteudo')
     <div class="pagina detalhe-v3">
-        <p><a href="{{ route('v3.rmas.index') }}" class="botao botao--secundario">Voltar para RMAs</a></p>
+        <p>
+            <a href="{{ route('v3.rmas.index') }}" class="botao botao--secundario">Voltar para RMAs</a>
+            @if (($podeEditar ?? false) === true)
+                <a href="{{ route('v3.rmas.edit', ['rma' => $registro->id]) }}" class="botao">Editar RMA</a>
+            @endif
+        </p>
 
         <header class="cartao detalhe-v3__cabecalho">
             <div class="detalhe-v3__identificacao">

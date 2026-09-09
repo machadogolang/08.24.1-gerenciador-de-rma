@@ -85,6 +85,9 @@ final class V3ConsoleController extends Controller
             'fabricante' => $registro->fabricanteId ? Fabricante::find($registro->fabricanteId) : null,
             'fornecedor' => $registro->fornecedorId ? Fornecedor::find($registro->fornecedorId) : null,
             'cliente' => $registro->clienteId ? Cliente::find($registro->clienteId) : null,
+            // T3-12 - link Editar apenas quando a Policy permite (o update real
+            // continua gated no RmaController).
+            'podeEditar' => Gate::allows('update', RmaEloquent::class),
         ]);
     }
 

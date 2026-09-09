@@ -42,6 +42,9 @@ if (! function_exists('rota_tema')) {
         $prefixo = match (true) {
             str_starts_with($atual, 'v1.') => 'v1.',
             str_starts_with($atual, 'v2.') => 'v2.',
+            // T3-12 - formularios ocultos do Tema V3 tambem usam contraparte v3.*
+            // quando a view atual esta sob `/v3/...` (QA oculto).
+            str_starts_with($atual, 'v3.') => 'v3.',
             default => '',
         };
 

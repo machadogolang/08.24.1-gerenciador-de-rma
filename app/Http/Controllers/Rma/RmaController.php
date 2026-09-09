@@ -232,6 +232,8 @@ class RmaController extends Controller
             'titulo' => 'Novo RMA',
             'fabricantes' => Fabricante::query()->orderBy('nome')->get(),
             'fornecedores' => Fornecedor::query()->orderBy('nome')->get(),
+            // T3-12 - listas completas para o formulario V3 em secoes.
+            'assistenciasTecnicas' => AssistenciaTecnica::query()->orderBy('nome')->get(),
         ]);
     }
 
@@ -367,9 +369,14 @@ class RmaController extends Controller
 
         return view_do_tema('rma.edit', [
             'titulo' => 'Editar RMA #' . $registro->id,
+            'numeroExibicao' => $registro->id,
             'registro' => $registro,
             'fabricantes' => Fabricante::query()->orderBy('nome')->get(),
             'fornecedores' => Fornecedor::query()->orderBy('nome')->get(),
+            // T3-12 - formulario V3 em secoes precisa de todas as listas e do
+            // nome do cliente para popular os controles.
+            'assistenciasTecnicas' => AssistenciaTecnica::query()->orderBy('nome')->get(),
+            'clienteNome' => $registro->clienteId ? (Cliente::find($registro->clienteId)?->nome ?? '') : '',
         ]);
     }
 

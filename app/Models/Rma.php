@@ -138,4 +138,13 @@ class Rma extends Model
     {
         return $this->belongsTo(Fornecedor::class);
     }
+
+    /**
+     * Cliente dono da solicitação (FK real do V3; usada pela busca textual integral,
+     * PAR-RMA-003/P6).
+     */
+    public function cliente(): BelongsTo
+    {
+        return $this->belongsTo(Cliente::class);
+    }
 }

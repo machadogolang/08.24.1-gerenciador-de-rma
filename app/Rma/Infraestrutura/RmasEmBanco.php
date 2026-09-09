@@ -93,7 +93,16 @@ final class RmasEmBanco implements RepositorioDeRmas
                     ->orWhere('nf_retorno_numero', 'like', $valor)
                     ->orWhere('numero_legado', 'like', $valor)
                     ->orWhere('destinatario_nome_legado', 'like', $valor)
-                    ->orWhere('cliente_email_legado', 'like', $valor);
+                    ->orWhere('cliente_email_legado', 'like', $valor)
+                    // PAR-RMA-003 (integral, P6): contrapartes reais por FK/morph.
+                    ->orWhereHas('fabricante', fn ($fabricante) => $fabricante->where('nome', 'like', $valor))
+                    ->orWhereHas('fornecedor', fn ($fornecedor) => $fornecedor->where('nome', 'like', $valor))
+                    ->orWhereHas('cliente', fn ($cliente) => $cliente->where('nome', 'like', $valor))
+                    ->orWhereHasMorph(
+                        'destinatario',
+                        [\App\Models\Fabricante::class, \App\Models\Fornecedor::class, \App\Models\AssistenciaTecnica::class],
+                        fn ($destinatario) => $destinatario->where('nome', 'like', $valor),
+                    );
             }),
             'numero' => $consulta->where('numero_legado', 'like', '%' . $criterio->valor() . '%'),
             'serial' => $consulta->where('sn', 'like', '%' . $criterio->valor() . '%'),

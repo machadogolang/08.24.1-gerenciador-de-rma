@@ -834,12 +834,12 @@ button:disabled {
 
 .acao--perigo {
     border-color: rgba(0, 0, 0, 0.45);
-    background-color: #cd5c5c;
+    background-color: #904141;
     color: #fff;
 
     &:hover,
     &:focus-visible {
-        background-color: #e07474;
+        background-color: #cd5c5c;
         color: #fff;
     }
 }

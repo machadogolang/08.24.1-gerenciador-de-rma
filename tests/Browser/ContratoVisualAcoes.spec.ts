@@ -44,6 +44,9 @@ test.describe('FRONT-003/UI-02D — contrato visual de ações (browser)', () =>
             await expect(novo).toHaveCSS('cursor', 'pointer');
             await expect(editar).toHaveCSS('cursor', 'pointer');
             await expect(remover).toHaveCSS('cursor', 'pointer');
+            // Paleta de perigo congelada: base escura #904141 nos dois temas (V1
+            // recalibrado; hover claro #CD5C5C só no estado).
+            await expect(remover).toHaveCSS('background-color', 'rgb(144, 65, 65)');
 
             // Hover altera estado visual (não só cor).
             const antesHover = await remover.evaluate(el => getComputedStyle(el).backgroundColor);
@@ -116,6 +119,11 @@ test.describe('FRONT-003/UI-02D — contrato visual de ações (browser)', () =>
             const marcarCredito = page.locator('button.acao--primaria:has-text("Marcar crédito disponível")');
             await expect(marcarCredito).toBeVisible();
             await expect(marcarCredito).toHaveCSS('cursor', 'pointer');
+            // /rmas-credito segue o tema_preferido do usuário, não o prefixo
+            // de QA; detectamos o shell renderizado e validamos a primária do tema.
+            const emShellV2 = await page.locator('.header-v2').count() > 0;
+            const corPrimariaEsperada = emShellV2 ? 'rgb(34, 74, 93)' : 'rgb(102, 45, 55)';
+            await expect(marcarCredito).toHaveCSS('background-color', corPrimariaEsperada);
 
             await page.context().close();
         }

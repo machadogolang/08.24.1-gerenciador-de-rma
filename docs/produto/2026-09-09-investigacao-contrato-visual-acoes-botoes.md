@@ -133,7 +133,10 @@ em `<form>` com CSRF/Gates/rotas — nenhum JS de navegação novo.
   `#9B3949`, foco outline visível.
 - Secundária: superfície neutra escura `rgba(0,0,0,0.2)`, hover na família
   `#9B3949`/texto branco.
-- Perigo: família vermelha do tema (`#CD5C5C` base, hover mais claro), texto branco.
+- Perigo: família vermelha escura do tema — base `#904141`, hover/focus
+  `#CD5C5C` (claro só como estado de interação, não como fundo permanente), texto
+  branco. Calibração pós-validação do dono: `#CD5C5C` como danger-base dominava
+  listagens densas; ficou apenas como hover/estado.
 - Operacional: variante escura com letter-spacing e caixa alta, hover `#904141`
   (cor de atenção do legado).
 - Compacta: altura ~22–25px, padding lateral pequeno, cantos retos.
@@ -176,6 +179,8 @@ em `<form>` com CSRF/Gates/rotas — nenhum JS de navegação novo.
   secundária, Voltar V1 secundária, crédito primária, Abrir novo RMA V2 primária,
   foco global).
 - `7a17120` — `#QA-RMA`: Playwright dirigido (`ContratoVisualAcoes.spec.ts`).
+- Calibração desta revisão — Tema V1 danger-base `#CD5C5C` → `#904141` (hover
+  `#CD5C5C`); Tema V2 permanece `#904141`/`#F67D7D`.
 
 Prova: PHPUnit completo 477 testes / 1242 assertions; Playwright 2 testes (V1+V2:
 Parceiros com computed cursor/hover/TAB; detalhe RMA + crédito); Vite build verde.

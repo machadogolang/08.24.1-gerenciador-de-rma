@@ -75,3 +75,72 @@ atualizar matriz/plano -> `git diff --check` -> commit atomico -> proxima onda.
   compartilhado causava falsa falha).
 - Pendente na onda: PAR-RES-004/005 sao prova residual; nao foram encontradas
   diferencas sistematicas alem do conteudo de QA.
+
+## 2. Novos sintomas manuais do dono (continuacao da sessao)
+
+Baseline: origin/main = HEAD = `effb101`; working tree limpa. Novo push do dono
+recebido e confirmado.
+
+### PAR-RES-C-01 - Rodape do detalhe RMA V2
+
+- Sintoma: no final do detalhe aparecem textarea de Informacao adicional, select
+  branco SALVAR + OK deslocados a direita, depois "Abrir pagina de edicao" e
+  "Mais acoes de ciclo de vida" antes do footer, empurrando o rodape.
+- Legacy `15.8.1/page/rma.php`: formulario unico com Informacao adicional, depois
+  bloco interno `.fr` com select `formSelect2` (fundo azul #224A5D) + botao OK
+  `buttonSalvar`, dentro do proprio form; nao ha "Abrir pagina de edicao" nem
+  bloco extra "Mais acoes de ciclo de vida" nessa tela.
+- Atual: `_form_detalhe.blade.php` inclui link "Abrir pagina de edicao" apos a
+  acao do rodape e `show.blade.php` inclui `<details>Mais acoes de ciclo de vida`
+  com partial `_acoes_de_transicao`; o select do rodape nao recebe o fundo
+  historico `.formSelect2`/`#224A5D`, ficando branco.
+- Causa: elementos modernos introduzidos sem equivalencia historica no V2 e
+  estilo do select ausente.
+- Classificacao: BUG-CONFIRMADO/PARIDADE-LEGACY.
+- Correcao: remover link e bloco avancado do V2 (rotas continuam disponiveis),
+  manter select+OK dentro do form e estilizar select como `.formSelect2`.
+- Teste: geometria final do detalhe V2 + presenca/ausencia de marcadores.
+
+### PAR-RES-D-01..04 - Parceiros V2 edit/create/show genericos
+
+- Sintoma: `/parceiros/fornecedores/7/edit` mostra formulario vertical de uma
+  coluna com inputs claros/grandes, sem a grade historica.
+- Legacy `15.8.1/inc/novo_fornecedor.php`/`novo_fabricante.php`: formulario em
+  `col-md-4` (3 colunas na pratica), labels acima dos campos, inputs escuros
+  `form-control Input1 cb`, endereco/contato, textareas de Observacao/Política
+  lado a lado e botao Cadastrar; o mesmo modelo existe para cliente e assistencia.
+- Atual V2 `parceiros/_form.blade.php`: `form-horizontal` Bootstrap vertical de 1
+  coluna, generico.
+- Causa: partial moderno compartilhado entre telas impondo geometria unica;
+  falta markup/grade V2.
+- Classificacao: PARIDADE-LEGACY/BUG-CONFIRMADO para o tema V2.
+- Correcao: reescrever apenas o form de parceiros V2 em grade historica,
+  preservando casos de uso/Policies e sem vazar para V1.
+- Teste: create/edit dos 4 tipos com bounding boxes/colunas e persistencia.
+
+### PAR-RES-E-01..03 - Relatorios RCD/RPEC/RMPE V2
+
+- Sintoma: no V2 as tres rotas exibem titulo grande, tabela branca e visual
+  generico, pouco integrado ao tema 15.8.1.
+- Fonte Legacy: RCD/RPEC/RMPE sao paginas reais do Tema V1
+  (`14.6.1/page/relatorios.php`) com titulo historico, descricao, tabela e bloco
+  de informacao adicional; no V2 Legacy nao ha essas paginas, so `Relatorios`
+  como pagina de contagem/estatisticas. Verificar se a exibicao V2 deve manter
+  a tabela branca de impressao (possivel) mas com o shell/cabecalho do tema.
+- Classificacao: PARIDADE-LEGACY/investigacao; decisao visual de tema necessaria
+  mas nao de produto (nao bloquear demais ondas).
+- Correcao planejada: garantir cabecalho/largura/zebra do tema e impressao
+  correta sem redesenhar regra.
+
+### PAR-RES-E-04 - Perfil/Anotacao pessoal V2
+
+- Sintoma: `/perfil` no V2 agrupa identificacao, troca de tema, troca de senha e
+  anotacao pessoal numa unica tela generica.
+- Legacy V2: `page/anotacoes.php` e pagina propria "QUADRO DE ANOTACOES" com
+  textarea autosave e sem formulario de senha; `subp/senha.php` (alterar senha) e
+  uma subpaginacao separada. Troca de tema no V2 Legacy e link `trocarapp.php`.
+- Classificacao: PARIDADE-LEGACY com avaliacao de organizacao historica.
+- Correcao: reproduzir organizacao quando viavel sem quebrar seguranca; manter
+  POST/CSRF; se juntar telas for decisao de produto, registrar DECISAO-PENDENTE e
+  seguir ondas independentes.
+

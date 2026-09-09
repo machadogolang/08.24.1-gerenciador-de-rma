@@ -17,9 +17,12 @@ Ondas da auditoria (cada uma atomica):
 - [ ] ONDA A - Shell/navbar/menu/dropdown/footer.
 - [x] ONDA B - Listagens/pesquisa/tabelas/zebra/sidebar (77ec2ce; PAR-RES-001..003
   corrigidos e testados; PAR-RES-004/005 continuam como prova residual).
-- [ ] ONDA C - Create/show/edit RMA e ciclo.
-- [ ] ONDA D - Parceiros/admin/Controle/usuarios.
-- [ ] ONDA E - Relatorios/Avisos/Anotacoes/secundarias.
+- [R] ONDA C - Create/show/edit RMA e ciclo (PAR-RES-C-01 em investigacao; rodape
+  do detalhe V2 registrado no addendum).
+- [R] ONDA D - Parceiros/admin/Controle/usuarios (PAR-RES-D-01..04: formulario
+  generico em coluna unica x grade historica V2).
+- [R] ONDA E - Relatorios/Avisos/Anotacoes/secundarias (PAR-RES-E-01..04:
+  relatorios V2 e perfil/anotacoes registrados no addendum).
 - [ ] ONDA F - Viewport/print/regressao residual.
 
 Apos fechar a paridade residual e as regressoes bloqueantes, o plano segue para

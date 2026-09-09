@@ -1,7 +1,7 @@
-{{-- CP19 (paridade visual V2) — fonte real `legacy-source/15.8.1/inc/rightmenu.php`:
+{{-- CP19 (paridade visual V2) - fonte real `legacy-source/15.8.1/inc/rightmenu.php`:
 14 seções colapsáveis, cabeçalho alternando `LRTOP1`/`LRTOP2`, linhas alternando
 `LiRight1`/`LiRight2`. Dado já vem pronto de `ListarPainelLateral` (via
-`View::composer`, `AppServiceProvider`) — nenhum cálculo/SQL aqui. --}}
+`View::composer`, `AppServiceProvider`) - nenhum cálculo/SQL aqui. --}}
 @php $topoAlternado = true; @endphp
 @foreach ($painelLateral as $chave => $secao)
     @php $topoAlternado = ! $topoAlternado; @endphp

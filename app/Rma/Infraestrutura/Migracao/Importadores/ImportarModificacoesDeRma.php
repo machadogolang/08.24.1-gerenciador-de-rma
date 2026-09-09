@@ -15,16 +15,16 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * `modificacao` → `modificacoes_de_rma` (`INV-RMA-06` §13, Fase 7). **Só roda se a Fase
- * 7 já estiver implementada** — checagem defensiva de verdade (`Schema::hasTable()`),
+ * 7 já estiver implementada** - checagem defensiva de verdade (`Schema::hasTable()`),
  * não assumida implicitamente só porque a Fase 7 está commitada no repositório: se por
  * qualquer motivo a tabela não existir no schema corrente, este importador não falha,
  * só não processa nada (`disponivel()` deixa o comando avisar em vez de abortar).
  *
- * `rma_id` resolvido via `numero_legado` (mesma chave de `ImportarRmas`) — se o RMA de
+ * `rma_id` resolvido via `numero_legado` (mesma chave de `ImportarRmas`) - se o RMA de
  * origem não foi migrado (órfão), a linha de modificação é descartada e reportada.
  * Todas as linhas migradas recebem `AcaoDeModificacao::Edicao` (o legado nunca
  * discriminava o tipo de ação em `modificacao`, limitação conhecida e aceita só para o
- * histórico migrado — registros novos da V3 já gravam a ação granular real).
+ * histórico migrado - registros novos da V3 já gravam a ação granular real).
  */
 final class ImportarModificacoesDeRma
 {
@@ -62,7 +62,7 @@ final class ImportarModificacoesDeRma
                 $idModificacao = $linha->id_modificacao ?? $linha->id ?? $total;
 
                 if ($rma === null) {
-                    $relatorio->registrarAnomalia('modificacao', $idModificacao, "numero={$linha->numero} não corresponde a nenhum RMA migrado — modificação órfã, descartada");
+                    $relatorio->registrarAnomalia('modificacao', $idModificacao, "numero={$linha->numero} não corresponde a nenhum RMA migrado - modificação órfã, descartada");
 
                     continue;
                 }
@@ -75,7 +75,7 @@ final class ImportarModificacoesDeRma
                 }
 
                 if ($userId === null) {
-                    $relatorio->registrarAnomalia('modificacao', $idModificacao, "email='{$linha->email}' não bate com nenhum usuário migrado — modificação órfã (user_id obrigatório), descartada");
+                    $relatorio->registrarAnomalia('modificacao', $idModificacao, "email='{$linha->email}' não bate com nenhum usuário migrado - modificação órfã (user_id obrigatório), descartada");
 
                     continue;
                 }

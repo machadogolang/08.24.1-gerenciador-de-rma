@@ -7,7 +7,7 @@ final class CriterioDeBusca
     private function __construct(
         private readonly string $tipo,   // 'texto' | 'nota_fiscal' | 'os' | 'serial' | 'numero'
         private readonly string $valor,
-        // CP7 (fase 2 V1) — `menujs-top/localizar.php` tem um 2º select
+        // CP7 (fase 2 V1) - `menujs-top/localizar.php` tem um 2º select
         // independente (`solucao`, "QUALQUER UMA SOLUCAO" por padrão) que o legado
         // aplica junto do campo de texto, não em vez dele. Sem equivalente antes
         // desta fase; adicionado aditivamente (default null = sem filtro, mesmo

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * `LEG-RMA-044` — reproduz `subp/logs_de_modificacao.php`, exige
+ * `LEG-RMA-044` - reproduz `subp/logs_de_modificacao.php`, exige
  * `Papel::podeGerenciarUsuarios()`.
  */
 class HistoricoDeModificacaoTest extends TestCase
@@ -31,7 +31,7 @@ class HistoricoDeModificacaoTest extends TestCase
             'user_agent' => 'PHPUnit',
             'estado_apos' => ['descricao' => $rma->descricao],
         ]);
-        // S8 — modificacao herda o tenant do RMA pai (mesma regra do listener).
+        // S8 - modificacao herda o tenant do RMA pai (mesma regra do listener).
         $modificacao->tenant_id = $rma->tenant_id;
         $modificacao->save();
 

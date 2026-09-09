@@ -8,7 +8,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Support\Collection;
 
 /**
- * CP19 — `15.8.1/banco.php:759` (`right_produtosdecliente()`): `GROUP BY descricao
+ * CP19 - `15.8.1/banco.php:759` (`right_produtosdecliente()`): `GROUP BY descricao
  * WHERE status IN (entrada,recebido,encaminhado) AND (origem='Cliente' OR
  * 'Licitação') AND marcarestoque=0`.
  *

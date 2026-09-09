@@ -2,12 +2,12 @@ import { test, expect } from '@playwright/test';
 import { execSync } from 'node:child_process';
 
 /**
- * Fase 8 — TEMA V1 não tem NENHUM `@media` query no legado (`pattern/14.6.1.css`,
+ * Fase 8 - TEMA V1 não tem NENHUM `@media` query no legado (`pattern/14.6.1.css`,
  * `#BASE{width:984px}` fixo). O teste correto aqui NÃO é "consertar" a
- * responsividade — é confirmar que o layout V3 continua fixo/não-responsivo nos 3
+ * responsividade - é confirmar que o layout V3 continua fixo/não-responsivo nos 3
  * breakpoints de QA (390/768/1440, `checklist-master-v3.md` Parte 3/Fase 10),
  * exatamente como o legado. `$largura-fixa-tema-v1` (984px) é a única fonte da
- * verdade — não redigitado aqui.
+ * verdade - não redigitado aqui.
  *
  * Nome do arquivo termina em `.blade.php.spec.ts` só para conviver ao lado do
  * `RenderizaTemaV1Test.php` no mesmo diretório temático do checklist; o runner é o
@@ -39,11 +39,11 @@ for (const largura of BREAKPOINTS_QA) {
         await page.click('button[type=submit]');
         await page.waitForURL('**/perfil');
 
-        // `getComputedStyle().width` reflete a propriedade CSS `width` (984px) — a
+        // `getComputedStyle().width` reflete a propriedade CSS `width` (984px) - a
         // caixa renderizada (`getBoundingClientRect`) é maior por causa do
         // `padding-left`/`padding-right` de 10px cada (`content-box`, mesmo modelo de
         // caixa do CSS original, sem `box-sizing:border-box`), então não é ela que
-        // prova "fixo" — o que prova é a MESMA largura computada em qualquer viewport.
+        // prova "fixo" - o que prova é a MESMA largura computada em qualquer viewport.
         const largurabase = await page.locator('#BASE').evaluate((el) => parseFloat(getComputedStyle(el).width));
 
         expect(Math.round(largurabase)).toBe(LARGURA_FIXA_TEMA_V1);

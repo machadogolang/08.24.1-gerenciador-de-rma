@@ -1,27 +1,27 @@
-{{-- VIS-V1-002/003/004 — painel "Novo" do TEMA V1, fonte real `menujs-top/novo.php`
+{{-- VIS-V1-002/003/004 - painel "Novo" do TEMA V1, fonte real `menujs-top/novo.php`
 (+ `inc/menuright.php`, que envolve esse include num `<div id="JS-Novo" style="display:
-none;">`). Estrutura de 5 colunas / 5 linhas fixa (`.tablenovo`, 700px) — NÃO é a tabela
+none;">`). Estrutura de 5 colunas / 5 linhas fixa (`.tablenovo`, 700px) - NÃO é a tabela
 vertical de 2 colunas de `_campos.blade.php` (essa continua servindo só a Edição, cuja
 composição real do legado é outra tela, `detalhes.php`, fora do escopo desta correção).
 
 Partial compartilhado, incluído uma vez em `temas.v1.layout` (dentro de `#JS-Novo`,
 oculto por padrão) e também por `create.blade.php` (rota `/rmas/create`, fallback
-funcional). POST normal para `rmas.store` — nenhum caso de uso novo, nenhum fetch/AJAX.
+funcional). POST normal para `rmas.store` - nenhum caso de uso novo, nenhum fetch/AJAX.
 
 Campos do legado não reproduzidos aqui, por classificação explícita (VIS-V1-003):
-- `Fornecedor`: NÃO existe em `menujs-top/novo.php` — é campo que só o V3/V2 moderno
+- `Fornecedor`: NÃO existe em `menujs-top/novo.php` - é campo que só o V3/V2 moderno
   adicionou (`fornecedor_id`); mantê-lo aqui tornaria o TEMA V1 visualmente diferente do
   runtime original só porque o domínio evoluiu. Continua disponível na Edição/V2.
 - `Fabricante` continua `<select fabricante_id>` (FK), não o `<input list>` de texto
   livre do legado. CP8-04 (fase 2) pediu portar de volta pra input/datalist, mas
   `EncontrarOuCriarFabricante` (que existe hoje) tem docblock próprio dizendo que é
   "SÓ pelo migrador" e que a criação em runtime "continua exigindo fabricante de uma
-  lista já cadastrada" (decisão de fase anterior, não desta correção) — usá-la aqui
+  lista já cadastrada" (decisão de fase anterior, não desta correção) - usá-la aqui
   reverteria essa decisão sem re-confirmar com quem a tomou. **Item CP8-04 deixado em
   aberto**, não implementado às cegas; os demais itens de CP8 (checkbox/datas/
   box-sizing) foram fechados nesta correção.
 - `Descricao`/`Origem`/`Modelo`/`Empresa` eram `<input list="...">` com sugestões
-  carregadas do banco no legado; aqui viram input simples — perda de autocomplete, sem
+  carregadas do banco no legado; aqui viram input simples - perda de autocomplete, sem
   impacto no dado persistido/estrutura, fora do critério de aceite (estrutura/geometria/
   campos, não autocomplete). --}}
 <p class="novoIconTitleTop fl"><img src="{{ asset('images/tema-v1/novo.png') }}" width="50" height="50" alt=""></p>
@@ -92,11 +92,11 @@ Campos do legado não reproduzidos aqui, por classificação explícita (VIS-V1-
         </tr>
     </table>
 
-    {{-- CP8 (fase 2, `plano-execucao-paridade-visual-v1-fase2.md`) — toggle histórico
+    {{-- CP8 (fase 2, `plano-execucao-paridade-visual-v1-fase2.md`) - toggle histórico
     de `pattern/15.9.7.css:286-296` (regra global `input[type=checkbox] + label`,
     escopada aqui a `#JS-Novo` pra não afetar outros checkboxes do sistema, ver
     `_v1-base.scss`). Rótulo vem de `content: attr(data-text-true|false)` via
-    `::before`/`::after` — sem texto próprio no `<label>`; `<i></i>` é a bolinha
+    `::before`/`::after` - sem texto próprio no `<label>`; `<i></i>` é a bolinha
     deslizante. --}}
     <div style="padding:5px 0;clear:both;">
         <input type="checkbox" id="marcarestoque" name="marcarestoque" value="1" @checked(old('marcarestoque', true))>

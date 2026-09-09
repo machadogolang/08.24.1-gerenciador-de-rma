@@ -1,4 +1,4 @@
-# Design — Ciclo de vida do RMA
+# Design - Ciclo de vida do RMA
 
 ## Schema (incremental sobre `rmas`, criado na Fase 3)
 
@@ -16,7 +16,7 @@ rmas (colunas novas desta fase)
   destinatario_id      bigint nullable
 ```
 
-`entrada` do legado não vira coluna — é `created_at` (o RMA já nasce em
+`entrada` do legado não vira coluna - é `created_at` (o RMA já nasce em
 `status=Entrada`, Fase 3).
 
 ## `App\Rma\Dominio\Status`
@@ -52,14 +52,14 @@ enum Status
 }
 ```
 
-Sem case `Retornou` (`LEG-RMA-016`, código morto em ambos os temas — rota existe no
+Sem case `Retornou` (`LEG-RMA-016`, código morto em ambos os temas - rota existe no
 `.htaccess`, nenhuma transição jamais grava esse valor).
 
 ## `App\Rma\Dominio\Solucao`
 
 16 valores confirmados por leitura direta do `<select name="solucao">` real de
 `15.8.1/page/rma.php:578-595` (arquivo ISO-8859-1, decodificado para conferência nesta
-revisão — não copiado de documentação secundária):
+revisão - não copiado de documentação secundária):
 
 ```php
 enum Solucao: string
@@ -94,11 +94,11 @@ enum Solucao: string
 
 **Nota de rastreabilidade:** os documentos anteriores citavam "17 valores"
 (`inventario-banco-rma-v2.md`); a leitura direta do form encontrou 16 valores nomeados
-mais uma opção vazia inicial — a diferença provavelmente é a opção vazia sendo contada
+mais uma opção vazia inicial - a diferença provavelmente é a opção vazia sendo contada
 como um 17º "estado". Se aparecer evidência de um 17º valor nomeado real durante a
-implementação, adicionar então — não foi inventado aqui.
+implementação, adicionar então - não foi inventado aqui.
 
-## `App\Rma\Dominio\Rma` (estendido — Fase 3 → aqui)
+## `App\Rma\Dominio\Rma` (estendido - Fase 3 → aqui)
 
 Novas propriedades readonly: `status`, `recebidoEm`, `encaminhadoEm`, `concluidoEm`,
 `arquivadoEm`, `protocolo`, `solucao`, `snretorno`, `destinatario` (objeto polimórfico).
@@ -117,7 +117,7 @@ public function comSnretornoAutoPreenchido(): self
 }
 ```
 
-RN-15: só copia `sn`→`snretorno` se estiver vazio E a solução implicar mesmo aparelho —
+RN-15: só copia `sn`→`snretorno` se estiver vazio E a solução implicar mesmo aparelho -
 ausente em TEMA V1 (regra nova nesta fase, sem regressão a corrigir).
 
 ## Casos de uso (`app/Rma/Aplicacao/`)
@@ -135,9 +135,9 @@ final class ReceberRma
 ```
 
 `EncaminharRma` exige `destinatario` preenchido antes de aceitar (regra que no legado é
-só validação JS — vira validação de domínio real). `ConcluirRma` exige `solucao`
+só validação JS - vira validação de domínio real). `ConcluirRma` exige `solucao`
 preenchida, chama `comSnretornoAutoPreenchido()`, dispara evento `RmaConcluido`.
-`ArquivarRma` reproduz `15.8.1/banco.php::arquivar()` (TEMA V2 — ver `proposal.md`),
+`ArquivarRma` reproduz `15.8.1/banco.php::arquivar()` (TEMA V2 - ver `proposal.md`),
 exige `Papel::podeGerenciarUsuarios()` (**[INFERIDO]**, mesma incerteza de
 `inventario-funcional-rma-v2.md`, não resolvida por falta de evidência adicional).
 
@@ -167,7 +167,7 @@ public function podeReverterAlemDoMesmoDia(): bool
 }
 ```
 
-Equivalente a `permissao==4` do legado (LEG-RMA-015) — único nível que reverte fora da
+Equivalente a `permissao==4` do legado (LEG-RMA-015) - único nível que reverte fora da
 janela de "mesmo dia".
 
 ## Testes
@@ -175,10 +175,10 @@ janela de "mesmo dia".
 - `ReceberRmaTest`, `EncaminharRmaTest` (com/sem destinatário),
   `ConcluirRmaTest` (com/sem solução; `snretorno` auto-preenchido nos 6 valores de
   `implicaMesmoAparelhoDeRetorno()`, em branco nos demais 10).
-- `ArquivarRmaTest` — **prova de que segue TEMA V2**: o teste cobre exatamente o
+- `ArquivarRmaTest` - **prova de que segue TEMA V2**: o teste cobre exatamente o
   cenário que causaria `Fatal Error` em TEMA V1 (arquivar um RMA `Recebido`) e espera
   sucesso, não exceção.
-- `ReverterRmaParaEntradaTest` — mesmo dia permite para qualquer papel com
+- `ReverterRmaParaEntradaTest` - mesmo dia permite para qualquer papel com
   `podeGravar()`; dia seguinte nega, exceto `SuperAdministrador`.
 - `RegistrarSolucaoTest`.
-- `StatusTest`, `SolucaoTest` (unit, sem banco) — os métodos dos dois enums.
+- `StatusTest`, `SolucaoTest` (unit, sem banco) - os métodos dos dois enums.

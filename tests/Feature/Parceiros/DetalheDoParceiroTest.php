@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * P5 — detalhe de parceiro com dados completos e RMAs associados.
+ * P5 - detalhe de parceiro com dados completos e RMAs associados.
  */
 class DetalheDoParceiroTest extends TestCase
 {

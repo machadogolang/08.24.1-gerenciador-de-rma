@@ -78,12 +78,12 @@ Registre que o checkpoint foi **reaberto por nova evidência de runtime** e reab
 Particularmente, reavalie obrigatoriamente:
 
 ```text
-F10-V1-01 — comparação runtime
-F10-V1-02 — auditoria HTML/CSS
-F10-V1-03 — cabeçalho/menu/painel
-F10-V1-04 — usuários/busca/novo RMA
-F10-V1-07 — regressão Playwright
-F10-V1-08 — diferenças classificadas como conscientes
+F10-V1-01 - comparação runtime
+F10-V1-02 - auditoria HTML/CSS
+F10-V1-03 - cabeçalho/menu/painel
+F10-V1-04 - usuários/busca/novo RMA
+F10-V1-07 - regressão Playwright
+F10-V1-08 - diferenças classificadas como conscientes
 ```
 
 Assets/fontes que estiverem realmente corretos não precisam ser artificialmente reabertos.
@@ -94,11 +94,11 @@ A regra passa a ser:
 
 ---
 
-# 2. ACHADOS JÁ CONFIRMADOS — NÃO PRECISA REINVESTIGAR DO ZERO
+# 2. ACHADOS JÁ CONFIRMADOS - NÃO PRECISA REINVESTIGAR DO ZERO
 
 Estes problemas já foram percebidos visualmente e devem entrar imediatamente no checklist.
 
-## VIS-V1-001 — menu superior incompleto
+## VIS-V1-001 - menu superior incompleto
 
 Legado:
 
@@ -141,7 +141,7 @@ Se alguma capacidade ainda não existir, isso vira também pendência funcional 
 
 ---
 
-# 3. VIS-V1-002 — “NOVO” FOI TRANSFORMADO EM OUTRA EXPERIÊNCIA
+# 3. VIS-V1-002 - “NOVO” FOI TRANSFORMADO EM OUTRA EXPERIÊNCIA
 
 No legado:
 
@@ -189,7 +189,7 @@ A funcionalidade deve continuar compartilhada.
 
 ---
 
-# 4. VIS-V1-003 — NOVO RMA ESTÁ ESTRUTURALMENTE ERRADO
+# 4. VIS-V1-003 - NOVO RMA ESTÁ ESTRUTURALMENTE ERRADO
 
 O runtime atual do V3 apresenta aproximadamente:
 
@@ -262,7 +262,7 @@ Visual sem função NÃO será aceito.
 
 ---
 
-# 5. VIS-V1-004 — CSS DO NOVO RMA NÃO CORRESPONDE AO ORIGINAL
+# 5. VIS-V1-004 - CSS DO NOVO RMA NÃO CORRESPONDE AO ORIGINAL
 
 Já existe diferença objetiva no código.
 
@@ -308,7 +308,7 @@ Leia os seletores efetivamente utilizados pelo HTML do legado e reproduza a geom
 
 ---
 
-# 6. VIS-V1-005 — QUADRO DE ANOTAÇÕES
+# 6. VIS-V1-005 - QUADRO DE ANOTAÇÕES
 
 No legado:
 
@@ -340,7 +340,7 @@ Não trazer de volta implementação insegura do JavaScript antigo.
 
 ---
 
-# 7. VIS-V1-006 — HOME / RMA LISTAGEM ESTÁ COM COMPOSIÇÃO DIFERENTE
+# 7. VIS-V1-006 - HOME / RMA LISTAGEM ESTÁ COM COMPOSIÇÃO DIFERENTE
 
 Nos prints atuais o legado possui no topo a área de localização com:
 
@@ -386,7 +386,7 @@ Reproduzir no TEMA V1 o fluxo histórico ou registrar justificativa objetiva par
 
 ---
 
-# 8. VIS-V1-007 — TÍTULOS QUE NÃO EXISTIAM NA COMPOSIÇÃO ORIGINAL
+# 8. VIS-V1-007 - TÍTULOS QUE NÃO EXISTIAM NA COMPOSIÇÃO ORIGINAL
 
 O layout V1 atual injeta:
 
@@ -414,7 +414,7 @@ Semântica/acessibilidade pode continuar existindo de maneira não destrutiva, m
 
 ---
 
-# 9. VIS-V1-008 — MENU ADMINISTRATIVO INCOMPLETO
+# 9. VIS-V1-008 - MENU ADMINISTRATIVO INCOMPLETO
 
 O MENU do legado possui:
 
@@ -473,7 +473,7 @@ Não permita que vários agents alterem os mesmos arquivos simultaneamente.
 
 Quero pelo menos:
 
-## Agent A — inventário do runtime legado
+## Agent A - inventário do runtime legado
 
 Mapear todas as superfícies acessíveis a partir de:
 
@@ -538,7 +538,7 @@ e derive as telas reais.
 
 ---
 
-## Agent B — comparador visual/runtime
+## Agent B - comparador visual/runtime
 
 Para cada superfície legada, encontrar a equivalente em:
 
@@ -571,7 +571,7 @@ para eliminar qualquer falso positivo relacionado somente à largura da viewport
 
 ---
 
-## Agent C — comparador de interação
+## Agent C - comparador de interação
 
 Não olhar apenas screenshot.
 
@@ -626,7 +626,7 @@ docs/produto/checklist-paridade-visual-v1-runtime.md
 Cada divergência encontrada deve imediatamente virar:
 
 ```text
-[ ] VIS-V1-XXX — nome objetivo
+[ ] VIS-V1-XXX - nome objetivo
 ```
 
 Formato obrigatório:
@@ -818,8 +818,8 @@ NÃO falsifique a tela para parecer que existe.
 Adicione simultaneamente:
 
 ```text
-[ ] VIS-V1-XXX — restaurar apresentação
-[ ] PAR/FUN-XXX — restaurar capacidade funcional
+[ ] VIS-V1-XXX - restaurar apresentação
+[ ] PAR/FUN-XXX - restaurar capacidade funcional
 ```
 
 E verifique Tema V2.
@@ -1032,7 +1032,7 @@ TESTES
 - Playwright:
 
 COMMITS
-- hash — mensagem
+- hash - mensagem
 
 PRÓXIMA TELA
 - ...

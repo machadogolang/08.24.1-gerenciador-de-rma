@@ -7,12 +7,12 @@ use App\Models\Fabricante;
 use App\Models\Fornecedor;
 
 /**
- * `INV-RMA-06` §7 — cascata `assistencia_tecnica → fornecedor → fabricante`, mesma
+ * `INV-RMA-06` §7 - cascata `assistencia_tecnica → fornecedor → fabricante`, mesma
  * ordem do legado, comparação normalizada (trim + case-insensitive, correção sobre o
- * bug de comparação exata do legado). **Sem auto-criação** — diferente de
+ * bug de comparação exata do legado). **Sem auto-criação** - diferente de
  * `cliente`/`fabricante`/`fornecedor` (que usam `EncontrarOuCriar*` com criação
  * automática): o legado também nunca auto-cria para `destinatario`. Quando nenhuma das
- * 3 bate, devolve `null` — quem chama preserva o nome bruto em
+ * 3 bate, devolve `null` - quem chama preserva o nome bruto em
  * `destinatario_nome_legado` e registra a linha no relatório.
  */
 final class ResolverDestinatario

@@ -10,7 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * FRONT-003/UI-04 — históricos de RMA e de acesso no shell V1/V2.
+ * FRONT-003/UI-04 - históricos de RMA e de acesso no shell V1/V2.
  */
 class HistoricoShellTest extends TestCase
 {

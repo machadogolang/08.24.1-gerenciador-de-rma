@@ -9,9 +9,9 @@ use App\Rma\Dominio\Status;
 use Illuminate\Support\Collection;
 
 /**
- * CP19 — `15.8.1/banco.php:926` (`right_clientes()`): `GROUP BY cliente WHERE
+ * CP19 - `15.8.1/banco.php:926` (`right_clientes()`): `GROUP BY cliente WHERE
  * (status='recebido' OR 'encaminhado') AND marcarestoque=0 AND (origem='Cliente' OR
- * 'Licitação')`. `Rma` (Eloquent) não tem relação `cliente()` própria — resolvido por
+ * 'Licitação')`. `Rma` (Eloquent) não tem relação `cliente()` própria - resolvido por
  * mapa de nomes, mesmo padrão de `ListagensPorStatusController::mapaDeFabricantes()`.
  *
  * @return Collection<int, array{nome: string, contagem: int}>

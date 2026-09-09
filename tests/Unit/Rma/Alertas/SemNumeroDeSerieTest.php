@@ -32,7 +32,7 @@ class SemNumeroDeSerieTest extends TestCase
 
     public function test_caso_limite_sn_zero_nao_e_tratado_como_vazio(): void
     {
-        // Prova que a checagem é SQL (null/''), não uma interpretação PHP "falsy" —
+        // Prova que a checagem é SQL (null/''), não uma interpretação PHP "falsy" -
         // '0' é falsy em PHP mas é um sn preenchido de verdade.
         $rma = Rma::factory()->create(['status' => Status::Recebido, 'sn' => '0']);
 

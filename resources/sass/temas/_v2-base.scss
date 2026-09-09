@@ -1,4 +1,4 @@
-// _v2-base.scss — port literal do shell/header/nav do TEMA V2 (fonte real:
+// _v2-base.scss - port literal do shell/header/nav do TEMA V2 (fonte real:
 // `legacy-source/15.8.1/index.php`, `pattern/15.8.1.css:132-192,815-816`,
 // `15.8.1/css/media.php`). CP16/CP17 do plano de paridade V2
 // (`docs/produto/plano-execucao-paridade-v2.md`).
@@ -23,7 +23,7 @@ $vermelho-hover-v2: #f67d7d;
     align-items: flex-start;
 }
 
-// `.container` já tem 990px via o mapa de breakpoints em v2.scss — aqui só
+// `.container` já tem 990px via o mapa de breakpoints em v2.scss - aqui só
 // removemos a centralização própria (`margin:0 auto`) quando ele está dentro do
 // shell, porque no Legacy é `float:left` dentro do wrapper de 1190px, não
 // centralizado sozinho na viewport.
@@ -32,21 +32,21 @@ $vermelho-hover-v2: #f67d7d;
     flex: 0 0 auto;
 }
 
-// CP18 — medido diretamente no runtime (não só lido do CSS fonte): `#menuright`
+// CP18 - medido diretamente no runtime (não só lido do CSS fonte): `#menuright`
 // (`index.php`) tem `style` INLINE que neutraliza boa parte da classe `.upmenuright`
-// (`pattern/15.8.1.css:808-821`) — `background-color:rgba(0,0,0,0)`,
+// (`pattern/15.8.1.css:808-821`) - `background-color:rgba(0,0,0,0)`,
 // `padding:0px`, `font-weight:normal`, todos inline, vencem a classe. O filho
 // direto (`#menuright > div`) tem SUA PRÓPRIA borda inline `1px solid #444` (não
 // a `#443E3D` da classe `.upmenuright`, que nunca chega a ser aplicada porque o
 // filho declara borda própria). Resultado real computado, replicado aqui num único
-// elemento: fundo transparente, sem padding, peso normal, borda `#444` — só
+// elemento: fundo transparente, sem padding, peso normal, borda `#444` - só
 // `color`/`letter-spacing`/`text-align` da classe sobrevivem (nada os sobrescreve).
 .shell-v2__sidebar {
     flex: 0 0 auto;
     width: $shell-sidebar-largura-v2;
     margin-left: $shell-sidebar-margin-left-v2;
     // Legacy: `#menuright` (outer, `margin-top:44px` inline) > filho (`margin-top:3px`
-    // inline) = 47px do topo da viewport até o conteúdo da sidebar — mesma referência
+    // inline) = 47px do topo da viewport até o conteúdo da sidebar - mesma referência
     // vertical usada por `.shell-v2 > .container` (`margin-top:40px`, ver abaixo).
     margin-top: 47px;
     min-height: 100px;
@@ -73,7 +73,7 @@ $vermelho-hover-v2: #f67d7d;
     margin: 0 auto;
 }
 
-// `.tab-content` do Legacy (`15.8.1.css`) — aqui aplicado direto no `.container`
+// `.tab-content` do Legacy (`15.8.1.css`) - aqui aplicado direto no `.container`
 // do shell, que já cumpre o papel de `.tab-content` (não existe wrapper extra
 // `box-content`/`h1` como o V3 tinha antes desta correção).
 .shell-v2 > .container {
@@ -146,7 +146,7 @@ $vermelho-hover-v2: #f67d7d;
     }
 }
 
-// Só Inicio/Pesquisar recebem esta classe no legado (`inc/menu.php`) — leve tingido
+// Só Inicio/Pesquisar recebem esta classe no legado (`inc/menu.php`) - leve tingido
 // de fundo distinto dos demais itens da barra.
 .iniciocolor {
     background-color: rgba(0, 0, 0, 0.1) !important;
@@ -156,10 +156,10 @@ $vermelho-hover-v2: #f67d7d;
     }
 }
 
-// Itens do dropdown "Menu" (`.dropdown-menu`) — geometria/cores de
+// Itens do dropdown "Menu" (`.dropdown-menu`) - geometria/cores de
 // `pattern/15.8.1.css:479-502`. `.menuz` alterna o fundo dos itens ímpares, igual
-// ao HTML histórico (não é um `:nth-child` — segue as classes literais do PHP).
-// `15.8.1/css/media.php` — presente em TODOS os breakpoints (inclusive 1280/1366,
+// ao HTML histórico (não é um `:nth-child` - segue as classes literais do PHP).
+// `15.8.1/css/media.php` - presente em TODOS os breakpoints (inclusive 1280/1366,
 // os únicos relevantes nesta frente desktop-only, ver CP16-02): sem isso o fundo
 // escuro de cada item não preenche a largura do `.dropdown-menu`, sobrando branco
 // (fundo padrão do Bootstrap) nas laterais.
@@ -202,7 +202,7 @@ $vermelho-hover-v2: #f67d7d;
     }
 }
 
-// "Logout"/"Trocar p/ 14.6.1" são POST (CSRF), não podem ser `<a href>` — este
+// "Logout"/"Trocar p/ 14.6.1" são POST (CSRF), não podem ser `<a href>` - este
 // botão reproduz a aparência de um item de navegação/dropdown comum, sem cromo
 // nativo de `<button>`.
 .link-como-item-dropdown {
@@ -219,9 +219,9 @@ $vermelho-hover-v2: #f67d7d;
     cursor: pointer;
 }
 
-// CP19 — menu lateral direito (`pattern/15.8.1.css:689,849-905`). `.fl`/`.fr` também
+// CP19 - menu lateral direito (`pattern/15.8.1.css:689,849-905`). `.fl`/`.fr` também
 // existem em `_v1-base.scss`, mas não são compartilhados (v2.scss não importa
-// v1-base) — duplicados aqui de propósito, mesmos valores.
+// v1-base) - duplicados aqui de propósito, mesmos valores.
 .fl {
     float: left;
 }

@@ -1,9 +1,9 @@
-# Auditoria de menus — Legacy V1/V2 × V3 V1/V2 (P4)
+# Auditoria de menus - Legacy V1/V2 × V3 V1/V2 (P4)
 
 Data: 2026-09-09. Comparação item a item com base em `menuright.php` (V1 Legacy),
 `15.8.1/inc/menu.php` (V2 Legacy), layouts V3 e runtime.
 
-## V1 — menu superior
+## V1 - menu superior
 
 | Item Legacy | Item V3 | Status |
 |---|---|---|
@@ -15,7 +15,7 @@ Data: 2026-09-09. Comparação item a item com base em `menuright.php` (V1 Legac
 | Aguardando crédito | Aguardando credito | A |
 | Concluído | Concluido! | A |
 
-## V1 — MENU lateral/sessão
+## V1 - MENU lateral/sessão
 
 | Item Legacy | Item V3 | Status |
 |---|---|---|
@@ -28,9 +28,9 @@ Data: 2026-09-09. Comparação item a item com base em `menuright.php` (V1 Legac
 | Relatórios (submenu RCD/RPEC/RMPE) | Relatórios (RCD) + **RPEC/RMPE agora no menu** | A/D corrigido |
 | Usuários | Usuários (@gerenciar) | A |
 | Trocar p/ 15.8.1 | Trocar p/ 15.8.1 (POST/CSRF) | A/D corrigido |
-| Temporario (item oculto) | — | J (morto) |
+| Temporario (item oculto) | - | J (morto) |
 
-## V2 — tabs/header
+## V2 - tabs/header
 
 | Item Legacy | Item V3 | Status |
 |---|---|---|
@@ -44,7 +44,7 @@ Data: 2026-09-09. Comparação item a item com base em `menuright.php` (V1 Legac
 | Menu | Menu | A |
 | Logout | Logout (POST seguro) | A/G |
 
-## V2 — dropdown
+## V2 - dropdown
 
 | Item Legacy | Item V3 | Status |
 |---|---|---|
@@ -59,7 +59,7 @@ Data: 2026-09-09. Comparação item a item com base em `menuright.php` (V1 Legac
 | Trocar p/ 14.6.1 | Trocar p/ 14.6.1 (POST/CSRF) | A |
 | Usuários | Usuários (@gerenciar, adição consciente V3) | G |
 
-## V2 — painel lateral
+## V2 - painel lateral
 
 V3 `shell-v2__sidebar` reproduz as seções do Legacy (`rightmenu.php`) com cabeçalhos
 colapsáveis e links para RMA. Status: A (já coberto por FRONT-003/QA).

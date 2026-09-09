@@ -271,7 +271,7 @@ class ImportarRmasTest extends MigracaoTestCase
     }
 
     /**
-     * ARQ-002 (`INV-RMA-10`) — antes desta correção, `if ($dryRun) { continue; }`
+     * ARQ-002 (`INV-RMA-10`) - antes desta correção, `if ($dryRun) { continue; }`
      * pulava a tradução inteira, então dry-run nunca detectava anomalia nenhuma. Agora
      * a tradução roda por completo (e é desfeita depois), então a anomalia aparece.
      */
@@ -287,7 +287,7 @@ class ImportarRmasTest extends MigracaoTestCase
     }
 
     /**
-     * ARQ-002 — antes, `$processados` (destino) sempre era 0 em dry-run, escondendo o
+     * ARQ-002 - antes, `$processados` (destino) sempre era 0 em dry-run, escondendo o
      * que de fato seria migrado. Agora reflete quantas linhas passariam pela tradução.
      */
     public function test_dry_run_conta_quantas_linhas_seriam_processadas(): void
@@ -303,7 +303,7 @@ class ImportarRmasTest extends MigracaoTestCase
     }
 
     /**
-     * ARQ-002 — a checagem de idempotência (`numero_legado` já migrado) roda dentro da
+     * ARQ-002 - a checagem de idempotência (`numero_legado` já migrado) roda dentro da
      * mesma transação desfeita, então dry-run continua reportando "seria ignorado" para
      * uma linha já migrada de verdade, sem contá-la de novo como planejada.
      */

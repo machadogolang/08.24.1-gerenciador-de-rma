@@ -7,9 +7,9 @@ use App\Rma\Dominio\Status;
 use Illuminate\Support\Collection;
 
 /**
- * CP19 — `15.8.1/banco.php:885` (`right_destinatarios()`): `GROUP BY destinatario`
+ * CP19 - `15.8.1/banco.php:885` (`right_destinatarios()`): `GROUP BY destinatario`
  * (nome). O legado grava o destinatário como texto solto; o V3 usa relação
- * polimórfica (`destinatario_type`/`destinatario_id`) — agrupar em PHP pelo par
+ * polimórfica (`destinatario_type`/`destinatario_id`) - agrupar em PHP pelo par
  * tipo+id (mesmo par usado por `ListagensPorStatusController::mapaDeDestinatarios()`)
  * evita colidir ids de tabelas diferentes, depois resolve para o nome e soma.
  *

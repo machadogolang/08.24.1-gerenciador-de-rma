@@ -7,7 +7,7 @@ use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
 
 /**
- * LEG-RMA-008 — unifica `pesquisar_{rma,nf,sn,descricao}.php` (4 arquivos idênticos no
+ * LEG-RMA-008 - unifica `pesquisar_{rma,nf,sn,descricao}.php` (4 arquivos idênticos no
  * legado) numa única busca parametrizada por `CriterioDeBusca`.
  */
 final class BuscarRmas

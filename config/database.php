@@ -86,7 +86,7 @@ return [
 
         /*
         |----------------------------------------------------------------------
-        | rma_legacy — conexão só-leitura para o migrador (Fase 9)
+        | rma_legacy - conexão só-leitura para o migrador (Fase 9)
         |----------------------------------------------------------------------
         |
         | Aponta para o banco histórico do CellSystem RMA V2 (repositório
@@ -98,7 +98,7 @@ return [
         |
         | Reforço em nível de banco (não só disciplina de código): `LEGACY_DB_USERNAME`
         | deve apontar para um usuário MySQL com `GRANT SELECT` apenas no banco
-        | `rma_legacy` real — o migrador nunca escreve nessa conexão.
+        | `rma_legacy` real - o migrador nunca escreve nessa conexão.
         |
         */
 

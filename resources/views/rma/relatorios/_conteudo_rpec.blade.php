@@ -1,4 +1,4 @@
-{{-- FRONT-003/UI-03 — conteúdo do RPEC compartilhado pelos dois temas. Filtro usa o
+{{-- FRONT-003/UI-03 - conteúdo do RPEC compartilhado pelos dois temas. Filtro usa o
 contrato de ações (`.acao--secundaria`); impressão limpa via `.relatorio-print`. --}}
 <div class="relatorio">
     <h2 class="relatorio-titulo">Relatório de Produtos em Estoque para Contagem (RPEC)</h2>

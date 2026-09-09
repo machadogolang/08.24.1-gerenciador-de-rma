@@ -7,7 +7,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RN-09 (`LEG-RMA-026`) — RMA recebido sem nenhuma NF (nem compra, nem venda)
+ * RN-09 (`LEG-RMA-026`) - RMA recebido sem nenhuma NF (nem compra, nem venda)
  * registrada.
  */
 final class SemNotaFiscal

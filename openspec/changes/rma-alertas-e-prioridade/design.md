@@ -1,4 +1,4 @@
-# Design — Alertas e prioridade
+# Design - Alertas e prioridade
 
 ## Schema (incremental sobre `rmas`)
 
@@ -17,17 +17,17 @@ rmas (colunas novas desta fase)
   valor                 decimal(10,2) nullable   -- ajuste desta revisão, ver nota abaixo
 ```
 
-Só os blocos de NF `compra`/`venda` (usados por RN-02/05/06/09) — `nfremessa`/
+Só os blocos de NF `compra`/`venda` (usados por RN-02/05/06/09) - `nfremessa`/
 `nfretorno` ficam para Fase 6/7 se alguma regra vier a precisar; não copiados "por
 completude" (violaria o princípio de não criar coluna antes da regra que a usa).
 
-**Nota sobre `valor` — ajuste desta revisão:** `UrgenciaPorThreshold` (RN-12, abaixo)
+**Nota sobre `valor` - ajuste desta revisão:** `UrgenciaPorThreshold` (RN-12, abaixo)
 usava `->where('valor', '>', 75.00)`, mas a coluna não estava listada no schema desta
-fase — divergência real, já registrada como pendência técnica em `INV-RMA-06`
+fase - divergência real, já registrada como pendência técnica em `INV-RMA-06`
 ("coordenação da coluna `rmas.valor` com a Fase 5"). Origem confirmada em
 `regras-negocio-rma-legado.md` RN-12: `15.8.1/banco.php:777` (`right_urgente()`),
 `valor > 75.00`, campo monetário real do RMA (não calculado). Adicionada aqui, `decimal`
-(não número mágico — é dado monetário real, não um código de domínio fechado),
+(não número mágico - é dado monetário real, não um código de domínio fechado),
 `nullable` (nem todo RMA do legado preenche o campo).
 
 ## Enums novos
@@ -52,7 +52,7 @@ enum Prioridade
     case Baixa;
     case Media;
     case Alta;
-    // Sem case Urgente — RN-08: valor usado em ~14 arquivos de destaque visual,
+    // Sem case Urgente - RN-08: valor usado em ~14 arquivos de destaque visual,
     // mas inexistente no <select> real (resíduo de domínio anterior de 4 níveis).
     // Reproduzir um case morto que nenhum formulário grava violaria "sem
     // string mágica sem significado" tanto quanto reproduzir um bug.
@@ -74,14 +74,14 @@ enum ClasseDeAlerta
     case Inconformidade;
     case Urgente;
     case SemGarantia;
-    case Neutro; // equivalente a TrZebrada — sem significado de alerta
+    case Neutro; // equivalente a TrZebrada - sem significado de alerta
 }
 ```
 
 `Origem::normalizar()` (RN-13/RN-14, Fase 3) passa a devolver este enum em vez de
-string solta — o domínio completo já está fixado aqui.
+string solta - o domínio completo já está fixado aqui.
 
-## As 10 regras — filtro no SQL, não em PHP (decisão central desta fase)
+## As 10 regras - filtro no SQL, não em PHP (decisão central desta fase)
 
 ```php
 final class RecebidosSemEncaminhar30Dias
@@ -92,7 +92,7 @@ final class RecebidosSemEncaminhar30Dias
             ->where('status', Status::Recebido)
             ->where('recebido_em', '<', now()->subDays(30))
             ->get();
-        // SELECT já filtra por data — sem a classe de bug "num_rows mentiroso"
+        // SELECT já filtra por data - sem a classe de bug "num_rows mentiroso"
         // do legado (SELECT bruto + filtro PHP pós-query).
     }
 }
@@ -102,7 +102,7 @@ Mesmo padrão para as outras 9, cada uma em seu próprio arquivo:
 
 - `NaoVaiDarGarantia`: `status IN (Entrada,Recebido)` AND (`nfvenda_emissao` não nula
   AND `< hoje-365d`) OR (`fabricante.nome = 'MARKVISION'` AND (`fornecedor.nome =
-  'Receita'` OR (`nfcompra_emissao` não nula AND `< hoje-365d`))) — join com
+  'Receita'` OR (`nfcompra_emissao` não nula AND `< hoje-365d`))) - join com
   `fabricantes`/`fornecedores` (FK real desde a Fase 2/3, não comparação de string).
 - `NfRetornoPendenteDeLancar`: `status=Concluido AND lancadoretorno=Pendente`.
 - `ProtocoloAbertoNaoEncaminhado`: `status=Recebido AND protocolo IS NOT NULL AND
@@ -117,7 +117,7 @@ Mesmo padrão para as outras 9, cada uma em seu próprio arquivo:
   (nfvenda IS NULL OR nfvenda='')`.
 - `SemNumeroDeSerie`: `status=Recebido AND (sn IS NULL OR sn='')`.
 
-Todos os limites de data usam `>`/`<` estrito (não `>=`/`<=`) — mesmo operador
+Todos os limites de data usam `>`/`<` estrito (não `>=`/`<=`) - mesmo operador
 confirmado no legado (`Diferenca_de_dias(...) > 30`), evitando divergência de 1 dia na
 fronteira.
 
@@ -146,7 +146,7 @@ private function origemEhTerceiroForaDoPrazo(): bool
 ```
 
 Ordem de avaliação preserva a precedência confirmada em RN-11 (primeiro critério que
-bate vence) — **sem** o critério morto `prioridade=='urgente'` (não existe mais, ver
+bate vence) - **sem** o critério morto `prioridade=='urgente'` (não existe mais, ver
 `Prioridade` acima).
 
 ## `UrgenciaPorThreshold` (RN-12)
@@ -171,15 +171,15 @@ final class UrgenciaPorThreshold
 }
 ```
 
-`prazo` **não é coluna persistida** — calculado como `created_at->addDays(30)` (método
+`prazo` **não é coluna persistida** - calculado como `created_at->addDays(30)` (método
 `Rma::prazoLegal(): CarbonImmutable`), resultado idêntico ao legado sem denormalizar.
 
 ## Testes
 
-- 10 arquivos `tests/Unit/Rma/Alertas/*Test.php` — um por regra, cada um com: caso que
-  dispara, caso que não dispara, caso limite (exatamente no limite de dias — confirma
+- 10 arquivos `tests/Unit/Rma/Alertas/*Test.php` - um por regra, cada um com: caso que
+  dispara, caso que não dispara, caso limite (exatamente no limite de dias - confirma
   operador estrito `>`, não `>=`).
-- `ClasseDeAlertaTest` — os 4 critérios de RN-11, na ordem certa (garante que o
+- `ClasseDeAlertaTest` - os 4 critérios de RN-11, na ordem certa (garante que o
   primeiro critério que bate vence, não o último).
-- `UrgenciaPorThresholdTest` — valor exatamente R$75 (não dispara, é `>`, não `>=`),
+- `UrgenciaPorThresholdTest` - valor exatamente R$75 (não dispara, é `>`, não `>=`),
   R$75,01 dispara; `prioridade=Alta` dispara independente de valor.

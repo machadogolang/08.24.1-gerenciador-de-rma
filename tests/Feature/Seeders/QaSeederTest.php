@@ -40,7 +40,7 @@ class QaSeederTest extends TestCase
         $this->assertNotNull($primeiroRma->fornecedor_id);
         $this->assertNotNull($primeiroRma->destinatario_id);
 
-        // CP13 (fase 2 V1) — pelo menos 1 registro com `solucao=PendenteCredito`
+        // CP13 (fase 2 V1) - pelo menos 1 registro com `solucao=PendenteCredito`
         // pra Aguardando Crédito nunca ficar vazio no seed padrão.
         $this->assertSame(1, Rma::query()->where('solucao', \App\Rma\Dominio\Solucao::PendenteCredito)->count());
         $this->assertSame(1, Rma::query()

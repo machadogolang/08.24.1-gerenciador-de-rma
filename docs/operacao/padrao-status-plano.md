@@ -5,10 +5,10 @@ repositório. Regra fixa do dono desde 2026-09-09.
 
 ## Marcadores obrigatórios
 
-- `[ ]` **PENDENTE** — ainda não investigado suficientemente ou ainda não executado.
-- `[R]` **REVISADO** — investigado/auditado e com direção confirmada, mas ainda NÃO
+- `[ ]` **PENDENTE** - ainda não investigado suficientemente ou ainda não executado.
+- `[R]` **REVISADO** - investigado/auditado e com direção confirmada, mas ainda NÃO
   totalmente implementado/testado/fechado.
-- `[x]` **CONCLUÍDO** — implementado ou resolvido, com evidência suficiente e
+- `[x]` **CONCLUÍDO** - implementado ou resolvido, com evidência suficiente e
   critérios de saída cumpridos.
 
 ## Regras de uso

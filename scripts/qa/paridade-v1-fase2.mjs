@@ -3,7 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
- * CP15 — gerador reexecutável da matriz final do Tema V1 fase 2.
+ * CP15 - gerador reexecutável da matriz final do Tema V1 fase 2.
  *
  * Gera duas camadas:
  * - raw em screenshots-paridade-v1/ (gitignorado, pode conter dado Legacy real);

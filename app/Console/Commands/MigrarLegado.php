@@ -17,10 +17,10 @@ use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
 use Illuminate\Console\Command;
 
 /**
- * `php artisan rma:migrar-legado` — orquestra os 8 importadores na ordem de dependência
+ * `php artisan rma:migrar-legado` - orquestra os 8 importadores na ordem de dependência
  * de FK (`INV-RMA-06`/`INV-RMA-05` §14): Usuarios → Clientes → Fabricantes →
  * Fornecedores → AssistenciasTecnicas → Rmas → LogsDeAcesso → ModificacoesDeRma.
- * Transação por importador (não uma transação gigante) — uma tabela com erro não trava
+ * Transação por importador (não uma transação gigante) - uma tabela com erro não trava
  * as outras.
  */
 final class MigrarLegado extends Command
@@ -38,7 +38,7 @@ final class MigrarLegado extends Command
         $dryRun = (bool) $this->option('dry-run');
         $forcar = (bool) $this->option('forcar');
 
-        // EVO-SAAS-001 (S11) — o tenant histórico é EXPLÍCITO e determinístico; o
+        // EVO-SAAS-001 (S11) - o tenant histórico é EXPLÍCITO e determinístico; o
         // Observer preenche tenant_id em todas as entidades tenant-scoped criadas pelos
         // importadores, sem depender de request/ContextoDeTenant vazio.
         $cell = Company::query()->where('nome', 'CellSystem')->firstOrFail();
@@ -72,7 +72,7 @@ final class MigrarLegado extends Command
                 $importador = new ImportarModificacoesDeRma;
 
                 if (! $importador->disponivel()) {
-                    $this->warn('Fase 7 (modificacoes_de_rma) não está disponível neste schema — passo pulado, não é falha.');
+                    $this->warn('Fase 7 (modificacoes_de_rma) não está disponível neste schema - passo pulado, não é falha.');
 
                     return;
                 }
@@ -102,7 +102,7 @@ final class MigrarLegado extends Command
         return self::SUCCESS;
     }
     /**
-     * EVO-SAAS-001 (S11) — usuários importados entram no vínculo CellSystem com o papel
+     * EVO-SAAS-001 (S11) - usuários importados entram no vínculo CellSystem com o papel
      * preservado de `users.papel` (mesmo padrão do backfill S3).
      */
     private function vincularUsuariosImportados(Company $cell): void

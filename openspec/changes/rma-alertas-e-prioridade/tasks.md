@@ -1,11 +1,11 @@
-# Tasks — Alertas e prioridade
+# Tasks - Alertas e prioridade
 
 - [x] `database/migrations/2026_08_29_000000_add_alertas_fields_to_rmas_table.php`
 - [x] `app/Rma/Dominio/Origem.php`
 - [x] `app/Rma/Dominio/Prioridade.php`
 - [x] `app/Rma/Dominio/StatusDeLancamento.php`
 - [x] `app/Rma/Dominio/ClasseDeAlerta.php`
-- [x] `app/Rma/Dominio/Rma.php` — estender: `classeDeAlerta()`, `prazoLegal()`
+- [x] `app/Rma/Dominio/Rma.php` - estender: `classeDeAlerta()`, `prazoLegal()`
 - [x] `app/Rma/Aplicacao/Alertas/RecebidosSemEncaminhar30Dias.php`
 - [x] `app/Rma/Aplicacao/Alertas/NaoVaiDarGarantia.php`
 - [x] `app/Rma/Aplicacao/Alertas/NfRetornoPendenteDeLancar.php`

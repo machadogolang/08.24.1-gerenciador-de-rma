@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Histórico de modificações — CellSystem RMA</title>
+    <title>Histórico de modificações - CellSystem RMA</title>
 </head>
 <body>
     <h1>Histórico de modificações de RMA</h1>
@@ -27,9 +27,9 @@
                             #{{ $modificacao->rma_id }}
                         </a>
                     </td>
-                    <td>{{ $modificacao->user?->name ?? '—' }}</td>
+                    <td>{{ $modificacao->user?->name ?? '-' }}</td>
                     <td>{{ $modificacao->acao->name }}</td>
-                    <td>{{ $modificacao->ip ?? '—' }}</td>
+                    <td>{{ $modificacao->ip ?? '-' }}</td>
                 </tr>
             @empty
                 <tr><td colspan="5">Nenhuma modificação registrada.</td></tr>

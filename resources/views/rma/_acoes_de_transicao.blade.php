@@ -1,4 +1,4 @@
-{{-- Ações de ciclo de vida (Fase 4) — FRONT-003/UI-02B: partial compartilhado por
+{{-- Ações de ciclo de vida (Fase 4) - FRONT-003/UI-02B: partial compartilhado por
 V1/V2. Carrega só semântica de papel (`.acao--primaria`/`.acao--operacional`); cada
 tema estiliza em seu SCSS. Rotas, CSRF, Gates, regras de status e inputs preservados.
 --}}

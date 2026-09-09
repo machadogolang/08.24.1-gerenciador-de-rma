@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Entrar — CellSystem RMA</title>
+    <title>Entrar - CellSystem RMA</title>
     {{-- Gateway único de login (decisão 2026-08-25, `openspec/changes/temas-v1-v2/design.md`
-    "Login-gateway compartilhado"): não é nem TEMA V1 nem TEMA V2 — fonte real
+    "Login-gateway compartilhado"): não é nem TEMA V1 nem TEMA V2 - fonte real
     `http://localhost:8094/` (AdminLTE 2.2.0 `login-page`/`login-box` + Bootstrap 3.3.5,
     confirmado por `curl` na correção desta fase). Tem bundle Vite PRÓPRIO
-    (`identidade/login.js`/`login.scss`) — reaproveitar o bundle de um tema seria
+    (`identidade/login.js`/`login.scss`) - reaproveitar o bundle de um tema seria
     incorreto, essa tela não pertence a nenhum dos dois. --}}
     @vite(['resources/js/identidade/login.js'])
 </head>
@@ -17,7 +17,7 @@
         <div class="login-box-body">
             <div class="login-box-msg">
                 {{-- Fonte real: `images/logomark.png` do legado (vendorizado aqui em
-                `public/images/identidade/logomark.png`, mesmo bytes — não é um recurso
+                `public/images/identidade/logomark.png`, mesmo bytes - não é um recurso
                 externo carregado em runtime). --}}
                 <img src="{{ asset('images/identidade/logomark.png') }}" alt="CellSystem RMA">
             </div>
@@ -57,10 +57,10 @@
         </div>
     </div>
 
-    {{-- Banner "NÃO É O QUE PROCURA?" — presente no gateway real, linkando para o
+    {{-- Banner "NÃO É O QUE PROCURA?" - presente no gateway real, linkando para o
     login PRÓPRIO do TEMA V1 (`14.6.1/index.php`, uma segunda função `SignIn()`
     independente, ver design.md). A V3 já decidiu unificar o pós-login: não existe (nem
-    deve existir) um segundo formulário/rota de login exclusivo de TEMA V1 — o mesmo
+    deve existir) um segundo formulário/rota de login exclusivo de TEMA V1 - o mesmo
     `identidade.login` sempre respeita `tema_preferido`. O banner é reproduzido aqui
     como elemento visual + atalho de navegação pré-login (não uma segunda tela de
     login): linka de volta para o próprio gateway, que é o equivalente funcional real

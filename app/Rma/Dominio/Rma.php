@@ -29,7 +29,7 @@ final class Rma
         public readonly ?string $snretorno = null,
         /**
          * Relação polimórfica (Eloquent: `AssistenciaTecnica`/`Fornecedor`/
-         * `Fabricante`) representada aqui como par tipo/id, não como objeto Eloquent —
+         * `Fabricante`) representada aqui como par tipo/id, não como objeto Eloquent -
          * o domínio permanece puro (mesmo padrão de `fabricanteId`/`fornecedorId`:
          * ids resolvidos para exibição fora deste objeto).
          */
@@ -44,14 +44,14 @@ final class Rma
         public readonly ?\DateTimeInterface $nfvendaEmissao = null,
         public readonly ?string $nfvendaChave = null,
         /**
-         * VIS-V1-003 — promovidos de "coluna histórica de preservação" (Fase 9) para
+         * VIS-V1-003 - promovidos de "coluna histórica de preservação" (Fase 9) para
          * campo de primeira classe do agregado: confirmado em runtime que `P/N` e
          * `SNID` são inputs reais do formulário "Novo" do TEMA V1 legado
          * (`menujs-top/novo.php`), gravados por `banco.oo.php::novo()` na criação e
-         * incluídos na assinatura de `banco.oo.php::salvar()` (edição — código morto,
+         * incluídos na assinatura de `banco.oo.php::salvar()` (edição - código morto,
          * nunca chamado por nenhuma página, então não editáveis depois na prática).
          * Não aparecem em `detalhes.php` nem em nenhuma busca/regra de negócio do
-         * legado — write-once na criação. Decisão: campo de primeira classe (a coluna
+         * legado - write-once na criação. Decisão: campo de primeira classe (a coluna
          * já existe, `App\Models\Rma::$fillable`), exposto no formulário de criação e
          * no detalhe do TEMA V1; não exposto no formulário de edição (mesmo
          * comportamento do legado).
@@ -62,14 +62,14 @@ final class Rma
         public readonly ?float $valor = null,
         public readonly ?\DateTimeInterface $createdAt = null,
         /**
-         * `LEG-RMA-036` — gravado só por `MarcarCreditoDisponivel`, nunca em cascata
+         * `LEG-RMA-036` - gravado só por `MarcarCreditoDisponivel`, nunca em cascata
          * automática a partir de `solucao`. Ver Fase 6 (`rma-creditos-e-relatorios`).
          */
         public readonly bool $creditoDisponivel = false,
     ) {}
 
     /**
-     * RN-13 (HGST→Hitachi) + RN-14 (cascata de origem) — normalização confirmada
+     * RN-13 (HGST→Hitachi) + RN-14 (cascata de origem) - normalização confirmada
      * idêntica nos dois temas do legado, aplicada na criação e na edição. Método puro
      * (sem side effect), chamado por CriarRma/EditarRma antes de persistir.
      */
@@ -95,7 +95,7 @@ final class Rma
     }
 
     /**
-     * RN-15 — só copia `sn` → `snretorno` se estiver vazio E a solução implicar mesmo
+     * RN-15 - só copia `sn` → `snretorno` se estiver vazio E a solução implicar mesmo
      * aparelho de retorno; caso contrário fica em branco para digitação manual. Ausente
      * em TEMA V1 (regra nova nesta fase, sem regressão a corrigir). Método puro.
      */
@@ -113,7 +113,7 @@ final class Rma
     }
 
     /**
-     * ARQ-001 (`INV-RMA-10`) — cópia segura centralizada: preserva todo o estado atual
+     * ARQ-001 (`INV-RMA-10`) - cópia segura centralizada: preserva todo o estado atual
      * do agregado e sobrescreve só os campos informados. Único ponto de reconstrução do
      * objeto; os casos de uso de edição/transição de ciclo de vida devem usar este
      * método em vez de `new Rma(...)` campo a campo, que apagava silenciosamente todo
@@ -173,12 +173,12 @@ final class Rma
     }
 
     /**
-     * RN-11 (`LEG-RMA-028`) — a ordem de avaliação do `match(true)` preserva a
+     * RN-11 (`LEG-RMA-028`) - a ordem de avaliação do `match(true)` preserva a
      * precedência confirmada no legado (primeiro critério que bate vence). **Sem** o
      * critério morto `prioridade=='urgente'` (não existe mais, ver `Prioridade`).
      *
      * Desvio do `design.md`: a comparação usa `Origem::Cliente->value` (string) em vez
-     * do enum diretamente — `$this->origem` permanece `?string` neste objeto (não
+     * do enum diretamente - `$this->origem` permanece `?string` neste objeto (não
      * `?Origem`), porque `comNormalizacaoDeGravacao()` recebe/produz valores de origem
      * ainda não normalizados (ex.: nomes de fabricante/cliente arbitrários) que não
      * pertencem ao domínio fechado do enum; tipar a propriedade como `Origem` quebraria
@@ -198,7 +198,7 @@ final class Rma
     }
 
     /**
-     * RN-12 — prazo legal de 30 dias contado da criação do RMA, não persistido
+     * RN-12 - prazo legal de 30 dias contado da criação do RMA, não persistido
      * (calculado). Usado por `origemEhTerceiroForaDoPrazo()` e disponível para exibição.
      */
     public function prazoLegal(): CarbonImmutable
@@ -215,7 +215,7 @@ final class Rma
     }
 
     /**
-     * Fase 7 (`RegistrarModificacaoDeRma`) — snapshot desnormalizado equivalente ao
+     * Fase 7 (`RegistrarModificacaoDeRma`) - snapshot desnormalizado equivalente ao
      * gravado pelo `modificacao` do legado (`estado_apos`): campos-chave suficientes
      * para reconstruir "o que era o RMA no momento da ação" sem diff campo-a-campo
      * (`EVO-AUD-001`, backlog evolutivo, pendência registrada em `proposal.md`).

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Date;
 use Tests\TestCase;
 
 /**
- * VIS-V1-001 — as 4 listagens por status do menu superior do TEMA V1
+ * VIS-V1-001 - as 4 listagens por status do menu superior do TEMA V1
  * (Entrada/Encaminhado/Aguardando credito/Concluido).
  */
 class ListagensPorStatusTest extends TestCase
@@ -125,7 +125,7 @@ class ListagensPorStatusTest extends TestCase
     }
 
     /**
-     * VIS-V1-001/CP3A-01/CP3A-03 — `Concluido` reproduz a composição histórica
+     * VIS-V1-001/CP3A-01/CP3A-03 - `Concluido` reproduz a composição histórica
      * (`legacy-source/14.6.1/page/concluidos.php`): ícone 50×50 + texto de contexto,
      * sem o `<h1>` artificial que o layout do TEMA V1 injeta por padrão nas demais telas.
      */
@@ -143,17 +143,17 @@ class ListagensPorStatusTest extends TestCase
 
         // #CONTEUDO é o miolo histórico da tela (o layout também injeta um
         // <h1 class="titulo-v1"> sempre presente no DOM, mas fora de #CONTEUDO,
-        // para o painel de sessão oculto por CSS — isso não é o H1 artificial do
+        // para o painel de sessão oculto por CSS - isso não é o H1 artificial do
         // achado 7). Isolamos #CONTEUDO até a tabela para confirmar que nenhum
         // <h1> foi injetado ali.
         $this->assertSemH1ArtificialEmConteudo($response->getContent());
     }
 
     /**
-     * VIS-V1-001/CP3B — `Entrada` reproduz a composição histórica
+     * VIS-V1-001/CP3B - `Entrada` reproduz a composição histórica
      * (`legacy-source/14.6.1/page/entrada.php`): ícone 50×50 próprio, colunas
      * declaradas e sem o `<h1>` artificial. Continua usando a família
-     * `TrZebrada`/`TrInconformidade`/`TrUrgente` (achado 5 — não é uma zebra simples).
+     * `TrZebrada`/`TrInconformidade`/`TrUrgente` (achado 5 - não é uma zebra simples).
      */
     public function test_entrada_tem_icone_colunas_e_nenhum_h1_artificial(): void
     {
@@ -170,7 +170,7 @@ class ListagensPorStatusTest extends TestCase
     }
 
     /**
-     * VIS-V1-001/CP3C — mesma composição histórica de `Entrada`, fonte
+     * VIS-V1-001/CP3C - mesma composição histórica de `Entrada`, fonte
      * `legacy-source/14.6.1/page/encaminhados.php`.
      */
     public function test_encaminhados_tem_icone_colunas_e_nenhum_h1_artificial(): void
@@ -188,9 +188,9 @@ class ListagensPorStatusTest extends TestCase
     }
 
     /**
-     * VIS-V1-001/CP3D/achado 4 — `Aguardando credito` usa só
+     * VIS-V1-001/CP3D/achado 4 - `Aguardando credito` usa só
      * `Tabelinha-TR1`/`Tabelinha-TR2` (zebra de 30px), nunca a família `TrZebrada`
-     * usada por Entrada/Encaminhado — o legado não tem regra de destaque aqui.
+     * usada por Entrada/Encaminhado - o legado não tem regra de destaque aqui.
      */
     public function test_aguardando_credito_usa_apenas_zebra_tr1_tr2(): void
     {
@@ -220,7 +220,7 @@ class ListagensPorStatusTest extends TestCase
     /**
      * #CONTEUDO é o miolo histórico das telas de listagem (o layout também injeta um
      * <h1 class="titulo-v1"> sempre presente no DOM, mas fora de #CONTEUDO, para o
-     * painel de sessão oculto por CSS — isso não é o H1 artificial do achado 7).
+     * painel de sessão oculto por CSS - isso não é o H1 artificial do achado 7).
      * Isolamos #CONTEUDO até a tabela/mensagem de vazio para confirmar que nenhum
      * <h1> foi injetado ali.
      */
@@ -232,7 +232,7 @@ class ListagensPorStatusTest extends TestCase
     }
 
     /**
-     * VIS-V1-001/CP4 — fonte real `legacy-source/14.6.1/page/concluidos.php:66-69`:
+     * VIS-V1-001/CP4 - fonte real `legacy-source/14.6.1/page/concluidos.php:66-69`:
      * resumo abaixo da tabela com valor total, data de processamento e as duas
      * contagens, calculado sem SQL no Blade (`ListagensPorStatusController::
      * resumoDeConcluidos()`).

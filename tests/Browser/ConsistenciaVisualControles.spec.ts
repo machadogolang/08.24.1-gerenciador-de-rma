@@ -1,7 +1,7 @@
 import { test, expect, type Browser, type Page } from '@playwright/test';
 
 /**
- * UI-AUD-001..018 / FRONT-003/UI-09 — contrato de consistência de controles e
+ * UI-AUD-001..018 / FRONT-003/UI-09 - contrato de consistência de controles e
  * formulários (V1 e V2). Assert de DOM/computedStyle/geometria, sem screenshot.
  * Roda contra o V3 local com `PLAYWRIGHT_BASE_URL=http://localhost:8095`.
  */
@@ -37,9 +37,9 @@ async function visivel(page: Page, texto: string): Promise<number> {
     }, texto);
 }
 
-test.describe('UI-AUD — consistência de formulários e controles', () => {
+test.describe('UI-AUD - consistência de formulários e controles', () => {
 
-    test('A — todo select habilitado nas rotas cobertas tem cursor pointer', async ({ browser }) => {
+    test('A - todo select habilitado nas rotas cobertas tem cursor pointer', async ({ browser }) => {
         const rotas = [
             '/rmas-relatorios/rpec',
             '/usuarios',
@@ -61,7 +61,7 @@ test.describe('UI-AUD — consistência de formulários e controles', () => {
         }
     });
 
-    test('B — Parceiro V1: input, select UF e textareas principais compartilham largura útil', async ({ browser }) => {
+    test('B - Parceiro V1: input, select UF e textareas principais compartilham largura útil', async ({ browser }) => {
         for (const tipo of ['fornecedores', 'fabricantes', 'clientes', 'assistencias-tecnicas']) {
             const page = await loginV3(browser);
             await page.goto(`${V3}/v1/parceiros/${tipo}/create`, { waitUntil: 'load' });
@@ -89,7 +89,7 @@ test.describe('UI-AUD — consistência de formulários e controles', () => {
         }
     });
 
-    test('B2 — Parceiro V2: input, select e textarea com a mesma largura útil', async ({ browser }) => {
+    test('B2 - Parceiro V2: input, select e textarea com a mesma largura útil', async ({ browser }) => {
         const page = await loginV3(browser);
         await page.goto(`${V3}/v2/parceiros/fornecedores/create`, { waitUntil: 'load' });
         const caixas = await page.evaluate(() => {
@@ -106,7 +106,7 @@ test.describe('UI-AUD — consistência de formulários e controles', () => {
         await page.context().close();
     });
 
-    test('C — RCD/RPEC/RMPE V1: um único título visível por relatório', async ({ browser }) => {
+    test('C - RCD/RPEC/RMPE V1: um único título visível por relatório', async ({ browser }) => {
         const rotas = [
             '/rmas-relatorios/rcd',
             '/rmas-relatorios/rpec',
@@ -125,7 +125,7 @@ test.describe('UI-AUD — consistência de formulários e controles', () => {
         }
     });
 
-    test('D — Usuários V1: controles não estouram a célula e botões não encolhem', async ({ browser }) => {
+    test('D - Usuários V1: controles não estouram a célula e botões não encolhem', async ({ browser }) => {
         const page = await loginV3(browser);
         await page.goto(`${V3}/usuarios`, { waitUntil: 'load' });
         const primeiraLinha = page.locator('.tabela-usuarios-v1 tbody tr').first();
@@ -153,7 +153,7 @@ test.describe('UI-AUD — consistência de formulários e controles', () => {
         await page.context().close();
     });
 
-    test('D2 — Usuários V2: ações na mesma linha e linha compacta em 1440px', async ({ browser }) => {
+    test('D2 - Usuários V2: ações na mesma linha e linha compacta em 1440px', async ({ browser }) => {
         const page = await loginV3(browser);
         await page.goto(`${V3}/v2/usuarios`, { waitUntil: 'load' });
         const primeiraLinha = page.locator('.tabela-usuarios-v2 tbody tr').first();
@@ -177,7 +177,7 @@ test.describe('UI-AUD — consistência de formulários e controles', () => {
         await page.context().close();
     });
 
-    test('E — Controle V1: sem scroll horizontal da página e inputs de representante alinhados', async ({ browser }) => {
+    test('E - Controle V1: sem scroll horizontal da página e inputs de representante alinhados', async ({ browser }) => {
         const page = await loginV3(browser);
         await page.goto(`${V3}/rmas-controle`, { waitUntil: 'load' });
         await page.evaluate(() => document.querySelectorAll('details').forEach((d) => d.setAttribute('open', '')));
@@ -192,7 +192,7 @@ test.describe('UI-AUD — consistência de formulários e controles', () => {
         await page.context().close();
     });
 
-    test('F — Dropdown Menu V2: itens com altura própria, sem sobreposição e navegáveis por TAB', async ({ browser }) => {
+    test('F - Dropdown Menu V2: itens com altura própria, sem sobreposição e navegáveis por TAB', async ({ browser }) => {
         const page = await loginV3(browser);
         await page.goto(`${V3}/v2/rma/create`, { waitUntil: 'load' });
         await page.locator('.nav-v2 .dropdown-toggle').click();
@@ -218,7 +218,7 @@ test.describe('UI-AUD — consistência de formulários e controles', () => {
         await page.context().close();
     });
 
-    test('G — Foco por teclado alcança ações principais (parceiros e detalhe RMA)', async ({ browser }) => {
+    test('G - Foco por teclado alcança ações principais (parceiros e detalhe RMA)', async ({ browser }) => {
         for (const tema of ['v1', 'v2'] as const) {
             const page = await loginV3(browser);
             await page.goto(`${V3}/${tema}/parceiros/fornecedores`, { waitUntil: 'load' });

@@ -19,7 +19,7 @@ class UsuarioController extends Controller
 {
     /**
      * Lista usuários. Oculta SuperAdministrador de quem não é SuperAdministrador
-     * (LEG-RMA-005) — usa o método nomeado do enum `Papel`, nunca ordinal/inteiro.
+     * (LEG-RMA-005) - usa o método nomeado do enum `Papel`, nunca ordinal/inteiro.
      */
     public function index(Request $request): View
     {
@@ -60,7 +60,7 @@ class UsuarioController extends Controller
 
         $papelPretendido = collect(Papel::cases())->firstWhere('name', $dados['papel']);
 
-        // ARQ-003: nem por atribuição — Supervisor não pode promover ninguém (nem a si
+        // ARQ-003: nem por atribuição - Supervisor não pode promover ninguém (nem a si
         // próprio) a SuperAdministrador.
         abort_unless($request->user()->papelAtivo()->podeOperarSobrePapel($papelPretendido), 403);
 
@@ -94,7 +94,7 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Reseta a senha de outro usuário (LEG-RMA-003) — exige `podeGerenciarUsuarios()` e,
+     * Reseta a senha de outro usuário (LEG-RMA-003) - exige `podeGerenciarUsuarios()` e,
      * desde `ARQ-003`, que o ator possa operar sobre o papel do alvo; validado dentro do
      * próprio caso de uso.
      */
@@ -119,7 +119,7 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Troca a própria senha (LEG-RMA-004) — TEMA V1 como especificação (RN-21).
+     * Troca a própria senha (LEG-RMA-004) - TEMA V1 como especificação (RN-21).
      */
     public function atualizarSenha(Request $request, TrocarPropriaSenha $trocarPropriaSenha): RedirectResponse
     {

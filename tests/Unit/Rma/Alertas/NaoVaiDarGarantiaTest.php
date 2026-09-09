@@ -86,7 +86,7 @@ class NaoVaiDarGarantiaTest extends TestCase
     public function test_dispara_markvision_com_nf_de_compra_vencida_mesmo_sem_fornecedor_receita(): void
     {
         // Segundo ramo do OR interno da regra MARKVISION (fabricante=MARKVISION E
-        // (fornecedor=Receita OU nfcompra_emissao vencida)) — cobre o lado do OR que
+        // (fornecedor=Receita OU nfcompra_emissao vencida)) - cobre o lado do OR que
         // o teste anterior (fornecedor=Receita) não exercitava.
         $fabricante = Fabricante::factory()->create(['nome' => 'MARKVISION']);
         $fornecedor = Fornecedor::factory()->create(['nome' => 'Outro Fornecedor']);
@@ -124,7 +124,7 @@ class NaoVaiDarGarantiaTest extends TestCase
 
     public function test_status_concluido_nunca_dispara_mesmo_com_condicoes_satisfeitas(): void
     {
-        // A regra só se aplica a status Entrada/Recebido — prova de que a query
+        // A regra só se aplica a status Entrada/Recebido - prova de que a query
         // realmente filtra por status no SQL, não só pelas condições de garantia.
         $rma = Rma::factory()->create([
             'status' => Status::Concluido,

@@ -5,7 +5,7 @@ namespace App\Parceiros\Aplicacao;
 use App\Models\Fornecedor;
 
 /**
- * Generalização de `EncontrarOuCriarCliente` (Fase 2) — usada SÓ pelo migrador
+ * Generalização de `EncontrarOuCriarCliente` (Fase 2) - usada SÓ pelo migrador
  * (`INV-RMA-06` §17). Ver `EncontrarOuCriarFabricante` para a justificativa completa.
  */
 final class EncontrarOuCriarFornecedor

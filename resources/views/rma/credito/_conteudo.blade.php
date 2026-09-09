@@ -1,4 +1,4 @@
-{{-- FRONT-003 (H-013) — conteúdo funcional compartilhado do fluxo de crédito
+{{-- FRONT-003 (H-013) - conteúdo funcional compartilhado do fluxo de crédito
 (LEG-RMA-036). Os wrappers de tema (`temas/v{1,2}/rma/credito/index.blade.php`)
 fornecem shell/navegação; este partial não contém regra de negócio. --}}
 

@@ -3,7 +3,7 @@
 namespace App\Rma\Infraestrutura\Migracao\Concerns;
 
 /**
- * `INV-RMA-06` §16 — `cliente`/`fornecedor` legado usam 2 colunas (`observacaoSGV` +
+ * `INV-RMA-06` §16 - `cliente`/`fornecedor` legado usam 2 colunas (`observacaoSGV` +
  * `observacaoFR`, nome vazado de módulo copiado), V3 tem um único campo. Concatena só as
  * partes não vazias, `"SGV: {...}\nFR: {...}"`.
  */

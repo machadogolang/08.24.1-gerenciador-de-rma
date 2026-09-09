@@ -50,7 +50,7 @@ class TrocarPropriaSenhaTest extends TestCase
 
     /**
      * Esta é a prova de que a regressão de TEMA V2 (RN-21, "SET ... SET ..." inválido)
-     * não foi herdada: um único UPDATE, via Eloquent, sempre válido — se a V3
+     * não foi herdada: um único UPDATE, via Eloquent, sempre válido - se a V3
      * replicasse o SQL quebrado, esta troca simplesmente não persistiria.
      */
     public function test_a_troca_de_senha_persiste_de_fato_no_banco(): void

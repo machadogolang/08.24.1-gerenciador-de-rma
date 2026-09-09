@@ -3,19 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $titulo ?? 'RMA' }} — CellSystem RMA</title>
+    <title>{{ $titulo ?? 'RMA' }} - CellSystem RMA</title>
     @vite(['resources/js/temas/v2.js'])
 </head>
 <body class="{{ request()->routeIs('rmas.relatorios.*') ? 'relatorio-print' : '' }}">
     {{-- FRONT-003/UI-03: relatórios imprimem sem menu/nav (ver _compartilhado.scss). --}}
     @php
-        // CP17 (`docs/produto/plano-execucao-paridade-v2.md`) — fonte real
+        // CP17 (`docs/produto/plano-execucao-paridade-v2.md`) - fonte real
         // `legacy-source/15.8.1/inc/menu.php`: os 7 primeiros itens (Inicio…
         // Concluido) usam âncora + `data-toggle="tab"` só quando `!isset($page)`
         // (isto é, na página estática/índice); em qualquer outra página o legado usa
         // `href` real. V3 ainda não tem páginas próprias para
         // Entrada/Recebido/Encaminhado/Concluido (são painéis de aba dentro de
-        // `v2.rmas.index`, não rotas — ver `temas/v2/rma/index.blade.php`), então
+        // `v2.rmas.index`, não rotas - ver `temas/v2/rma/index.blade.php`), então
         // fora do índice o link volta para lá com a âncora; `v2.js` abre a aba certa
         // lendo `location.hash` no load (equivalente moderno, sem reload).
         $emIndice = request()->routeIs('v2.rmas.index');
@@ -49,7 +49,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu</a>
                     <ul class="dropdown-menu" style="color:#FFF;">
                         {{-- Creditos/Relatorios/Controle não têm rota própria por tema (mesma
-                        rota canônica servida para V1 e V2, ver `routes/web.php`) — usar
+                        rota canônica servida para V1 e V2, ver `routes/web.php`) - usar
                         `route()` direto, `rota_tema()` só resolve `v1.*`/`v2.*`. --}}
                         <li class="lidropdown menuz"><a href="{{ route('rmas.credito.index') }}">Creditos</a></li>
                         <li class="lidropdown"><a href="{{ rota_tema('parceiros.assistencias-tecnicas.index') }}">Assistencias</a></li>
@@ -61,13 +61,13 @@
                         <li class="lidropdown"><a href="{{ route('rmas.relatorios.rmpe') }}">Relatorio RMPE</a></li>
                         {{-- [GAP] "Anotacoes" era página própria em `15.8.1/page/anotacoes.php`;
                         V3 só tem o widget de anotação pessoal (`identidade.perfil.anotacao.update`,
-                        sem página de listagem dedicada) — aponta para o perfil até essa
+                        sem página de listagem dedicada) - aponta para o perfil até essa
                         página existir. --}}
                         <li class="lidropdown menuz"><a href="{{ rota_tema('identidade.perfil.show') }}">Anotacoes</a></li>
                         @can('gerenciar', \App\Models\User::class)
                             <li class="lidropdown"><a href="{{ route('rmas.controle.index') }}">Controle</a></li>
                             {{-- Usuários não está no dropdown histórico do 15.8.1, mas precisa
-                            estar alcançável em algum lugar do TEMA V2 — mesmo critério já usado
+                            estar alcançável em algum lugar do TEMA V2 - mesmo critério já usado
                             no TEMA V1 (achado VIS-V1-008). --}}
                             <li class="lidropdown menuz"><a href="{{ rota_tema('identidade.usuarios.index') }}">Usuários</a></li>
                         @endcan
@@ -103,7 +103,7 @@
         </aside>
     </div>
 
-    {{-- CP24 — fonte real `15.8.1/inc/footer.php` (rodapé compartilhado com o TEMA
+    {{-- CP24 - fonte real `15.8.1/inc/footer.php` (rodapé compartilhado com o TEMA
     V1, já correto por `.designedby`/`_compartilhado.scss`). A 2ª linha tem
     `letter-spacing:1px` inline só nela, não na classe. --}}
     <p class="designedby container">Designed by <a href="http://scripting.com.br" target="_blank"><strong>Scripting Studios Art</strong></a></p>

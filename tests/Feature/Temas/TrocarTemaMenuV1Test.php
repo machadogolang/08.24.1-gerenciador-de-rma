@@ -10,7 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * Paridade P1 — "Trocar p/ 15.8.1" no menu/session do TEMA V1 com POST/CSRF.
+ * Paridade P1 - "Trocar p/ 15.8.1" no menu/session do TEMA V1 com POST/CSRF.
  */
 class TrocarTemaMenuV1Test extends TestCase
 {

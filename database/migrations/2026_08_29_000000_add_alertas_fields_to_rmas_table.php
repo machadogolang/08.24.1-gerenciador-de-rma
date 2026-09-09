@@ -9,17 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      *
-     * `origem` já existe (Fase 3) — não recriada aqui, só ganha cast no domínio (ver
+     * `origem` já existe (Fase 3) - não recriada aqui, só ganha cast no domínio (ver
      * decisão registrada em `docs/produto/log-implementacao-v3.md`, Fase 5). Só os
-     * blocos de NF `compra`/`venda` entram (usados por RN-02/05/06/09) —
+     * blocos de NF `compra`/`venda` entram (usados por RN-02/05/06/09) -
      * `nfremessa`/`nfretorno` ficam para Fase 6/7 se alguma regra vier a precisar.
      *
-     * `valor` — ajuste desta revisão do `design.md`: coluna usada por
+     * `valor` - ajuste desta revisão do `design.md`: coluna usada por
      * `UrgenciaPorThreshold` (RN-12, `->where('valor', '>', 75.00)`), mas ausente do
      * schema original desta fase (divergência real, já registrada em `INV-RMA-06`).
      * Origem confirmada em `regras-negocio-rma-legado.md` RN-12: `15.8.1/banco.php:777`
      * (`right_urgente()`), campo monetário real do RMA (não calculado, não código de
-     * domínio fechado — por isso `decimal`, não `string`).
+     * domínio fechado - por isso `decimal`, não `string`).
      */
     public function up(): void
     {

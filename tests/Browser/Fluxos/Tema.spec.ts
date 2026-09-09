@@ -33,7 +33,7 @@ async function garantirTema(page: Page, tema: 'v1' | 'v2'): Promise<void> {
     }
 }
 
-test('FLOW-RMA-003 — Troca V1→V2 e V2→V1 pelo menu, com persistência', async ({ browser }) => {
+test('FLOW-RMA-003 - Troca V1→V2 e V2→V1 pelo menu, com persistência', async ({ browser }) => {
     // Garante ponto de partida V1.
     let page = await login(browser);
     await garantirTema(page, 'v1');

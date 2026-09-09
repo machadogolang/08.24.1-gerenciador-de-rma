@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 /**
  * Prova de que `ArquivarRma` segue TEMA V2 (`15.8.1/banco.php::arquivar()`), não TEMA
- * V1 (`14.6.1/post/arquivar.php`, `Fatal Error` incondicional — `new controle()`,
+ * V1 (`14.6.1/post/arquivar.php`, `Fatal Error` incondicional - `new controle()`,
  * classe inexistente). Os três status permitidos abaixo (incluindo `Recebido`, o
  * cenário que dispararia o Fatal Error em TEMA V1) devem arquivar com sucesso, não
  * lançar exceção.

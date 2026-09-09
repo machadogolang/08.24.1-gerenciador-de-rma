@@ -1,10 +1,10 @@
 @extends('temas.v1.layout')
 
-{{-- VIS-V1-010 — painel "Controle" do TEMA V1, fonte real `14.6.1/page/controle.php`
+{{-- VIS-V1-010 - painel "Controle" do TEMA V1, fonte real `14.6.1/page/controle.php`
 (= `menujs-right/controle.php`), 7 ações administrativas na mesma ordem do legado.
 `<details>/<summary>` reproduz o comportamento "painel colapsado por padrão, expande ao
 clicar" do `expande()`/`minimize()` original sem precisar de JS novo (mesma filosofia de
-VIS-V1-002: nativo primeiro). Cada ação reaproveita rota/caso de uso V3 já existente —
+VIS-V1-002: nativo primeiro). Cada ação reaproveita rota/caso de uso V3 já existente -
 nenhum caso de uso novo foi criado para esta tela. --}}
 @section('conteudo')
     @if (session('status'))
@@ -19,7 +19,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
         </ul>
     @endif
 
-    {{-- #01 ADICIONAR REPRESENTANTE — legado usa 1 form + select de tipo; aqui são 3
+    {{-- #01 ADICIONAR REPRESENTANTE - legado usa 1 form + select de tipo; aqui são 3
     forms, um por rota V3 já existente (parceiros.{fornecedores,fabricantes,assistencias-tecnicas}.store),
     sem inventar um dispatcher novo por "tipo". --}}
     <details>
@@ -48,7 +48,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
         </form>
     </details>
 
-    {{-- #04 ARQUIVAR UMA SOLICITACAO DE RMA — reaproveita `rmas.arquivar`
+    {{-- #04 ARQUIVAR UMA SOLICITACAO DE RMA - reaproveita `rmas.arquivar`
     (POST /rmas/{rma}/arquivar), já usado no detalhe do RMA. O legado identifica por
     "NUMERO" digitado; a rota V3 usa o id na URL, então o form reescreve a própria
     `action` com o valor digitado antes de submeter (POST nativo, sem fetch). --}}
@@ -66,9 +66,9 @@ nenhum caso de uso novo foi criado para esta tela. --}}
         <div style="height:10px;clear:both;"></div>
     </details>
 
-    {{-- #05 DELETAR UMA SOLICITACAO DE RMA — VIS-V1-011, sem rota V3 (hard delete não
+    {{-- #05 DELETAR UMA SOLICITACAO DE RMA - VIS-V1-011, sem rota V3 (hard delete não
     existe, `Route::resource('rmas', ...)->except(['destroy'])`). Decisão de produto
-    pendente — não implementado por inferência, só a pendência fica registrada aqui. --}}
+    pendente - não implementado por inferência, só a pendência fica registrada aqui. --}}
     <details>
         <summary class="formTitlePanel">DELETAR UMA SOLICITACAO DE RMA</summary>
         <p>Pendente - exclusão definitiva de RMA depende de decisão de produto/segurança
@@ -77,7 +77,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
             existe arquivamento (reversível), acima.</p>
     </details>
 
-    {{-- #06 DELETAR UM USUARIO — VIS-V1-012, mesma situação: sem rota V3, decisão de
+    {{-- #06 DELETAR UM USUARIO - VIS-V1-012, mesma situação: sem rota V3, decisão de
     produto pendente. --}}
     <details>
         <summary class="formTitlePanel">DELETAR UM USUARIO</summary>
@@ -86,7 +86,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
             <code>docs/produto/checklist-paridade-visual-v1-runtime.md</code>).</p>
     </details>
 
-    {{-- #07 INFORMACAO DO PROCEDIMENTO DE RMA — texto estático do legado, sem regra de
+    {{-- #07 INFORMACAO DO PROCEDIMENTO DE RMA - texto estático do legado, sem regra de
     negócio; artefatos de encoding do original (`m�os`, `�`) corrigidos para
     "mãos"/"é". --}}
     <details>
@@ -117,7 +117,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
                 DESTINATÁRIO, recebido formulários e informações do outro lado, para
                 então enviar novamente as informações e aguardar receber a autorização,
                 para logo fazer a nota fiscal de remessa e ENCAMINHAR ao setor essa NF
-                de remessa e aguardar AUTORIZAÇÃO da NF de remessa — se está correta —
+                de remessa e aguardar AUTORIZAÇÃO da NF de remessa - se está correta -
                 para então encaminhar este produto ao setor de solução.</p>
             <br>
             <p>Quando encaminhado para o DESTINATÁRIO, a solicitação vai para os
@@ -134,7 +134,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
         </div>
     </details>
 
-    {{-- #08 LISTAR SOLICITACOES DE RMA ARQUIVADAS — VIS-V1-013, construída sobre
+    {{-- #08 LISTAR SOLICITACOES DE RMA ARQUIVADAS - VIS-V1-013, construída sobre
     `Status::Arquivado` (`ControlePainelController::index`), sem decisão de produto
     nova: o status já existe e já é gravado por `rmas.arquivar`/`rmas.reverter`. --}}
     <details>
@@ -167,10 +167,10 @@ nenhum caso de uso novo foi criado para esta tela. --}}
         </div>
     </details>
 
-    {{-- #09 MUDAR SENHA — legado troca só a senha do usuário logado (ver
+    {{-- #09 MUDAR SENHA - legado troca só a senha do usuário logado (ver
     `post/mudar_senha.php`, usa `$_SESSION["START1597_email"]`), sem exigir senha atual.
     Reaproveita `identidade.perfil.senha.update`, que já exige senha atual + confirmação
-    — mais seguro que o legado; não é reintrodução do form inseguro. --}}
+    - mais seguro que o legado; não é reintrodução do form inseguro. --}}
     <details>
         <summary class="formTitlePanel">MUDAR SENHA</summary>
 

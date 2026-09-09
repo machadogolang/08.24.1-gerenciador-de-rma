@@ -3,15 +3,15 @@
 namespace App\Rma\Dominio;
 
 /**
- * VIS-V1-001 — os 4 atalhos de navegação superior do TEMA V1 legado
+ * VIS-V1-001 - os 4 atalhos de navegação superior do TEMA V1 legado
  * (`legacy-source/14.6.1/index.php:162-168`), cada um abrindo uma listagem filtrada
  * própria (`page/{entrada,encaminhados,aguardandocredito,concluidos}.php`). Não é
  * `Status` sozinho porque "Aguardando credito" filtra por `solucao`, não por `status`.
  *
- * CP23 (paridade visual V2) — `EntradaSomente`/`RecebidoSomente` adicionados para as
+ * CP23 (paridade visual V2) - `EntradaSomente`/`RecebidoSomente` adicionados para as
  * abas Entrada/Recebido do TEMA V2 (`15.8.1/page/{entrada,recebido}.php`), que ao
  * contrário do atalho `Entrada` do TEMA V1 NÃO combinam os dois status na mesma
- * listagem — são duas telas históricas distintas. `descricao()` não cobre os dois
+ * listagem - são duas telas históricas distintas. `descricao()` não cobre os dois
  * casos novos porque o TEMA V2 não usa esse texto de contexto (usa o texto literal
  * de `page/*.php` diretamente na view, achado do CP20/CP23).
  */

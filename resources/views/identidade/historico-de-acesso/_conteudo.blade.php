@@ -1,4 +1,4 @@
-{{-- FRONT-003/UI-04 — conteúdo do histórico de acesso compartilhado. --}}
+{{-- FRONT-003/UI-04 - conteúdo do histórico de acesso compartilhado. --}}
 <div class="historico-tabela">
     <h2 class="historico-tabela-titulo">Histórico de acesso</h2>
 

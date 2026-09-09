@@ -6,7 +6,7 @@ use App\Models\Rma;
 use Illuminate\Support\Collection;
 
 /**
- * CP19 — `15.8.1/banco.php:855` (`right_creditodisponivel()`): `GROUP BY
+ * CP19 - `15.8.1/banco.php:855` (`right_creditodisponivel()`): `GROUP BY
  * destinatario WHERE creditodisponivel = 1`. Mesma resolução polimórfica de
  * `Destinatarios`.
  *

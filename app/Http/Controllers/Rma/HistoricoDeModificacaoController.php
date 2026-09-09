@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 /**
- * `LEG-RMA-044` — reproduz `subp/logs_de_modificacao.php`, exige
+ * `LEG-RMA-044` - reproduz `subp/logs_de_modificacao.php`, exige
  * `Papel::podeGerenciarUsuarios()` (mesma Policy/Gate `'gerenciar'` de
  * `UsuarioController`, tela administrativa).
  */

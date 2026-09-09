@@ -10,7 +10,7 @@ use App\Rma\Dominio\Solucao;
 use Tests\TestCase;
 
 /**
- * RN-11 (`LEG-RMA-028`) — os 4 critérios do `match(true)` de `Rma::classeDeAlerta()`,
+ * RN-11 (`LEG-RMA-028`) - os 4 critérios do `match(true)` de `Rma::classeDeAlerta()`,
  * na ordem certa (primeiro critério que bate vence).
  */
 class ClasseDeAlertaTest extends TestCase
@@ -132,7 +132,7 @@ class ClasseDeAlertaTest extends TestCase
     {
         // Solucao::SemGarantia (critério 1) bate primeiro; createdAt nulo faria
         // `origemEhTerceiroForaDoPrazo()` (critério 3) quebrar se fosse avaliado sem
-        // guarda — a ordem do match(true) garante que nunca chega lá.
+        // guarda - a ordem do match(true) garante que nunca chega lá.
         $rma = $this->rma([
             'solucao' => Solucao::SemGarantia,
             'origem' => Origem::Cliente->value,

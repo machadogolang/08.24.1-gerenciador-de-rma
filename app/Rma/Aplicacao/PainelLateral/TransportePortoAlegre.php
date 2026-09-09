@@ -8,7 +8,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * CP19 — `15.8.1/banco.php:803` (`right_portoalegre()`, versão ativa — a query
+ * CP19 - `15.8.1/banco.php:803` (`right_portoalegre()`, versão ativa - a query
  * anterior comentada no arquivo fonte não é usada). RMAs em Entrada/Recebido cujo
  * fornecedor, fabricante OU destinatário (quando é assistência técnica) fica em
  * Porto Alegre. O legado casa por NOME de texto solto contra 3 tabelas; o V3 tem FK

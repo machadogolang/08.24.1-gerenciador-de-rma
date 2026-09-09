@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>{{ $titulo }} — CellSystem RMA</title>
+    <title>{{ $titulo }} - CellSystem RMA</title>
 </head>
 <body>
     <h1>{{ $titulo }}</h1>

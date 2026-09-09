@@ -33,8 +33,8 @@ async function loginV3(browser: Browser, falhas: Falha[] = []): Promise<Page> {
     return page;
 }
 
-test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', () => {
-    test('NAV-01-01 — logo navega para a Pagina Inicial sem erro de recurso', async ({ browser }) => {
+test.describe('Auditoria Navegacional Tema V1 - Lote NAV-01 (Menu Superior)', () => {
+    test('NAV-01-01 - logo navega para a Pagina Inicial sem erro de recurso', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -54,7 +54,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 
-    test('NAV-01-02 — link Pag. Inicial navega e marca classe active no menu', async ({ browser }) => {
+    test('NAV-01-02 - link Pag. Inicial navega e marca classe active no menu', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -71,7 +71,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 
-    test('NAV-01-03 — Novo expande o painel inline #JS-Novo sem navegar', async ({ browser }) => {
+    test('NAV-01-03 - Novo expande o painel inline #JS-Novo sem navegar', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -86,7 +86,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 
-    test('NAV-01-04 — Localizar expande o painel inline #JS-Localizar sem navegar', async ({ browser }) => {
+    test('NAV-01-04 - Localizar expande o painel inline #JS-Localizar sem navegar', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -101,7 +101,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 
-    test('NAV-01-05 — Entrada navega com classe active e estrutura completa', async ({ browser }) => {
+    test('NAV-01-05 - Entrada navega com classe active e estrutura completa', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -121,7 +121,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 
-    test('NAV-01-06 — Encaminhado navega com classe active e estrutura completa', async ({ browser }) => {
+    test('NAV-01-06 - Encaminhado navega com classe active e estrutura completa', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -141,7 +141,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 
-    test('NAV-01-07 — Aguardando credito navega com classe active e estrutura completa', async ({ browser }) => {
+    test('NAV-01-07 - Aguardando credito navega com classe active e estrutura completa', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -161,7 +161,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 
-    test('NAV-01-08 — Concluido! navega com classe active e estrutura completa', async ({ browser }) => {
+    test('NAV-01-08 - Concluido! navega com classe active e estrutura completa', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -181,7 +181,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 
-    test('NAV-01-09 — botao MENU alterna painel de sessao #JS-Sessao e classe active', async ({ browser }) => {
+    test('NAV-01-09 - botao MENU alterna painel de sessao #JS-Sessao e classe active', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -199,7 +199,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
         await page.context().close();
     });
 
-    test('NAV-01-10 — botao SIGN OUT executa logout e redireciona para login', async ({ browser }) => {
+    test('NAV-01-10 - botao SIGN OUT executa logout e redireciona para login', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -217,8 +217,8 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-01 (Menu Superior)', 
     });
 });
 
-test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)', () => {
-    test('NAV-02-01 — Fornecedores: indice, Novo, Editar e Voltar', async ({ browser }) => {
+test.describe('Auditoria Navegacional Tema V1 - Lote NAV-02 (Menu de Sessão)', () => {
+    test('NAV-02-01 - Fornecedores: indice, Novo, Editar e Voltar', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -246,7 +246,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)'
         await page.context().close();
     });
 
-    test('NAV-02-02 — Fabricantes: indice, Novo, Editar e Voltar', async ({ browser }) => {
+    test('NAV-02-02 - Fabricantes: indice, Novo, Editar e Voltar', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -273,7 +273,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)'
         await page.context().close();
     });
 
-    test('NAV-02-03 — Assistencias: indice, Novo, Editar e Voltar', async ({ browser }) => {
+    test('NAV-02-03 - Assistencias: indice, Novo, Editar e Voltar', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -300,7 +300,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)'
         await page.context().close();
     });
 
-    test('NAV-02-04 — Clientes: indice, Novo, Editar e Voltar', async ({ browser }) => {
+    test('NAV-02-04 - Clientes: indice, Novo, Editar e Voltar', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -327,7 +327,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)'
         await page.context().close();
     });
 
-    test('NAV-02-05 — Controle: abas/paineis, links de RMA e estrutura administrativa', async ({ browser }) => {
+    test('NAV-02-05 - Controle: abas/paineis, links de RMA e estrutura administrativa', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -344,7 +344,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)'
         await page.context().close();
     });
 
-    test('NAV-02-06 — Creditos: listagem e fluxo unico acessiveis', async ({ browser }) => {
+    test('NAV-02-06 - Creditos: listagem e fluxo unico acessiveis', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -356,7 +356,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)'
         await page.context().close();
     });
 
-    test('NAV-02-07 — Relatorios: rotas RCD, RPEC e RMPE acessiveis sem erro 4xx', async ({ browser }) => {
+    test('NAV-02-07 - Relatorios: rotas RCD, RPEC e RMPE acessiveis sem erro 4xx', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -377,7 +377,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)'
         await page.context().close();
     });
 
-    test('NAV-02-08 — Usuarios: listagem, edicao de papel e reset de senha', async ({ browser }) => {
+    test('NAV-02-08 - Usuarios: listagem, edicao de papel e reset de senha', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -398,8 +398,8 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-02 (Menu de Sessão)'
     });
 });
 
-test.describe('Auditoria Navegacional Tema V1 — Lote NAV-03 (Pagina Inicial e Centro de Avisos)', () => {
-    test('NAV-03-01 — 16 contadores laterais: links e navegacao corretos', async ({ browser }) => {
+test.describe('Auditoria Navegacional Tema V1 - Lote NAV-03 (Pagina Inicial e Centro de Avisos)', () => {
+    test('NAV-03-01 - 16 contadores laterais: links e navegacao corretos', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -428,7 +428,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-03 (Pagina Inicial e 
         await page.context().close();
     });
 
-    test('NAV-03-03 — Centro de Avisos: alternancia Mostrar/Ocultar nos 10 grupos', async ({ browser }) => {
+    test('NAV-03-03 - Centro de Avisos: alternancia Mostrar/Ocultar nos 10 grupos', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -452,7 +452,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-03 (Pagina Inicial e 
         await page.context().close();
     });
 
-    test('NAV-03-04 — resultado de Localizar exibe tabela e acoes Ver e Editar', async ({ browser }) => {
+    test('NAV-03-04 - resultado de Localizar exibe tabela e acoes Ver e Editar', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -477,7 +477,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-03 (Pagina Inicial e 
         await page.context().close();
     });
 
-    test('NAV-03-05 — autosave de Anotacoes: persistencia com status 200', async ({ browser }) => {
+    test('NAV-03-05 - autosave de Anotacoes: persistencia com status 200', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -497,8 +497,8 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-03 (Pagina Inicial e 
     });
 });
 
-test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e Links Internos)', () => {
-    test('NAV-04-01 — detalhe do RMA e Editar: navegacao e estrutura', async ({ browser }) => {
+test.describe('Auditoria Navegacional Tema V1 - Lote NAV-04 (Ciclo de Vida e Links Internos)', () => {
+    test('NAV-04-01 - detalhe do RMA e Editar: navegacao e estrutura', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -532,7 +532,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e L
         await page.context().close();
     });
 
-    test('NAV-04-02 — editar/salvar/voltar em RMA QA', async ({ browser }) => {
+    test('NAV-04-02 - editar/salvar/voltar em RMA QA', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -576,7 +576,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e L
         await page.context().close();
     });
 
-    test('NAV-04-03 — receber RMA QA: transicao Entrada -> Recebido', async ({ browser }) => {
+    test('NAV-04-03 - receber RMA QA: transicao Entrada -> Recebido', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -609,7 +609,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e L
         await page.context().close();
     });
 
-    test('NAV-04-04 — encaminhar RMA QA: transicao Recebido -> Encaminhado', async ({ browser }) => {
+    test('NAV-04-04 - encaminhar RMA QA: transicao Recebido -> Encaminhado', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -645,7 +645,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e L
         await page.context().close();
     });
 
-    test('NAV-04-05 — concluir RMA QA: transicao Encaminhado -> Concluido', async ({ browser }) => {
+    test('NAV-04-05 - concluir RMA QA: transicao Encaminhado -> Concluido', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -688,7 +688,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e L
         await page.context().close();
     });
 
-    test('NAV-04-06 — reverter RMA QA para Entrada', async ({ browser }) => {
+    test('NAV-04-06 - reverter RMA QA para Entrada', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -723,7 +723,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e L
         await page.context().close();
     });
 
-    test('NAV-04-07 — arquivar RMA QA e listar em Controle', async ({ browser }) => {
+    test('NAV-04-07 - arquivar RMA QA e listar em Controle', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -765,7 +765,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e L
         await page.context().close();
     });
 
-    test('NAV-04-08 — histórico de modificações e histórico de acessos', async ({ browser }) => {
+    test('NAV-04-08 - histórico de modificações e histórico de acessos', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -785,7 +785,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e L
         await page.context().close();
     });
 
-    test('NAV-04-09 — perfil: alternar tema, trocar senha e anotação em usuário QA', async ({ browser }) => {
+    test('NAV-04-09 - perfil: alternar tema, trocar senha e anotação em usuário QA', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 
@@ -824,7 +824,7 @@ test.describe('Auditoria Navegacional Tema V1 — Lote NAV-04 (Ciclo de Vida e L
         await page.context().close();
     });
 
-    test('NAV-04-10 — link externo do rodapé: validar href e atributos de seguranca', async ({ browser }) => {
+    test('NAV-04-10 - link externo do rodapé: validar href e atributos de seguranca', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3(browser, falhas);
 

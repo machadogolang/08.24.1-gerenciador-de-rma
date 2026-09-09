@@ -14,7 +14,7 @@ use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
 
 /**
  * `cliente` → `clientes` (`INV-RMA-06` §16). Dedup por nome normalizado (mesma regra de
- * `EncontrarOuCriarCliente`, Fase 2) — sem coluna `id_legado`, o nome já é a chave de
+ * `EncontrarOuCriarCliente`, Fase 2) - sem coluna `id_legado`, o nome já é a chave de
  * negócio usada pelo próprio runtime da V3.
  */
 final class ImportarClientes

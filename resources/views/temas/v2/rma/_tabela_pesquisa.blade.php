@@ -1,25 +1,25 @@
-{{-- CP20/CP23 (paridade visual V2) — fonte real
+{{-- CP20/CP23 (paridade visual V2) - fonte real
 `legacy-source/15.8.1/subp/pesquisar_rma.php`: busca geral usada tanto pela aba
 "Início" quanto pela aba "Pesquisar" (`page/inicio.php` inclui `page/pesquisar.php`
-por inteiro — são a MESMA composição, não duas telas diferentes). Larguras de coluna
+por inteiro - são a MESMA composição, não duas telas diferentes). Larguras de coluna
 conferidas no PHP fonte: DT ENTRADA 9%, ORIGEM 8%, NF C 6%, NF V 6%, FABRICANTE 12%,
 DESCRICAO 13%, MODELO 20%, S/N 16%, OS 5%, S(status) 2%, A(ação) 2%. O legado computa
 `$soma`/`$quantidadetotal`/`$quantidadesemvalor` nesta página mas NUNCA os imprime
-(dead code confirmado por leitura completa do arquivo) — sem resumo inferior aqui,
+(dead code confirmado por leitura completa do arquivo) - sem resumo inferior aqui,
 diferente de Concluídos no Tema V1.
 
-[INVESTIGAR] — zebra desta tabela específica difere do padrão RN-11 já implementado em
+[INVESTIGAR] - zebra desta tabela específica difere do padrão RN-11 já implementado em
 `classe_css_de_alerta()`: o PHP fonte só usa `TrSemGarantia1/2` quando
 `status=concluido AND solucao=SEM GARANTIA` (fora dessa combinação, solução
 "SEM GARANTIA" cai no mesmo `TrInconformidade`/`TrZebrada` que os demais critérios).
 `Rma::classeDeAlerta()` (Fase 5) mapeia solução SemGarantia para `Inconformidade`
-incondicionalmente, sem olhar o status — não é a mesma regra. Reaproveitado aqui sem
+incondicionalmente, sem olhar o status - não é a mesma regra. Reaproveitado aqui sem
 alteração (mesma disciplina de "não reescrever regra de negócio sem necessidade" já
-seguida no restante desta frente) — divergência registrada para investigação futura,
+seguida no restante desta frente) - divergência registrada para investigação futura,
 não corrigida às cegas. --}}
 @if ($valor !== '' && count($rmas) === 0)
     {{-- Fonte não emite nenhuma mensagem quando a busca não retorna nada
-    (`else { }` vazio) — mantido em branco por fidelidade; nenhum HTML aqui. --}}
+    (`else { }` vazio) - mantido em branco por fidelidade; nenhum HTML aqui. --}}
 @elseif (count($rmas) > 0)
     <hr>
     <table class="Tabelinha-Table">

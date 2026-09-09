@@ -15,7 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * Fase 8 — smoke: cada tela principal renderiza sem erro no TEMA V1, tanto pela rota
+ * Fase 8 - smoke: cada tela principal renderiza sem erro no TEMA V1, tanto pela rota
  * prefixada (`/v1/...`, tema forçado por `ResolverTemaAtivo`) quanto pelo fluxo normal
  * (usuário com `tema_preferido` = V1 acessando a rota sem prefixo). Cobre também o
  * login-gateway compartilhado (não pertence a nenhum tema).
@@ -58,7 +58,7 @@ class RenderizaTemaV1Test extends TestCase
     }
 
     /**
-     * CP8 (fase 2 V1) — achado real: reaproveitar `$ocultarTituloVisual` (só devia
+     * CP8 (fase 2 V1) - achado real: reaproveitar `$ocultarTituloVisual` (só devia
      * controlar o H1) pra também controlar se `#JS-Novo` é renderizado fez o painel
      * global "Novo" sumir da Página Inicial (regressão introduzida e corrigida na
      * mesma sessão que fechou CP6, achada testando o CP8). `$omitirPainelNovoGlobal`
@@ -118,7 +118,7 @@ class RenderizaTemaV1Test extends TestCase
         $response->assertSeeText('Fabricante QA');
         $response->assertSeeText('Produto ficticio da tabela');
         $response->assertSee(rota_tema('rmas.show', ['rma' => $rma->id]), false);
-        $response->assertDontSee("#{$rma->id} — Produto ficticio da tabela", false);
+        $response->assertDontSee("#{$rma->id} - Produto ficticio da tabela", false);
     }
 
     public function test_alerta_de_prioridade_alta_renderiza_tabela_historica_com_entrada(): void
@@ -320,7 +320,7 @@ class RenderizaTemaV1Test extends TestCase
 
     public function test_alerta_nao_vai_dar_garantia_renderiza_a_tabela_historica(): void
     {
-        // CP12-05G — listar_naovaidargarantia.php: 11 colunas ENTRADA|ORIGEM|NF C|T C|NF V|...
+        // CP12-05G - listar_naovaidargarantia.php: 11 colunas ENTRADA|ORIGEM|NF C|T C|NF V|...
         $usuario = User::factory()->create(['papel' => Papel::Operador]);
         $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante NaoGarantia QA']);
         $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor NaoGarantia QA']);
@@ -351,7 +351,7 @@ class RenderizaTemaV1Test extends TestCase
 
     public function test_alerta_nf_retorno_pendente_de_lancar_renderiza_a_tabela_historica(): void
     {
-        // CP12-05H — listar_nfpendentelancar.php: 11 colunas CONCLUIDO|T|ORIGEM|NF C|NF V|...
+        // CP12-05H - listar_nfpendentelancar.php: 11 colunas CONCLUIDO|T|ORIGEM|NF C|NF V|...
         $usuario = User::factory()->create(['papel' => Papel::Operador]);
         $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante NfRetorno QA']);
         $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor NfRetorno QA']);
@@ -383,7 +383,7 @@ class RenderizaTemaV1Test extends TestCase
 
     public function test_alerta_garantia_fornecedor_expirada_renderiza_a_tabela_historica(): void
     {
-        // CP12-05I — listar_pgarantiafornecedorexpirado.php: 11 colunas ENTRADA|ORIGEM|NF C|T C|NF V|...
+        // CP12-05I - listar_pgarantiafornecedorexpirado.php: 11 colunas ENTRADA|ORIGEM|NF C|T C|NF V|...
         $usuario = User::factory()->create(['papel' => Papel::Operador]);
         $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante GarExpir QA']);
         $fornecedor = Fornecedor::factory()->create(['nome' => 'Fornecedor GarExpir QA']);
@@ -414,7 +414,7 @@ class RenderizaTemaV1Test extends TestCase
 
     public function test_alerta_garantia_fornecedor_expirando_em_30_dias_renderiza_a_tabela_historica(): void
     {
-        // CP12-05J — listar_pmenosde30.php: 11 colunas ENTRADA|ORIGEM|NF C|T E|NF V|...
+        // CP12-05J - listar_pmenosde30.php: 11 colunas ENTRADA|ORIGEM|NF C|T E|NF V|...
         // T E = dias restantes (janela: 336 < dias_decorridos < 365 → emissão entre -364d e -337d)
         $usuario = User::factory()->create(['papel' => Papel::Operador]);
         $fabricante = Fabricante::factory()->create(['nome' => 'Fabricante GarExpir30 QA']);

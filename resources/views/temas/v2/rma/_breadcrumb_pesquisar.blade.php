@@ -1,6 +1,6 @@
-{{-- CP20 (paridade visual V2) — fonte real `legacy-source/15.8.1/inc/menu_pesquisar.php`.
+{{-- CP20 (paridade visual V2) - fonte real `legacy-source/15.8.1/inc/menu_pesquisar.php`.
 "Qualquer campo"/"Nota fiscal"/"Número de série" mapeiam para os 3 critérios já
-existentes em `CriterioDeBusca` (texto/nota_fiscal/serial) — nenhuma regra de busca
+existentes em `CriterioDeBusca` (texto/nota_fiscal/serial) - nenhuma regra de busca
 nova, só a UI histórica (breadcrumb) no lugar do `<select>` genérico que existia
 antes. --}}
 <div class="menu-subp">

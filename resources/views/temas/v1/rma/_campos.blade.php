@@ -1,4 +1,4 @@
-{{-- Formulário "Novo RMA"/edição — HTML <table> autoral (`.tablenovo`), confirmado em
+{{-- Formulário "Novo RMA"/edição - HTML <table> autoral (`.tablenovo`), confirmado em
 `14.6.1/index.php` (painel "Novo"). TEMA V1 não usa nenhum framework CSS/grid. --}}
 <table class="tablenovo tabela-form-v1">
     <tr>

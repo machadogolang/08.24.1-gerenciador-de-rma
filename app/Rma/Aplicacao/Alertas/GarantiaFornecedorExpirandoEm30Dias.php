@@ -7,11 +7,11 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RN-06 (`LEG-RMA-023`) — mesma base de `GarantiaFornecedorExpirada`, janela aberta
+ * RN-06 (`LEG-RMA-023`) - mesma base de `GarantiaFornecedorExpirada`, janela aberta
  * `(hoje-365d, hoje-336d)` (dias restantes = 365 - dias decorridos, exibido para o
  * usuário fora desta classe). Ambos os limites estritos.
  *
- * `nfcompra_emissao` é coluna `date` — limites com `today()`, mesma razão de
+ * `nfcompra_emissao` é coluna `date` - limites com `today()`, mesma razão de
  * `GarantiaFornecedorExpirada`.
  */
 final class GarantiaFornecedorExpirandoEm30Dias

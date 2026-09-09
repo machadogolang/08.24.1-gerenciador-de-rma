@@ -6,7 +6,7 @@ use App\Models\ContadorDeRma;
 use Illuminate\Support\Facades\DB;
 
 /**
- * EVO-SAAS-001 (S10) — reserva o próximo número operacional de RMA da empresa dentro
+ * EVO-SAAS-001 (S10) - reserva o próximo número operacional de RMA da empresa dentro
  * de transação com `lockForUpdate`; nunca usa `MAX(numero)+1`. Cada chamada devolve um
  * número distinto mesmo sob concorrência (a linha do contador fica travada até o
  * commit da transação).

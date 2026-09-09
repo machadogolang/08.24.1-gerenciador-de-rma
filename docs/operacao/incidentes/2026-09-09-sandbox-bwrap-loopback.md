@@ -1,4 +1,4 @@
-# Incidente operacional — `bwrap: loopback: Failed RTM_NEWADDR` no sandbox de execução
+# Incidente operacional - `bwrap: loopback: Failed RTM_NEWADDR` no sandbox de execução
 
 ## Identificação
 
@@ -46,16 +46,16 @@ sandbox e fica registrada como limitação do ambiente.
 - trocar shell login/não-login;
 - reduzir o comando ao mínimo (`pwd`, `printf ok`).
 
-Todas falharam com a mesma mensagem — não repetir esse caminho.
+Todas falharam com a mesma mensagem - não repetir esse caminho.
 
 ## Solução comprovada
 
 Duas modalidades de execução fora do sandbox quebrado funcionam:
 
 1. **Prefixos já aprovados** (ex.: `cat`, `git status --short --branch`,
-   `git log`, `rg` com padrão específico) — executam sem o wrapper.
+   `git log`, `rg` com padrão específico) - executam sem o wrapper.
 2. **Execução escalada pontual** (`sandbox_permissions: require_escalated`) com
-   prefixo estreito de leitura — ex.: `find docs`, `git ls-files`, `rg -n ... docs`.
+   prefixo estreito de leitura - ex.: `find docs`, `git ls-files`, `rg -n ... docs`.
    Usar somente para comandos necessários e de leitura; para escrita, manter a
    disciplina normal de `apply_patch` e escopo do repositório.
 

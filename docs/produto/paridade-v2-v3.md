@@ -1,6 +1,6 @@
 # Matriz de paridade V2 → V3
 
-Data: 2026-08-25 (atualizado 2026-08-25 — Fases 1-9 concluídas e testadas; `sail test`
+Data: 2026-08-25 (atualizado 2026-08-25 - Fases 1-9 concluídas e testadas; `sail test`
 308/308; comparação viva V3×Legado registrada em
 `docs/produto/comparacao-v3-legado-final.md`).
 Índice de rastreamento: nenhuma funcionalidade relevante do RMA V2 pode "desaparecer"
@@ -8,7 +8,7 @@ silenciosamente na V3. Atualizado a cada avanço de OpenSpec/implementação. **
 (`autenticacao-usuarios`) concluída:** 7 itens (`LEG-RMA-001/003/004/005/006/042/043`)
 passaram de `PENDENTE` para `PARIDADE`, com `sail test` verde (36/36) e login real
 confirmado por `curl` de ponta a ponta. `LEG-RMA-002` (autocadastro com convite)
-permanece `PENDENTE` — decisão de produto explicitamente não tomada nesta fase, ver
+permanece `PENDENTE` - decisão de produto explicitamente não tomada nesta fase, ver
 `openspec/changes/autenticacao-usuarios/proposal.md`. **Fase 2 (`parceiros`) concluída:**
 4 itens (`LEG-RMA-030/031/032/033`) passaram de `PENDENTE` para `PARIDADE`, com
 `sail test` verde (61/61, mantendo os 36 da Fase 1) e a deduplicação de
@@ -18,11 +18,11 @@ passaram de `PENDENTE` para `PARIDADE`, com `sail test` verde (85/85, mantendo o
 das Fases 1-2). RN-13/RN-14 (normalização HGST→Hitachi/cascata de origem) confirmadas
 de ponta a ponta tanto na criação quanto na edição. **Fase 4 (`rma-ciclo-de-vida`)
 concluída:** 8 itens (`LEG-RMA-011/012/013/014/015/016/017/047`) tiveram seu status
-atualizado — 7 passaram de `PENDENTE` para `PARIDADE` e `LEG-RMA-016` foi confirmado
-`NÃO RECONSTRUIR` (código morto, sem mudança) —, com `sail test` verde (131/131,
+atualizado - 7 passaram de `PENDENTE` para `PARIDADE` e `LEG-RMA-016` foi confirmado
+`NÃO RECONSTRUIR` (código morto, sem mudança) -, com `sail test` verde (131/131,
 mantendo os 85 das Fases 1-3) e o ciclo receber→encaminhar→concluir confirmado por
 `tinker` de ponta a ponta, incluindo o auto-preenchimento de `snretorno` (RN-15).
-`LEG-RMA-014` (arquivar) usa TEMA V2 como especificação — TEMA V1 confirmado com
+`LEG-RMA-014` (arquivar) usa TEMA V2 como especificação - TEMA V1 confirmado com
 `Fatal Error` incondicional nesse fluxo. **Fase 6 (`rma-creditos-e-relatorios`)
 concluída:** 5 itens (`LEG-RMA-036/037/038/039/048`) passaram de `PENDENTE` para
 `PARIDADE`, com `sail test` verde (218/218, mantendo os 196 das Fases 1-5) e o fluxo de
@@ -34,36 +34,36 @@ as próximas fases (ver `docs/arquitetura/INV-RMA-05-arquitetura-proposta.md` §
 
 **Fase 8 (`temas-v1-v2`) concluída:** paridade VISUAL confirmada (Blade fielmente
 estilizado por tema, `resources/views/temas/{v1,v2}/`, ver `openspec/changes/
-temas-v1-v2/`) para a árvore coberta pelo escopo explícito da fase — login-gateway
+temas-v1-v2/`) para a árvore coberta pelo escopo explícito da fase - login-gateway
 compartilhado, RMA (`index`/`create`/`edit`/`show`, incluindo o painel único de 7
 tab-panes do TEMA V2), parceiros (`index`/`_form`, os 4 tipos), identidade
 (`usuarios`/`perfil`). Afeta diretamente `LEG-RMA-001/003/004/005/006/007/008/009/010/
-011..017/028/030/031/032/033/042`, todos já `PARIDADE` funcional — a paridade visual
+011..017/028/030/031/032/033/042`, todos já `PARIDADE` funcional - a paridade visual
 soma-se ao já registrado, sem mudar o status. **Fora do escopo explícito da Fase 8**
 (não coberto pela árvore de diretórios do `design.md`): telas de alertas
 (`rma._painel_de_alertas`), crédito, relatórios (RCD/RPEC/RMPE), histórico/auditoria e
-logística continuam com a view mínima das Fases 5-7, sem estilização por tema — pendência
+logística continuam com a view mínima das Fases 5-7, sem estilização por tema - pendência
 registrada, não bloqueia a Fase 8 (ver `log-implementacao-v3.md`). `sail test`
 263/263 verde (250 das Fases 1-7 + 13 novos smoke de tema); Playwright real (390/768/
 1440px) confirma TEMA V1 fixo/não-responsivo e TEMA V2 nos breakpoints próprios; 9
 screenshots PNG reais capturados em `docs/produto/screenshots-fase8/`.
 
-**Fase 9 (`migracao-v2-v3`) concluída:** paridade de DADOS (origem, não comportamento —
-os itens de comportamento já fecham nas Fases 1-8) — migrador oficial
+**Fase 9 (`migracao-v2-v3`) concluída:** paridade de DADOS (origem, não comportamento -
+os itens de comportamento já fecham nas Fases 1-8) - migrador oficial
 (`php artisan rma:migrar-legado`, `app/Rma/Infraestrutura/Migracao/`) carrega as 7
 tabelas legadas com destino real (`usuario`/`cliente`/`fabricante`/`fornecedor`/
 `assistencia_tecnica`/`bd`/`log`/`modificacao`) para o schema V3, com relatório de
 reconciliação (contagem origem×destino, anomalias, conversões assistidas) e idempotência
 real (`numero_legado` para `rmas`, dedup por e-mail/nome normalizado para as demais).
 `sail test` 308/308 (265 das Fases 1-8 + 43 novos: 8 testes de importador + comando).
-**`relatorio.informacaoadicional` não é migrada** — decisão tomada por omissão, não
+**`relatorio.informacaoadicional` não é migrada** - decisão tomada por omissão, não
 silenciosa (opção B de `INV-RMA-06` §14, dado recuperável no backup do repositório
 Legacy se precisar depois; ver `proposal.md`/`log-implementacao-v3.md`). Dry-run real
 contra o banco Legacy (`rma-legacy-mariadb-1`) foi tentado nesta sessão e bloqueado por
-rede — a porta `3309` do Legacy é publicada só em `127.0.0.1` do host
+rede - a porta `3309` do Legacy é publicada só em `127.0.0.1` do host
 (`127.0.0.1:3309:3306` no `compose.yaml` do repositório Legacy), inacessível a partir do
 container V3 mesmo via `host.docker.internal` (que resolve para o gateway Docker do
-host, não para `127.0.0.1`) — confirmado com um teste de conectividade TCP direto
+host, não para `127.0.0.1`) - confirmado com um teste de conectividade TCP direto
 (`FAIL` de dentro do container, `OK` a partir do host). Não é um problema do migrador; a
 evidência que conta é a fixture automatizada (`tests/Feature/Migracao/`).
 
@@ -74,7 +74,7 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-001 | Login/logout | confirmado | confirmado | `autenticacao-usuarios` | `AutenticarUsuario`, `SessaoController` | `AutenticacaoTest` (5 testes) + curl manual | PARIDADE |
 | LEG-RMA-002 | Autocadastro com convite | confirmado | dúvida | `autenticacao-usuarios` | `UsuarioController` (criação via admin) | Decisão de Segurança C-01 (Opção B); autocadastro público descontinuado; convite seguro deferido à Trilha B (`EVO-SEG-001`) | DECIDIDO / DEFERIDO |
 | LEG-RMA-003 | Resetar senha (admin) | confirmado | confirmado | `autenticacao-usuarios` | `ResetarSenhaDeUsuario`, `UsuarioController::resetarSenha` | `ResetarSenhaDeUsuarioTest` | PARIDADE |
-| LEG-RMA-004 | Trocar própria senha | funcional (correto) | quebrado (regressão) | `autenticacao-usuarios` | `TrocarPropriaSenha` (TEMA V1 como especificação, RN-21) | `TrocarPropriaSenhaTest` (prova de regressão corrigida) | PARIDADE — V3 usa TEMA V1 como especificação |
+| LEG-RMA-004 | Trocar própria senha | funcional (correto) | quebrado (regressão) | `autenticacao-usuarios` | `TrocarPropriaSenha` (TEMA V1 como especificação, RN-21) | `TrocarPropriaSenhaTest` (prova de regressão corrigida) | PARIDADE - V3 usa TEMA V1 como especificação |
 | LEG-RMA-005 | Gerenciar usuários/permissões | confirmado | confirmado | `autenticacao-usuarios` | `UsuarioController`, `UserPolicy`, `Papel::ocultoDaListagemDeUsuarios()` | `GerenciarUsuariosTest`, `PermissaoTest` | PARIDADE |
 | LEG-RMA-006 | Selecionar tema V1/V2 | confirmado | confirmado | `autenticacao-usuarios` | `AlternarTemaPreferido`, `TemaPreferidoController` | `AlternarTemaTest` (3 testes) | PARIDADE |
 | LEG-RMA-007 | Cadastrar novo RMA | confirmado | confirmado | `rma-cadastro-e-localizacao` | `CriarRma`, `RmaController` | `CriarRmaTest` (4 testes) | PARIDADE |
@@ -84,9 +84,9 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-011 | Receber RMA | confirmado | confirmado | `rma-ciclo-de-vida` | `ReceberRma`, `Status::podeReceber()` | `ReceberRmaTest` | PARIDADE |
 | LEG-RMA-012 | Encaminhar RMA | confirmado | confirmado | `rma-ciclo-de-vida` | `EncaminharRma`, `Status::podeEncaminhar()` | `EncaminharRmaTest` | PARIDADE |
 | LEG-RMA-013 | Concluir RMA | confirmado | confirmado | `rma-ciclo-de-vida` | `ConcluirRma`, evento `RmaConcluido` | `ConcluirRmaTest` | PARIDADE |
-| LEG-RMA-014 | Arquivar RMA | quebrado | confirmado | `rma-ciclo-de-vida` | `ArquivarRma` (TEMA V2 como especificação) | `ArquivarRmaTest` (prova TEMA V2, não reproduz Fatal Error de TEMA V1) | PARIDADE — V3 usa TEMA V2 como especificação |
+| LEG-RMA-014 | Arquivar RMA | quebrado | confirmado | `rma-ciclo-de-vida` | `ArquivarRma` (TEMA V2 como especificação) | `ArquivarRmaTest` (prova TEMA V2, não reproduz Fatal Error de TEMA V1) | PARIDADE - V3 usa TEMA V2 como especificação |
 | LEG-RMA-015 | Retornar p/ entrada (rollback) | confirmado | confirmado | `rma-ciclo-de-vida` | `ReverterRmaParaEntrada`, `Papel::podeReverterAlemDoMesmoDia()` | `ReverterRmaParaEntradaTest` | PARIDADE |
-| LEG-RMA-016 | Estado "retornou" | código morto | código morto | — | — | — | NÃO RECONSTRUIR (morto em ambos) |
+| LEG-RMA-016 | Estado "retornou" | código morto | código morto | - | - | - | NÃO RECONSTRUIR (morto em ambos) |
 | LEG-RMA-017 | Registrar solução/resolução | confirmado | confirmado | `rma-ciclo-de-vida` | `RegistrarSolucao` | `RegistrarSolucaoTest` | PARIDADE |
 | LEG-RMA-018 | Alerta: recebido >30d não encaminhado | herdado | confirmado | `rma-alertas-e-prioridade` | `RecebidosSemEncaminhar30Dias` | `RecebidosSemEncaminhar30DiasTest` | PARIDADE |
 | LEG-RMA-019 | Alerta: não vai dar garantia (MARKVISION) | herdado | confirmado | `rma-alertas-e-prioridade` | `NaoVaiDarGarantia` (join real `fabricante`/`fornecedor`) | `NaoVaiDarGarantiaTest` | PARIDADE |
@@ -98,33 +98,33 @@ Fonte dos IDs: `docs/legado/inventario-funcional-rma-v2.md`.
 | LEG-RMA-025 | Alerta: prioridade alta | herdado | confirmado | `rma-alertas-e-prioridade` | `PrioridadeAltaSemEncaminhar`, `Prioridade` (sem case `Urgente` morto) | `PrioridadeAltaSemEncaminharTest` | PARIDADE |
 | LEG-RMA-026 | Alerta: sem nota fiscal | herdado | confirmado | `rma-alertas-e-prioridade` | `SemNotaFiscal` | `SemNotaFiscalTest` | PARIDADE |
 | LEG-RMA-027 | Alerta: sem número de série | herdado | confirmado | `rma-alertas-e-prioridade` | `SemNumeroDeSerie` | `SemNumeroDeSerieTest` | PARIDADE |
-| LEG-RMA-028 | Classificação visual de inconformidade | dúvida | confirmado | `rma-alertas-e-prioridade` | `ClasseDeAlerta`, `Rma::classeDeAlerta()` | `ClasseDeAlertaTest` | PARIDADE — só o enum de domínio (fidelidade visual por tema é Fase 8) |
-| LEG-RMA-029 | Urgência por threshold R$75 | dúvida | confirmado | `rma-alertas-e-prioridade` | `UrgenciaPorThreshold` | `UrgenciaPorThresholdTest` | PARIDADE — implementada p/ os 2 temas (inferência registrada, ver `design.md`) |
+| LEG-RMA-028 | Classificação visual de inconformidade | dúvida | confirmado | `rma-alertas-e-prioridade` | `ClasseDeAlerta`, `Rma::classeDeAlerta()` | `ClasseDeAlertaTest` | PARIDADE - só o enum de domínio (fidelidade visual por tema é Fase 8) |
+| LEG-RMA-029 | Urgência por threshold R$75 | dúvida | confirmado | `rma-alertas-e-prioridade` | `UrgenciaPorThreshold` | `UrgenciaPorThresholdTest` | PARIDADE - implementada p/ os 2 temas (inferência registrada, ver `design.md`) |
 | LEG-RMA-030 | Cadastro de clientes | confirmado | confirmado | `parceiros` | `ClienteController`, `EncontrarOuCriarCliente` (dedup corrigida) | `ClienteCrudTest`, `EncontrarOuCriarClienteTest` | PARIDADE |
 | LEG-RMA-031 | Cadastro de fabricantes | confirmado | confirmado | `parceiros` | `FabricanteController` | `FabricanteCrudTest` | PARIDADE |
 | LEG-RMA-032 | Cadastro de fornecedores | confirmado | confirmado | `parceiros` | `FornecedorController` | `FornecedorCrudTest` | PARIDADE |
 | LEG-RMA-033 | Cadastro de assistências técnicas | confirmado | confirmado | `parceiros` | `AssistenciaTecnicaController` | `AssistenciaTecnicaCrudTest` | PARIDADE |
-| LEG-RMA-034 | "Autorizada" (alias morto) | n/a | código morto | — | — | — | NÃO RECONSTRUIR (morto) |
-| LEG-RMA-035 | Tabela unificada `assistencias(tipo)` | legado/abandonado | n/a | — | — | — | RETOMAR IDEIA (não o código) — ver EVO-DOM-001 |
-| LEG-RMA-036 | Fluxo de crédito | confirmado | confirmado | `rma-creditos-e-relatorios` | `MarcarCreditoDisponivel`, `AguardandoCredito` | `MarcarCreditoDisponivelTest`, `AguardandoCreditoTest` | PARIDADE — sem transição automática `PendenteCredito`→`GeradoCredito` (o legado também não automatiza, `EVO-AUT-002` fica como melhoria futura) |
+| LEG-RMA-034 | "Autorizada" (alias morto) | n/a | código morto | - | - | - | NÃO RECONSTRUIR (morto) |
+| LEG-RMA-035 | Tabela unificada `assistencias(tipo)` | legado/abandonado | n/a | - | - | - | RETOMAR IDEIA (não o código) - ver EVO-DOM-001 |
+| LEG-RMA-036 | Fluxo de crédito | confirmado | confirmado | `rma-creditos-e-relatorios` | `MarcarCreditoDisponivel`, `AguardandoCredito` | `MarcarCreditoDisponivelTest`, `AguardandoCreditoTest` | PARIDADE - sem transição automática `PendenteCredito`→`GeradoCredito` (o legado também não automatiza, `EVO-AUT-002` fica como melhoria futura) |
 | LEG-RMA-037 | Relatório RCD | confirmado | confirmado | `rma-creditos-e-relatorios` | `RelatorioCreditosDisponiveis` | `RelatorioCreditosDisponiveisTest` | PARIDADE |
-| LEG-RMA-038 | Relatório RPEC | confirmado | confirmado | `rma-creditos-e-relatorios` | `RelatorioProdutosEmEstoqueParaContagem` | `RelatorioProdutosEmEstoqueParaContagemTest` | PARIDADE — filtro de status configurável pelo usuário, não hardcoded |
-| LEG-RMA-039 | Relatório RMPE | confirmado | confirmado | `rma-creditos-e-relatorios` | `RelatorioProdutosEncaminhados` | `RelatorioProdutosEncaminhadosTest` | PARIDADE — corrige intervalo hardcoded para 2014 do legado (bug de manutenção, não RN documentada) |
-| LEG-RMA-040 | Consolidação de frete (Porto Alegre) | código morto/comentado | confirmado, ativo | `rma-logistica-e-historico` | `ConsolidarFretePorCidade` | `ConsolidarFretePorCidadeTest` | PARIDADE — TEMA V2 como especificação (TEMA V1 tem o mesmo código comentado/desativado), cidade "PORTO ALEGRE" hardcoded (comportamento documentado, sem política configurável no legado) |
-| LEG-RMA-041 | Boletins relacionados (histórico por contraparte) | dúvida | confirmado | `rma-logistica-e-historico` | `BoletinsRelacionados` | `BoletinsRelacionadosTest` | PARIDADE — paginado (o legado não tem `LIMIT`, correção de performance); condições da query só entram para campos não nulos do RMA de referência (desvio do `design.md`, ver `log-implementacao-v3.md` Fase 7 — o pseudocódigo original casava RMAs sem nenhuma contraparte em comum via `IS NULL` genérico do Query Builder) |
+| LEG-RMA-038 | Relatório RPEC | confirmado | confirmado | `rma-creditos-e-relatorios` | `RelatorioProdutosEmEstoqueParaContagem` | `RelatorioProdutosEmEstoqueParaContagemTest` | PARIDADE - filtro de status configurável pelo usuário, não hardcoded |
+| LEG-RMA-039 | Relatório RMPE | confirmado | confirmado | `rma-creditos-e-relatorios` | `RelatorioProdutosEncaminhados` | `RelatorioProdutosEncaminhadosTest` | PARIDADE - corrige intervalo hardcoded para 2014 do legado (bug de manutenção, não RN documentada) |
+| LEG-RMA-040 | Consolidação de frete (Porto Alegre) | código morto/comentado | confirmado, ativo | `rma-logistica-e-historico` | `ConsolidarFretePorCidade` | `ConsolidarFretePorCidadeTest` | PARIDADE - TEMA V2 como especificação (TEMA V1 tem o mesmo código comentado/desativado), cidade "PORTO ALEGRE" hardcoded (comportamento documentado, sem política configurável no legado) |
+| LEG-RMA-041 | Boletins relacionados (histórico por contraparte) | dúvida | confirmado | `rma-logistica-e-historico` | `BoletinsRelacionados` | `BoletinsRelacionadosTest` | PARIDADE - paginado (o legado não tem `LIMIT`, correção de performance); condições da query só entram para campos não nulos do RMA de referência (desvio do `design.md`, ver `log-implementacao-v3.md` Fase 7 - o pseudocódigo original casava RMAs sem nenhuma contraparte em comum via `IS NULL` genérico do Query Builder) |
 | LEG-RMA-042 | Bloco de notas pessoal | confirmado | dúvida | `autenticacao-usuarios` | `AtualizarAnotacaoPessoal`, `AnotacaoPessoalController` | `AnotacaoPessoalTest` | PARIDADE |
 | LEG-RMA-043 | Auditoria de autenticação | confirmado | confirmado | `autenticacao-usuarios` / `rma-logistica-e-historico` (tela) | `TentativaDeAcesso` (Eloquent), `ResultadoDeAcesso` (enum), `HistoricoDeAcessoController` | `AutenticacaoTest` (asserções de `tentativas_de_acesso`), `HistoricoDeAcessoTest` | PARIDADE |
-| LEG-RMA-044 | Auditoria de modificação de RMA | confirmado | confirmado | `rma-logistica-e-historico` | `ModificacaoDeRma`, `AcaoDeModificacao`, `RegistrarModificacaoDeRma`, `HistoricoDeModificacaoController` | `RegistrarModificacaoDeRmaTest`, `HistoricoDeModificacaoTest` | PARIDADE — snapshot estruturado (`estado_apos` json + `acao` nomeada), não diff campo-a-campo (`EVO-AUD-001`, pendência registrada — ver `proposal.md`, aguardando decisão do usuário) |
-| LEG-RMA-045 | Notificação por e-mail | confirmado | confirmado | `rma-logistica-e-historico` | `EnviarNotificacaoDeConclusao`, `RmaConcluidoMailable`, `EnviarNotificacaoDeTentativaNaoPermitida` | `EnviarNotificacaoDeConclusaoTest`, `EnviarNotificacaoDeTentativaNaoPermitidaTest` | PARIDADE — destinatário de conclusão via `.env` (`RMA_NOTIFICACAO_CONCLUSAO`), não hardcoded como `ezequiel()`; tentativa negada (`naopermitido()`) registrada via log de aplicação, não e-mail (decisão de implementação, sem Mailable dedicado especificado no design) |
+| LEG-RMA-044 | Auditoria de modificação de RMA | confirmado | confirmado | `rma-logistica-e-historico` | `ModificacaoDeRma`, `AcaoDeModificacao`, `RegistrarModificacaoDeRma`, `HistoricoDeModificacaoController` | `RegistrarModificacaoDeRmaTest`, `HistoricoDeModificacaoTest` | PARIDADE - snapshot estruturado (`estado_apos` json + `acao` nomeada), não diff campo-a-campo (`EVO-AUD-001`, pendência registrada - ver `proposal.md`, aguardando decisão do usuário) |
+| LEG-RMA-045 | Notificação por e-mail | confirmado | confirmado | `rma-logistica-e-historico` | `EnviarNotificacaoDeConclusao`, `RmaConcluidoMailable`, `EnviarNotificacaoDeTentativaNaoPermitida` | `EnviarNotificacaoDeConclusaoTest`, `EnviarNotificacaoDeTentativaNaoPermitidaTest` | PARIDADE - destinatário de conclusão via `.env` (`RMA_NOTIFICACAO_CONCLUSAO`), não hardcoded como `ezequiel()`; tentativa negada (`naopermitido()`) registrada via log de aplicação, não e-mail (decisão de implementação, sem Mailable dedicado especificado no design) |
 | LEG-RMA-046 | Normalização automática (HGST→Hitachi, origem) | confirmado (duplicado) | confirmado | `rma-cadastro-e-localizacao` | `Rma::comNormalizacaoDeGravacao()` | `RmaTest` (unit) + `CriarRmaTest`/`EditarRmaTest` (ponta a ponta) | PARIDADE |
 | LEG-RMA-047 | S/N de retorno auto-preenchido | ausente | confirmado | `rma-ciclo-de-vida` | `Rma::comSnretornoAutoPreenchido()`, `Solucao::implicaMesmoAparelhoDeRetorno()` (RN-15) | `ConcluirRmaTest` (16 valores de `Solucao`), `RegistrarSolucaoTest` | PARIDADE |
-| LEG-RMA-048 | Módulo Créditos pendentes/usados/disponíveis | N/A (nunca existiu) | quebrado | `rma-creditos-e-relatorios` | `MarcarCreditoDisponivel`, `AguardandoCredito` | `MarcarCreditoDisponivelTest`, `AguardandoCreditoTest` | PARIDADE — reconstruída só a intenção (fluxo único de crédito), não as 3 sub-rotas quebradas |
+| LEG-RMA-048 | Módulo Créditos pendentes/usados/disponíveis | N/A (nunca existiu) | quebrado | `rma-creditos-e-relatorios` | `MarcarCreditoDisponivel`, `AguardandoCredito` | `MarcarCreditoDisponivelTest`, `AguardandoCreditoTest` | PARIDADE - reconstruída só a intenção (fluxo único de crédito), não as 3 sub-rotas quebradas |
 
 **Legenda de Status:** `PENDENTE` (aguardando OpenSpec) · `EM ESPECIFICAÇÃO` ·
 `EM IMPLEMENTAÇÃO` · `PARIDADE` (implementado + QA aprovado) · `NÃO RECONSTRUIR`
 (código morto em ambos os temas, decisão registrada) · `RETOMAR IDEIA` (o conceito é bom,
-o código legado não é a base — ver backlog/decisão de arquitetura).
+o código legado não é a base - ver backlog/decisão de arquitetura).
 
-**2 itens decididos como não-reconstrução** (`LEG-RMA-016`, `LEG-RMA-034` — código morto em ambos os temas), **1 item como "retomar ideia, não código"** (`LEG-RMA-035`), **44 itens em PARIDADE** integralmente implementados, auditados e cobertos por testes automatizados (PHPUnit 388/941 e suítes Playwright de paridade visual e smokes funcionais) e **1 item com decisão formal de segurança** (`LEG-RMA-002` — provisionamento exclusivo por administrador para fechamento de superfície de ataque, deferindo o módulo de convite com token descartável para a Trilha B em `EVO-SEG-001`).
+**2 itens decididos como não-reconstrução** (`LEG-RMA-016`, `LEG-RMA-034` - código morto em ambos os temas), **1 item como "retomar ideia, não código"** (`LEG-RMA-035`), **44 itens em PARIDADE** integralmente implementados, auditados e cobertos por testes automatizados (PHPUnit 388/941 e suítes Playwright de paridade visual e smokes funcionais) e **1 item com decisão formal de segurança** (`LEG-RMA-002` - provisionamento exclusivo por administrador para fechamento de superfície de ataque, deferindo o módulo de convite com token descartável para a Trilha B em `EVO-SEG-001`).
 
 **Status do Eixo Funcional:** Matriz dos 48 itens 100% reconciliada, sem pendências abertas. Eixo funcional da Fase 10 aprovado e concluído.

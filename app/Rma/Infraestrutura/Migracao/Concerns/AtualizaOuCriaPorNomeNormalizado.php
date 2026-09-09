@@ -5,18 +5,18 @@ namespace App\Rma\Infraestrutura\Migracao\Concerns;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Mesma regra de dedup de `EncontrarOuCriarCliente` (Fase 2, trim + case-insensitive) —
+ * Mesma regra de dedup de `EncontrarOuCriarCliente` (Fase 2, trim + case-insensitive) -
  * mas para os importadores, que também precisam ATUALIZAR os dados do parceiro já
  * existente (idempotência real: rodar 2x não duplica, e a 2ª rodada reflete o dado mais
  * recente do legado). `Model::updateOrCreate()` puro não serve aqui porque casa por
- * igualdade EXATA de string — duas grafias do mesmo nome (`'seagate'`/`'Seagate'`)
+ * igualdade EXATA de string - duas grafias do mesmo nome (`'seagate'`/`'Seagate'`)
  * criariam 2 linhas em vez de 1.
  */
 trait AtualizaOuCriaPorNomeNormalizado
 {
     /**
      * `$createdAt` é aplicado só na criação (valor histórico do legado, nunca
-     * `now()`) — `created_at` não está na lista `#[Fillable]` dos models de parceiro
+     * `now()`) - `created_at` não está na lista `#[Fillable]` dos models de parceiro
      * (mass assignment o ignoraria em silêncio), então é gravado via propriedade
      * direta depois do `create()`, e nunca tocado num update de linha já existente
      * (idempotência não deve reescrever a data de cadastro original).

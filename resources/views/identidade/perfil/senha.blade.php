@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Meu perfil — CellSystem RMA</title>
+    <title>Meu perfil - CellSystem RMA</title>
 </head>
 <body>
     <h1>Meu perfil</h1>
 
-    <p>{{ $usuario->name }} — {{ $usuario->email }} — papel: {{ $usuario->papelAtivo()->name }}</p>
+    <p>{{ $usuario->name }} - {{ $usuario->email }} - papel: {{ $usuario->papelAtivo()->name }}</p>
 
     @if (session('status'))
         <p>{{ session('status') }}</p>

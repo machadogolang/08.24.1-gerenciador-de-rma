@@ -1,7 +1,7 @@
-# Relatório Final de Paridade e Fechamento da Trilha A — CellSystem RMA V3
+# Relatório Final de Paridade e Fechamento da Trilha A - CellSystem RMA V3
 
 **Data-base:** 2026-09-04  
-**Autor:** Engenharia & QA — Antigravity  
+**Autor:** Engenharia & QA - Antigravity  
 **Status:** **GATE DA TRILHA A APROVADO**  
 **Fontes de Verdade:** `docs/produto/checklist-master-v3.md`, `PLANO-ATAQUE.md`, `docs/legado/inventario-funcional-rma-v2.md`, `docs/produto/paridade-v2-v3.md`, `docs/pareceres/2026-09-04-decisoes-arquitetura-e-seguranca-trilha-a.md`.
 
@@ -9,7 +9,7 @@
 
 ## 1. Sumário Executivo
 
-A Trilha A do projeto **CellSystem RMA** teve como missão a restauração fiel, segura e moderna do produto legado (versão 15.9.7 — abrangendo os subsistemas coexistentes 14.6.1 e 15.8.1 e camada compartilhada), preservando 100% das regras de negócio, fluxos operacionais e identidade visual, com engenharia e arquitetura contemporâneas (Laravel 11, PHP 8.3/8.4, MySQL 8.4, Docker Sail e Playwright).
+A Trilha A do projeto **CellSystem RMA** teve como missão a restauração fiel, segura e moderna do produto legado (versão 15.9.7 - abrangendo os subsistemas coexistentes 14.6.1 e 15.8.1 e camada compartilhada), preservando 100% das regras de negócio, fluxos operacionais e identidade visual, com engenharia e arquitetura contemporâneas (Laravel 11, PHP 8.3/8.4, MySQL 8.4, Docker Sail e Playwright).
 
 Este relatório consolida o encerramento formal de todas as etapas de homologação:
 1. **Eixo Funcional (`F10-FUN`):** 48/48 IDs de requisitos reconciliados (44 implementados com paridade estrita, 2 exclusões de código morto justificadas, 1 deferimento de modelo polimórfico para Trilha B, 1 decisão de segurança homologada). Suíte de 6 smokes cruzados M-01 a M-06 aprovada.
@@ -89,7 +89,7 @@ O comando `php artisan rma:migrar-legado` processou os dados reais com os seguin
 | `bd` | 1.379 | `rmas` | 1.379 | **100% Migrado.** 1.379 ordens de serviço importadas com status, datas, soluções e chave `numero_legado`. |
 | `log` | 3.247 | `tentativas_de_acesso` | 3.240 | **99,8% Migrado.** 7 registros descartados com log de anomalia por possuírem valor de `retorno` fora do domínio. |
 | `modificacao` | 3.568 | `modificacoes_de_rma` | 2.039 | **57,1% Migrado.** 1.529 registros órfãos descartados com log (e-mails inexistentes em `usuario` ou RMAs não encontrados). |
-| `relatorio` | 0 | — | — | Tabela vazia confirmada por arqueologia técnica (código legado nunca gravava nela). |
+| `relatorio` | 0 | - | - | Tabela vazia confirmada por arqueologia técnica (código legado nunca gravava nela). |
 
 ### 4.3 Sanitização e Conversões Assistidas
 

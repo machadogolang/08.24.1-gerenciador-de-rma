@@ -10,9 +10,9 @@ use Illuminate\Foundation\Events\Dispatchable;
  * explicitamente antes de devolver `false`, quando um usuário sem
  * `Papel::podeGravar()` tenta editar/gravar um RMA. Autorização continua decidindo só
  * `true`/`false`; este evento é a responsabilidade explícita e testável de notificar a
- * tentativa negada — não um side-effect escondido dentro da Policy (decisão registrada
+ * tentativa negada - não um side-effect escondido dentro da Policy (decisão registrada
  * em `design.md`). Sem `rma` no payload: a Policy decide por classe (`RmaEloquent::class`),
- * não por instância — mesmo padrão de `RmaPolicy::update(User $ator): bool`.
+ * não por instância - mesmo padrão de `RmaPolicy::update(User $ator): bool`.
  */
 final class TentativaDeGravacaoNaoPermitida
 {

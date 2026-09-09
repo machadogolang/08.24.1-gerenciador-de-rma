@@ -1,4 +1,4 @@
-# Mapa tenant-scoped — EVO-SAAS-001 (inventário por evidência)
+# Mapa tenant-scoped - EVO-SAAS-001 (inventário por evidência)
 
 Data: 2026-09-09. Complementa `openspec/changes/saas-multiempresa/design.md` e
 `INV-RMA-07` §4 com o inventário real de models/consumidores do código atual.
@@ -18,7 +18,7 @@ Data: 2026-09-09. Complementa `openspec/changes/saas-multiempresa/design.md` e
 
 - `users` (multi-tenant via vínculo `company_user`; não recebe `tenant_id`).
 - `companies` e `company_user` (novas, próprias da fundação).
-- `tentativas_de_acesso` — decisão S8.3: sem escopo por tenant nesta fase (registro por
+- `tentativas_de_acesso` - decisão S8.3: sem escopo por tenant nesta fase (registro por
   usuário; agregação cross-tenant é fase futura).
 - `password_reset_tokens`, `sessions`, `cache`, `jobs` (framework).
 

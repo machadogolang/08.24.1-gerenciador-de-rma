@@ -13,7 +13,7 @@ use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
 
 /**
  * `assistencia_tecnica` → `assistencias_tecnicas` (`INV-RMA-06` §16). Dedup por nome
- * normalizado. **Não confundir com `assistencias`** (tabela órfã diferente, §15 — nunca
+ * normalizado. **Não confundir com `assistencias`** (tabela órfã diferente, §15 - nunca
  * migrada, `LEG-RMA-035`).
  */
 final class ImportarAssistenciasTecnicas

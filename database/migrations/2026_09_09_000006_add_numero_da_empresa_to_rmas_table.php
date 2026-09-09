@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * EVO-SAAS-001 (S10) — número operacional do RMA dentro da empresa (1..N por
+     * EVO-SAAS-001 (S10) - número operacional do RMA dentro da empresa (1..N por
      * tenant). O id técnico continua global e `numero_legado` continua preservado.
      */
     public function up(): void

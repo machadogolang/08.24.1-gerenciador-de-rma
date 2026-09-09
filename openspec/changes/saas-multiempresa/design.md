@@ -1,4 +1,4 @@
-# Design — EVO-SAAS-001: fundação SaaS multiempresa
+# Design - EVO-SAAS-001: fundação SaaS multiempresa
 
 ## Modelo de dados
 
@@ -46,7 +46,7 @@ endurecer NOT NULL + FK depois, em S3.6):
 - `fornecedores`
 - `assistencias_tecnicas`
 - `rmas`
-- `modificacoes_de_rma` (escopo via RMA; coluna própria ou apenas associação segura —
+- `modificacoes_de_rma` (escopo via RMA; coluna própria ou apenas associação segura -
   decisão de implementação registrada nas tasks)
 
 Globais nesta fase: `users`, `companies`, `company_user`, `tentativas_de_acesso`
@@ -58,13 +58,13 @@ framework/cache/sessão/jobs.
 Proporcional ao resto do projeto: sem fronteira `Dominio/Aplicacao/Infraestrutura`
 artificial; o que existe de concreto:
 
-- `App\Compartilhado\Tenant\ContextoDeTenant` — objeto de request com
+- `App\Compartilhado\Tenant\ContextoDeTenant` - objeto de request com
   `definir(Company)`, `empresaAtiva(): ?Company`, `empresaId(): ?int`; registrado como
   singleton no container (uma instância por request).
-- `App\Http\Middleware\ResolverTenantAtivo` — roda depois de `auth`, lê o usuário
+- `App\Http\Middleware\ResolverTenantAtivo` - roda depois de `auth`, lê o usuário
   autenticado e:
   - nenhum vínculo ativo → falha explícita (403 ou redirect com mensagem, conforme a
-    rota — comportamento consistente definido nas tasks);
+    rota - comportamento consistente definido nas tasks);
   - exatamente um vínculo ativo → define esse tenant sem seletor;
   - múltiplos vínculos ativos → suporta seleção no backend via query/sessão de empresa
     ativa (`[DECISAO-PENDENTE]`: UI de seletor só quando necessário; chave de sessão
@@ -74,7 +74,7 @@ artificial; o que existe de concreto:
   `empresa()`, aplica Global Scope `EscopoDeTenant`, e no `creating` preenche
   `tenant_id` a partir do `ContextoDeTenant` (nunca de input). Coluna `tenant_id` fica
   fora do `$fillable` de todo model tenant-scoped (proteção de mass assignment).
-- `App\Compartilhado\Tenant\EscopoDeTenant` — escopo que injeta `tenant_id = ?` sempre
+- `App\Compartilhado\Tenant\EscopoDeTenant` - escopo que injeta `tenant_id = ?` sempre
   que o contexto tem empresa ativa.
 
 ## Isolamento por construção (ordem das camadas)
@@ -133,7 +133,7 @@ permanecem para ação; tenant é resolvido por contexto+escopo.
 
 ## Decisões adiadas (registradas, não bloqueiam)
 
-- Representação/coluna/tabela do administrador de plataforma — ortogonal ao Papel de
+- Representação/coluna/tabela do administrador de plataforma - ortogonal ao Papel de
   tenant; só exigida quando a plataforma tiver ação real.
 - UI de seletor de empresa para usuários multi-vínculo (backend suporta múltiplos).
 - Trigger futuro para isolamento físico de um tenant específico.

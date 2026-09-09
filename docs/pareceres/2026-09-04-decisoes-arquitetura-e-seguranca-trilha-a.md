@@ -1,4 +1,4 @@
-# Parecer Executivo — Decisões de Arquitetura, Segurança e Domínio (Trilha A / Fase 10)
+# Parecer Executivo - Decisões de Arquitetura, Segurança e Domínio (Trilha A / Fase 10)
 
 Data-base: 2026-09-04  
 Status: **HOMOLOGADO E CONCLUÍDO**  
@@ -17,7 +17,7 @@ Este documento consolida as análises técnicas, a conformidade legal/fiscal e o
 
 ---
 
-## 2. Decisão C-01 (`LEG-RMA-002`) — Provisionamento Seguro de Usuários
+## 2. Decisão C-01 (`LEG-RMA-002`) - Provisionamento Seguro de Usuários
 
 ### 2.1 Pista Histórica
 No legado 14.6.1 (`inc/signup.php`), existia um formulário público de cadastro de usuários onde o requerente informava dados pessoais e um campo "Chave de Convite". Essa chave consistia em uma constante de texto estática fixada diretamente no código-fonte PHP. No legado 15.8.1, o arquivo sequer estava integrado ao fluxo de navegação.
@@ -32,7 +32,7 @@ A permissão de autocadastro público mediante chave compartilhada ou estática 
 
 ---
 
-## 3. Decisão de Integridade (`F10-COB-03` e `F10-COB-04`) — Exclusão Física vs Auditoria
+## 3. Decisão de Integridade (`F10-COB-03` e `F10-COB-04`) - Exclusão Física vs Auditoria
 
 ### 3.1 Pista Histórica
 No legado, rotas administrativas executavam comandos SQL brutos de `DELETE FROM bd WHERE id = ...` e `DELETE FROM usuario WHERE id = ...` sem integridade referencial ou tratamento de dependências órfãs.
@@ -47,7 +47,7 @@ Boletins de RMA movimentam garantias fiscais (notas fiscais de compra e venda), 
 
 ---
 
-## 4. Resolução do Achado CP14 (`ETA-05`) — Máquina de Estados e `ClasseDeAlerta::Urgente`
+## 4. Resolução do Achado CP14 (`ETA-05`) - Máquina de Estados e `ClasseDeAlerta::Urgente`
 
 ### 4.1 Problema Identificado no CP14
 O método `Rma::classeDeAlerta()` mapeava todas as quatro condições de alerta (`SemGarantia`, `Prioridade::Alta`, `origemEhTerceiroForaDoPrazo` e `marcarestoque=false + Cliente/Licitação`) para `ClasseDeAlerta::Inconformidade`. No legado (`entrada.php:41-49`), linhas de prioridade alta e prazo de 30 dias de clientes utilizavam `TrUrgente` (fundo `#382830`), enquanto inconformidades utilizavam `TrInconformidade` (fundo `#303033`).

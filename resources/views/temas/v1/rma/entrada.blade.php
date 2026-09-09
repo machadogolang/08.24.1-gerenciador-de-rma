@@ -4,12 +4,12 @@
 @endsection
 
 @section('conteudo')
-    {{-- VIS-V1-001/CP3B — fonte real `legacy-source/14.6.1/page/entrada.php`:
+    {{-- VIS-V1-001/CP3B - fonte real `legacy-source/14.6.1/page/entrada.php`:
     `status='entrada' OR status='recebido'`, ordenado por data de criação (`entrada`
-    no legado, `created_at` aqui — ver decisão em `RmasEmBanco::listarPorPainel()`).
+    no legado, `created_at` aqui - ver decisão em `RmasEmBanco::listarPorPainel()`).
     Regra de destaque (`TrInconformidade`/`TrUrgente`/`TrZebrada1`/`TrZebrada2`) já
     provada pela Fase 5 via `Rma::classeDeAlerta()`/`classe_css_de_alerta()`, reaproveitada
-    sem alteração — não é escopo desta correção estrutural (achados 1-8 tratavam
+    sem alteração - não é escopo desta correção estrutural (achados 1-8 tratavam
     composição/geometria, não a regra RN-11). --}}
     <p class="title-icone title-icone-status-v1 fl">
         <img src="{{ asset('images/tema-v1/entrada.png') }}" alt="" width="50" height="50">

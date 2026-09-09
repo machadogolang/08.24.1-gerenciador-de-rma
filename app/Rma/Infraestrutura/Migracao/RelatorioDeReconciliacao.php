@@ -5,10 +5,10 @@ namespace App\Rma\Infraestrutura\Migracao;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Objeto acumulador — contagem origem×destino por tabela, anomalias (valor fora do
+ * Objeto acumulador - contagem origem×destino por tabela, anomalias (valor fora do
  * domínio, data não-parseável, destinatário não resolvido, etc.) e conversões
  * assistidas (ex.: `prioridade='urgente'` → `Alta`, se ocorrer em dado real). Cada
- * importador recebe a mesma instância e acumula nela — `resumo()` monta o relatório
+ * importador recebe a mesma instância e acumula nela - `resumo()` monta o relatório
  * final ao fim do comando, impresso no console e salvo em `storage/app/migracao/`.
  */
 final class RelatorioDeReconciliacao
@@ -28,7 +28,7 @@ final class RelatorioDeReconciliacao
     private bool $dryRun = false;
 
     /**
-     * ARQ-002 (`INV-RMA-10`): marca o relatório como resultado de `--dry-run` — as
+     * ARQ-002 (`INV-RMA-10`): marca o relatório como resultado de `--dry-run` - as
      * contagens abaixo passam a refletir o que SERIA gravado (tradução completa rodou,
      * mas cada importador desfez sua transação), nunca escrita real. `resumo()` rotula
      * a coluna de destino de acordo, para não ser confundida com uma migração real.
@@ -85,12 +85,12 @@ final class RelatorioDeReconciliacao
     public function resumo(): string
     {
         $linhas = [];
-        $linhas[] = '=== Relatório de reconciliação — migração V2→V3 ===';
+        $linhas[] = '=== Relatório de reconciliação - migração V2→V3 ===';
 
         if ($this->dryRun) {
             $linhas[] = '';
             $linhas[] = '*** MODO --dry-run: NENHUMA ESCRITA FOI PERSISTIDA. ***';
-            $linhas[] = "*** \"planejado\" abaixo é o que SERIA gravado — tradução completa rodou, cada ***";
+            $linhas[] = "*** \"planejado\" abaixo é o que SERIA gravado - tradução completa rodou, cada ***";
             $linhas[] = '*** importador desfez sua própria transação ao final.                        ***';
         }
 
@@ -117,7 +117,7 @@ final class RelatorioDeReconciliacao
         $linhas[] = sprintf('-- Anomalias (%d) --', count($this->anomalias));
         foreach ($this->anomalias as $anomalia) {
             $linhas[] = sprintf(
-                '[%s] chave=%s — %s',
+                '[%s] chave=%s - %s',
                 $anomalia['tabela'],
                 is_scalar($anomalia['chave']) ? (string) $anomalia['chave'] : json_encode($anomalia['chave']),
                 $anomalia['motivo']
@@ -128,7 +128,7 @@ final class RelatorioDeReconciliacao
         $linhas[] = sprintf('-- Conversões assistidas (%d) --', count($this->conversoesAssistidas));
         foreach ($this->conversoesAssistidas as $conversao) {
             $linhas[] = sprintf(
-                '[%s] chave=%s — %s',
+                '[%s] chave=%s - %s',
                 $conversao['tabela'],
                 is_scalar($conversao['chave']) ? (string) $conversao['chave'] : json_encode($conversao['chave']),
                 $conversao['detalhe']

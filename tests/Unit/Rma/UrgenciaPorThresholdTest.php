@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * RN-12 (`LEG-RMA-029`). `valor` exatamente R$75,00 NÃO dispara — comparação é `>`,
+ * RN-12 (`LEG-RMA-029`). `valor` exatamente R$75,00 NÃO dispara - comparação é `>`,
  * não `>=` (operador estrito, mesmo princípio das regras de data).
  */
 class UrgenciaPorThresholdTest extends TestCase
@@ -105,7 +105,7 @@ class UrgenciaPorThresholdTest extends TestCase
 
     public function test_nao_dispara_quando_prazo_legal_ja_estourou(): void
     {
-        // Regra é "ainda dá tempo de agir" — created_at > hoje-30d. Um RMA criado há
+        // Regra é "ainda dá tempo de agir" - created_at > hoje-30d. Um RMA criado há
         // 31 dias já passou do prazo legal e não entra aqui (ver desvio documentado em
         // `UrgenciaPorThreshold`, coberto por outras regras, ex. `GarantiaFornecedorExpirada`).
         $rma = Rma::factory()->create([

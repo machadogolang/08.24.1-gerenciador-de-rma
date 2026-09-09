@@ -37,7 +37,7 @@ enum Papel
     }
 
     /**
-     * Equivalente a `permissao==4` do legado (`LEG-RMA-015`) — único nível que reverte
+     * Equivalente a `permissao==4` do legado (`LEG-RMA-015`) - único nível que reverte
      * um RMA para Entrada fora da janela de "mesmo dia" do encaminhamento.
      */
     public function podeReverterAlemDoMesmoDia(): bool
@@ -46,7 +46,7 @@ enum Papel
     }
 
     /**
-     * ARQ-003 (`INV-RMA-10`) — Supervisor pode gerenciar usuários, mas nunca
+     * ARQ-003 (`INV-RMA-10`) - Supervisor pode gerenciar usuários, mas nunca
      * SuperAdministrador: nem alterar/resetar senha de quem já é SuperAdministrador,
      * nem atribuir esse papel a ninguém (o que incluiria promover a si próprio). Só
      * SuperAdministrador lida com SuperAdministrador. `$papel` é o papel atual do alvo

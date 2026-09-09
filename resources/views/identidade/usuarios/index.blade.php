@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Usuários — CellSystem RMA</title>
+    <title>Usuários - CellSystem RMA</title>
 </head>
 <body>
     <h1>Usuários</h1>

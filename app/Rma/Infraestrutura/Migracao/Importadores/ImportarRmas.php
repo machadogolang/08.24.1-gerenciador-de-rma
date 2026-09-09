@@ -18,16 +18,16 @@ use App\Rma\Infraestrutura\Migracao\ResolverDestinatario;
 use App\Rma\Infraestrutura\Migracao\TabelaDeTraducao;
 
 /**
- * `bd` → `rmas` (`INV-RMA-06` §1) — entidade central, campo a campo. Idempotência via
+ * `bd` → `rmas` (`INV-RMA-06` §1) - entidade central, campo a campo. Idempotência via
  * `numero_legado`: se `Rma::where('numero_legado', $numero)->exists()`, a linha é pulada
  * (a menos que `$forcar=true`, reprocessamento explícito pós-correção de bug).
  *
  * Aplica as 3 pendências reais resolvidas de `INV-RMA-06`:
- * 1. Formato de data ambíguo — `ParserDeDataLegado` (3 tentativas), nunca lança exceção,
+ * 1. Formato de data ambíguo - `ParserDeDataLegado` (3 tentativas), nunca lança exceção,
  *    data não-parseável vira `NULL` + anomalia com o valor bruto original.
- * 2. `status='retornou'`/`retornou IS NOT NULL` — registrado como anomalia se ocorrer em
+ * 2. `status='retornou'`/`retornou IS NOT NULL` - registrado como anomalia se ocorrer em
  *    dado real, sem inventar case novo no enum `Status`.
- * 3. `relatorio.informacaoadicional` — decisão B (descartar) aplicada por omissão: esta
+ * 3. `relatorio.informacaoadicional` - decisão B (descartar) aplicada por omissão: esta
  *    classe nunca lê a tabela `relatorio` (nem existe `ConexaoLegado::relatorio()`).
  */
 final class ImportarRmas
@@ -86,7 +86,7 @@ final class ImportarRmas
             $relatorio->registrarAnomalia(
                 'bd',
                 $numero,
-                "status='retornou' encontrado em dado real (PENDÊNCIA-2 de INV-RMA-06, LEG-RMA-016) — RMA importado sem status resolvido, sem inventar case novo no enum Status preventivamente"
+                "status='retornou' encontrado em dado real (PENDÊNCIA-2 de INV-RMA-06, LEG-RMA-016) - RMA importado sem status resolvido, sem inventar case novo no enum Status preventivamente"
             );
         } elseif ($status === null && $statusBruto !== null && $statusBruto !== '') {
             $relatorio->registrarAnomalia('bd', $numero, "status='{$statusBruto}' fora do domínio confirmado (entrada/recebido/encaminhado/concluido/arquivado)");
@@ -97,13 +97,13 @@ final class ImportarRmas
             $relatorio->registrarAnomalia(
                 'bd',
                 $numero,
-                "retornou='{$linha->retornou}' preenchido em dado real (PENDÊNCIA-2 de INV-RMA-06) — campo não migrado (LEG-RMA-016, Status sem case Retornou)"
+                "retornou='{$linha->retornou}' preenchido em dado real (PENDÊNCIA-2 de INV-RMA-06) - campo não migrado (LEG-RMA-016, Status sem case Retornou)"
             );
         }
 
         // --- dtains × entrada (cross-check §1.3, não migrado como coluna) ---
         if (! empty($linha->dtains) && ! empty($linha->entrada) && (string) $linha->dtains !== (string) $linha->entrada) {
-            $relatorio->registrarAnomalia('bd', $numero, "dtains ({$linha->dtains}) diverge de entrada ({$linha->entrada}) — só verificação cruzada, nenhum dos dois é sobrescrito");
+            $relatorio->registrarAnomalia('bd', $numero, "dtains ({$linha->dtains}) diverge de entrada ({$linha->entrada}) - só verificação cruzada, nenhum dos dois é sobrescrito");
         }
 
         // --- origem ---
@@ -132,7 +132,7 @@ final class ImportarRmas
 
         if ($solucao === null && $solucaoBruta !== null && $solucaoBruta !== '') {
             $solucaoLegadoBruto = $solucaoBruta;
-            $relatorio->registrarAnomalia('bd', $numero, "solucao='{$solucaoBruta}' não bate em nenhum dos 16 valores fechados — preservado em solucao_legado_bruto");
+            $relatorio->registrarAnomalia('bd', $numero, "solucao='{$solucaoBruta}' não bate em nenhum dos 16 valores fechados - preservado em solucao_legado_bruto");
         }
 
         // --- lancadoretorno ---
@@ -185,7 +185,7 @@ final class ImportarRmas
 
         if ($destino === null && $nomeDestinatario !== null && trim($nomeDestinatario) !== '') {
             $destinatarioNomeLegado = $nomeDestinatario;
-            $relatorio->registrarAnomalia('bd', $numero, "destinatario='{$nomeDestinatario}' não resolvido em assistencia_tecnica/fornecedor/fabricante — preservado em destinatario_nome_legado");
+            $relatorio->registrarAnomalia('bd', $numero, "destinatario='{$nomeDestinatario}' não resolvido em assistencia_tecnica/fornecedor/fabricante - preservado em destinatario_nome_legado");
         }
 
         // --- operador (soft match por e-mail) ---
@@ -237,7 +237,7 @@ final class ImportarRmas
             'credito_disponivel' => (bool) ($linha->creditodisponivel ?? false),
             'created_at' => $linha->entrada,
             'updated_at' => $linha->dtaalt,
-            // §1.2 — preservação sem regra de negócio dona
+            // §1.2 - preservação sem regra de negócio dona
             'nf_devolucao_de_venda' => $linha->nfdevolucaodevenda ?? null,
             'nf_entrada_cliente_legado' => $linha->nfentrada_cli ?? null,
             'nf_retorno_cliente_legado' => $linha->nfretorno_cli ?? null,
@@ -265,7 +265,7 @@ final class ImportarRmas
         $resultado = ParserDeDataLegado::parse($bruto);
 
         if (! $resultado->ok) {
-            $relatorio->registrarAnomalia('bd', $numero, "{$campo}='{$resultado->bruto}' não é parseável em d/m/Y nem Y-m-d — gravado NULL");
+            $relatorio->registrarAnomalia('bd', $numero, "{$campo}='{$resultado->bruto}' não é parseável em d/m/Y nem Y-m-d - gravado NULL");
 
             return null;
         }

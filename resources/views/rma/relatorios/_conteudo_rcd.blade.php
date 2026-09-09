@@ -1,4 +1,4 @@
-{{-- FRONT-003/UI-03 — conteúdo do RCD compartilhado pelos dois temas. Sem shell/HTML
+{{-- FRONT-003/UI-03 - conteúdo do RCD compartilhado pelos dois temas. Sem shell/HTML
 próprio: cada tema fornece o wrapper e a impressão limpa via `.relatorio-print`. --}}
 <div class="relatorio">
     <h2 class="relatorio-titulo">Relatório de Créditos Disponíveis (RCD)</h2>

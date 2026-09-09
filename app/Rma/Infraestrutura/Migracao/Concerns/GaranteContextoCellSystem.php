@@ -6,7 +6,7 @@ use App\Compartilhado\Tenant\ContextoDeTenant;
 use App\Models\Company;
 
 /**
- * EVO-SAAS-001 (S11) — importadores que tocam tabela tenant-scoped garantem o tenant
+ * EVO-SAAS-001 (S11) - importadores que tocam tabela tenant-scoped garantem o tenant
  * histórico CellSystem mesmo quando executados individualmente (teste/CLI), sem
  * depender do comando orquestrador nem de request.
  */

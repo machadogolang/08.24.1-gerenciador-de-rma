@@ -1,7 +1,7 @@
-// _compartilhado.scss — porta de verdade `pattern/15.9.7.css` (296 linhas), a folha de
+// _compartilhado.scss - porta de verdade `pattern/15.9.7.css` (296 linhas), a folha de
 // estilo que os DOIS temas do legado carregam ALÉM do CSS próprio (14.6.1/index.php e
 // 15.8.1/inc/menu.php incluem ambos). Fonte: `legacy-source/pattern/15.9.7.css`.
-// Só é consumido via `@use 'compartilhado'` a partir de v1.scss/v2.scss — nunca é um
+// Só é consumido via `@use 'compartilhado'` a partir de v1.scss/v2.scss - nunca é um
 // entry point Vite próprio (sem extensão sem underscore). No V1 ele obrigatoriamente
 // vem depois de `_v1-base.scss`, como os dois `<link>` do 14.6.1.
 
@@ -48,8 +48,8 @@ h3,
 h4,
 h5,
 h6,
-// CP18 (paridade V2) — `pattern/15.9.7.css:180-283` também força este seletor
-// (o elemento em si — não herda de `body` porque `html * { font-family: Open
+// CP18 (paridade V2) - `pattern/15.9.7.css:180-283` também força este seletor
+// (o elemento em si - não herda de `body` porque `html * { font-family: Open
 // Sans... }` acima aplica uma declaração explícita não-importante a cada
 // elemento, que vence sobre valor herdado mesmo sem `!important`).
 .upmenuright,
@@ -60,7 +60,7 @@ h6,
 
 $cor-alerta: #904141;
 
-// Classes de estado de linha (RN-11, Fase 5 — `ClasseDeAlerta`) — mesma definição
+// Classes de estado de linha (RN-11, Fase 5 - `ClasseDeAlerta`) - mesma definição
 // para os dois temas, fonte real: pattern/15.9.7.css:56-67.
 .TrZebrada1 {
     background-color: #3f3f3f;
@@ -131,7 +131,7 @@ $cor-alerta: #904141;
 .breadcrumb {
     margin-top: -10px;
     background-color: rgba(0, 0, 0, 0) !important;
-    // CP18 (paridade V2) — `pattern/15.9.7.css:180` sobrescreve com
+    // CP18 (paridade V2) - `pattern/15.9.7.css:180` sobrescreve com
     // `!important`, mesma pilha do body/tr/td/headings (linha 41 acima), não
     // "Fira Mono" primeiro como estava aqui.
     font-family: "Arial", "Open Sans", "Fira Mono" !important;
@@ -192,7 +192,7 @@ $cor-alerta: #904141;
     }
 }
 
-// Toggle "mostrar/ocultar" (anotação pessoal etc.) — pattern/15.9.7.css:46-47.
+// Toggle "mostrar/ocultar" (anotação pessoal etc.) - pattern/15.9.7.css:46-47.
 .pmo {
     font-family: "Arial", "Open Sans", "Fira Mono" !important;
     width: 200px;
@@ -216,7 +216,7 @@ $cor-alerta: #904141;
     color: #eee;
 }
 
-// "CENTRO DE AVISOS E RELATORIOS" (correção Fase 8, 2026-08-25) — compartilhado pelos
+// "CENTRO DE AVISOS E RELATORIOS" (correção Fase 8, 2026-08-25) - compartilhado pelos
 // dois temas, fonte real: `15.8.1/index.php`/`14.6.1/index.php`, div `.centrodeavisos`
 // + blocos de regra repetidos com `separador.png` entre eles.
 $cor-titulo-centro-de-avisos: #f6e3a3; // mesma cor de `.centrodeavisos h1..h6` (pattern/15.9.7.css)
@@ -290,7 +290,7 @@ table {
     border-collapse: collapse !important;
 }
 
-// CP12-05 (fase 2 V1) — primitivas que as tabelas do Centro de Avisos usam no
+// CP12-05 (fase 2 V1) - primitivas que as tabelas do Centro de Avisos usam no
 // `pattern/15.9.7.css:49-76,148-161`. Tinham ficado de fora enquanto o partial
 // compartilhado renderizava listas genéricas.
 .Tabelinha-TDD {
@@ -337,7 +337,7 @@ th {
     border: 1px solid rgba(87, 84, 84, 0.4) !important;
 }
 
-// FRONT-003/UI-03 — superfície e impressão dos relatórios (compartilhado V1/V2).
+// FRONT-003/UI-03 - superfície e impressão dos relatórios (compartilhado V1/V2).
 .relatorio-tabela {
     background-color: #fff;
     color: #222;

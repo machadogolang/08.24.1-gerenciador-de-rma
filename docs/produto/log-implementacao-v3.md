@@ -1,8 +1,8 @@
-# Log de implementação — RMA V3
+# Log de implementação - RMA V3
 
 Registro cronológico do que foi implementado de verdade (código, não planejamento),
-fase por fase, para permitir uma revisão final por fora — comparando este log contra
-`docs/produto/checklist-master-v3.md` e `docs/produto/paridade-v2-v3.md` — e detectar
+fase por fase, para permitir uma revisão final por fora - comparando este log contra
+`docs/produto/checklist-master-v3.md` e `docs/produto/paridade-v2-v3.md` - e detectar
 o que ficou faltando antes de considerar o projeto concluído.
 
 Cada entrada é escrita pelo agente que implementou a fase, ao final do trabalho, e
@@ -12,7 +12,7 @@ commitada junto com o resto da fase. Formato fixo por entrada: **Fase**, **Data*
 
 ---
 
-## Fase 1 — Identidade
+## Fase 1 - Identidade
 
 **Data:** 2026-08-24.
 
@@ -23,7 +23,7 @@ ResultadoDeAcesso}`; casos de uso `AutenticarUsuario`, `AlternarTemaPreferido`,
 `ResetarSenhaDeUsuario`, `AtualizarAnotacaoPessoal`; `App\Models\{User,
 TentativaDeAcesso}`; `UserPolicy`; controllers `SessaoController`,
 `TemaPreferidoController`, `UsuarioController`, `AnotacaoPessoalController`; rotas;
-views mínimas (sem fidelidade visual — isso é Fase 8); `UserFactory`/`UserSeeder`.
+views mínimas (sem fidelidade visual - isso é Fase 8); `UserFactory`/`UserSeeder`.
 
 **Desvios do OpenSpec (documentados no código):**
 - `UsuarioController::index`: o snippet do `design.md` misturava `Builder::when()` com
@@ -36,34 +36,34 @@ views mínimas (sem fidelidade visual — isso é Fase 8); `UserFactory`/`UserSe
 **Testes:** 36/36 verdes, 91 assertions (`sail test`). Confirmado manualmente via
 `curl` (login real, redirecionamento por papel, bloqueio sem revelar motivo).
 
-**Pendências que ficaram de fora:** `LEG-RMA-002` (autocadastro público com convite) —
+**Pendências que ficaram de fora:** `LEG-RMA-002` (autocadastro público com convite) -
 decisão de produto não tomada (opção A: segredo em `.env`; opção B: só admin cria
 usuário). Registrado em `tasks.md` e `paridade-v2-v3.md`, aguardando decisão do
 usuário.
 
-**Commit:** `586513f` — `#F1 - Identidade (autenticacao, papeis, tema preferido)`.
+**Commit:** `586513f` - `#F1 - Identidade (autenticacao, papeis, tema preferido)`.
 
 ---
 
-## Fase 2 — Parceiros
+## Fase 2 - Parceiros
 
 **Data:** 2026-08-24.
 
 **Implementado:** 4 migrations (`clientes`, `fabricantes`, `fornecedores`,
 `assistencias_tecnicas`); enum `App\Compartilhado\Uf` (27 UFs, cast nativo puro,
 mesmo padrão de `TemaPreferido` da Fase 1); `App\Models\{Cliente,Fabricante,
-Fornecedor,AssistenciaTecnica}` (Eloquent direto, sem interface de repositório —
+Fornecedor,AssistenciaTecnica}` (Eloquent direto, sem interface de repositório -
 decisão de `INV-RMA-05` §7: só `Rma`, na Fase 3, ganha essa fronteira); trait
 `App\Parceiros\Concerns\TemEnderecoEContato` compartilhada pelos 3 análogos
-(Fabricante/Fornecedor/AssistenciaTecnica — `Cliente` tem schema genuinamente
+(Fabricante/Fornecedor/AssistenciaTecnica - `Cliente` tem schema genuinamente
 diferente, não usa a trait); `App\Parceiros\Aplicacao\EncontrarOuCriarCliente` (único
-caso de uso real desta fase — corrige o `adicionar_cli()` do legado, que duplicava
+caso de uso real desta fase - corrige o `adicionar_cli()` do legado, que duplicava
 cliente por variação de digitação, comparando nome exato sem trim/case-fold); 4
 Policies (`ClientePolicy` + 3 análogas, delegando a `Papel::podeGravar()` da Fase 1,
 leitura liberada a qualquer autenticado); 4 Controllers resource
 (`app/Http/Controllers/Parceiros/`) + rotas `parceiros/{clientes,fabricantes,
 fornecedores,assistencias-tecnicas}`; views mínimas compartilhadas
-(`_form.blade.php`/`index.blade.php`, sem fidelidade visual — Fase 8); 4 Factories;
+(`_form.blade.php`/`index.blade.php`, sem fidelidade visual - Fase 8); 4 Factories;
 testes de CRUD ×4 + `EncontrarOuCriarClienteTest`.
 
 **Desvios do OpenSpec (documentados no código):**
@@ -72,17 +72,17 @@ testes de CRUD ×4 + `EncontrarOuCriarClienteTest`.
   `assistencia_tecnicas`, que não batem com os nomes de tabela em português definidos
   no `design.md` (`fornecedores`, `assistencias_tecnicas`). Detectado pelos testes de
   CRUD (erro `Base table or view not found`), corrigido declarando o nome da tabela
-  explicitamente em cada model — nenhuma mudança de schema, só a resolução do nome.
+  explicitamente em cada model - nenhuma mudança de schema, só a resolução do nome.
 - Rotas: `Route::resource` também singulariza em inglês para o nome do parâmetro de
   route model binding (`fornecedores` → `fornecedore`, `assistencias-tecnicas` →
   `assistencias-tecnica`), incompatível com os nomes de parâmetro dos controllers
   (`$fornecedor`, `$assistenciaTecnica`). Corrigido com `->parameters([...])`
   explícito nas duas rotas afetadas.
 
-**Testes:** 61/61 verdes, 143 assertions (`sail test`) — os 36 da Fase 1 continuam
+**Testes:** 61/61 verdes, 143 assertions (`sail test`) - os 36 da Fase 1 continuam
 passando. Confirmado manualmente via `tinker`: `EncontrarOuCriarCliente` reaproveita
 `"Cliente Teste Manual"` ao receber `"  cliente   TESTE MANUAL  "` (espaço duplo +
-maiúscula diferente) em vez de criar um segundo registro — `Cliente::count()`
+maiúscula diferente) em vez de criar um segundo registro - `Cliente::count()`
 permaneceu em 1 antes da limpeza do dado de teste manual.
 
 **Pendências que ficaram de fora:** nenhuma da Fase 2 propriamente dita. Unificação em
@@ -90,12 +90,12 @@ permaneceu em 1 antes da limpeza do dado de teste manual.
 escopo por decisão já registrada em `proposal.md` (`EVO-DOM-001`, backlog evolutivo).
 Fidelidade visual das views fica para a Fase 8.
 
-**Commit:** `628475d` — `#F2 - Parceiros (cliente/fabricante/fornecedor/assistencia
+**Commit:** `628475d` - `#F2 - Parceiros (cliente/fabricante/fornecedor/assistencia
 tecnica)`.
 
 ---
 
-## Fase 3 — Rma núcleo
+## Fase 3 - Rma núcleo
 
 **Data:** 2026-08-25.
 
@@ -103,27 +103,27 @@ tecnica)`.
 revisão); `App\Rma\Dominio\{Rma,RepositorioDeRmas,CriterioDeBusca}` (objeto de domínio
 puro, sem Eloquent); `App\Rma\Infraestrutura\RmasEmBanco` (implementação Eloquent
 interna, nunca exposta fora da infra) + binding em `AppServiceProvider`;
-`App\Rma\Aplicacao\{CriarRma,EditarRma,BuscarRmas,VerDetalheDoRma}` — `CriarRma`/
+`App\Rma\Aplicacao\{CriarRma,EditarRma,BuscarRmas,VerDetalheDoRma}` - `CriarRma`/
 `EditarRma` chamam `EncontrarOuCriarCliente` (Fase 2) e aplicam
 `Rma::comNormalizacaoDeGravacao()` (RN-13/RN-14) antes de persistir; `RmaController`
 (index/create/store/show/edit/update) + `RmaPolicy` (mesmo padrão de `ClientePolicy`);
 views mínimas; `RmaFactory`; 6 arquivos de teste (4 feature + 2 unit).
 
 Esta é a única fase com a fronteira completa `Dominio`/`Aplicacao`/`Infraestrutura` com
-interface de repositório — decisão já tomada em `INV-RMA-05` §7/§8, confirmada correta
+interface de repositório - decisão já tomada em `INV-RMA-05` §7/§8, confirmada correta
 na implementação (a Fase 9/migração vai usar essa fronteira para não vazar o schema
 `rma_legacy` pro resto do app).
 
 **Desvios do OpenSpec (documentados no código):**
 - `RepositorioDeRmas` ganhou um método `atualizar(Rma $rma): Rma` não presente no
   snippet literal do `design.md` (que antecedia o ajuste da revisão que trouxe
-  `EditarRma`/`LEG-RMA-010` para esta fase) — necessário para `EditarRma` não furar a
+  `EditarRma`/`LEG-RMA-010` para esta fase) - necessário para `EditarRma` não furar a
   fronteira de domínio tocando o Eloquent model diretamente. Mesmo padrão de
   `criar()`/`buscarPorId()`, sem quebrar a pureza do objeto de domínio.
 - `CriterioDeBusca::porNotaFiscal()` busca no campo `os` (ordem de serviço) nesta fase,
   não em campos de nota fiscal reais (`nfcompra`/`nfremessa`/`nfvenda`), que só entram
   na Fase 6 (crédito/NF). Decisão registrada em comentário no
-  `RmasEmBanco.php` — revisitar quando os campos reais existirem.
+  `RmasEmBanco.php` - revisitar quando os campos reais existirem.
 
 **Testes:** 85/85 verdes, 189 assertions (`sail test`), mantendo os 61 das Fases 1-2.
 `RmaTest::comNormalizacaoDeGravacao` cobre todos os casos do `design.md` (HGST→Hitachi,
@@ -133,7 +133,7 @@ inalterado). `CriarRmaTest`/`EditarRmaTest` confirmam a normalização de ponta 
 via HTTP, não só no unit test isolado.
 
 **Pendências que ficaram de fora:** nenhuma da Fase 3 propriamente dita. `origem` segue
-como string solta nesta fase (deliberado — o enum de domínio fechado só nasce na Fase
+como string solta nesta fase (deliberado - o enum de domínio fechado só nasce na Fase
 4/5, quando o conjunto de valores usado pelas regras de alerta estiver fixado por
 completo).
 
@@ -150,14 +150,14 @@ junto com este log).
 
 ---
 
-## Fase 4 — Ciclo de vida
+## Fase 4 - Ciclo de vida
 
 **Data:** 2026-08-25.
 
 **Implementado:** migration incremental `add_ciclo_de_vida_fields_to_rmas_table`
 (`status`, `recebido_em`/`encaminhado_em`/`concluido_em`/`arquivado_em`, `protocolo`,
 `solucao`, `snretorno`, `destinatario_type`/`destinatario_id` polimórficos);
-`App\Rma\Dominio\{Status,Solucao}` (enums sem número mágico — `Status` sem backing e
+`App\Rma\Dominio\{Status,Solucao}` (enums sem número mágico - `Status` sem backing e
 sem case `Retornou`, `Solucao` backed string com os 16 valores confirmados de
 `15.8.1/page/rma.php:578-595`); `App\Rma\Dominio\Rma` estendido (Fase 3 → aqui) com as
 novas propriedades readonly e `comSnretornoAutoPreenchido()` (RN-15); `Papel`
@@ -166,12 +166,12 @@ para persistir/ler os novos campos (casts de `Status`/`Solucao`, `morphTo`); os 
 de uso `App\Rma\Aplicacao\{ReceberRma,EncaminharRma,ConcluirRma,ArquivarRma,
 ReverterRmaParaEntrada,RegistrarSolucao}` (todos usando `RepositorioDeRmas::atualizar()`
 já existente da Fase 3, sem método novo por transição); evento
-`App\Rma\Dominio\Eventos\RmaConcluido` (sem listener nesta fase — Fase 7 assina);
+`App\Rma\Dominio\Eventos\RmaConcluido` (sem listener nesta fase - Fase 7 assina);
 `CicloDeVidaController` + rotas + `_acoes_de_transicao.blade.php` (view mínima, sem
 fidelidade visual); 8 arquivos de teste (6 feature + 2 unit) + 1 teste novo em
 `PapelTest` (já existente da Fase 1).
 
-**Decisão confirmada — `ArquivarRma` usa TEMA V2:** `LEG-RMA-014` já registrava TEMA
+**Decisão confirmada - `ArquivarRma` usa TEMA V2:** `LEG-RMA-014` já registrava TEMA
 V1 como quebrado; esta fase confirmou a causa por leitura de código-fonte
 (`14.6.1/post/arquivar.php` instancia `new controle()`, classe inexistente em
 `14.6.1/banco.oo.php`, `Fatal Error` incondicional). `ArquivarRmaTest` prova a decisão:
@@ -182,13 +182,13 @@ três status permitidos por `Status::podeArquivar()` (`Entrada`/`Recebido`/
 **Desvios do OpenSpec (documentados no código):**
 - `Dominio\Rma::destinatario` (design.md descreve como "objeto polimórfico" único) foi
   implementado como duas propriedades readonly, `destinatarioType`/`destinatarioId`
-  (string/int), em vez de um objeto Eloquent embutido — mantém o objeto de domínio
+  (string/int), em vez de um objeto Eloquent embutido - mantém o objeto de domínio
   puro (mesmo padrão já usado em `fabricanteId`/`fornecedorId`/`clienteId`: ids
   resolvidos para exibição fora do objeto de domínio). A relação Eloquent
   `morphTo('destinatario')` real vive só em `App\Models\Rma` (infraestrutura), que
   segue sendo interna a `RmasEmBanco`.
 - `CicloDeVidaController::TIPOS_DE_DESTINATARIO` mapeia um rótulo curto do formulário
-  (`assistencia_tecnica`/`fornecedor`/`fabricante`) para o FQCN do model Eloquent —
+  (`assistencia_tecnica`/`fornecedor`/`fabricante`) para o FQCN do model Eloquent -
   não estava no `design.md` (que não detalhava o controller), necessário para não expor
   nomes de classe PHP no HTML.
 
@@ -198,7 +198,7 @@ implicam mesmo aparelho de retorno auto-preenchem `snretorno`, 10 que não impli
 ficam em branco). `ArquivarRmaTest` cobre os 3 status permitidos também via
 `#[DataProvider]`. `ReverterRmaParaEntradaTest` cobre mesmo-dia (qualquer papel com
 `podeGravar()`) e dia-anterior (só `SuperAdministrador`). Nota técnica: PHPUnit 12
-exige o atributo `#[DataProvider]` (`PHPUnit\Framework\Attributes\DataProvider`) — a
+exige o atributo `#[DataProvider]` (`PHPUnit\Framework\Attributes\DataProvider`) - a
 anotação `@dataProvider` em docblock, usada no rascunho inicial destes dois arquivos,
 falha silenciosamente com "too few arguments"; corrigido antes do commit.
 
@@ -220,87 +220,87 @@ hash abaixo, aplicado junto com este log).
 
 ---
 
-## Fase 5 — Alertas e regras
+## Fase 5 - Alertas e regras
 
 **Data:** 2026-08-25.
 
 **Implementado:** migration incremental `add_alertas_fields_to_rmas_table`
-(`prioridade`, `marcarestoque`, blocos de NF `nfcompra`/`nfvenda` — só compra/venda,
-usados por RN-02/05/06/09 —, `lancadoretorno`, `valor` decimal(10,2) nullable);
-`App\Rma\Dominio\{Origem,Prioridade,StatusDeLancamento,ClasseDeAlerta}` (enums —
+(`prioridade`, `marcarestoque`, blocos de NF `nfcompra`/`nfvenda` - só compra/venda,
+usados por RN-02/05/06/09 -, `lancadoretorno`, `valor` decimal(10,2) nullable);
+`App\Rma\Dominio\{Origem,Prioridade,StatusDeLancamento,ClasseDeAlerta}` (enums -
 `Prioridade` sem backing e sem case `Urgente` morto, RN-08; os demais backed string);
 `App\Rma\Dominio\Rma` estendido com `classeDeAlerta()` (RN-11), `prazoLegal()` (RN-12) e
 as novas propriedades readonly (`prioridade`, `marcarestoque`, NF compra/venda,
 `lancadoretorno`, `valor`, `createdAt`); as 10 classes de regra +
 `UrgenciaPorThreshold` em `app/Rma/Aplicacao/Alertas/`, cada uma lendo
-`App\Models\Rma` diretamente (não passa pelo repositório — são consultas de leitura
+`App\Models\Rma` diretamente (não passa pelo repositório - são consultas de leitura
 para um painel, não casos de uso de escrita) com o filtro **inteiro no SQL** (decisão
 central da fase); `Models\Rma`/`RmasEmBanco` atualizados (novos casts, novos campos
 persistidos/lidos, relações `fabricante()`/`fornecedor()` para o join real de
 `NaoVaiDarGarantia`); `PainelDeAlertasController` + `_painel_de_alertas.blade.php` +
-rota `GET /rmas-alertas` (view mínima, sem fidelidade visual — Fase 8); 13 arquivos de
+rota `GET /rmas-alertas` (view mínima, sem fidelidade visual - Fase 8); 13 arquivos de
 teste (10 regras + `ClasseDeAlertaTest` + `UrgenciaPorThresholdTest`, todos em
 `tests/Unit/Rma/`, já que operam sobre o Eloquent model diretamente sem HTTP).
 
-**Correção ao `design.md` feita nesta sessão (antes de codificar) — coluna `valor`
+**Correção ao `design.md` feita nesta sessão (antes de codificar) - coluna `valor`
 ausente:** `UrgenciaPorThreshold` (RN-12) usa `->where('valor', '>', 75.00)`, mas o
-schema original desta fase não listava a coluna — divergência real, já registrada em
+schema original desta fase não listava a coluna - divergência real, já registrada em
 `INV-RMA-06` ("coordenação da coluna `rmas.valor` com a Fase 5"). Origem confirmada em
 `regras-negocio-rma-legado.md` RN-12: `15.8.1/banco.php:777` (`right_urgente()`), campo
 monetário real do RMA (não calculado). Adicionada ao `design.md` e à migration como
 `decimal(10,2) nullable`.
 
-**Decisão registrada — `Origem` sem cast Eloquent em `Models\Rma`:** o `design.md`
+**Decisão registrada - `Origem` sem cast Eloquent em `Models\Rma`:** o `design.md`
 sugere `casts(): ['origem' => Origem::class]`. Investigação: `App\Rma\Dominio\Rma::
 comNormalizacaoDeGravacao()` (Fase 3) tem um ramo `default` que devolve o valor de
-origem original **sem alterar** quando não bate com nenhum padrão conhecido — ou seja,
+origem original **sem alterar** quando não bate com nenhum padrão conhecido - ou seja,
 texto livre fora do domínio fechado de 10 valores do enum pode legitimamente ser
 persistido. Um cast Eloquent `BackedEnum` lança `ValueError` na hidratação de qualquer
-registro cujo `origem` não seja um dos 10 valores — isto quebraria a leitura de RMAs
+registro cujo `origem` não seja um dos 10 valores - isto quebraria a leitura de RMAs
 legítimos assim que o domínio real (dados migrados do legado, ou texto livre digitado
 por um operador) contivesse um valor fora do enum. **Decisão adotada:** `origem`
 permanece coluna string simples em `Models\Rma` (sem cast) e também em `Dominio\Rma`
 (sem retipar a propriedade do construtor, para não quebrar `RmaTest`, que testa
 `comNormalizacaoDeGravacao()` com valores de entrada arbitrários pré-normalização,
-como `'Hitachi'`, `'CELLSYSTEM'`, `'Correios'` — nenhum deles é case do enum). As 10
+como `'Hitachi'`, `'CELLSYSTEM'`, `'Correios'` - nenhum deles é case do enum). As 10
 regras de alerta continuam usando `Origem::Cliente`/`Origem::Licitacao` literalmente
-nas queries (`whereIn('origem', [Origem::Cliente, Origem::Licitacao])`) — funciona sem
+nas queries (`whereIn('origem', [Origem::Cliente, Origem::Licitacao])`) - funciona sem
 cast porque o query builder do Laravel converte `BackedEnum` para `->value` na
 construção do SQL via `Illuminate\Support\enum_value()`, independente de qualquer cast
 no model (confirmado lendo `vendor/laravel/framework/.../Query/Builder.php`). Em
 `Rma::classeDeAlerta()` (domínio puro, sem Eloquent), a comparação usa
 `Origem::Cliente->value` (string) em vez do enum diretamente, pela mesma razão. Isto é
 uma correção da frase do `design.md` ("`Origem::normalizar()` passa a devolver este
-enum em vez de string solta") — não existe `Origem::normalizar()` nem no `design.md`
+enum em vez de string solta") - não existe `Origem::normalizar()` nem no `design.md`
 nem implementado; a normalização real (`comNormalizacaoDeGravacao()`) continua
 devolvendo string, e o enum `Origem` participa só nas bordas de leitura (queries de
 alerta), não na gravação.
 
-**Correção ao `design.md` feita durante a implementação — `UrgenciaPorThreshold`
+**Correção ao `design.md` feita durante a implementação - `UrgenciaPorThreshold`
 (RN-12), condição de "prazo":** o snippet literal usa
-`$q3->whereColumn('created_at', '<', now())` — sintaxe inválida (`whereColumn()`
+`$q3->whereColumn('created_at', '<', now())` - sintaxe inválida (`whereColumn()`
 compara duas colunas entre si, não aceita um valor `Carbon` como segundo argumento).
 Além do erro de sintaxe, o sentido "`<` now()" seria um guard quase sempre verdadeiro e
 comprovadamente frágil sob teste: `created_at` truncado ao segundo pode empatar com
 `now()` em execuções rápidas (RefreshDatabase + factory + query no mesmo milissegundo),
-produzindo falso negativo por corrida — reproduzido de fato ao rodar a suíte completa.
+produzindo falso negativo por corrida - reproduzido de fato ao rodar a suíte completa.
 A leitura que faz sentido de negócio e bate com a prosa do próprio `design.md`
 ("`prazo` calculado como `created_at->addDays(30)`") é: o alerta significa "ainda dá
-tempo de agir, mas o valor alto exige prioridade" — ou seja, o prazo legal de 30 dias
+tempo de agir, mas o valor alto exige prioridade" - ou seja, o prazo legal de 30 dias
 **ainda não estourou**. Implementado como `where('created_at', '>', now()->subDays(30))`
 (equivalente a `!Rma::prazoLegal()->isPast()`), o que também faz o cenário de
 verificação manual do `tasks.md` funcionar (RMA recém-criado aparece na listagem).
 Coberto por `UrgenciaPorThresholdTest::test_nao_dispara_quando_prazo_legal_ja_estourou`.
 
-**Correção adicional descoberta durante os testes — colunas `date` vs `now()`:**
+**Correção adicional descoberta durante os testes - colunas `date` vs `now()`:**
 `nfcompra_emissao`/`nfvenda_emissao` são colunas `date` (sem hora), mas as 3 regras que
 as filtram (`GarantiaFornecedorExpirada`, `GarantiaFornecedorExpirandoEm30Dias`,
 `NaoVaiDarGarantia`) inicialmente usavam `now()->subDays(N)` (timestamp com hora) como
-limite — comparar uma data pura (meia-noite) contra um timestamp com a hora atual
+limite - comparar uma data pura (meia-noite) contra um timestamp com a hora atual
 deslocava o limite exato em até 1 dia dependendo da hora em que a consulta roda,
 quebrando os testes de caso-limite (RMA com `nfcompra_emissao` exatamente 365 dias
 atrás disparava `GarantiaFornecedorExpirada`, quando não deveria). Corrigido para usar
-`today()->subDays(N)` (meia-noite) nas 3 regras — `recebido_em`/`encaminhado_em`
+`today()->subDays(N)` (meia-noite) nas 3 regras - `recebido_em`/`encaminhado_em`
 (colunas `dateTime`) continuam usando `now()`, que é o tipo correto para elas.
 
 **Testes:** 190/190 verdes, 348 assertions (`sail test`), mantendo os 131 das Fases
@@ -312,13 +312,13 @@ adaptado para a borda de domínio equivalente (ex.: string vazia vs `null` vs va
 "quase vazio", ou um valor de enum adjacente que não deveria bater). Nota técnica
 adicional: `SemNumeroDeSerieTest` originalmente testava `sn = ' '` (um espaço) como
 "não deveria disparar", mas o MySQL trata `'' = ' '` como iguais por padrão (colações
-não-binárias usam `PAD SPACE`, espaços à direita não importam na comparação `=`) —
+não-binárias usam `PAD SPACE`, espaços à direita não importam na comparação `=`) -
 teste corrigido para `sn = '0'` (falsy em PHP, mas um valor preenchido de verdade em
 SQL), provando que a regra usa comparação SQL real, não uma checagem estilo PHP.
 
 **Testes manuais confirmados via `tinker`:** RMA criado com `origem=Cliente`,
-`marcarestoque=false`, `valor=100.00`, `status=Entrada` — `UrgenciaPorThreshold::
-listar()` o retorna; RMA idêntico com `valor=75.00` (exato) — não é retornado,
+`marcarestoque=false`, `valor=100.00`, `status=Entrada` - `UrgenciaPorThreshold::
+listar()` o retorna; RMA idêntico com `valor=75.00` (exato) - não é retornado,
 confirmando o operador estrito `>` na fronteira R$75.
 
 **Pendências que ficaram de fora:** fidelidade visual das cores/CSS do painel por tema
@@ -346,11 +346,11 @@ código de produto necessário:
 
 ---
 
-## Fase 6 — Créditos e relatórios
+## Fase 6 - Créditos e relatórios
 
 OpenSpec: `openspec/changes/rma-creditos-e-relatorios/{proposal,design,tasks}.md` (tudo
 `[x]`). Arquivo por arquivo detalhado em `INV-RMA-05` §11. Cobre `LEG-RMA-036` a `039` e
-`048` — reconstrói só a intenção do módulo de créditos quebrado em TEMA V2 (um fluxo
+`048` - reconstrói só a intenção do módulo de créditos quebrado em TEMA V2 (um fluxo
 único de crédito, não as 3 sub-rotas `pendentes/usados/disponíveis`, que estão
 quebradas mesmo em TEMA V2 e nunca existiram em TEMA V1). Não introduz entidade nova:
 consultas de leitura e um controle de flag sobre o agregado `Rma` já maduro depois da
@@ -359,18 +359,18 @@ Fase 5, coerente com `INV-RMA-05` §3 ("Créditos"/"Relatórios" não são módu
 **Migration e domínio:** `2026_08_30_000000_add_credito_fields_to_rmas_table.php`
 adiciona `credito_disponivel boolean default false`. `Dominio\Rma` ganhou a propriedade
 readonly `creditoDisponivel` (default `false`) como **último** parâmetro do
-construtor — decisão deliberada para não quebrar nenhum `new Rma(...)` já existente nas
+construtor - decisão deliberada para não quebrar nenhum `new Rma(...)` já existente nas
 Fases 3-5 (`RegistrarSolucao`, `CriarRma`, `EditarRma` etc., todos com argumentos
 nomeados, mas o default evita qualquer regressão de call site que não passe o novo
 campo). Os dois métodos puros que reconstroem o objeto
 (`comNormalizacaoDeGravacao()`, `comSnretornoAutoPreenchido()`) foram atualizados para
-passar `creditoDisponivel: $this->creditoDisponivel` adiante explicitamente — sem essa
+passar `creditoDisponivel: $this->creditoDisponivel` adiante explicitamente - sem essa
 linha, editar ou concluir um RMA que já tivesse crédito marcado disponível apagaria o
 flag silenciosamente (o default `false` do construtor venceria). `RmasEmBanco` e
 `Models\Rma` foram estendidos em conjunto (`paraArray()`/`paraDominio()`, `$fillable`,
 cast `boolean`), mesmo padrão das extensões incrementais das Fases 4-5.
 
-**`MarcarCreditoDisponivel`:** implementado literalmente como no `design.md` —
+**`MarcarCreditoDisponivel`:** implementado literalmente como no `design.md` -
 `abort_unless($ator->papel->podeGravar(), 403)`,
 `abort_unless($rma->solucao === Solucao::GeradoCredito, 422)`, grava
 `credito_disponivel=true`. **Sem transição automática**
@@ -380,17 +380,17 @@ também não automatiza (controle manual em duas camadas independentes, ver
 futura, deliberadamente não implementada nesta fase.
 
 **`AguardandoCredito`:** colocada em `app/Rma/Aplicacao/Alertas/` (não em
-`Relatorios/`), listando `solucao=PendenteCredito` — mesma família e disciplina de
+`Relatorios/`), listando `solucao=PendenteCredito` - mesma família e disciplina de
 filtro inteiro no SQL das 10 regras de alerta da Fase 5, reforçando por construção que
 crédito não é um módulo próprio.
 
 **3 relatórios** (`app/Rma/Aplicacao/Relatorios/`):
 `RelatorioCreditosDisponiveis` (`credito_disponivel=true`, sem parâmetros);
 `RelatorioProdutosEmEstoqueParaContagem` (`marcarestoque=true` + filtro de `Status`
-opcional, configurável pelo usuário via query string — não hardcoded como no legado);
+opcional, configurável pelo usuário via query string - não hardcoded como no legado);
 `RelatorioProdutosEncaminhados` (`status=Encaminhado` + intervalo de datas real via
 dois parâmetros `\DateTimeInterface` obrigatórios). Este último **corrige** o intervalo
-hardcoded para "2014" do legado (`LEG-RMA-039`) — confirmado como bug de manutenção
+hardcoded para "2014" do legado (`LEG-RMA-039`) - confirmado como bug de manutenção
 (nenhuma RN documenta "2014" como valor de negócio intencional), não uma regra a
 preservar; coberto por `RelatorioProdutosEncaminhadosTest::
 test_intervalo_nao_e_hardcoded_para_2014`, que prova o relatório funcionando fora do
@@ -400,12 +400,12 @@ ano 2014.
 `produtosEmEstoqueParaContagem`, `produtosEncaminhados`) e `CreditoController`
 (`index` lista `AguardandoCredito` + formulário de marcação; `marcar` invoca
 `MarcarCreditoDisponivel` recebendo `rma_id` no corpo do `POST`, não como parâmetro de
-rota — evita gerar uma rota por RMA e mantém a tela de crédito como uma única view de
+rota - evita gerar uma rota por RMA e mantém a tela de crédito como uma única view de
 fluxo, coerente com "reconstruir só a intenção" de `LEG-RMA-048`). Views mínimas em
 `resources/views/rma/{relatorios/{rcd,rpec,rmpe},credito/index}.blade.php`, sem
 fidelidade visual (Fase 8). Rotas com segmento inicial próprio
 (`/rmas-credito`, `/rmas-relatorios/{rcd,rpec,rmpe}`), mesmo padrão de `/rmas-alertas`
-da Fase 5 — sem conflito com `rmas/{rma}`.
+da Fase 5 - sem conflito com `rmas/{rma}`.
 
 **Testes:** 218/218 verdes, 390 assertions (`sail test`), mantendo os 196 das Fases
 1-5. `MarcarCreditoDisponivelTest` (feature, 5 casos: marca com sucesso, nega 422 para
@@ -417,17 +417,17 @@ testes unitários de relatório seguem o mesmo padrão de asserção por `contai
 das 10 regras da Fase 5.
 
 **Testes manuais confirmados via `tinker`:** RMA criado com `solucao=GeradoCredito`,
-`credito_disponivel=false` — `MarcarCreditoDisponivel::marcar()` devolve
+`credito_disponivel=false` - `MarcarCreditoDisponivel::marcar()` devolve
 `creditoDisponivel=true` e o valor é confirmado persistido lendo
 `App\Models\Rma::find($id)->credito_disponivel` direto do banco (não só o objeto de
-domínio devolvido); RMA com `solucao=Reparo` — a mesma chamada lança
+domínio devolvido); RMA com `solucao=Reparo` - a mesma chamada lança
 `HttpException` com `getStatusCode()===422`, confirmando a negação.
 
 **Pendências que ficaram de fora:** fidelidade visual das views (Fase 8);
-`ConsolidarFretePorCidade`/`BoletinsRelacionados` (`LEG-RMA-040`/`041`, RN-16) —
+`ConsolidarFretePorCidade`/`BoletinsRelacionados` (`LEG-RMA-040`/`041`, RN-16) -
 cobertos pela Fase 7 (`rma-logistica-e-historico`), não duplicados aqui apesar de
 também serem consultas de leitura sobre `Rma`; PDF real de relatório (`EVO-REL-001`,
-backlog evolutivo) — impressão via `Ctrl+P`, igual ao legado; automação de transição de
+backlog evolutivo) - impressão via `Ctrl+P`, igual ao legado; automação de transição de
 crédito (`EVO-AUT-002`, backlog evolutivo); dashboard de recorrência de defeito
 (`EVO-REL-002`, backlog evolutivo). Todas já registradas como fora de escopo no
 `proposal.md`.
@@ -438,7 +438,7 @@ abaixo, aplicado junto com este log).
 **Revisão pós-fase (sessão principal, 2026-08-25):** encontrados 2 gaps reais de
 cobertura de teste HTTP, ambos fechados, nenhum ajuste de código de produto necessário:
 - `CreditoController::index` (GET `/rmas-credito`, listagem de `AguardandoCredito`) não
-  tinha nenhum teste — nem o caminho feliz (lista RMA com `solucao=PendenteCredito`,
+  tinha nenhum teste - nem o caminho feliz (lista RMA com `solucao=PendenteCredito`,
   não lista `GeradoCredito`) nem a exigência de autenticação.
 - `CreditoController::marcar` com `rma_id` inexistente não tinha teste do 404
   (`abort_if($registro === null, ...)`).
@@ -448,62 +448,62 @@ assertions (218→221, 390→396).
 
 ---
 
-## Fase 7 — Auditoria
+## Fase 7 - Auditoria
 
 **Data:** 2026-08-25.
 
 **Pré-requisito descoberto na revisão desta fase:** o `design.md` original (redação
 anterior a esta sessão) pseudocodificava `RegistrarModificacaoDeRma` como se os 8
 eventos de domínio já existissem. Na prática, só `RmaConcluido` existia (disparado por
-`ConcluirRma`, Fase 4) — os outros 7 (`RmaCriado`, `RmaEditado`, `RmaRecebido`,
+`ConcluirRma`, Fase 4) - os outros 7 (`RmaCriado`, `RmaEditado`, `RmaRecebido`,
 `RmaEncaminhado`, `RmaArquivado`, `RmaRevertido`, `SolucaoRegistrada`) foram criados
 nesta fase em `app/Rma/Dominio/Eventos/`, cada um com `public readonly User $ator` e
 `public readonly Rma $rma`, e `::dispatch()` foi adicionado ao final dos 7 casos de uso
 já implementados (`CriarRma`, `EditarRma`, `ReceberRma`, `EncaminharRma`, `ArquivarRma`,
-`ReverterRmaParaEntrada`, `RegistrarSolucao`) — uma linha a mais em cada método, sem
+`ReverterRmaParaEntrada`, `RegistrarSolucao`) - uma linha a mais em cada método, sem
 mudar assinatura nem comportamento. `sail test --filter=...` confirmado verde para cada
 arquivo tocado das Fases 3/4 antes de seguir adiante, e a suíte completa das Fases 3/4
 (40 testes) e Fase 4 (`ConcluirRmaTest`, 19 testes) confirmada verde depois. `CriarRma`
 e `EditarRma` não recebem `User $ator` como parâmetro (o controller nunca passou isso
-para eles nas Fases 3) — o ator é lido via `Auth::user()` dentro do próprio caso de
+para eles nas Fases 3) - o ator é lido via `Auth::user()` dentro do próprio caso de
 uso, mesmo usuário que a `Gate` já validou no controller; sem sessão autenticada
 (ex. chamada via `tinker`), o evento simplesmente não dispara.
 
 **Implementado:** migration `2026_09_01_000000_create_modificacoes_de_rma_table` (FK
-real para `rmas`/`users`, `on delete cascade` — o legado grava `numero`/`email` sem
+real para `rmas`/`users`, `on delete cascade` - o legado grava `numero`/`email` sem
 constraint); enum `App\Rma\Dominio\AcaoDeModificacao` (8 cases, sem backing, mesmo
 princípio de `Status`); `App\Models\ModificacaoDeRma` (cast `acao` para o enum,
-`estado_apos` para `array`); `Dominio\Rma::paraSnapshot()` — método puro novo que
+`estado_apos` para `array`); `Dominio\Rma::paraSnapshot()` - método puro novo que
 devolve os campos-chave do RMA (não estava no `design.md` original, que só chamava
 `$evento->rma->paraSnapshot()` sem definir onde vive; adicionado ao final de
 `Dominio\Rma.php`, ao lado de `classeDeAlerta()`/`prazoLegal()`); listener
-`RegistrarModificacaoDeRma` — assina os 8 eventos (mapa `class-string => AcaoDeModificacao`
+`RegistrarModificacaoDeRma` - assina os 8 eventos (mapa `class-string => AcaoDeModificacao`
 interno), único ponto de verdade que substitui o `registra_modificacao()` manual do
-legado; `RmaPolicy::update()` — dispara `TentativaDeGravacaoNaoPermitida` explicitamente
-antes de devolver `false` (evento novo, sem `rma` no payload — a Policy decide por
-classe, não por instância); listener `EnviarNotificacaoDeTentativaNaoPermitida` — grava
+legado; `RmaPolicy::update()` - dispara `TentativaDeGravacaoNaoPermitida` explicitamente
+antes de devolver `false` (evento novo, sem `rma` no payload - a Policy decide por
+classe, não por instância); listener `EnviarNotificacaoDeTentativaNaoPermitida` - grava
 `Log::warning` (ver desvio abaixo); listener `EnviarNotificacaoDeConclusao` + Mailable
-`RmaConcluidoMailable` (markdown, `resources/views/emails/rma-concluido.blade.php`) —
+`RmaConcluidoMailable` (markdown, `resources/views/emails/rma-concluido.blade.php`) -
 assina `RmaConcluido`, destinatário via `config('rma.notificacoes.conclusao')`
 (`RMA_NOTIFICACAO_CONCLUSAO` no `.env`), não envia nada se vazio; `RmaConcluido` ganhou
-a propriedade `ator` (não existia na Fase 4) — necessária para `RegistrarModificacaoDeRma`
+a propriedade `ator` (não existia na Fase 4) - necessária para `RegistrarModificacaoDeRma`
 gravar `user_id`; `ConcluirRma::dispatch($ator, $atualizado)` atualizado de acordo (o
 caso de uso já recebia `$ator` como parâmetro, só passou a propagá-lo).
-`config/rma.php` (`notificacoes.conclusao`). `AppServiceProvider::boot()` — projeto sem
+`config/rma.php` (`notificacoes.conclusao`). `AppServiceProvider::boot()` - projeto sem
 `EventServiceProvider` explícito (Laravel 13), listeners registrados via
 `Event::listen()`. `ConsolidarFretePorCidade` (RN-16, TEMA V2 como especificação,
-"PORTO ALEGRE" hardcoded, JOINs via relação Eloquent real — sem os aliases mortos
+"PORTO ALEGRE" hardcoded, JOINs via relação Eloquent real - sem os aliases mortos
 `FOD`/`FAD` do legado) e `BoletinsRelacionados` (paginado, exclui o próprio RMA) em
 `app/Rma/Aplicacao/`. Controllers `HistoricoDeModificacaoController`,
 `HistoricoDeAcessoController` (ambos exigem `Gate::authorize('gerenciar', User::class)`,
 mesma Policy/Gate de `UsuarioController`) e `LogisticaController` (não estava listado
 em `tasks.md` por nome, mas necessário para expor as duas rotas de `LEG-RMA-040`/`041`
-— `fretePortoAlegre`/`boletinsRelacionados`). 4 views mínimas + 1 view de e-mail, sem
+- `fretePortoAlegre`/`boletinsRelacionados`). 4 views mínimas + 1 view de e-mail, sem
 fidelidade visual (Fase 8). Rotas novas: `/rmas-historico`, `/historico-de-acesso`,
 `/rmas-logistica/frete-porto-alegre`, `/rmas/{rma}/boletins-relacionados`.
 
 **Desvios do OpenSpec (documentados no código):**
-- `EnviarNotificacaoDeTentativaNaoPermitida` não usa Mailable — `design.md`/`tasks.md`
+- `EnviarNotificacaoDeTentativaNaoPermitida` não usa Mailable - `design.md`/`tasks.md`
   listam um Mailable só para `EnviarNotificacaoDeConclusao` (`RmaConcluidoMailable`);
   para a tentativa negada, o canal escolhido foi `Log::warning` (contexto: `user_id`,
   `papel`). Justificativa: sem um template de e-mail especificado e sem destinatário
@@ -512,7 +512,7 @@ fidelidade visual (Fase 8). Rotas novas: `/rmas-historico`, `/historico-de-acess
   listener nem o disparo do evento.
 - `BoletinsRelacionados`: o pseudocódigo do `design.md`
   (`->where('destinatario_id', $rma->destinatarioId)->orWhere('fabricante_id', ...)
-  ->orWhere('fornecedor_id', ...)`) tem um efeito colateral não documentado — como o
+  ->orWhere('fornecedor_id', ...)`) tem um efeito colateral não documentado - como o
   Query Builder do Laravel traduz `where('coluna', null)` para `coluna IS NULL`, um RMA
   de referência sem destinatário/fabricante/fornecedor casava com **todo** outro RMA
   igualmente sem esses campos (confirmado via `tinker` durante esta fase, antes de
@@ -520,14 +520,14 @@ fidelidade visual (Fase 8). Rotas novas: `/rmas-historico`, `/historico-de-acess
   campo correspondente do RMA de referência não é nulo; se nenhum dos 3 campos existe,
   a query devolve vazio (`whereRaw('1 = 0')`) em vez de "tudo que também não tem".
   Coberto por `BoletinsRelacionadosTest`.
-- `RmaConcluido` (Fase 4) ganhou a propriedade `ator` nesta fase — não é uma mudança de
+- `RmaConcluido` (Fase 4) ganhou a propriedade `ator` nesta fase - não é uma mudança de
   comportamento observável (`ConcluirRmaTest` só verifica `Event::assertDispatched
   (RmaConcluido::class)`, sem inspecionar argumentos), mas é uma alteração de
   assinatura de um evento já existente, registrada aqui por transparência.
 
 **Testes:** 248/248 verdes, 443 assertions (`sail test`), mantendo os 221 das Fases 1-6.
 27 testes novos em 7 arquivos: `RegistrarModificacaoDeRmaTest` (8 casos, um por valor de
-`AcaoDeModificacao`, via HTTP real em cada endpoint do ciclo de vida — não só disparo
+`AcaoDeModificacao`, via HTTP real em cada endpoint do ciclo de vida - não só disparo
 manual do evento), `EnviarNotificacaoDeConclusaoTest` (2 casos: envia com destinatário
 configurado, `Mail::assertNothingSent()` sem destinatário), `EnviarNotificacaoDeTentativaNaoPermitidaTest`
 (3 casos: evento disparado quando `Leitura` tenta editar, não disparado quando
@@ -544,15 +544,15 @@ Operador cria um RMA; `ReceberRma::receber()` no mesmo RMA confirma
 `App\Models\ModificacaoDeRma::where('rma_id', ...)->where('acao', AcaoDeModificacao::
 Receber)->first()` encontrado, com `estado_apos` contendo `status: "Recebido"` e os
 demais campos-chave corretos (descrição, defeito, ids de fabricante/fornecedor/cliente
-etc.) — confirma o listener rodando de ponta a ponta fora do contexto de teste
+etc.) - confirma o listener rodando de ponta a ponta fora do contexto de teste
 automatizado, inclusive a leitura de `Auth::user()` dentro de `CriarRma` funcionando
 com login real via `Auth::login()`.
 
-**Pendência registrada — a decidir com o usuário (`EVO-AUD-001`):** `modificacoes_de_rma`
+**Pendência registrada - a decidir com o usuário (`EVO-AUD-001`):** `modificacoes_de_rma`
 grava snapshot estruturado (`estado_apos` json) com a ação nomeada (`AcaoDeModificacao`),
 não diff campo-a-campo (`de` → `para` por campo). Pergunta em aberto, repetida aqui por
 visibilidade: **isso já conta como ter adotado `EVO-AUD-001`, ou ainda falta o diff
-campo-a-campo de verdade?** Não decidido nesta sessão — ver `proposal.md`.
+campo-a-campo de verdade?** Não decidido nesta sessão - ver `proposal.md`.
 
 **Pendências que ficaram de fora:** fidelidade visual das views (Fase 8); diff
 campo-a-campo (`EVO-AUD-001`, ver acima); e-mail de fato para tentativa de gravação não
@@ -562,69 +562,69 @@ permitida (log por ora, ver desvio acima).
 boletins)` (ver hash abaixo, aplicado junto com este log).
 
 **Revisão pós-fase (sessão principal, 2026-08-25):** o desvio mais importante desta
-fase — a correção de `BoletinsRelacionados` para não tratar dois RMAs sem nenhuma
+fase - a correção de `BoletinsRelacionados` para não tratar dois RMAs sem nenhuma
 referência (destinatário/fabricante/fornecedor) como "relacionados" por `IS NULL`
-genérico — estava documentada em comentário e confirmada só por teste manual via
+genérico - estava documentada em comentário e confirmada só por teste manual via
 `tinker`, sem nenhum teste automatizado travando a regressão. Adicionado
 `test_rma_sem_nenhuma_referencia_nao_casa_com_outro_tambem_sem_referencia` (prova direta
 do bug corrigido) e `test_rma_relacionado_apenas_por_fornecedor` (o único dos 3 campos
-sem teste próprio até então — só fabricante e destinatário tinham caso dedicado).
+sem teste próprio até então - só fabricante e destinatário tinham caso dedicado).
 
 `sail test`: 250/250 verdes, 447 assertions (248→250, 443→447).
 
 ---
 
-## Fase 8 — Apresentação (Temas V1/V2)
+## Fase 8 - Apresentação (Temas V1/V2)
 
 **Data:** 2026-08-25.
 
 **Pré-requisito confirmado no início desta fase:** as 2 pendências reais originais
 (mecanismo de âncoras de TEMA V2; RN-11 em TEMA V1) e as 2 pendências de produto novas
 (fonte Open Sans; assimetria pós-login) já estavam resolvidas em `design.md`/
-`proposal.md` antes da implementação começar — ver esses arquivos para o detalhe
+`proposal.md` antes da implementação começar - ver esses arquivos para o detalhe
 completo da investigação. Esta fase implementou o plano já fechado, sem reabrir nenhuma
 das 4 decisões.
 
 **Implementado:**
 - **Vite/Sass:** `sass` e `bootstrap@3.3.5` instalados via `npm` (Vite 8 compila Sass
-  nativamente, sem plugin extra — só precisa da dependência `sass` presente). 2 `input`
+  nativamente, sem plugin extra - só precisa da dependência `sass` presente). 2 `input`
   novos em `vite.config.js` (`resources/js/temas/{v1,v2}.js`, cada um importando seu
   `.scss`), mantendo o `input` Tailwind do scaffold original intocado (não usado por
   nenhuma view desta fase).
-- **`resources/sass/temas/_compartilhado.scss`** — porta de verdade `pattern/15.9.7.css`
+- **`resources/sass/temas/_compartilhado.scss`** - porta de verdade `pattern/15.9.7.css`
   (296 linhas do legado): `TrInconformidade`/`TrUrgente`/`TrZebrada1/2`/
   `TrSemGarantia1/2`, `.breadcrumb`, `.centrodeavisos`, `.formSelect`, `.designedby`,
-  `.pmo`, `@font-face` de Fira Mono (self-hostado, `.ttf` copiado do repo Legacy —
+  `.pmo`, `@font-face` de Fira Mono (self-hostado, `.ttf` copiado do repo Legacy -
   read-only, só leitura/cópia, nada editado lá).
-- **`resources/sass/temas/v1.scss`** — paleta (`$fundo`/`$acento`/`$texto`), fallback de
+- **`resources/sass/temas/v1.scss`** - paleta (`$fundo`/`$acento`/`$texto`), fallback de
   fonte real (`"Arial","Fira Sans"`, NUNCA Open Sans), `$largura-fixa-tema-v1: 984px`
   nomeada (usada em `#BASE`/`#TOPO`/`#CONTEUDO`, sem NENHUM `@media`), seletores
-  autorais (`.tablenovo`, `.novo_formInput`, `.buttonSave`) — zero framework CSS.
-- **`resources/sass/temas/v2.scss`** — `$breakpoints-tema-v2`/`$larguras-container-tema-v2`
+  autorais (`.tablenovo`, `.novo_formInput`, `.buttonSave`) - zero framework CSS.
+- **`resources/sass/temas/v2.scss`** - `$breakpoints-tema-v2`/`$larguras-container-tema-v2`
   nomeados (fonte real: `15.8.1/css/media.php`), `@each` sobre o mapa (nenhum dos 6
   valores redigitado), fallback de fonte real, Bootstrap 3.3.5 self-hostado.
-- **`resources/js/temas/{v1,v2}.js`** — `v1.js` sem framework (toggle `.pmo` autoral);
-  `v2.js` importa `jquery` + `bootstrap/js/tab` (plugin isolado, não o bundle inteiro) —
+- **`resources/js/temas/{v1,v2}.js`** - `v1.js` sem framework (toggle `.pmo` autoral);
+  `v2.js` importa `jquery` + `bootstrap/js/tab` (plugin isolado, não o bundle inteiro) -
   reproduz a troca de aba client-side sem AJAX/reload confirmada no LEGACY-RUNTIME.
-- **`app/Http/Middleware/ResolverTemaAtivo.php`** — resolve o tema por prefixo de rota
+- **`app/Http/Middleware/ResolverTemaAtivo.php`** - resolve o tema por prefixo de rota
   (`v1.`/`v2.`, rotas de QA) ou por `tema_preferido` do usuário autenticado (fluxo
   normal), fallback `V2`; `View::share('temaAtivo', ...)`.
 - **`app/Support/view_do_tema.php`** (arquivo de funções globais, registrado em
-  `composer.json` → `autoload.files`) — 3 helpers: `view_do_tema($view, $data)` resolve
+  `composer.json` → `autoload.files`) - 3 helpers: `view_do_tema($view, $data)` resolve
   `temas.{tema}.{$view}`; `rota_tema($nome, $parametros)` gera a URL respeitando o
   prefixo da rota ATUAL (permite que a MESMA Blade funcione tanto acessada via
   `/v1/...`/`/v2/...` quanto pelo fluxo normal sem prefixo); `classe_css_de_alerta()`
   mapeia o enum `ClasseDeAlerta` (Fase 5, puro) para a classe CSS real por tema (RN-11).
-- **`routes/tema-{v1,v2}.php`** — prefixo `/v1`/`/v2`, MESMOS Controllers das rotas sem
+- **`routes/tema-{v1,v2}.php`** - prefixo `/v1`/`/v2`, MESMOS Controllers das rotas sem
   prefixo em `routes/web.php` (nenhuma lógica duplicada), registrados via `then:` em
   `bootstrap/app.php` (Laravel 13 não usa `Kernel.php` para isso).
   `ResolverTemaAtivo::class` registrado como `appendToGroup('web', ...)`.
-- **Árvore de Blade por tema** (`resources/views/temas/{v1,v2}/`) — layout, `rma/
+- **Árvore de Blade por tema** (`resources/views/temas/{v1,v2}/`) - layout, `rma/
   {index,create,edit,show}`, `parceiros/{index,_form}`, `identidade/{usuarios,perfil}`.
   `identidade/login.blade.php` existe uma única vez (gateway compartilhado, visual
-  próprio — Bootstrap `.login-box`/`.form-control`, reaproveitando o bundle V2 só
+  próprio - Bootstrap `.login-box`/`.form-control`, reaproveitando o bundle V2 só
   porque é ele que carrega o Bootstrap self-hostado, não porque a tela "é" TEMA V2).
-- **`temas/v2/rma/index.blade.php`** — painel único com os 7 tab-panes (`#inicio`,
+- **`temas/v2/rma/index.blade.php`** - painel único com os 7 tab-panes (`#inicio`,
   `#pesquisar`, `#novo_rma`, `#entrada`, `#recebido`, `#encaminhado`, `#concluido`),
   confirmado via `curl`/Playwright que os 7 aparecem todos no mesmo HTML e a troca é
   `data-toggle="tab"` puro.
@@ -634,7 +634,7 @@ das 4 decisões.
   escopado a `v2.scss`. O pacote npm `bootstrap@3.3.5` só publica LESS e CSS
   pré-compilado, não SCSS. Resolvido importando o CSS de distribuição REAL
   (`node_modules/bootstrap/dist/css/bootstrap.css`) como CSS puro (Sass repassa
-  `@import` de arquivo `.css` sem processar) — mesmos bytes que o legado carregava via
+  `@import` de arquivo `.css` sem processar) - mesmos bytes que o legado carregava via
   CDN, agora self-hostado. Efeito prático idêntico ao pretendido (grid/`.form-control`/
   tabs reais, escopados só ao bundle v2), só o mecanismo de import muda.
 - **Painel V2 (`#início`/`#novo_rma`) usa dados já resolvidos, sem caso de uso novo:**
@@ -643,52 +643,52 @@ das 4 decisões.
   uso "listar RMAs por status" na Fase 3-7 (só `BuscarRmas` por texto/serial/NF). Em vez
   de criar lógica de negócio nova (fora do escopo "puramente apresentação" desta fase),
   os painéis `entrada`/`recebido`/`encaminhado`/`concluido` particionam o MESMO
-  resultado já buscado por `RmaController@index` (`$rmas`) por `$registro->status` —
+  resultado já buscado por `RmaController@index` (`$rmas`) por `$registro->status` -
   presentação pura, sem query nova. Consequência aceita: os 4 painéis só mostram
   resultado quando há um termo de busca ativo (mesma limitação que o painel
   `#pesquisar`); a aba `#início` é um texto de boas-vindas e `#novo_rma` é um
   call-to-action para a tela de criação, não o formulário embutido. Se o produto quiser
   os 4 painéis por status sempre populados independente de busca, isso é um caso de uso
-  novo (fora do escopo desta fase) — registrado aqui, não decidido no escuro.
+  novo (fora do escopo desta fase) - registrado aqui, não decidido no escuro.
 - **Nome dos arquivos Playwright:** `tasks.md` original listava
   `tests/Browser/ComparacaoVisualTemaV{1,2}Test.php`. Um arquivo `.php` nunca seria
   descoberto por `npx playwright test` (runner Node/TS) nem por `sail test`
-  (PHPUnit não teria classe/namespace válidos para um `.spec` Playwright) — a extensão
+  (PHPUnit não teria classe/namespace válidos para um `.spec` Playwright) - a extensão
   `.php` no nome original era inconsistente com "Playwright" já dito no mesmo item.
   Renomeado para `ComparacaoVisualTemaV{1,2}Test.spec.ts` (convenção Playwright real).
 - **`tests/Browser/Support/breakpoints-tema-v2.json` mantido manualmente:** `design.md`
   sugere "gerado a partir do mesmo mapa Sass". Não foi escrito um gerador automático
-  nesta fase (escopo/tempo) — o JSON é escrito à mão em sincronia com
+  nesta fase (escopo/tempo) - o JSON é escrito à mão em sincronia com
   `$breakpoints-tema-v2`/`$larguras-container-tema-v2` de `v2.scss`, com comentário
   `_fonte` explicando a relação. Ainda cumpre o objetivo central (nenhum literal
   redigitado dentro dos arquivos `.spec.ts`), só não há verificação automática de que
-  os dois arquivos não divirjam — pendência menor, registrada.
+  os dois arquivos não divirjam - pendência menor, registrada.
 
 **Testes:**
 - `tests/Feature/Temas/RenderizaTemaV1Test.php` (7 testes) e `RenderizaTemaV2Test.php`
-  (6 testes) — smoke real via HTTP (`assertViewIs`/`assertSeeText`), cobrindo
+  (6 testes) - smoke real via HTTP (`assertViewIs`/`assertSeeText`), cobrindo
   login-gateway, redirect pós-login por `tema_preferido`, RMA index/create/show,
-  clientes, perfil, e — só no V2 — confirmação dos 7 `id="..."` de tab-pane no HTML.
+  clientes, perfil, e - só no V2 - confirmação dos 7 `id="..."` de tab-pane no HTML.
 - `sail test`: **263/263 verdes, 488 assertions** (250 das Fases 1-7 + 13 novos).
   1 falha intermitente pré-existente e não relacionada a esta fase foi observada numa
   execução (`HistoricoDeModificacaoTest`, nome Faker aleatório com apóstrofo
-  HTML-escapado batendo contra `assertSee` — Fase 7, não tocada aqui) e não se repetiu
+  HTML-escapado batendo contra `assertSee` - Fase 7, não tocada aqui) e não se repetiu
   na reexecução; não é causada por nenhuma mudança desta fase.
 - **Playwright REAL, não simulado:** `@playwright/test` instalado via `npm`; Chromium
   instalado com `npx playwright install --with-deps chromium` DENTRO do container
-  `laravel.test` (Sail) — funcionou de primeira, sem bloqueio de ambiente (headless
+  `laravel.test` (Sail) - funcionou de primeira, sem bloqueio de ambiente (headless
   shell + dependências X/fontes já presentes na imagem). `playwright.config.ts` aponta
-  para `http://localhost` (porta 80 interna ao container — `:8095` é só o mapeamento
+  para `http://localhost` (porta 80 interna ao container - `:8095` é só o mapeamento
   externo do host, `.env`/`APP_PORT`). Rodado via
   `sail exec laravel.test npx playwright test tests/Browser/`:
-  - `ComparacaoVisualTemaV1Test.spec.ts` — 3/3 passam: em 390/768/1440px, a largura
-    COMPUTADA de `#BASE` (`getComputedStyle`, não `getBoundingClientRect` — esse
+  - `ComparacaoVisualTemaV1Test.spec.ts` - 3/3 passam: em 390/768/1440px, a largura
+    COMPUTADA de `#BASE` (`getComputedStyle`, não `getBoundingClientRect` - esse
     inclui os 20px de padding lateral, dando 1004px, achado durante a execução, teste
     corrigido) é 984px nos 3 breakpoints, confirmando o layout fixo/não-responsivo.
-  - `ComparacaoVisualTemaV2Test.spec.ts` — 2/3 passam, 1 pulado corretamente: 768px→
+  - `ComparacaoVisualTemaV2Test.spec.ts` - 2/3 passam, 1 pulado corretamente: 768px→
     largura de `.container` = 730px, 1440px→990px (ambos batendo com
     `breakpoints-tema-v2.json`); 390px pulado via `test.skip` por estar abaixo do menor
-    breakpoint do tema (568px) — comportamento esperado, não falha.
+    breakpoint do tema (568px) - comportamento esperado, não falha.
 - **Screenshots reais (PNG), não simulados:** `tests/Browser/CapturarScreenshotsTemas.spec.ts`
   gravou 9 arquivos em `docs/produto/screenshots-fase8/` (login/perfil/RMAs/clientes
   dos 2 temas + a aba "Entrada" do painel V2), confirmados abertos e com conteúdo
@@ -710,23 +710,23 @@ de teste removidos ao final (`tinker` delete).
 - Gerador automático de `breakpoints-tema-v2.json` a partir do Sass (mantido manual
   por ora, ver desvio acima).
 - Painéis por status do dashboard V2 só populados quando há busca ativa (ver desvio
-  acima) — se o produto quiser diferente, é um caso de uso novo, fora do escopo desta
+  acima) - se o produto quiser diferente, é um caso de uso novo, fora do escopo desta
   fase.
 
 **Commit:** `#F8 - Apresentacao (Tema V1 + Tema V2 fieis)` (ver hash abaixo, aplicado
 junto com este log).
 
 **Revisão pós-fase (sessão principal, 2026-08-25):**
-- Verificados manualmente 2 screenshots reais (`v1-rmas.png`, `v2-rmas-inicio.png`) —
+- Verificados manualmente 2 screenshots reais (`v1-rmas.png`, `v2-rmas-inicio.png`) -
   cor de header de TEMA V1 confirmada contra o CSS real do legado
   (`#AE0D3A`, `legacy-source/pattern/14.6.1.css:45`, `#FIXADO`), não estava nem na
-  lista de paleta documentada em `inventario-visual-tema-v1.md` — a implementação
+  lista de paleta documentada em `inventario-visual-tema-v1.md` - a implementação
   buscou a cor real na fonte primária em vez de confiar só no inventário secundário.
   Confirma que os screenshots são genuínos, não fabricados.
 - **Gap real encontrado:** os testes de tema (`RenderizaTemaV1Test`/`V2Test`) provam
   que a resolução de tema funciona com o usuário já autenticado via `actingAs()`, mas
   nenhum teste exercitava a decisão central da Fase 8 (redirect pós-login sempre
-  respeita `tema_preferido`) através do fluxo real `POST /login` — exatamente o
+  respeita `tema_preferido`) através do fluxo real `POST /login` - exatamente o
   comportamento que motivou a decisão do usuário em 2026-08-25. Adicionados 2 testes em
   `AutenticacaoTest.php`: login real de usuário V1/V2, seguindo o redirect e
   confirmando a view renderizada (`temas.v1.identidade.perfil`/
@@ -736,122 +736,122 @@ junto com este log).
 
 ---
 
-## Fase 9 — Migração V2→V3
+## Fase 9 - Migração V2→V3
 
 **Data:** 2026-08-25.
 
 **Pré-requisito confirmado no início desta fase:** Fases 4/5 (enums `Status`/`Solucao`/
 `Origem`/`Prioridade`/`StatusDeLancamento`) já estavam implementadas em código antes
 desta fase começar a ser codificada (confirmado lendo `app/Rma/Dominio/*.php`
-diretamente) — o bloqueador registrado em `tasks.md`/`checklist-master-v3.md` já não se
+diretamente) - o bloqueador registrado em `tasks.md`/`checklist-master-v3.md` já não se
 aplicava.
 
 **Implementado:**
-- **`config/database.php`** — conexão nomeada `rma_legacy` (driver `mysql`), variáveis
+- **`config/database.php`** - conexão nomeada `rma_legacy` (driver `mysql`), variáveis
   `LEGACY_DB_*` documentadas em `.env.example` (`LEGACY_DB_HOST=host.docker.internal`,
-  `LEGACY_DB_PORT=3309` — as redes Docker dos 2 projetos são isoladas, ver
+  `LEGACY_DB_PORT=3309` - as redes Docker dos 2 projetos são isoladas, ver
   `docs/desenvolvimento/ambiente-v2-v3.md`).
-- **`app/Rma/Infraestrutura/Migracao/TabelaDeTraducao.php`** — 8 métodos estáticos
+- **`app/Rma/Infraestrutura/Migracao/TabelaDeTraducao.php`** - 8 métodos estáticos
   (`status`/`origem`/`prioridade`/`prioridadeEhResiduoUrgente`/`solucao`/
   `statusDeLancamento`/`papel`/`temaPreferido`/`empresa`), único lugar do código que
   compara um valor cru do legado por igualdade, implementando `INV-RMA-06` §2-§6, §9,
   §11 completos.
-- **`ParserDeDataLegado`/`ResultadoDeParseDeData`** — PENDÊNCIA-1 resolvida: parser de 3
+- **`ParserDeDataLegado`/`ResultadoDeParseDeData`** - PENDÊNCIA-1 resolvida: parser de 3
   tentativas (`d/m/Y` → `Y-m-d` → não-parseável), nunca lança exceção (Carbon lança
   `InvalidFormatException`/similar para entrada fora do formato tentado em vez de
-  devolver `false` como o `design.md` original presumia — capturado com `try/catch`,
+  devolver `false` como o `design.md` original presumia - capturado com `try/catch`,
   achado só durante a implementação/teste). Formatos de data pura zeram a hora
   (`startOfDay()`) para não herdar o horário-corrente do momento em que o migrador roda.
-- **`ConexaoLegado`** — 1 método por tabela (`LazyCollection`/`cursor()`), 7 tabelas lidas
+- **`ConexaoLegado`** - 1 método por tabela (`LazyCollection`/`cursor()`), 7 tabelas lidas
   (`usuario`/`cliente`/`fabricante`/`fornecedor`/`assistencia_tecnica`/`bd`/`log`/
-  `modificacao` — 8 no total; `relatorio`, a 9ª, nunca tem método correspondente,
+  `modificacao` - 8 no total; `relatorio`, a 9ª, nunca tem método correspondente,
   PENDÊNCIA-3 resolvida por omissão).
-- **`RelatorioDeReconciliacao`** — contagem origem×destino por tabela, anomalias,
+- **`RelatorioDeReconciliacao`** - contagem origem×destino por tabela, anomalias,
   conversões assistidas; `resumo()` monta o relatório final, `salvar()` grava em
   `storage/app/migracao/relatorio-{timestamp}.txt`.
-- **`ResolverDestinatario`** — cascata `assistencia_tecnica → fornecedor → fabricante`,
+- **`ResolverDestinatario`** - cascata `assistencia_tecnica → fornecedor → fabricante`,
   comparação normalizada (trim + case-insensitive), sem auto-criação.
-- **2 migrations** — `numero_legado` (unique, nullable) em `rmas`; colunas históricas de
+- **2 migrations** - `numero_legado` (unique, nullable) em `rmas`; colunas históricas de
   preservação (`INV-RMA-06` §1.2/§5/§7/§10: `nf_*_legado`, `pn`, `snid`,
   `rastreio_ida/retorno`, `*_email_legado`, `solucao_legado_bruto`,
   `destinatario_nome_legado`, `operador_email_legado`/`operador_id`). **Datas
-  deslocadas** de `2026_09_01_00000{0,1}` para `2026_09_02_00000{0,1}` — a data original
+  deslocadas** de `2026_09_01_00000{0,1}` para `2026_09_02_00000{0,1}` - a data original
   do `design.md` já estava ocupada por `create_modificacoes_de_rma_table.php` (Fase 7,
   commitada antes desta fase começar).
 - **`app/Parceiros/Aplicacao/EncontrarOuCriar{Fabricante,Fornecedor,
-  AssistenciaTecnica}.php`** — generalização de `EncontrarOuCriarCliente` (Fase 2), uso
+  AssistenciaTecnica}.php`** - generalização de `EncontrarOuCriarCliente` (Fase 2), uso
   exclusivo do migrador (Fase 3/`CriarRma`/`EditarRma` não mudam de comportamento).
 - **8 importadores** em `app/Rma/Infraestrutura/Migracao/Importadores/`, ordem de
   dependência de FK (Usuarios → Clientes → Fabricantes → Fornecedores →
   AssistenciasTecnicas → Rmas → LogsDeAcesso → ModificacoesDeRma), transação por
   importador (`DB::transaction()`), cada um com `contarOrigem`/`contarDestino` próprios.
   `ImportarModificacoesDeRma::disponivel()` checa `Schema::hasTable('modificacoes_de_rma')`
-  de verdade antes de rodar — checagem defensiva real, não assumida implicitamente só
+  de verdade antes de rodar - checagem defensiva real, não assumida implicitamente só
   porque a Fase 7 está commitada.
-- **`php artisan rma:migrar-legado`** — opções `--somente=<tabela>`/`--dry-run`/
+- **`php artisan rma:migrar-legado`** - opções `--somente=<tabela>`/`--dry-run`/
   `--forcar`, imprime e salva o relatório de reconciliação ao final.
 
-**As 3 pendências reais de `INV-RMA-06` — como foram tratadas:**
-1. **Formato de data ambíguo** — `ParserDeDataLegado`, ver acima. Testado com `d/m/Y`,
+**As 3 pendências reais de `INV-RMA-06` - como foram tratadas:**
+1. **Formato de data ambíguo** - `ParserDeDataLegado`, ver acima. Testado com `d/m/Y`,
    `Y-m-d` e valor não-parseável (`'31 de maio'`) nos 3 casos em `ImportarRmasTest`.
-2. **`status='retornou'`** — `ImportarRmas` registra anomalia específica se o valor
+2. **`status='retornou'`** - `ImportarRmas` registra anomalia específica se o valor
    aparecer (`status`) e também faz um segundo cross-check independente sobre
    `bd.retornou IS NOT NULL` (coluna própria, preservada só para esse cross-check, nunca
-   migrada como coluna V3) — os 2 casos têm teste dedicado. Nenhum case novo foi
+   migrada como coluna V3) - os 2 casos têm teste dedicado. Nenhum case novo foi
    adicionado ao enum `Status`.
-3. **`relatorio.informacaoadicional`** — opção B aplicada por omissão (decisão
-   registrada, não silenciosa — ver `proposal.md`). A tabela nunca é lida.
+3. **`relatorio.informacaoadicional`** - opção B aplicada por omissão (decisão
+   registrada, não silenciosa - ver `proposal.md`). A tabela nunca é lida.
 
 **Desvios do OpenSpec (documentados no código/aqui):**
 - **Migrations deslocadas de data** (`2026_09_01_00000{0,1}` → `2026_09_02_00000{0,1}`)
-  — colisão com a migration da Fase 7, ver acima.
-- **`rmas.status` precisou virar `nullable`** — bloqueador técnico descoberto ao
+  - colisão com a migration da Fase 7, ver acima.
+- **`rmas.status` precisou virar `nullable`** - bloqueador técnico descoberto ao
   codificar `ImportarRmas`: `INV-RMA-06` §2 exige "RMA importado sem status resolvido"
   para valor fora do domínio (anomalia), mas a coluna (Fase 3) era `NOT NULL`. Resolvido
   na mesma migration que já mexe em `rmas` nesta fase, mantendo `default('Entrada')`
-  (usado implicitamente por `RmaFactory`) — só deixou de ser `NOT NULL`. Mesma categoria
+  (usado implicitamente por `RmaFactory`) - só deixou de ser `NOT NULL`. Mesma categoria
   do ajuste já feito para `rmas.valor` na Fase 5 (bloqueador técnico, não decisão de
   produto).
 - **Dedup de parceiro precisou de um helper novo** (`AtualizaOuCriaPorNomeNormalizado`)
-  — a 1ª versão dos 4 importadores de parceiro (`Clientes`/`Fabricantes`/`Fornecedores`/
+  - a 1ª versão dos 4 importadores de parceiro (`Clientes`/`Fabricantes`/`Fornecedores`/
   `AssistenciasTecnicas`) usava `Model::updateOrCreate(['nome' => $normalizado], ...)`
-  diretamente, que casa por igualdade EXATA — duas grafias do mesmo nome
+  diretamente, que casa por igualdade EXATA - duas grafias do mesmo nome
   (`'seagate'`/`'Seagate'`) criariam 2 linhas em vez de 1 (bug pego pelo teste
   `test_dedup_por_nome_normalizado_case_insensitive`, que falhou até a correção). O
   helper novo busca por `LOWER(nome)` primeiro (mesma regra de
   `EncontrarOuCriarCliente`), só cai para `create()` se realmente não existir.
-- **Senha de usuário migrado — fluxo "esqueci minha senha" sem rota nomeada.**
+- **Senha de usuário migrado - fluxo "esqueci minha senha" sem rota nomeada.**
   `INV-RMA-06` §11 já fixava "dispara o fluxo nativo de esqueci minha senha do Laravel"
   para todo usuário migrado (nunca preserva `Key1461`/`Key1581`, SHA1 sem salt,
   irreversível para bcrypt). A V3 (`LEG-RMA-003`) só tem reset de senha feito pelo
-  ADMINISTRADOR (`ResetarSenhaDeUsuario`) — não existe UI de autosserviço com rota
+  ADMINISTRADOR (`ResetarSenhaDeUsuario`) - não existe UI de autosserviço com rota
   nomeada `password.reset`, então `Password::sendResetLink()` (broker nativo) falhava
   com `RouteNotFoundException` ao montar a notificação `ResetPassword`. Resolvido com
   `ResetPassword::createUrlUsing()` (registrado em `ImportarUsuarios::executar()`),
-  construindo a URL do e-mail sem depender da rota nomeada — o broker/token/e-mail
+  construindo a URL do e-mail sem depender da rota nomeada - o broker/token/e-mail
   continuam 100% nativos do Laravel (`password_reset_tokens`, `Password::sendResetLink`),
   só a montagem do link não depende de uma tela de reset que está fora do escopo desta
   fase criar. Enviado só na criação do usuário (`$novo`), nunca em updates subsequentes
   (idempotência não deve reenviar e-mail nem trocar a senha de quem já trocou desde a
   migração).
 - **Banco `rma_legacy` de TESTE não é um banco separado no sentido literal de
-  servidor** — aponta para o MESMO servidor MySQL do container Sail
+  servidor** - aponta para o MESMO servidor MySQL do container Sail
   (`rma-v3-mysql-1`), banco físico próprio (`testing_legacy`, criado sob demanda pelo
-  trait `ComBancoLegadoDeTeste` via um `\PDO` cru — **não** pela conexão Laravel padrão,
+  trait `ComBancoLegadoDeTeste` via um `\PDO` cru - **não** pela conexão Laravel padrão,
   porque `CREATE DATABASE` é DDL e um DDL rodado dentro da transação que
   `RefreshDatabase` já abriu na conexão padrão causa commit implícito do MySQL,
-  quebrando os `SAVEPOINT`s internos do Laravel — achado só durante a 1ª tentativa de
+  quebrando os `SAVEPOINT`s internos do Laravel - achado só durante a 1ª tentativa de
   implementação, `SQLSTATE[42000]: SAVEPOINT trans3 does not exist`). O usuário
   `rma_v3` já tem `GRANT ALL PRIVILEGES ON \`testing%\`.*` (script padrão do Sail,
   `create-testing-database.sh`), então `testing_legacy` casa no padrão sem precisar de
   usuário `root`.
 
 **Testes:**
-- `tests/Feature/Migracao/Suporte/{ComBancoLegadoDeTeste,MigracaoTestCase}.php` —
+- `tests/Feature/Migracao/Suporte/{ComBancoLegadoDeTeste,MigracaoTestCase}.php` -
   schema legado reproduzido (8 tabelas, colunas fiéis a `INV-RMA-06`/
   `inventario-banco-rma-v2.md`), fixture pequena por teste, não o dump de produção.
 - 8 arquivos de teste de importador (`Importar{Usuarios,Clientes,Fabricantes,
-  Fornecedores,AssistenciasTecnicas,Rmas,LogsDeAcesso,ModificacoesDeRma}Test.php`) — 39
+  Fornecedores,AssistenciasTecnicas,Rmas,LogsDeAcesso,ModificacoesDeRma}Test.php`) - 39
   testes: caso feliz, anomalia (valor fora do domínio), idempotência (rodar 2x não
   duplica), soft-match de e-mail/dedup case-insensitive.
   `ImportarRmasTest` é o mais completo (14 testes): status/solução/prioridade/
@@ -860,26 +860,26 @@ aplicava.
   como conversão assistida, data não-parseável com valor bruto no relatório, data
   `Y-m-d` aceita, destinatário resolvido/não resolvido (cascata sem auto-criação),
   operador soft-match, idempotência, `--dry-run`.
-- `MigrarLegadoComandoTest.php` (4 testes) — os 8 passos em ordem contra fixture
+- `MigrarLegadoComandoTest.php` (4 testes) - os 8 passos em ordem contra fixture
   completa, `--somente`, `--dry-run` (nada gravado, relatório não salvo), idempotência
   ponta a ponta rodando o comando 2x.
 - `sail test`: **308/308 verdes, 593 assertions** (265 das Fases 1-8 + 43 novos).
 
-**Dry-run real contra o Legacy — tentado, bloqueado por rede (não fabricado):**
+**Dry-run real contra o Legacy - tentado, bloqueado por rede (não fabricado):**
 `docker ps` confirmou `rma-legacy-mariadb-1`/`rma-legacy-php-legacy-1` ativos nesta
 sessão. Configurar `LEGACY_DB_HOST=host.docker.internal`/`LEGACY_DB_PORT=3309` e rodar
 `php artisan rma:migrar-legado --dry-run` de dentro do container `laravel.test` falhou
 por timeout de conexão. Diagnóstico: `compose.yaml` do repositório Legacy publica a
-porta com `127.0.0.1:${DB_PORT:-3309}:3306` (bind só no loopback do HOST) — um teste de
+porta com `127.0.0.1:${DB_PORT:-3309}:3306` (bind só no loopback do HOST) - um teste de
 conectividade TCP direto confirmou `FAIL` (`Connection refused`) de dentro do container
 V3 contra `host.docker.internal:3309`, e `OK` rodando o mesmo teste a partir do host.
-`host.docker.internal` resolve para o gateway Docker do host, não para `127.0.0.1` —
+`host.docker.internal` resolve para o gateway Docker do host, não para `127.0.0.1` -
 uma porta publicada só em loopback nunca é alcançável por esse caminho, é uma limitação
 de rede do Docker, não um bug do migrador. Corrigir exigiria editar o `compose.yaml` do
-repositório Legacy (trocar o bind para `0.0.0.0`/publicar sem IP) — fora de escopo desta
+repositório Legacy (trocar o bind para `0.0.0.0`/publicar sem IP) - fora de escopo desta
 sessão (regra dura: nunca escrever no repositório Legacy). A evidência que importa mais
-— os testes automatizados contra a fixture pequena, incluindo `MigrarLegadoComandoTest`
-rodando o comando completo com `--dry-run` de verdade — está feita e verde.
+- os testes automatizados contra a fixture pequena, incluindo `MigrarLegadoComandoTest`
+rodando o comando completo com `--dry-run` de verdade - está feita e verde.
 
 **Pendências que ficaram de fora (não bloqueiam a Fase 9, fora do escopo desta sessão):**
 - Provisionar de fato o usuário MySQL `GRANT SELECT`-only no banco Legacy real (a
@@ -887,10 +887,10 @@ rodando o comando completo com `--dry-run` de verdade — está feita e verde.
   usuário no servidor Legacy é uma ação de infraestrutura fora do escopo de "implementar
   o código").
 - Corrigir o bind de porta do Legacy (`compose.yaml` daquele repositório) para permitir
-  dry-run real a partir do container V3 — decisão do usuário, envolve editar o
+  dry-run real a partir do container V3 - decisão do usuário, envolve editar o
   repositório Legacy.
 - Confirmar contra dado real quantas linhas caem no caso "data não-parseável" e se
-  `status='retornou'`/`retornou` realmente ocorre — só possível rodando contra o banco
+  `status='retornou'`/`retornou` realmente ocorre - só possível rodando contra o banco
   real (bloqueado nesta sessão, ver acima).
 
 **Commit:** `#F9 - Migracao V2-V3 (migrador, relatorio de reconciliacao)` (ver hash
@@ -898,28 +898,28 @@ abaixo, aplicado junto com este log).
 
 ---
 
-## Correção pós-Fase 8 — Fidelidade visual real (login-gateway + "CENTRO DE AVISOS") — 2026-08-25
+## Correção pós-Fase 8 - Fidelidade visual real (login-gateway + "CENTRO DE AVISOS") - 2026-08-25
 
-**Não é uma fase nova.** A Fase 8 ("Apresentação — Temas V1/V2") já estava commitada,
+**Não é uma fase nova.** A Fase 8 ("Apresentação - Temas V1/V2") já estava commitada,
 mas uma comparação de verdade contra o LEGACY-RUNTIME (`08.24.4-legacy-gerenciador-de-rma`,
-`:8094`) — feita nesta sessão via Playwright rodando no HOST (o container Sail não
+`:8094`) - feita nesta sessão via Playwright rodando no HOST (o container Sail não
 alcança `:8094`, rede Docker isolada por design; ver `tests/Browser/Support/
-legacy-cdn-cache/README.md`) — encontrou divergências grandes e reais, não sutis.
+legacy-cdn-cache/README.md`) - encontrou divergências grandes e reais, não sutis.
 Rotas/Controllers/casos de uso das Fases 1-9 **não mudaram**; só Blade/Sass/JS.
 
 **Achado sobre o próprio processo de comparação (registrar para não repetir):** a
 primeira tentativa de capturar as referências do legado bloqueou o CDN externo do
-Bootstrap (`maxcdn.bootstrapcdn.com`) para evitar um hang de carregamento de fonte —
+Bootstrap (`maxcdn.bootstrapcdn.com`) para evitar um hang de carregamento de fonte -
 isso quebrou o PRÓPRIO layout de referência (Bootstrap nunca carregou) e gerou uma
 comparação inicialmente enganosa (dava a impressão de que o legado também era "simples
 sem framework", o que é falso). Corrigido interceptando a requisição e SERVINDO os
 bytes reais do Bootstrap 3.3.5 vendorizados localmente (`tests/Browser/Support/
-legacy-cdn-cache/bootstrap-3.3.5/`) em vez de bloquear — assim reproduz o resultado
+legacy-cdn-cache/bootstrap-3.3.5/`) em vez de bloquear - assim reproduz o resultado
 visual real sem depender de internet disponível na sessão. As 3 capturas válidas (com
 Bootstrap carregado corretamente) ficaram em `docs/produto/screenshots-fase8-legacy-ref/`
 (`ref-gateway-login.png`, `ref-v1-dashboard.png`, `ref-v2-dashboard.png`).
 
-**Gap 1 (prioridade máxima, concluído) — Login-gateway completamente diferente.**
+**Gap 1 (prioridade máxima, concluído) - Login-gateway completamente diferente.**
 `identidade/login.blade.php` era um card genérico de fundo escuro ("CellSystem RMA",
 labels separadas, botão largo "Entrar"). O real, confirmado por `curl` autenticado em
 `http://localhost:8094/` (AdminLTE 2.2.0 `login-page`/`login-box`): fundo `#d2d6de`
@@ -929,26 +929,26 @@ campos com placeholder + glyphicon (envelope/cadeado) dentro do campo, botão pe
 "Iniciar" alinhado à direita, link "Eu esqueci minha senha", e um banner laranja/
 azul-marinho ("NÃO É O QUE PROCURA? CLIQUE AQUI PARA ABRIR A FERRAMENTA 14.6.1 DE RMA").
 Reconstruído com bundle Vite PRÓPRIO (`resources/js/identidade/login.js` +
-`resources/sass/identidade/login.scss`, registrado em `vite.config.js`) — não reaproveita
+`resources/sass/identidade/login.scss`, registrado em `vite.config.js`) - não reaproveita
 o bundle de nenhum tema, porque o gateway não é TEMA V1 nem TEMA V2 (decisão já
 registrada em `openspec/changes/temas-v1-v2/design.md`). O banner linka de volta para
 `route('login')`: a V3 já decidiu unificar o pós-login (sempre respeita
 `tema_preferido`), então não existe (nem deveria existir) uma segunda tela de login
-exclusiva de TEMA V1 como no legado — o banner é reproduzido como elemento visual +
+exclusiva de TEMA V1 como no legado - o banner é reproduzido como elemento visual +
 atalho de navegação pré-login, documentado inline no Blade.
 
-**Gap 2 (concluído) — "CENTRO DE AVISOS E RELATORIOS" ausente na home dos dois temas.**
+**Gap 2 (concluído) - "CENTRO DE AVISOS E RELATORIOS" ausente na home dos dois temas.**
 As 11 regras de leitura da Fase 5 (`app/Rma/Aplicacao/Alertas/`) já existiam e já
 tinham uma tela dedicada (`PainelDeAlertasController`/`rmas.alertas`), mas a aba
 "Início" (TEMA V2) e a página "RMAs" (TEMA V1, mais próxima do "Pág. Inicial" do
-legado na arquitetura unificada da V3) não mostravam nada disso — confirmado contra
+legado na arquitetura unificada da V3) não mostravam nada disso - confirmado contra
 `ref-v1-dashboard.png`/`ref-v2-dashboard.png` e HTML autenticado capturado via
-Playwright (`15.8.1/`/`14.6.1/`, login por formulário, não por API — usadas as
+Playwright (`15.8.1/`/`14.6.1/`, login por formulário, não por API - usadas as
 credenciais de laboratório). Extraída `App\Rma\Aplicacao\Alertas\
 ListarGruposDeAlertas` (composição das 11 chamadas, elimina a duplicação que existiria
 entre `PainelDeAlertasController` e `RmaController::index`) e um novo partial
 compartilhado `resources/views/rma/_centro_de_avisos.blade.php` (usado pelos DOIS
-temas — ícones vendorizados de `legacy-source/images/` para `public/images/rma/`:
+temas - ícones vendorizados de `legacy-source/images/` para `public/images/rma/`:
 `lembrete.png`, `retornou.png`, `separador.png`, `separador2.png`, `notas.png`, mesmos
 bytes do legado). TEMA V2: aba "Início" ganhou busca simplificada ("Pesquisar:" +
 "Enviar pesquisa", mesma rota/Controller da aba "Pesquisar") + divisor + Centro de
@@ -956,18 +956,18 @@ Avisos, tudo "estourando" do `.box-content` branco de volta para o fundo escuro
 (`.painel-inicio-fundo-escuro` em `v2.scss`, achado real: a aba início do legado não
 fica dentro de nenhum card branco). TEMA V1: página "RMAs" ganhou "QUADRO DE
 ANOTACOES" (reusa a MESMA rota/caso de uso `AtualizarAnotacaoPessoal` da Fase 1, só um
-segundo lugar na UI para o mesmo dado — nenhuma lógica nova) + sidebar de contadores
+segundo lugar na UI para o mesmo dado - nenhuma lógica nova) + sidebar de contadores
 por status/solução (`RmaController::contadoresDoPainel()`, consulta de composição
 direta, valores/larguras reais de `14.6.1.css:74-76`) + Centro de Avisos.
 
-**Testes:** `sail test` — 308/308 verdes, 593 assertions (mesmo total da Fase 9, nenhum
+**Testes:** `sail test` - 308/308 verdes, 593 assertions (mesmo total da Fase 9, nenhum
 teste quebrado). Nota: uma execução intermediária durante esta correção mostrou 8-11
 falhas/erros, todas em `Tests\Feature\Migracao\*` (ex.: `Table 'usuario' already
-exists`, `Table 'testing.rmas' doesn't exist`) — investigado e confirmado, via `git
+exists`, `Table 'testing.rmas' doesn't exist`) - investigado e confirmado, via `git
 stash` isolando o diff desta correção, que essas falhas já existiam ANTES de qualquer
 mudança desta sessão (reproduzidas também com o código stashado) e são contenção de
 estado de banco entre execuções concorrentes do trabalho em andamento da Fase 9
-(migrador rodando em paralelo nesta mesma janela de tempo) — nenhuma delas toca
+(migrador rodando em paralelo nesta mesma janela de tempo) - nenhuma delas toca
 `identidade/login`, `RmaController`, ou os temas. Reconfirmado depois com a suíte
 completa isolada: 308/308 verdes.
 
@@ -977,7 +977,7 @@ completa isolada: 308/308 verdes.
   de abas colorida de ponta a ponta ("Inicio | Pesquisar | ... | Menu | Logout"),
   estruturalmente diferente do breadcrumb + `nav-tabs` atual da V3 (dois níveis
   separados). Reconstruir isso exigiria reformular a navegação de TODAS as telas do
-  TEMA V2 (não só a home) — risco/escopo maior que o tempo desta correção permitia,
+  TEMA V2 (não só a home) - risco/escopo maior que o tempo desta correção permitia,
   fora de escopo aqui.
 - Divisor `separador2.png`/`.hrup` e outros detalhes finos de espaçamento do legado não
   foram replicados pixel a pixel (a diretriz da tarefa era "parar de ser obviamente

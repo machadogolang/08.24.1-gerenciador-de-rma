@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Reproduz, para teste, as 8 tabelas de `rma_legacy` realmente lidas pelo migrador
- * (`relatorio`, a 9ª, nunca é lida — decisão B por omissão, PENDÊNCIA-3 de
- * `INV-RMA-06`), com fixture pequena e conhecida — não o dump de produção inteiro, não
+ * (`relatorio`, a 9ª, nunca é lida - decisão B por omissão, PENDÊNCIA-3 de
+ * `INV-RMA-06`), com fixture pequena e conhecida - não o dump de produção inteiro, não
  * depende do container Legacy real estar de pé (`design.md`).
  *
  * A conexão `rma_legacy` de teste (`phpunit.xml`) aponta para um banco físico separado
- * (`testing_legacy`) no MESMO servidor MySQL do container Sail — criado aqui sob
+ * (`testing_legacy`) no MESMO servidor MySQL do container Sail - criado aqui sob
  * demanda, nunca tocado pelo `RefreshDatabase`/`migrate:fresh` do banco `testing`
  * padrão.
  */
@@ -20,7 +20,7 @@ trait ComBancoLegadoDeTeste
 {
     protected function criarEsquemaLegado(): void
     {
-        // `CREATE DATABASE` é DDL — se rodasse pela conexão padrão (`mysql`), o commit
+        // `CREATE DATABASE` é DDL - se rodasse pela conexão padrão (`mysql`), o commit
         // implícito do MySQL quebraria os SAVEPOINTs que `RefreshDatabase` já abriu
         // nela. Usa um PDO cru, fora de qualquer conexão gerenciada pelo Laravel, só
         // para garantir que o banco físico de teste (`testing_legacy`) exista.
@@ -166,7 +166,7 @@ trait ComBancoLegadoDeTeste
             $table->string('destinatario_fone', 50)->nullable();
             $table->string('descricao_final', 50)->nullable();
             $table->string('usuario', 50)->nullable();
-            // §1.3 — não migrados, lidos só para cross-check/anomalia
+            // §1.3 - não migrados, lidos só para cross-check/anomalia
             $table->string('prazo', 50)->nullable();
             $table->integer('ano')->nullable();
             $table->dateTime('dtains')->nullable();

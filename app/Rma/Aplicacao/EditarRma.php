@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Auth;
 use RuntimeException;
 
 /**
- * LEG-RMA-010 — ajuste da revisão (não tinha fase dona no plano original). Mesmas
+ * LEG-RMA-010 - ajuste da revisão (não tinha fase dona no plano original). Mesmas
  * normalizações RN-13/RN-14 da criação, reaplicadas a cada edição.
  *
- * **Fase 7:** dispara `RmaEditado` ao final, lido via `Auth::user()` — mesma
+ * **Fase 7:** dispara `RmaEditado` ao final, lido via `Auth::user()` - mesma
  * justificativa de `CriarRma`.
  */
 final class EditarRma
@@ -61,7 +61,7 @@ final class EditarRma
             : null;
 
         // ARQ-001 (`INV-RMA-10`): parte do agregado existente e altera só os campos do
-        // núcleo editável pelo formulário — status, datas de ciclo de vida, solução,
+        // núcleo editável pelo formulário - status, datas de ciclo de vida, solução,
         // prioridade, notas fiscais, valor e crédito permanecem como já estavam.
         $rma = $existente->comAlteracoes([
             'descricao' => $dados['descricao'],

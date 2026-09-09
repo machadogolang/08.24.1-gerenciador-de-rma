@@ -10,7 +10,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Support\Facades\Date;
 
 /**
- * LEG-RMA-012. Exige `destinatario` preenchido antes de aceitar — no legado essa
+ * LEG-RMA-012. Exige `destinatario` preenchido antes de aceitar - no legado essa
  * validação existe só em JS; aqui vira regra de domínio real (decisão registrada no
  * `proposal.md`). Fase 7: dispara `RmaEncaminhado` ao final.
  */

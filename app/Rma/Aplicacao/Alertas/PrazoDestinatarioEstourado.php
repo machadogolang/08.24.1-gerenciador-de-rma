@@ -7,7 +7,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RN-07 (`LEG-RMA-024`) — RMA encaminhado a um destinatário há mais de 30 dias sem
+ * RN-07 (`LEG-RMA-024`) - RMA encaminhado a um destinatário há mais de 30 dias sem
  * retorno.
  */
 final class PrazoDestinatarioEstourado

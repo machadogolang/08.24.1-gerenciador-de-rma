@@ -7,7 +7,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Support\Collection;
 
 /**
- * CP19 — `15.8.1/banco.php:912` (`right_fornecedores()`): `GROUP BY fornecedor`.
+ * CP19 - `15.8.1/banco.php:912` (`right_fornecedores()`): `GROUP BY fornecedor`.
  *
  * @return Collection<int, array{nome: string, contagem: int}>
  */

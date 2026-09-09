@@ -34,7 +34,7 @@ class EditarRmaTest extends TestCase
     public function test_edicao_reaplica_normalizacao_rn13_rn14(): void
     {
         // Mesma prova de ponta a ponta usada em CriarRmaTest::test_normalizacao_hgst_roda_na_criacao,
-        // agora para o caminho de edição — RN-13/RN-14 devem rodar de novo a cada
+        // agora para o caminho de edição - RN-13/RN-14 devem rodar de novo a cada
         // gravação, não só na criação (ver Dominio\Rma::comNormalizacaoDeGravacao).
         $operador = User::factory()->create(['papel' => Papel::Operador]);
         $fabricante = Fabricante::factory()->create(['nome' => 'HGST']);

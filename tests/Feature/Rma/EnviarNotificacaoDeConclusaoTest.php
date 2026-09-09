@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 /**
- * `LEG-RMA-045` (`ezequiel()`) — destinatário lido de `config('rma.notificacoes.
+ * `LEG-RMA-045` (`ezequiel()`) - destinatário lido de `config('rma.notificacoes.
  * conclusao')`, nunca hardcoded no código.
  */
 class EnviarNotificacaoDeConclusaoTest extends TestCase

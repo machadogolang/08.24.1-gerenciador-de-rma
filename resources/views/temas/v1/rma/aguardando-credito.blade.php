@@ -4,14 +4,14 @@
 @endsection
 
 @section('conteudo')
-    {{-- VIS-V1-001/CP3D — fonte real `legacy-source/14.6.1/page/aguardandocredito.php`:
+    {{-- VIS-V1-001/CP3D - fonte real `legacy-source/14.6.1/page/aguardandocredito.php`:
     `solucao='PENDENTE CREDITO'` (não é filtro por `status`). Distinta de
     `rmas.credito.index` (`/rmas-credito`, item "Creditos" do MENU administrativo):
     aquela é o fluxo de marcar crédito disponível; esta é a listagem read-only do
     atalho do header. Coluna "NF R" (`nfremessa`) sem campo equivalente no domínio
-    atual, mesma decisão de `encaminhados.blade.php` — mantida vazia, não simulada.
+    atual, mesma decisão de `encaminhados.blade.php` - mantida vazia, não simulada.
     Achado 4: esta tela usa só `Tabelinha-TR1`/`Tabelinha-TR2` (zebra compacta de
-    30px), nunca a família `TrZebrada`/`classe_css_de_alerta()` — o legado não tem
+    30px), nunca a família `TrZebrada`/`classe_css_de_alerta()` - o legado não tem
     nenhuma regra de destaque aqui, só alternância. --}}
     <p class="title-icone title-icone-status-v1 fl">
         <img src="{{ asset('images/tema-v1/pendente.png') }}" alt="" width="50" height="50">

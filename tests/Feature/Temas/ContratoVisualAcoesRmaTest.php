@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * FRONT-003/UI-02C — contrato visual nas superfícies de RMA.
+ * FRONT-003/UI-02C - contrato visual nas superfícies de RMA.
  * Links de Ver/Editar permanecem `<a href>` (GET); nenhuma rota muda.
  */
 class ContratoVisualAcoesRmaTest extends TestCase

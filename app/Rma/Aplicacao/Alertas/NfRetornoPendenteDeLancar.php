@@ -8,7 +8,7 @@ use App\Rma\Dominio\StatusDeLancamento;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RN-03 (`LEG-RMA-020`) — RMA concluído com a NF de retorno ainda pendente de lançar.
+ * RN-03 (`LEG-RMA-020`) - RMA concluído com a NF de retorno ainda pendente de lançar.
  */
 final class NfRetornoPendenteDeLancar
 {

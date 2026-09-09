@@ -1,5 +1,5 @@
 {{--
-    CP12-05E (fase 2 V1) — tabela histórica de listar_prazodestinatario.php.
+    CP12-05E (fase 2 V1) - tabela histórica de listar_prazodestinatario.php.
     Colunas: ENCAMINHADO | T | ORIGEM | FABRICANTE | DESCRICAO | MODELO | PROTOCOLO | DESTINATARIO | OS | A
     Larguras: 10% | 4% | 7% | 13% | 13% | 16% | 14% | 16% | 5% | 2%
 --}}

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * P5 — RMAs associados a um parceiro para a tela de detalhe. A associação considera
+ * P5 - RMAs associados a um parceiro para a tela de detalhe. A associação considera
  * as FKs reais do schema V3 (`cliente_id`, `fabricante_id`, `fornecedor_id`) e o
  * destinatário polimórfico (`destinatario_type`/`destinatario_id`) quando o parceiro
  * participa do encaminhamento. A tela nunca monta query: tudo passa por este caso de

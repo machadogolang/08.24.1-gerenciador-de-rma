@@ -63,11 +63,11 @@ Não deixe investigações já concluídas no diretório de pendentes e não con
 
 Nota deste projeto (`08.24.1-gerenciador-de-rma`, 2026-08-25): esta convenção é a
 mesma já usada em `machadogolang/online-conahom-laravel`
-(`docs/investigacoes-pendente/README.md`), replicada aqui a pedido do usuário — mesma
+(`docs/investigacoes-pendente/README.md`), replicada aqui a pedido do usuário - mesma
 arquitetura de harness, mesmo processo. Um investigação com várias frentes (ex.:
 `INV-RMA-BUG-LAYOUT`) pode gerar um parecer parcial concluído (uma sub-frente
 encerrada, movida para `docs/pareceres/`) mesmo enquanto o arquivo-mãe continua em
-`docs/investigacoes-pendente/` porque outras frentes seguem abertas — só mova o
+`docs/investigacoes-pendente/` porque outras frentes seguem abertas - só mova o
 arquivo-mãe para `concluido/` quando TODAS as frentes que ele abriu estiverem
 fechadas ou explicitamente transferidas para outro documento de rastreio (ex.: o
 checklist operacional).

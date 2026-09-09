@@ -1,4 +1,4 @@
-# Matriz de cobertura — superfícies/rotas Legacy × V3
+# Matriz de cobertura - superfícies/rotas Legacy × V3
 
 Data: 2026-09-09. Legacy `f83542c` (read-only); V3 HEAD `a254d58`/origin `75c110d`.
 Uma linha por superfície Legacy real. Objetivo: nenhuma página funcional do Legacy
@@ -24,7 +24,7 @@ desaparece silenciosamente na V3.
 | Novo/editar fornecedor | V2 | V3 | `_form` | GET/POST/PUT | create/update | sim | sim |
 | Fabricantes | V2 page/fabricantes | `parceiros.fabricantes` | V1/V2 | GET | viewAny | sim | sim |
 | Assistências | V2 page/assistencia_tecnicas | `parceiros.assistencias-tecnicas` | V1/V2 | GET | viewAny | sim | sim |
-| Detalhe de parceiro (4) | V1 page/* + V2 ver_* | **sem rota show** | — | — | — | não | gap C (P5) |
+| Detalhe de parceiro (4) | V1 page/* + V2 ver_* | **sem rota show** | - | - | - | não | gap C (P5) |
 | Créditos | V1 créditos; V2 creditos | `rmas.credito.index/marcar` | V1/V2 shell | GET/POST | viewAny/update | sim | sim |
 | RCD | V1 relatorios RCRD; V2 | `rmas.relatorios.rcd` | shell UI-03 | GET | viewAny | sim | sim |
 | RPEC | V1/V2 | `rpec` | shell UI-03 | GET | viewAny | sim | sim |
@@ -38,10 +38,10 @@ desaparece silenciosamente na V3.
 | Usuários | V1/V2 | `identidade.usuarios.*` | V1/V2 | GET/PUT/POST | gerenciar | sim | sim |
 | Perfil | V1/V2 | `identidade.perfil.*` | V1/V2 | GET/PUT | auth | sim | sim |
 | Anotações V2 | V2 page/anotacoes | perfil (sem página dedicada) | V1/V2 perfil | GET/PUT | auth | parcial | gap C |
-| Avisar alguém | V2 avisar/{id} | sem rota V3 | — | GET/POST | ? | não | investigar (EXT-003) |
-| Enviar e-mail | V2 enviar_email/{id} | sem rota V3 | — | GET/POST | ? | não | investigar (EXT-004) |
-| Representantes | V2 page/representantes | campo `representante` apenas | — | — | ? | parcial | investigar (EXT-006) |
-| Pomodoro | V2 rota morta | — | — | — | — | não (morto) | J |
+| Avisar alguém | V2 avisar/{id} | sem rota V3 | - | GET/POST | ? | não | investigar (EXT-003) |
+| Enviar e-mail | V2 enviar_email/{id} | sem rota V3 | - | GET/POST | ? | não | investigar (EXT-004) |
+| Representantes | V2 page/representantes | campo `representante` apenas | - | - | ? | parcial | investigar (EXT-006) |
+| Pomodoro | V2 rota morta | - | - | - | - | não (morto) | J |
 | Trocar tema V1 | V1 menuright | `POST tema.alternar` | sem item V1 | POST | auth | parcial | gap D (P1) |
 
 Resumo: 38 superfícies mapeadas; 35 com equivalente V3; 1 parcial (anotações);

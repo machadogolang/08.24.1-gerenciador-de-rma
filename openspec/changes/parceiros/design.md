@@ -1,7 +1,7 @@
-# Design — Parceiros
+# Design - Parceiros
 
 ## Schema (campos herdados do legado, ver `inventario-banco-rma-v2.md`; sem os campos
-mortos/redundantes do legado — `observacaoFR`/`observacaoSGV` viram só `observacao`)
+mortos/redundantes do legado - `observacaoFR`/`observacaoSGV` viram só `observacao`)
 
 ```
 clientes
@@ -40,11 +40,11 @@ fabricantes / fornecedores / assistencias_tecnicas   (schema idêntico entre os 
   timestamps
 ```
 
-### `App\Compartilhado\Uf` — ajuste da revisão (ver `docs/arquitetura/revisao-fases-1-2-3.md`)
+### `App\Compartilhado\Uf` - ajuste da revisão (ver `docs/arquitetura/revisao-fases-1-2-3.md`)
 
 O `INV-RMA-05` §3 já registrava `Compartilhado` como o lugar para "value objects sem
 dono único (ex.: enum de UF...)", mas o desenho original desta fase usava `uf
-string(2) nullable` solto nos 4 models — o mesmo padrão de primitiva-representando-
+string(2) nullable` solto nos 4 models - o mesmo padrão de primitiva-representando-
 conceito-fechado que o princípio "sem número mágico" (`INV-RMA-05` §1.1) proíbe (UF é
 um conjunto fechado de 27 valores, não texto livre).
 
@@ -63,12 +63,12 @@ enum Uf: string
 Backing `string` é aceitável aqui pelo mesmo motivo de `TemaPreferido` (Fase 1): sem
 ordem/precedência a esconder, só um conjunto fechado de siglas que precisa aparecer
 como texto em formulário/URL. Os 4 models (`Cliente`, `Fabricante`, `Fornecedor`,
-`AssistenciaTecnica`) usam `casts(): array { return ['uf' => Uf::class]; }` — cast nativo
+`AssistenciaTecnica`) usam `casts(): array { return ['uf' => Uf::class]; }` - cast nativo
 de enum puro do Eloquent, sem `EmBanco`/repositório (mesmo caso do `TemaPreferido`).
-Campo continua nullable — nem todo cadastro do legado tinha UF preenchida.
+Campo continua nullable - nem todo cadastro do legado tinha UF preenchida.
 
-Não migrar `rgie` (Registro de Inscrição Estadual — achado do legado, baixíssimo uso,
-sem nenhuma regra de negócio associada) nem `cfop` como algo mais que texto livre — o
+Não migrar `rgie` (Registro de Inscrição Estadual - achado do legado, baixíssimo uso,
+sem nenhuma regra de negócio associada) nem `cfop` como algo mais que texto livre - o
 legado nunca valida/usa esses campos além de exibir. Se alguma regra real depender
 deles no futuro, adicionar então (não adicionar campo "pra garantir").
 
@@ -79,7 +79,7 @@ final class EncontrarOuCriarCliente
 {
     public function __construct(private readonly ClienteRepository $clientes) {}
     // Nota: ClienteRepository aqui é literal o model Eloquent Cliente (Fase 2 não usa
-    // interface de repositório, ver decisão em INV-RMA-05 §7) — nome ilustrativo,
+    // interface de repositório, ver decisão em INV-RMA-05 §7) - nome ilustrativo,
     // a assinatura real recebe Cliente::query() ou similar diretamente.
 
     public function encontrarOuCriar(string $nomeDigitado): Cliente
@@ -95,12 +95,12 @@ final class EncontrarOuCriarCliente
 ```
 
 Corrige precisamente o achado do legado (`WHERE nome = ?` exato, sem trim/normalização
-de espaço, sem case-insensitive) — comportamento percebido pelo usuário não muda (ele
+de espaço, sem case-insensitive) - comportamento percebido pelo usuário não muda (ele
 digita um nome, o sistema acha ou cria), só para de duplicar por variação de digitação.
 
 ## Testes
 
-- CRUD de cada um dos 4 tipos (criar, editar, listar, apagar — respeitando Policy).
+- CRUD de cada um dos 4 tipos (criar, editar, listar, apagar - respeitando Policy).
 - `EncontrarOuCriarCliente`: nome novo cria; nome exatamente igual reaproveita; nome com
   espaço duplo/maiúscula diferente reaproveita (prova da correção); nome de outro
   cliente não colide.

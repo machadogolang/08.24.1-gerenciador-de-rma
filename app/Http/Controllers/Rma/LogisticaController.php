@@ -12,7 +12,7 @@ use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * `LEG-RMA-040`/`041` — duas consultas de logística sobre `Rma` (ver `proposal.md`,
+ * `LEG-RMA-040`/`041` - duas consultas de logística sobre `Rma` (ver `proposal.md`,
  * "reúne LEG-RMA-040/041 porque fazem mais sentido lidas junto com o histórico de
  * modificação do que junto ao fluxo de crédito da Fase 6").
  */
@@ -23,7 +23,7 @@ class LogisticaController extends Controller
         Gate::authorize('viewAny', RmaEloquent::class);
 
         return view_do_tema('rma.logistica.frete-porto-alegre', [
-            'titulo' => 'Frete consolidado — Porto Alegre',
+            'titulo' => 'Frete consolidado - Porto Alegre',
             'rmas' => $caso->listar(),
         ]);
     }
@@ -37,7 +37,7 @@ class LogisticaController extends Controller
         abort_if($registro === null, Response::HTTP_NOT_FOUND);
 
         return view_do_tema('rma.logistica.boletins-relacionados', [
-            'titulo' => "Boletins relacionados — RMA #{$registro->id}",
+            'titulo' => "Boletins relacionados - RMA #{$registro->id}",
             'registro' => $registro,
             'relacionados' => $caso->listar($registro),
         ]);

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * FRONT-003/UI-02C — contrato semântico do partial de ciclo de vida
+ * FRONT-003/UI-02C - contrato semântico do partial de ciclo de vida
  * (`rma._acoes_de_transicao`), compartilhado por V1/V2. Não muda rotas/CSRF.
  */
 class ContratoVisualAcoesCicloDeVidaTest extends TestCase

@@ -3,7 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
- * Auditoria navegacional e visual integral do Tema V1 — Lotes NAV-00, NAV-01 e NAV-02.
+ * Auditoria navegacional e visual integral do Tema V1 - Lotes NAV-00, NAV-01 e NAV-02.
  *
  * Gera duas camadas:
  * - raw em screenshots-paridade-v1/ (gitignorado, pode conter dado real);
@@ -353,7 +353,7 @@ const alvos = [
             await page.locator('#JS-Sessao').waitFor({ state: 'visible' });
         },
     },
-    // Lote NAV-02 — Menu de Sessão
+    // Lote NAV-02 - Menu de Sessão
     {
         id: 'NAV-02-01',
         nome: 'Fornecedores',

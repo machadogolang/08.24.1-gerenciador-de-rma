@@ -1,10 +1,10 @@
-# Tasks — Parceiros
+# Tasks - Parceiros
 
 - [x] `database/migrations/2026_08_26_000000_create_clientes_table.php`
 - [x] `database/migrations/2026_08_26_000001_create_fabricantes_table.php`
 - [x] `database/migrations/2026_08_26_000002_create_fornecedores_table.php`
 - [x] `database/migrations/2026_08_26_000003_create_assistencias_tecnicas_table.php`
-- [x] `app/Compartilhado/Uf.php` (enum das 27 UFs — ajuste da revisão, ver
+- [x] `app/Compartilhado/Uf.php` (enum das 27 UFs - ajuste da revisão, ver
       `docs/arquitetura/revisao-fases-1-2-3.md`)
 - [x] `app/Parceiros/Concerns/TemEnderecoEContato.php` (trait)
 - [x] `app/Models/Cliente.php`

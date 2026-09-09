@@ -10,10 +10,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * VIS-V1-002/003/004 — painel "Novo" do TEMA V1 (`#JS-Novo`), fonte real
+ * VIS-V1-002/003/004 - painel "Novo" do TEMA V1 (`#JS-Novo`), fonte real
  * `legacy-source/14.6.1/menujs-top/novo.php` + `inc/menuright.php`. Cobre o que o
  * `ParidadeVisualTemaV1.spec.ts` (Playwright) não cobre: presença/ausência de campos
- * específicos e contrato HTML — geometria pixel a pixel fica com o Playwright.
+ * específicos e contrato HTML - geometria pixel a pixel fica com o Playwright.
  */
 class PainelNovoTemaV1Test extends TestCase
 {
@@ -32,7 +32,7 @@ class PainelNovoTemaV1Test extends TestCase
 
         $response->assertOk();
         // Não navega: a URL de destino é a mesma rota consultada (Entrada), o painel
-        // só entra oculto no HTML — a prova de "não navegar" de fato é end-to-end via
+        // só entra oculto no HTML - a prova de "não navegar" de fato é end-to-end via
         // Playwright (evento de clique real), isto aqui prova que o DOM contém o
         // painel oculto em QUALQUER página, pré-condição para o clique funcionar.
         $response->assertSee('id="JS-Novo"', false);
@@ -53,7 +53,7 @@ class PainelNovoTemaV1Test extends TestCase
 
     public function test_titulo_novo_rma_fica_visualmente_oculto_mas_presente_no_dom(): void
     {
-        // VIS-V1-007 — o legado não tem heading "Novo RMA"; o H1 continua no DOM
+        // VIS-V1-007 - o legado não tem heading "Novo RMA"; o H1 continua no DOM
         // (acessibilidade) mas com classe `sr-only` só nesta rota.
         $usuario = $this->usuarioV1();
 
@@ -86,7 +86,7 @@ class PainelNovoTemaV1Test extends TestCase
     }
 
     /**
-     * VIS-V1-003 — `Fornecedor` não existe em `menujs-top/novo.php` (só entrou no
+     * VIS-V1-003 - `Fornecedor` não existe em `menujs-top/novo.php` (só entrou no
      * formulário moderno); não deve aparecer na reconstrução do painel V1.
      */
     public function test_fornecedor_nao_aparece_no_painel_novo_do_tema_v1(): void

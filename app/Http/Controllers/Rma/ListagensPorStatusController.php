@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * VIS-V1-001 — as 4 páginas de listagem por status do menu superior do TEMA V1
+ * VIS-V1-001 - as 4 páginas de listagem por status do menu superior do TEMA V1
  * (`Entrada / Encaminhado / Aguardando credito / Concluido`, fonte real
  * `legacy-source/14.6.1/page/{entrada,encaminhados,aguardandocredito,concluidos}.php`).
- * View exclusiva do TEMA V1 (o header do TEMA V2 não tem esses atalhos — ver achado
+ * View exclusiva do TEMA V1 (o header do TEMA V2 não tem esses atalhos - ver achado
  * VIS-V1-001 em `docs/produto/checklist-paridade-visual-v1-runtime.md`), por isso
  * renderiza direto `temas.v1.rma.*` em vez de `view_do_tema()`.
  */
@@ -58,10 +58,10 @@ class ListagensPorStatusController extends Controller
     }
 
     /**
-     * VIS-V1-001/CP4 — fonte real `legacy-source/14.6.1/page/concluidos.php:20-27,66-69`:
+     * VIS-V1-001/CP4 - fonte real `legacy-source/14.6.1/page/concluidos.php:20-27,66-69`:
      * o legado soma `valor` e conta registros durante o mesmo `while` que lista a
      * tabela. Aqui os `$registros` já vêm carregados pelo caso de uso, então a soma é
-     * só agregação em memória — sem SQL nem cálculo no Blade.
+     * só agregação em memória - sem SQL nem cálculo no Blade.
      *
      * @param  Rma[]  $registros
      * @return array{valorTotal: float, quantidadeTotal: int, quantidadeSemValor: int, dataProcessamento: string}
@@ -114,7 +114,7 @@ class ListagensPorStatusController extends Controller
 
     /**
      * `destinatarioType`/`destinatarioId` são polimórficos (Fornecedor/AssistenciaTecnica/
-     * etc., sem `morphMap` — ver `App\Models\Rma`), então a chave é o par tipo+id.
+     * etc., sem `morphMap` - ver `App\Models\Rma`), então a chave é o par tipo+id.
      *
      * @param  Rma[]  $registros
      * @return array<string, string>

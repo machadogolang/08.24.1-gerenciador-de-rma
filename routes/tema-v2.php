@@ -9,8 +9,8 @@ use App\Http\Controllers\Rma\RmaController;
 use Illuminate\Support\Facades\Route;
 
 /**
- * Fase 8 — rotas do TEMA V2, prefixo `/v2`. Ver `routes/tema-v1.php` para a explicação
- * completa do mecanismo (`tema_forcado` via `ResolverTemaAtivo`) — espelha a mesma
+ * Fase 8 - rotas do TEMA V2, prefixo `/v2`. Ver `routes/tema-v1.php` para a explicação
+ * completa do mecanismo (`tema_forcado` via `ResolverTemaAtivo`) - espelha a mesma
  * árvore, mesmos Controllers, só troca o tema forçado.
  */
 Route::prefix('v2')

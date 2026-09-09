@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Date;
 
 /**
  * LEG-RMA-013. Exige `solucao` preenchida, aplica `comSnretornoAutoPreenchido()`
- * (RN-15) e dispara `RmaConcluido` (sem listener nesta fase — Fase 7 assina).
+ * (RN-15) e dispara `RmaConcluido` (sem listener nesta fase - Fase 7 assina).
  */
 final class ConcluirRma
 {

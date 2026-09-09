@@ -10,7 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * P4 — RPEC/RMPE descobríveis nos menus dos dois temas, além do RCD.
+ * P4 - RPEC/RMPE descobríveis nos menus dos dois temas, além do RCD.
  */
 class DescobribilidadeRelatoriosTest extends TestCase
 {

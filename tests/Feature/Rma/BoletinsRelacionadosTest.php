@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * `LEG-RMA-041` — RMAs relacionados ao mesmo destinatário/fabricante/fornecedor,
+ * `LEG-RMA-041` - RMAs relacionados ao mesmo destinatário/fabricante/fornecedor,
  * excluindo o próprio RMA de referência. Paginado.
  */
 class BoletinsRelacionadosTest extends TestCase
@@ -63,7 +63,7 @@ class BoletinsRelacionadosTest extends TestCase
     {
         // Prova de regressão do desvio documentado em BoletinsRelacionados: o
         // pseudocódigo original do design.md usaria orWhere(coluna, null), que o
-        // Query Builder traduz para "coluna IS NULL" — dois RMAs sem
+        // Query Builder traduz para "coluna IS NULL" - dois RMAs sem
         // destinatario/fabricante/fornecedor casariam entre si por engano.
         $operador = User::factory()->create(['papel' => Papel::Operador]);
         $referencia = RmaEloquent::factory()->create([

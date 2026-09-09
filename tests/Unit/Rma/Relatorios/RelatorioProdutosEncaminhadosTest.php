@@ -44,7 +44,7 @@ class RelatorioProdutosEncaminhadosTest extends TestCase
 
     /**
      * Prova de que o intervalo é real (parâmetro), não hardcoded para "2014" como no
-     * legado — um intervalo em outro ano qualquer funciona igual.
+     * legado - um intervalo em outro ano qualquer funciona igual.
      */
     public function test_intervalo_nao_e_hardcoded_para_2014(): void
     {

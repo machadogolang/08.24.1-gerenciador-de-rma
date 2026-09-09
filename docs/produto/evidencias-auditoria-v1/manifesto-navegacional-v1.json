@@ -39,7 +39,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/v1/rma",
-      "titulo": "RMAs — CellSystem RMA",
+      "titulo": "RMAs - CellSystem RMA",
       "status": 200,
       "linkAtivo": "Pag. Inicial",
       "falhas": [],
@@ -112,7 +112,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/v1/rma",
-      "titulo": "RMAs — CellSystem RMA",
+      "titulo": "RMAs - CellSystem RMA",
       "status": 200,
       "linkAtivo": "Pag. Inicial",
       "falhas": [],
@@ -192,7 +192,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/v1/rma",
-      "titulo": "RMAs — CellSystem RMA",
+      "titulo": "RMAs - CellSystem RMA",
       "status": 200,
       "linkAtivo": "Pag. Inicial",
       "falhas": [],
@@ -279,7 +279,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/v1/rma",
-      "titulo": "RMAs — CellSystem RMA",
+      "titulo": "RMAs - CellSystem RMA",
       "status": 200,
       "linkAtivo": "Pag. Inicial",
       "falhas": [],
@@ -359,7 +359,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/rmas-entrada",
-      "titulo": "Entrada — CellSystem RMA",
+      "titulo": "Entrada - CellSystem RMA",
       "status": 200,
       "linkAtivo": "Entrada",
       "falhas": [],
@@ -432,7 +432,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/rmas-encaminhados",
-      "titulo": "Encaminhado — CellSystem RMA",
+      "titulo": "Encaminhado - CellSystem RMA",
       "status": 200,
       "linkAtivo": "Encaminhado",
       "falhas": [],
@@ -505,7 +505,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/rmas-aguardando-credito",
-      "titulo": "Aguardando credito — CellSystem RMA",
+      "titulo": "Aguardando credito - CellSystem RMA",
       "status": 200,
       "linkAtivo": "Aguardando credito",
       "falhas": [],
@@ -578,7 +578,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/rmas-concluidos",
-      "titulo": "Concluido — CellSystem RMA",
+      "titulo": "Concluido - CellSystem RMA",
       "status": 200,
       "linkAtivo": "Concluido!",
       "falhas": [],
@@ -658,7 +658,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/rmas-concluidos",
-      "titulo": "Concluido — CellSystem RMA",
+      "titulo": "Concluido - CellSystem RMA",
       "status": 200,
       "linkAtivo": null,
       "falhas": [],
@@ -745,7 +745,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/parceiros/fornecedores",
-      "titulo": "Fornecedores — CellSystem RMA",
+      "titulo": "Fornecedores - CellSystem RMA",
       "status": 200,
       "linkAtivo": "MENU",
       "falhas": [],
@@ -825,7 +825,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/parceiros/fabricantes",
-      "titulo": "Fabricantes — CellSystem RMA",
+      "titulo": "Fabricantes - CellSystem RMA",
       "status": 200,
       "linkAtivo": "MENU",
       "falhas": [],
@@ -905,7 +905,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/parceiros/assistencias-tecnicas",
-      "titulo": "Assistências técnicas — CellSystem RMA",
+      "titulo": "Assistências técnicas - CellSystem RMA",
       "status": 200,
       "linkAtivo": "MENU",
       "falhas": [],
@@ -985,7 +985,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/parceiros/clientes",
-      "titulo": "Clientes — CellSystem RMA",
+      "titulo": "Clientes - CellSystem RMA",
       "status": 200,
       "linkAtivo": "MENU",
       "falhas": [],
@@ -1065,7 +1065,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/rmas-controle",
-      "titulo": "Controle — CellSystem RMA",
+      "titulo": "Controle - CellSystem RMA",
       "status": 200,
       "linkAtivo": "MENU",
       "falhas": [],
@@ -1145,7 +1145,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/rmas-credito",
-      "titulo": "Crédito — CellSystem RMA",
+      "titulo": "Crédito - CellSystem RMA",
       "status": 200,
       "linkAtivo": null,
       "falhas": [],
@@ -1204,7 +1204,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/rmas-relatorios/rcd",
-      "titulo": "Relatório de Créditos Disponíveis — CellSystem RMA",
+      "titulo": "Relatório de Créditos Disponíveis - CellSystem RMA",
       "status": 200,
       "linkAtivo": null,
       "falhas": [],
@@ -1263,7 +1263,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/usuarios",
-      "titulo": "Usuários — CellSystem RMA",
+      "titulo": "Usuários - CellSystem RMA",
       "status": 200,
       "linkAtivo": "MENU",
       "falhas": [],
@@ -1315,7 +1315,7 @@
     },
     "v3": {
       "url": "http://localhost:8095/login",
-      "titulo": "Entrar — CellSystem RMA",
+      "titulo": "Entrar - CellSystem RMA",
       "status": 200,
       "linkAtivo": null,
       "falhas": [],

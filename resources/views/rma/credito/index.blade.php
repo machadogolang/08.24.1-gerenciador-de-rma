@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Crédito — CellSystem RMA</title>
+    <title>Crédito - CellSystem RMA</title>
 </head>
 <body>
     <h1>Fluxo de crédito</h1>
@@ -24,7 +24,7 @@
             @foreach ($aguardandoCredito as $registro)
                 <li>
                     <a href="{{ route('rmas.show', $registro->id) }}">
-                        #{{ $registro->id }} — {{ $registro->descricao }}
+                        #{{ $registro->id }} - {{ $registro->descricao }}
                     </a>
                 </li>
             @endforeach

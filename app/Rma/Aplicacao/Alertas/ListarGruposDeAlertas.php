@@ -7,9 +7,9 @@ namespace App\Rma\Aplicacao\Alertas;
  * Extraído na correção de fidelidade Fase 8 (2026-08-25): antes desta classe, a mesma
  * lista de 11 chamadas estava duplicada em `PainelDeAlertasController` (tela dedicada,
  * `rmas.alertas`) e precisava ser repetida em `RmaController::index` (aba
- * "Início"/"Pág. Inicial" dos dois temas, "CENTRO DE AVISOS E RELATORIOS" — mesmo
+ * "Início"/"Pág. Inicial" dos dois temas, "CENTRO DE AVISOS E RELATORIOS" - mesmo
  * conteúdo, achado confirmado por captura de referência do legado). Nenhuma regra de
- * negócio nova — só remove a duplicação entre os dois controllers.
+ * negócio nova - só remove a duplicação entre os dois controllers.
  */
 final class ListarGruposDeAlertas
 {

@@ -15,7 +15,7 @@ final class AutenticarUsuario
     /**
      * Autentica o usuário e devolve o tema preferido, para o controller decidir o
      * redirect. Lança ValidationException com mensagem genérica em qualquer falha
-     * (e-mail inexistente, papel bloqueado, senha errada) — nunca revela qual dos três
+     * (e-mail inexistente, papel bloqueado, senha errada) - nunca revela qual dos três
      * motivos causou a negação (correção de segurança sobre o legado, que tinha
      * enumeração de usuário confirmada).
      */

@@ -2,13 +2,13 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Relatório de Produtos Encaminhados — CellSystem RMA</title>
+    <title>Relatório de Produtos Encaminhados - CellSystem RMA</title>
 </head>
 <body>
     <h1>Relatório de Produtos Encaminhados (RMPE)</h1>
 
     {{-- View mínima, sem fidelidade visual (Fase 8). Intervalo de datas real
-    (data_inicio/data_fim obrigatórios) — corrige o intervalo hardcoded para 2014 do
+    (data_inicio/data_fim obrigatórios) - corrige o intervalo hardcoded para 2014 do
     legado (bug de manutenção, não RN documentada). --}}
     <form method="GET" action="{{ route('rmas.relatorios.rmpe') }}">
         <label>Data início

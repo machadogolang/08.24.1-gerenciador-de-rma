@@ -10,7 +10,7 @@ final class ResetarSenhaDeUsuario
     public function resetar(User $ator, User $alvo, string $novaSenha): void
     {
         // ARQ-003 (`INV-RMA-10`): Supervisor não pode resetar senha de um
-        // SuperAdministrador — `podeOperarSobrePapel` já inclui `podeGerenciarUsuarios()`.
+        // SuperAdministrador - `podeOperarSobrePapel` já inclui `podeGerenciarUsuarios()`.
         $empresaId = app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId();
         $papelDoAlvo = $empresaId !== null
             ? ($alvo->papelNaEmpresa($empresaId) ?? $alvo->papel)

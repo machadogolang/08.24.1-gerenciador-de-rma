@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * EVO-SAAS-001 (S2) — vínculo User ↔ Company. `papel` guarda o papel do usuário
+     * EVO-SAAS-001 (S2) - vínculo User ↔ Company. `papel` guarda o papel do usuário
      * DENTRO daquela empresa (mesmo enum `App\Identidade\Dominio\Papel`); `users.papel`
      * continua existindo até a transição S9 consumir só o vínculo.
      */

@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Relatório de Créditos Disponíveis — CellSystem RMA</title>
+    <title>Relatório de Créditos Disponíveis - CellSystem RMA</title>
 </head>
 <body>
     <h1>Relatório de Créditos Disponíveis (RCD)</h1>
 
-    {{-- View mínima, sem fidelidade visual (Fase 8). Sem PDF real (EVO-REL-001) —
+    {{-- View mínima, sem fidelidade visual (Fase 8). Sem PDF real (EVO-REL-001) -
     impressão via Ctrl+P, igual ao legado. --}}
     @if ($registros->isEmpty())
         <p>Nenhum RMA com crédito disponível.</p>

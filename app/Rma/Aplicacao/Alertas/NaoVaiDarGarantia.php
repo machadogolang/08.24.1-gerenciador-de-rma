@@ -7,12 +7,12 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RN-02 (`LEG-RMA-019`) — inclui a regra MARKVISION hardcoded do legado: fabricante
+ * RN-02 (`LEG-RMA-019`) - inclui a regra MARKVISION hardcoded do legado: fabricante
  * MARKVISION nunca dá garantia quando o fornecedor é "Receita" OU quando a NF de
  * compra já passou de 365 dias. Join real via FK (`fabricante`/`fornecedor`,
- * relações Eloquent — Fase 2/3), não comparação de string. Filtro inteiramente no SQL.
+ * relações Eloquent - Fase 2/3), não comparação de string. Filtro inteiramente no SQL.
  *
- * `nfvenda_emissao`/`nfcompra_emissao` são colunas `date` — limites com `today()`
+ * `nfvenda_emissao`/`nfcompra_emissao` são colunas `date` - limites com `today()`
  * (não `now()`), mesma razão de `GarantiaFornecedorExpirada`.
  */
 final class NaoVaiDarGarantia

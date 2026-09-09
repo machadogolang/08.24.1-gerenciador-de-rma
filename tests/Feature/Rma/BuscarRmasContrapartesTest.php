@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * PAR-RMA-003/P6 — modo texto alcança nomes de contrapartes reais
+ * PAR-RMA-003/P6 - modo texto alcança nomes de contrapartes reais
  * (fabricante/fornecedor/cliente/destinatário assistência técnica).
  */
 class BuscarRmasContrapartesTest extends TestCase

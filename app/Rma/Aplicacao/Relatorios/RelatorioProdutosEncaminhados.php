@@ -7,9 +7,9 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RMPE (`LEG-RMA-039`) — RMAs encaminhados dentro de um intervalo de datas real,
+ * RMPE (`LEG-RMA-039`) - RMAs encaminhados dentro de um intervalo de datas real,
  * exigido via Form Request (`data_inicio`/`data_fim` obrigatórios). Corrige o
- * intervalo hardcoded para "2014" do legado — bug de manutenção, não RN documentada
+ * intervalo hardcoded para "2014" do legado - bug de manutenção, não RN documentada
  * (ver `proposal.md`).
  */
 final class RelatorioProdutosEncaminhados

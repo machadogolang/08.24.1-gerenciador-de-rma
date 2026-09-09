@@ -1,4 +1,4 @@
-# Design — FRONT-003
+# Design - FRONT-003
 
 - Controllers únicos retornam `view_do_tema('<modulo>.index')` com os mesmos dados.
 - Conteúdo em `resources/views/{modulo}/_conteudo.blade.php` compartilhado; wrappers

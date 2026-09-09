@@ -1,6 +1,6 @@
-{{-- CP7 (fase 2, `plano-execucao-paridade-visual-v1-fase2.md`) — painel "Localizar" do
+{{-- CP7 (fase 2, `plano-execucao-paridade-visual-v1-fase2.md`) - painel "Localizar" do
 TEMA V1, fonte real `menujs-top/localizar.php` (lido por inteiro). Ordem real do HTML:
-input(fl) + 3 blocos `float:right` na ordem botão/campo/solução — com `float:right`,
+input(fl) + 3 blocos `float:right` na ordem botão/campo/solução - com `float:right`,
 cada bloco novo entra à ESQUERDA do anterior, então a ordem visual final (medida no
 Legacy, CMP-V1-2-002) é: input, select SOLUÇÃO, select CAMPO, botão FILTRAR.
 
@@ -8,7 +8,7 @@ Partial compartilhado, incluído uma vez em `temas.v1.layout` (dentro de `#JS-Lo
 oculto por padrão, igual ao padrão já usado por `#JS-Novo`/`_form_novo.blade.php`).
 
 `campo`/`solucao` traduzidos na camada de apresentação (`RmaController::index()`) para
-`CriterioDeBusca` — ver o mapeamento e os `[GAP]` documentados lá; esta partial só
+`CriterioDeBusca` - ver o mapeamento e os `[GAP]` documentados lá; esta partial só
 preserva rótulos/valores/ordem literais do `<select>` histórico, não decide o que cada
 opção realmente filtra. --}}
 <form method="GET" action="{{ rota_tema('rmas.index') }}">

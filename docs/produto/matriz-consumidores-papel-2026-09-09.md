@@ -1,4 +1,4 @@
-# Matriz de consumidores de `users.papel` — S9.1 (EVO-SAAS-001)
+# Matriz de consumidores de `users.papel` - S9.1 (EVO-SAAS-001)
 
 Data: 2026-09-09. Levantamento dirigido por `rg` sobre `app/`, `resources/`,
 `routes/`, `database/` e `tests/` (padrões: `->papel`, `'papel'`, `Papel::`,

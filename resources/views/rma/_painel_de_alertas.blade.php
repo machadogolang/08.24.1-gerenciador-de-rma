@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Painel de alertas — CellSystem RMA</title>
+    <title>Painel de alertas - CellSystem RMA</title>
 </head>
 <body>
     <h1>Painel de alertas</h1>
@@ -18,7 +18,7 @@
                     @foreach ($rmas as $registro)
                         <li>
                             <a href="{{ route('rmas.show', $registro->id) }}">
-                                #{{ $registro->id }} — {{ $registro->descricao }}
+                                #{{ $registro->id }} - {{ $registro->descricao }}
                             </a>
                         </li>
                     @endforeach

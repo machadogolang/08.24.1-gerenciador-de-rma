@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>{{ $titulo }} — CellSystem RMA</title>
+    <title>{{ $titulo }} - CellSystem RMA</title>
 </head>
 <body>
     <h1>{{ $titulo }}</h1>
@@ -77,7 +77,7 @@
 
         <label>UF
             <select name="uf">
-                <option value="">—</option>
+                <option value="">-</option>
                 @foreach (\App\Compartilhado\Uf::cases() as $uf)
                     <option value="{{ $uf->value }}" @selected(old('uf', $registro->uf?->value) === $uf->value)>
                         {{ $uf->value }}

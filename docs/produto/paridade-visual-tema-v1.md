@@ -1,4 +1,4 @@
-# Paridade visual do TEMA V1 — Legacy 14.6.1 × V3
+# Paridade visual do TEMA V1 - Legacy 14.6.1 × V3
 
 Data: 2026-08-25. Estado: checkpoint desktop 1440 px concluído.
 

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * EVO-SAAS-001 (S3.6) — hardening após auditoria: zero `tenant_id` NULL nas seis
+     * EVO-SAAS-001 (S3.6) - hardening após auditoria: zero `tenant_id` NULL nas seis
      * tabelas tenant-scoped. Código de escrita (Observer/factory/listener/migrador) já
      * preenche o tenant antes desta migration.
      */

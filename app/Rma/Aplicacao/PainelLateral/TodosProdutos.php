@@ -6,8 +6,8 @@ use App\Models\Rma;
 use Illuminate\Support\Collection;
 
 /**
- * CP19 — `metodo.php:99` (`listar_nome_de_descricoes()`): `SELECT descricao,
- * COUNT(descricao) FROM bd GROUP BY descricao`, sem filtro de status — todos os RMAs.
+ * CP19 - `metodo.php:99` (`listar_nome_de_descricoes()`): `SELECT descricao,
+ * COUNT(descricao) FROM bd GROUP BY descricao`, sem filtro de status - todos os RMAs.
  *
  * @return Collection<int, array{nome: string, contagem: int}>
  */

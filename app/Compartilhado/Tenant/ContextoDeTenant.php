@@ -6,7 +6,7 @@ use App\Identidade\Dominio\Papel;
 use App\Models\Company;
 
 /**
- * EVO-SAAS-001 (S4) — fonte central de tenant corrente por request. Registrado como
+ * EVO-SAAS-001 (S4) - fonte central de tenant corrente por request. Registrado como
  * singleton no container; populado por `ResolverTenantAtivo` depois da autenticação.
  * Nenhuma entidade de domínio lê session/request diretamente para descobrir tenant.
  */

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * EVO-SAAS-001 (S2) — empresas/tenants da plataforma. Banco compartilhado com
+     * EVO-SAAS-001 (S2) - empresas/tenants da plataforma. Banco compartilhado com
      * `tenant_id` (INV-RMA-07 §5, Modelo A). `nome` é a única chave natural exigida
      * nesta fase; documento entra nullable para não travar hardening futuro.
      */

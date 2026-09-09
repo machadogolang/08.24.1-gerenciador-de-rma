@@ -4,10 +4,10 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
- * VIS-V1-002/003/004 — prova end-to-end de que "Novo" expande `#JS-Novo` inline sem
+ * VIS-V1-002/003/004 - prova end-to-end de que "Novo" expande `#JS-Novo` inline sem
  * navegar (equivalente a `NovoMaximize()`, `pattern/14.6.1.js`), preservando o
  * conteúdo da tela onde o operador estava. Não é o mesmo teste de
- * `ControlePainelTest`/`PainelNovoTemaV1Test` (PHPUnit, sem JS real) — aqui o clique é
+ * `ControlePainelTest`/`PainelNovoTemaV1Test` (PHPUnit, sem JS real) - aqui o clique é
  * um evento de browser de verdade.
  */
 const DESTINO = join(process.cwd(), 'docs/produto/screenshots-vis-v1-001');
@@ -44,7 +44,7 @@ test('clicar em Novo expande o painel inline sem navegar, mantendo o conteúdo d
 
     await page.click('#menu-novo a');
 
-    // URL não muda — não houve navegação.
+    // URL não muda - não houve navegação.
     expect(page.url()).toBe(urlAntes);
 
     // Painel expandiu.

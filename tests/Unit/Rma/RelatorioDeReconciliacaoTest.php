@@ -6,7 +6,7 @@ use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
 use PHPUnit\Framework\TestCase;
 
 /**
- * ARQ-002 (`INV-RMA-10`) — o relatório precisa deixar explícito quando as contagens de
+ * ARQ-002 (`INV-RMA-10`) - o relatório precisa deixar explícito quando as contagens de
  * "destino" são apenas o que seria gravado (`--dry-run`), nunca escrita real, para não
  * ser lido como uma migração de fato concluída.
  */

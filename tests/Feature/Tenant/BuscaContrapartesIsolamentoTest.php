@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * P6 — busca por contraparte não vaza fabricante/RMA de outro tenant.
+ * P6 - busca por contraparte não vaza fabricante/RMA de outro tenant.
  */
 class BuscaContrapartesIsolamentoTest extends TestCase
 {

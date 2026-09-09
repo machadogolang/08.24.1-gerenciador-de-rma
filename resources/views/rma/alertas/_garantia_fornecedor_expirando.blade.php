@@ -1,5 +1,5 @@
 {{--
-    CP12-05J (fase 2 V1) — tabela histórica de listar_pmenosde30.php.
+    CP12-05J (fase 2 V1) - tabela histórica de listar_pmenosde30.php.
     Colunas: ENTRADA | ORIGEM | NF C | T E | NF V | FORNECEDOR | FABRICANTE | DESCRICAO | MODELO | OS | A
     Larguras: 8% | 7% | 6% | 6% | 6% | 12% | 15% | 15% | 18% | 5% | 2%
     T E = dias restantes até 365 dias de garantia (= 365 - dias decorridos desde NF compra).

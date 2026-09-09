@@ -4,7 +4,7 @@
 @endsection
 
 @section('conteudo')
-    {{-- VIS-V1-001 — fonte real `legacy-source/14.6.1/page/concluidos.php`:
+    {{-- VIS-V1-001 - fonte real `legacy-source/14.6.1/page/concluidos.php`:
     `status='CONCLUIDO'`, ordenado por `concluido_em`. --}}
     <p class="title-icone title-icone-status-v1 fl">
         <img src="{{ asset('images/tema-v1/concluido.png') }}" alt="" width="50" height="50">
@@ -65,9 +65,9 @@
         </tbody>
     </table>
     <hr style="clear:both;">
-    {{-- CP4 — fonte real `legacy-source/14.6.1/page/concluidos.php:66-69`. Texto e
+    {{-- CP4 - fonte real `legacy-source/14.6.1/page/concluidos.php:66-69`. Texto e
     grafia históricos preservados literalmente ("a cima", "monetario" sem acento não
-    são erros de digitação desta correção — são do legado, ver achado 8). --}}
+    são erros de digitação desta correção - são do legado, ver achado 8). --}}
     <h3 style="float:right;font-family:Arial;margin-top:0px;letter-spacing:2px;">VALOR TOTAL: R$ {{ number_format($resumo['valorTotal'], 2, '.', '') }}</h3>
     <p style="font-size:15px;">DATA DO PROCESSAMENTO: {{ $resumo['dataProcessamento'] }}</p>
     <p style="font-size:15px;">Quantidade Total de produtos: {{ $resumo['quantidadeTotal'] }}</p>

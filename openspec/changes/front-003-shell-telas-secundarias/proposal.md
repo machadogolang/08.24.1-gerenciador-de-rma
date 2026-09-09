@@ -1,4 +1,4 @@
-# Proposal — FRONT-003: shell dos temas em telas secundárias
+# Proposal - FRONT-003: shell dos temas em telas secundárias
 
 Superfícies administrativas/operacionais fora do núcleo RMA atualmente retornam
 documentos HTML standalone (`view('rma.*')`) sem shell V1/V2, com estilo browser

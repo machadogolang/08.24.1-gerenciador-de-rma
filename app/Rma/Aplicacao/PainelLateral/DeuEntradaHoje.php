@@ -6,7 +6,7 @@ use App\Models\Rma;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * CP19 (paridade visual V2) — `15.8.1/banco.php:708` (`right_entrada()`): RMAs cuja
+ * CP19 (paridade visual V2) - `15.8.1/banco.php:708` (`right_entrada()`): RMAs cuja
  * entrada aconteceu a partir de hoje 00:00. `created_at` é o equivalente moderno da
  * coluna `entrada` do legado (marca a criação do registro).
  */

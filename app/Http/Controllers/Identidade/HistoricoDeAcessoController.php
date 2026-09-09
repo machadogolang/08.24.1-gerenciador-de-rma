@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 /**
- * `LEG-RMA-043` — dado (`tentativas_de_acesso`) já existe desde a Fase 1, esta fase só
+ * `LEG-RMA-043` - dado (`tentativas_de_acesso`) já existe desde a Fase 1, esta fase só
  * adiciona a tela de consulta. Mesma regra de autorização de `HistoricoDeModificacaoController`
  * (`Papel::podeGerenciarUsuarios()`, tela administrativa).
  */

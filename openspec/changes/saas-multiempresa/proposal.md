@@ -1,10 +1,10 @@
-# Proposal — EVO-SAAS-001: fundação SaaS multiempresa
+# Proposal - EVO-SAAS-001: fundação SaaS multiempresa
 
 Primeira grande iniciativa da Trilha B, liberada para execução controlada em 2026-09-09.
 Decisões de arquitetura já investigadas e vigentes em
 `docs/arquitetura/INV-RMA-07-evolucao-saas-multiempresa.md`; este OpenSpec converte
 a investigação em contrato de implementação por ondas pequenas. Nada aqui copia a
-investigação — o repositório continua sendo a fonte de verdade.
+investigação - o repositório continua sendo a fonte de verdade.
 
 ## Por quê
 
@@ -33,7 +33,7 @@ modulares já reconstruídas.
 - Tema V3, anexos e configuração de admin.
 - Agregação de segurança cross-tenant e observabilidade de plataforma.
 - Billing, convites auto-onboarding, UI complexa de troca de empresa.
-- Isolamento físico (banco por empresa) — permanece decisão adiada, não implementada.
+- Isolamento físico (banco por empresa) - permanece decisão adiada, não implementada.
 
 ## Decisões arquiteturais vigentes
 

@@ -1,13 +1,13 @@
-{{-- CP23 (paridade visual V2) — fonte real `legacy-source/15.8.1/page/concluido.php`.
+{{-- CP23 (paridade visual V2) - fonte real `legacy-source/15.8.1/page/concluido.php`.
 Larguras: DATA 8%, ORIGEM 10%, T 4%, NF C 6%, NF V 5%, FABRICANTE 14%, DESCRICAO 15%,
 MODELO 18%, S/N 15%, OS 4%, A 2%. T aqui é o tempo de giro (dias entre entrada e
 conclusão), não dias até hoje.
 
 Zebra própria desta tela (achado já confirmado para o TEMA V1/Concluídos, mesmo
 padrão aqui): só `solucao=SEM GARANTIA` importa (`TrSemGarantia1/2`), sem checar
-prioridade/origem/marcarestoque — `Rma::classeDeAlerta()` faria isso errado (nunca
+prioridade/origem/marcarestoque - `Rma::classeDeAlerta()` faria isso errado (nunca
 devolve o caso SemGarantia puro, sempre cai em Inconformidade, e considera critérios
-que esta tela não usa) — não reaproveitado de propósito, mesma decisão já tomada
+que esta tela não usa) - não reaproveitado de propósito, mesma decisão já tomada
 para `TableV1/concluidos.blade.php`. --}}
 @if (count($registros) === 0)
     <p style="text-align:left;padding:5px;">Nenhum produto</p>

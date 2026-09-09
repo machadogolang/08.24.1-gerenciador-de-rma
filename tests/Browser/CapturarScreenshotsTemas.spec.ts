@@ -4,9 +4,9 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
- * Fase 8 — captura de screenshots reais (PNG) das telas principais dos dois temas, em
+ * Fase 8 - captura de screenshots reais (PNG) das telas principais dos dois temas, em
  * `docs/produto/screenshots-fase8/`, para inspeção manual/anexo ao checklist. NÃO é um
- * teste de asserção visual (isso é `ComparacaoVisualTemaV{1,2}Test.spec.ts`) — só
+ * teste de asserção visual (isso é `ComparacaoVisualTemaV{1,2}Test.spec.ts`) - só
  * grava evidência.
  */
 const DESTINO = join(process.cwd(), 'docs/produto/screenshots-fase8');

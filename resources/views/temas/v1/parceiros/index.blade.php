@@ -2,7 +2,7 @@
 
 @section('conteudo')
     {{-- Contrato de ações FRONT-003/UI-02B: Novo (primary), Editar (secondary+compact),
-    Remover (danger+compact). Mesma semântica HTML das rotas — sem JS de navegação. --}}
+    Remover (danger+compact). Mesma semântica HTML das rotas - sem JS de navegação. --}}
     <p><a href="{{ rota_tema('parceiros.' . $tipo . '.create') }}" class="acao acao--primaria">Novo</a></p>
 
     @if (count($registros) === 0)

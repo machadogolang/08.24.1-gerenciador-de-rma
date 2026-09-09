@@ -34,9 +34,9 @@ async function loginV3ComCredenciais(browser: Browser, email = 'operador@rma.loc
     return page;
 }
 
-test.describe('Smokes de Paridade Funcional (M-01 a M-06) — Fase 10', () => {
+test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
 
-    test('M-01 — Autenticação e alternância/persistência de tema em V3 e Legacy', async ({ browser }) => {
+    test('M-01 - Autenticação e alternância/persistência de tema em V3 e Legacy', async ({ browser }) => {
         const falhas: Falha[] = [];
 
         // 1. Validar login no Legacy (:8094)
@@ -125,7 +125,7 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) — Fase 10', () => {
         await pageV3.context().close();
     });
 
-    test('M-02 — Criar e editar RMA com formulário e persistência de dados', async ({ browser }) => {
+    test('M-02 - Criar e editar RMA com formulário e persistência de dados', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3ComCredenciais(browser, 'superadministrador@rma.local', 'password', falhas);
 
@@ -172,7 +172,7 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) — Fase 10', () => {
         await page.context().close();
     });
 
-    test('M-04 — Ciclo de vida completo: receber, encaminhar e concluir', async ({ browser }) => {
+    test('M-04 - Ciclo de vida completo: receber, encaminhar e concluir', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3ComCredenciais(browser, 'superadministrador@rma.local', 'password', falhas);
 
@@ -224,7 +224,7 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) — Fase 10', () => {
         await page.context().close();
     });
 
-    test('M-06 — Créditos e relatórios (RCD, RPEC e RMPE) respondem e filtram', async ({ browser }) => {
+    test('M-06 - Créditos e relatórios (RCD, RPEC e RMPE) respondem e filtram', async ({ browser }) => {
         const falhas: Falha[] = [];
         const page = await loginV3ComCredenciais(browser, 'superadministrador@rma.local', 'password', falhas);
 

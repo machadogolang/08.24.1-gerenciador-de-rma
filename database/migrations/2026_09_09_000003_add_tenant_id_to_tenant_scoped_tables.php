@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * EVO-SAAS-001 (S3.4) — `tenant_id` nullable nas tabelas tenant-scoped. Nullable
+     * EVO-SAAS-001 (S3.4) - `tenant_id` nullable nas tabelas tenant-scoped. Nullable
      * durante o backfill; NOT NULL/FK endurecidas só quando o código de escrita passar
      * a preencher tenant por construção (S5+), com prova de zero órfãos.
      */

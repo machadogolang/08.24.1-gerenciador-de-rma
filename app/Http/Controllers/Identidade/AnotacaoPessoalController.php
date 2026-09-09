@@ -21,11 +21,11 @@ class AnotacaoPessoalController extends Controller
 
         $atualizarAnotacaoPessoal->atualizar($request->user(), $dados['anotacao'] ?? null);
 
-        // CP9 (fase 2 V1) — o Quadro de Anotações da Página Inicial salva a cada
-        // pausa de digitação (`fetch`, sem reload — o Legacy salvava via AJAX
+        // CP9 (fase 2 V1) - o Quadro de Anotações da Página Inicial salva a cada
+        // pausa de digitação (`fetch`, sem reload - o Legacy salvava via AJAX
         // próprio, não portado; ver `_form_novo.blade.php`/diário CMP-V1-2-004 pra
         // o motivo de não reimplementar o polling antigo). Resposta JSON só quando
-        // pedida — o form tradicional do perfil (`identidade/perfil.blade.php`)
+        // pedida - o form tradicional do perfil (`identidade/perfil.blade.php`)
         // continua recebendo o redirect de sempre.
         if ($request->wantsJson()) {
             return response()->json(['status' => 'ok']);

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * EVO-SAAS-001 (S5) — trait de modelo tenant-scoped:
+ * EVO-SAAS-001 (S5) - trait de modelo tenant-scoped:
  *
  * - registra `EscopoDeTenant` como Global Scope;
  * - preenche `tenant_id` automaticamente no `creating` a partir do contexto;
@@ -40,7 +40,7 @@ trait PertenceATenant
     }
 
     /**
-     * EVO-SAAS-001 (S5.5) — route binding tenant-aware: o parent
+     * EVO-SAAS-001 (S5.5) - route binding tenant-aware: o parent
      * `resolveRouteBinding()` executa `firstOrFail()` sobre a query devolvida aqui;
      * o Global Scope ativo já filtra pela empresa do contexto, então um ID de outra
      * empresa vira 404.

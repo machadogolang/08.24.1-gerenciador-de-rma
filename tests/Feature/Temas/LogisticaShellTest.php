@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * FRONT-003/UI-04 — logística (frete Porto Alegre e boletins relacionados) no shell.
+ * FRONT-003/UI-04 - logística (frete Porto Alegre e boletins relacionados) no shell.
  */
 class LogisticaShellTest extends TestCase
 {
@@ -39,7 +39,7 @@ class LogisticaShellTest extends TestCase
         $response->assertOk();
         $response->assertViewIs("temas.{$tema->value}.rma.logistica.frete-porto-alegre");
         $response->assertSee('class="logistica-tabela"', false);
-        $response->assertSeeText('Frete consolidado — Porto Alegre');
+        $response->assertSeeText('Frete consolidado - Porto Alegre');
     }
 
     #[DataProvider('temasProvider')]

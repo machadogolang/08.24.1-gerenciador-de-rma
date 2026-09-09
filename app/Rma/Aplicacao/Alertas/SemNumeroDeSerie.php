@@ -7,7 +7,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RN-10 (`LEG-RMA-027`) — RMA recebido sem número de série preenchido.
+ * RN-10 (`LEG-RMA-027`) - RMA recebido sem número de série preenchido.
  */
 final class SemNumeroDeSerie
 {

@@ -1,4 +1,4 @@
-# Parecer — paridade estrutural do Tema V1
+# Parecer - paridade estrutural do Tema V1
 
 Data: 2026-08-25. Escopo: auditoria independente, somente leitura, de
 `INV-RMA-BUG-LAYOUT-falhas.md`, dos dez PNGs locais, da fonte 14.6.1 e do runtime

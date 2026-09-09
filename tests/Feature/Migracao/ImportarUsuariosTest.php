@@ -91,7 +91,7 @@ class ImportarUsuariosTest extends MigracaoTestCase
     }
 
     /**
-     * ARQ-002 (`INV-RMA-10`) — dry-run roda a tradução inteira (inclusive detecção de
+     * ARQ-002 (`INV-RMA-10`) - dry-run roda a tradução inteira (inclusive detecção de
      * anomalia), mas nunca pode gravar usuário nem disparar e-mail real de redefinição
      * de senha (efeito não-transacional, não desfeito pelo rollback da transação).
      */
@@ -116,7 +116,7 @@ class ImportarUsuariosTest extends MigracaoTestCase
         Notification::assertNothingSent();
     }
 
-    /** ARQ-002 — dry-run também detecta anomalia de permissão sem gravar nada. */
+    /** ARQ-002 - dry-run também detecta anomalia de permissão sem gravar nada. */
     public function test_dry_run_detecta_anomalia_de_permissao_sem_gravar(): void
     {
         DB::connection('rma_legacy')->table('usuario')->insert([

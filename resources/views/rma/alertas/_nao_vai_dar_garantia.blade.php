@@ -1,9 +1,9 @@
 {{--
-    CP12-05G (fase 2 V1) — tabela histórica de listar_naovaidargarantia.php.
+    CP12-05G (fase 2 V1) - tabela histórica de listar_naovaidargarantia.php.
     Colunas: ENTRADA | ORIGEM | NF C | T C | NF V | FORNECEDOR | FABRICANTE | DESCRICAO | MODELO | OS | A
     Larguras: 8% | 7% | 6% | 6% | 6% | 12% | 15% | 15% | 18% | 5% | 2%
     T C = tempo em dias desde a emissão da NF de compra (nfcompra_emissao).
-    Os branches de $TR1 do legado não acessam solução/prioridade/marcarestoque — caem
+    Os branches de $TR1 do legado não acessam solução/prioridade/marcarestoque - caem
     em TrZebrada1/2. [CONFIRMADO-15.8.1]
 --}}
 <table class="Tabelinha-Table tabela-alerta-nao-vai-dar-garantia">

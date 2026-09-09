@@ -1,5 +1,5 @@
 {{--
-    CP12-05D (fase 2 V1) — tabela histórica de listar_semnota.php.
+    CP12-05D (fase 2 V1) - tabela histórica de listar_semnota.php.
     Colunas: RECEBIDO | T | ORIGEM | FORNECEDOR | FABRICANTE | DESCRICAO | MODELO | S/N | OS | A
     Larguras: 8% | 4% | 7% | 12% | 14% | 13% | 18% | 17% | 5% | 2%
 --}}

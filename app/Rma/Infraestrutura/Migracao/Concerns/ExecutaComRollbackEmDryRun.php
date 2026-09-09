@@ -6,13 +6,13 @@ use Closure;
 use Illuminate\Support\Facades\DB;
 
 /**
- * ARQ-002 (`INV-RMA-10`) — antes, cada importador pulava a tradução inteira em
+ * ARQ-002 (`INV-RMA-10`) - antes, cada importador pulava a tradução inteira em
  * `--dry-run` (`if ($dryRun) { continue; }` antes de traduzir a linha), então dry-run
  * nunca detectava anomalia nenhuma e sempre reportava zero linhas processadas,
  * escondendo justamente os problemas que o dry-run deveria revelar.
  *
  * Este trait roda o callback (tradução + gravação) sempre da mesma forma, dry-run ou
- * não — mesma cobertura de anomalias e mesma contagem real do que seria gravado — mas
+ * não - mesma cobertura de anomalias e mesma contagem real do que seria gravado - mas
  * embrulha tudo numa transação que só é confirmada quando `$dryRun` é falso. Em
  * dry-run, uma exceção marcadora força o rollback ao final, desfazendo inclusive
  * efeitos colaterais indiretos (ex.: `EncontrarOuCriarFabricante` criando um fabricante
@@ -31,7 +31,7 @@ trait ExecutaComRollbackEmDryRun
                 }
             });
         } catch (DryRunConcluido) {
-            // Esperado — ver docblock da trait.
+            // Esperado - ver docblock da trait.
         }
     }
 }

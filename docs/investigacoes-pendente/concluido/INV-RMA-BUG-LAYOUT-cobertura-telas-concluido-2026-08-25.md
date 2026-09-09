@@ -1,4 +1,4 @@
-# INV-RMA-BUG-LAYOUT — sub-frente "cobertura de telas" — concluída
+# INV-RMA-BUG-LAYOUT - sub-frente "cobertura de telas" - concluída
 
 **Data de conclusão:** 2026-08-25.
 
@@ -17,17 +17,17 @@ cobertas). Identificadas lacunas parciais no painel `controle.php` dos dois tema
 achados novos registrados no checklist operacional:
 `VIS-V1-009` (5 telas de detalhe de parceiro), `VIS-V1-014` (tela de ajuda),
 `VIS-V2-001` (aba "Recebido" do TEMA V2 legado). Também gerou o refinamento
-`VIS-V1-010` (o "Controle" do MENU V1 apontava para a tela errada — do V2, não do V1).
+`VIS-V1-010` (o "Controle" do MENU V1 apontava para a tela errada - do V2, não do V1).
 
 **Pendências/desdobramentos:** nenhum achado foi corrigido nesta sub-frente (escopo era
 só o levantamento). Desdobramentos, todos já rastreados em
 `docs/produto/checklist-paridade-visual-v1-runtime.md`:
-- `VIS-V1-010` — **corrigido** em sessão posterior (commit `873e88a`).
-- `VIS-V1-013` (listar arquivados, uma das 3 sub-lacunas do Controle V1) —
+- `VIS-V1-010` - **corrigido** em sessão posterior (commit `873e88a`).
+- `VIS-V1-013` (listar arquivados, uma das 3 sub-lacunas do Controle V1) -
   **corrigido** junto de `VIS-V1-010`.
-- `VIS-V1-011`/`VIS-V1-012` (hard delete de RMA/usuário) — pendentes, decisão de
+- `VIS-V1-011`/`VIS-V1-012` (hard delete de RMA/usuário) - pendentes, decisão de
   produto/segurança ainda não tomada.
-- `VIS-V1-009`, `VIS-V1-014`, `VIS-V2-001` — pendentes, não corrigidos ainda.
+- `VIS-V1-009`, `VIS-V1-014`, `VIS-V2-001` - pendentes, não corrigidos ainda.
 
 **Parecer completo correspondente:**
 `docs/pareceres/2026-08-25-parecer-cobertura-telas-legado-x-v3.md`.

@@ -4,11 +4,11 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
- * VIS-V1-010 — captura de evidência do painel "Controle" do TEMA V1 já corrigido
+ * VIS-V1-010 - captura de evidência do painel "Controle" do TEMA V1 já corrigido
  * (`rmas.controle.index`), para comparação com os prints já commitados do Legacy
  * (`06-legacy-menu-controle-v1-colapsado.png`, `07-legacy-menu-controle-v1-ajuda-expandida.png`).
- * Não é teste de asserção (isso é `ControlePainelTest.php`) — só grava evidência. Sem
- * dado de negócio real (banco de QA fictício, sem RMA arquivado) — commitável, mesma
+ * Não é teste de asserção (isso é `ControlePainelTest.php`) - só grava evidência. Sem
+ * dado de negócio real (banco de QA fictício, sem RMA arquivado) - commitável, mesma
  * regra de `screenshots-vis-v1-001/`.
  */
 const DESTINO = join(process.cwd(), 'docs/produto/screenshots-vis-v1-001');
@@ -35,7 +35,7 @@ test('captura painel Controle do TEMA V1 corrigido (VIS-V1-010)', async ({ page 
     await page.fill('#password', 'password');
     await page.click('button[type=submit]');
     // Supervisor loga direto em "Usuários" (`podeGerenciarUsuarios()`, ver
-    // `SessaoController::store`), não em `/perfil` — segue direto para o painel.
+    // `SessaoController::store`), não em `/perfil` - segue direto para o painel.
     await page.waitForURL('**/usuarios');
 
     await page.goto('/rmas-controle');

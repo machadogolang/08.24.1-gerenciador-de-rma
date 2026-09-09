@@ -15,16 +15,16 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Implementação Eloquent de `RepositorioDeRmas`. `App\Models\Rma` é uso interno desta
- * classe — nunca é devolvido nem recebido por fora daqui, o restante da aplicação só
+ * classe - nunca é devolvido nem recebido por fora daqui, o restante da aplicação só
  * conhece `App\Rma\Dominio\Rma`.
  *
  * `buscar()`: os 4 arquivos `pesquisar_{rma,nf,sn,descricao}.php` do 15.8.1 eram
- * byte-idênticos (mesma função `pesquisar()`, LIKE genérico) — a distinção de "tipo"
+ * byte-idênticos (mesma função `pesquisar()`, LIKE genérico) - a distinção de "tipo"
  * era só rótulo de UI; no 14.6.1, porém, o campo `NF` do painel Localizar filtrava
  * explicitamente `nfcompra`/`nfvenda`/`nfremessa` (`page/localizar.php:9`), e `os`
  * filtrava só a coluna `os`. ARQ-004 (fechado em 2026-09-09): `nota_fiscal` busca os
  * campos fiscais reais (primeira classe + históricos preservados pelo migrador), e
- * `os` virou critério próprio — nada mais busca `os` no lugar de NF.
+ * `os` virou critério próprio - nada mais busca `os` no lugar de NF.
  */
 final class RmasEmBanco implements RepositorioDeRmas
 {
@@ -33,7 +33,7 @@ final class RmasEmBanco implements RepositorioDeRmas
         $model = DB::transaction(function () use ($rma): RmaEloquent {
             $dados = $this->paraArray($rma);
 
-            // EVO-SAAS-001 (S10) — número operacional por empresa reservado em
+            // EVO-SAAS-001 (S10) - número operacional por empresa reservado em
             // transação (nunca MAX+1). O observer preenche tenant_id do contexto.
             $contexto = app(ContextoDeTenant::class);
             if ($contexto->temEmpresa()) {
@@ -79,7 +79,7 @@ final class RmasEmBanco implements RepositorioDeRmas
                     // PAR-RMA-003 (parcial, 2026-09-09): campos diretos que o legado
                     // já pesquisava no modo TUDO (14.6.1 `page/localizar.php:15`).
                     // Nomes via relacionamento (fabricante/cliente/destinatario) ficam
-                    // para a tarefa integral — `[GAP]` mantido no checklist.
+                    // para a tarefa integral - `[GAP]` mantido no checklist.
                     ->orWhere('sn', 'like', $valor)
                     ->orWhere('pn', 'like', $valor)
                     ->orWhere('snid', 'like', $valor)
@@ -119,7 +119,7 @@ final class RmasEmBanco implements RepositorioDeRmas
             'os' => $consulta->where('os', 'like', '%' . $criterio->valor() . '%'),
         };
 
-        // CP7 (fase 2 V1) — filtro aditivo independente do texto (`solucao` do
+        // CP7 (fase 2 V1) - filtro aditivo independente do texto (`solucao` do
         // painel Localizar do legado, ver `CriterioDeBusca::solucao()`).
         if ($criterio->solucao() !== null) {
             $consulta->where('solucao', $criterio->solucao());
@@ -131,7 +131,7 @@ final class RmasEmBanco implements RepositorioDeRmas
     }
 
     /**
-     * VIS-V1-001 — os 4 atalhos de navegação superior do TEMA V1 legado, cada um com
+     * VIS-V1-001 - os 4 atalhos de navegação superior do TEMA V1 legado, cada um com
      * seu próprio filtro (`page/{entrada,encaminhados,aguardandocredito,concluidos}.php`).
      * "Entrada" reúne `status='entrada' OR status='recebido'` (mesmo critério do
      * legado); "Aguardando credito" filtra por `solucao`, não por `status`.

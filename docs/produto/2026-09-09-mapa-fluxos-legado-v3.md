@@ -1,4 +1,4 @@
-# Mapa de fluxos — Legacy executável × V3
+# Mapa de fluxos - Legacy executável × V3
 
 Data: 2026-09-09. Frente: paridade total dirigida por fluxos (OpenSpec
 `paridade-fluxos-legado-v3`). Fontes: V3 `main` local `a254d58`/origin `75c110d`;
@@ -82,14 +82,14 @@ fluxo fica no corpo deste documento e o controle de fechamento no OpenSpec.
 ## 4. Estado de paridade resumido
 
 - Já conformes (A): identidade, cadastros, RMA núcleo/ciclo, crédito, relatórios,
-  alertas, filas, históricos e logística — todos com testes e/ou shell por tema.
+  alertas, filas, históricos e logística - todos com testes e/ou shell por tema.
 - Bugs V3 conhecidos: troca de tema no menu V1 (D) e UX de destinatário por ID (B).
 - Gaps Legacy→V3: detalhe de parceiro/RMAs (C), busca por contrapartes (C parcial),
   página de anotações V2 (C).
 - Bug Legacy descartados: Fatal Error arquivar V1, troca de senha V2, hard deletes,
   SQL injection de busca, rota `retornou`/`pomodoro` morta.
 - Docs desatualizadas: itens F10-COB-05/06/07 e H-018/H-020 citados no checklist foram
-  reabertos? — verificar runtime antes de reconciliar (rodada P10).
+  reabertos? - verificar runtime antes de reconciliar (rodada P10).
 
 ## 5. Regra dos quatro quadrantes
 

@@ -2279,7 +2279,7 @@ continua "mais largo" que o V3 mesmo com os dois em 100% de zoom; (2) ler os doi
 prompts acima e consolidar numa única instrução, refletindo o estado real do
 repositório neste momento (não o estado de quando cada prompt foi escrito).
 
-## 1. A largura NÃO é um defeito de CSS — é comparação manual não normalizada
+## 1. A largura NÃO é um defeito de CSS - é comparação manual não normalizada
 
 Medição direta, Chromium headless (Playwright), viewport 1440×1000 idêntica nos dois
 lados, sem bloquear fontes remotas, sessão autenticada nos dois runtimes:
@@ -2289,11 +2289,11 @@ lados, sem bloquear fontes remotas, sessão autenticada nos dois runtimes:
 | `window.devicePixelRatio` | 1 | 1 |
 | `getComputedStyle(html).zoom` | `"1"` | `"1"` |
 | `getComputedStyle(body).transform` | `"none"` | `"none"` |
-| `#BASE` — `getBoundingClientRect()` | `x=218, width=1004` | `x=218, width=1004` |
-| `#TOPO` — `getBoundingClientRect()` | `x=218, width=1004` | `x=218, width=1004` |
+| `#BASE` - `getBoundingClientRect()` | `x=218, width=1004` | `x=218, width=1004` |
+| `#TOPO` - `getBoundingClientRect()` | `x=218, width=1004` | `x=218, width=1004` |
 | `document.documentElement.clientWidth` | 1440 | 1440 |
 | `document.body.scrollWidth` (overflow horizontal?) | 1440 (nenhum) | 1440 (nenhum) |
-| cor de fundo do `#TOPO` na captura (pixel real, `y=25`, `x=0..1439`) | `rgb(174,13,58)` uniforme | `rgb(174,13,58)` uniforme (mesma cor, sem transição de borda visível — a faixa colorida é full-bleed nos dois, não é limitada por `#BASE`) |
+| cor de fundo do `#TOPO` na captura (pixel real, `y=25`, `x=0..1439`) | `rgb(174,13,58)` uniforme | `rgb(174,13,58)` uniforme (mesma cor, sem transição de borda visível - a faixa colorida é full-bleed nos dois, não é limitada por `#BASE`) |
 
 **Veredito: não existe divergência de CSS, DOM ou zoom.** `#BASE`/`#TOPO` medem
 exatamente os mesmos 1004px (984px de conteúdo + padding) na mesma posição `x=218`
@@ -2310,26 +2310,26 @@ em ordem de probabilidade:
    site (`chrome://settings/content/zoomLevels`), não por sessão. Se em algum momento
    uma das duas abas (`localhost:8094` ou `localhost:8095`) recebeu um zoom diferente
    de 100% (ex.: `Ctrl +`/`Ctrl -` sem querer, ou o app lembrando de uma sessão
-   anterior), o indicador de zoom na barra de endereço mostra a porcentagem — mas só
+   anterior), o indicador de zoom na barra de endereço mostra a porcentagem - mas só
    aparece quando NÃO é 100%; é fácil não notar. **Verificação:** abrir
    `chrome://settings/content/zoomLevels` e conferir se `localhost:8094` e
-   `localhost:8095` aparecem na lista (se aparecerem, não estão em 100%) — ou, mais
+   `localhost:8095` aparecem na lista (se aparecerem, não estão em 100%) - ou, mais
    simples, abrir as duas abas lado a lado e olhar se o ícone de zoom (lupa com `%`)
    aparece na barra de endereço de alguma delas.
 2. **Escala de exibição do sistema operacional diferente entre monitores.** Se as duas
    janelas foram comparadas em monitores com DPI/escala do Windows diferentes (ex.: um
    monitor a 100% e outro a 125%), o zoom do Chrome pode estar em 100% nos dois e
    ainda assim a captura de tela (print, ferramenta de recorte) sair em proporções
-   físicas diferentes — exatamente o padrão já diagnosticado no PROMPT 1 (regra zero,
+   físicas diferentes - exatamente o padrão já diagnosticado no PROMPT 1 (regra zero,
    860px vs 788px ≈ razão 1,10). **Verificação:** mover as duas janelas para o MESMO
    monitor antes de comparar, ou usar a mesma ferramenta de captura nas mesmas
    dimensões de janela.
 
-Não há ação de código a tomar aqui — não existe `984px` "errado", não existe zoom
+Não há ação de código a tomar aqui - não existe `984px` "errado", não existe zoom
 embutido no HTML/CSS de nenhum dos dois lados, e re-medir mais uma vez confirmaria o
 mesmo resultado. Se depois de checar as duas hipóteses acima a diferença persistir,
 o próximo passo é reproduzir com um vídeo/print SINCRONIZADO (as duas janelas na
-mesma captura de tela, mesmo monitor, mesmo instante) — sem isso, qualquer nova
+mesma captura de tela, mesmo monitor, mesmo instante) - sem isso, qualquer nova
 "correção" de largura seria alterar `984px` sem prova, o que o próprio PROMPT 1 já
 proíbe explicitamente na Regra Zero.
 
@@ -2341,21 +2341,21 @@ se sobrepõem quase inteiramente. Nenhum dos dois reflete o estado atual:
 - **PROMPT 1** foi escrito quando Entrada/Encaminhado/Aguardando crédito ainda
   estavam incorretos (pede `VIS-FIX-01` a `VIS-FIX-05`, ícone/colunas/formatação das
   4 listagens). **Isso já foi corrigido e commitado** (`c2f7db2`, sessão anterior a
-  este parecer) — CP3A/B/C/D do plano estrutural.
+  este parecer) - CP3A/B/C/D do plano estrutural.
 - **PROMPT 2** foi escrito depois de `c2f7db2` e corretamente identifica que só
   faltava `CP4` (resumo de Concluídos). **Isso também já foi corrigido e commitado**
   nesta sessão (`713bbd2`), junto com o fechamento formal do `CP5` de propagação
-  (`2ee170f`) — cascata/fontes, primitivas de tabela, as 4 listagens completas com
+  (`2ee170f`) - cascata/fontes, primitivas de tabela, as 4 listagens completas com
   resumo, propagação para as demais telas V1 que reusam as primitivas, e confirmação
   de que o Tema V2 não regrediu. Ver tabela de prova completa em
   `docs/produto/plano-execucao-paridade-estrutural-v1.md`, entrada `CMP-V1-007`.
 - Os itens `VIS-FIX-08` a `VIS-FIX-25` do PROMPT 1 (idênticos, em outras palavras, às
-  seções 8 a 21 do PROMPT 2) **nunca foram iniciados** — não fazem parte do escopo
+  seções 8 a 21 do PROMPT 2) **nunca foram iniciados** - não fazem parte do escopo
   de CP0-CP5 (que é só cascata/fontes/tabelas + as 4 listagens por status). São uma
   frente nova: painel Novo, Localizar, Página Inicial, Quadro de Anotações, sidebar de
   Contadores, Centro de Avisos, separador2.png.
 - `VIS-FIX-25`/seção 17-19 (máquina de estado da zebra `$TR1` entre tipos de alerta
-  diferentes) é uma dúvida de comportamento, não uma correção pronta — nenhum dos dois
+  diferentes) é uma dúvida de comportamento, não uma correção pronta - nenhum dos dois
   prompts tem evidência de runtime provando que a regra atual
   (`Rma::classeDeAlerta()`) diverge; fica como item de investigação, não de correção
   cega.
@@ -2374,46 +2374,46 @@ crédito/Concluído incluindo resumo (CP3A-D, CP4), largura `984px`/`#BASE`/`#CO
 (ver seção 1 deste parecer).
 
 **Nova frente, nesta ordem** (cada item: ler a fonte PHP/CSS citada por inteiro,
-medir Legado×V3 com Playwright normalizado — zoom 100%, DPR 1, mesma viewport, sem
-bloquear fontes —, implementar, comparar de novo, testar, commit local):
+medir Legado×V3 com Playwright normalizado - zoom 100%, DPR 1, mesma viewport, sem
+bloquear fontes -, implementar, comparar de novo, testar, commit local):
 
-1. **Página Inicial** — remover "RMAs"/"Novo RMA" da composição visual de
+1. **Página Inicial** - remover "RMAs"/"Novo RMA" da composição visual de
    `rma/index.blade.php` (H1 pode virar `sr-only`; o link Novo já existe no menu
    superior). Fonte: `legacy-source/14.6.1/inc/startpage.php`.
-2. **Localizar** — reconstruir como painel inline (`#JS-Localizar`, mesmo padrão já
+2. **Localizar** - reconstruir como painel inline (`#JS-Localizar`, mesmo padrão já
    aprovado do painel Novo), com os selects reais de SOLUÇÃO e CAMPO do legado e a
    geometria de `pattern/14.6.1.css` (`.JSformLocalizarInput/Select/Button`). Fonte:
    `legacy-source/14.6.1/menujs-top/localizar.php`. Maior item desta frente.
-3. **Painel Novo — divergências visuais restantes** (a mecânica inline já está
+3. **Painel Novo - divergências visuais restantes** (a mecânica inline já está
    correta, não mexer nela): toggle de estoque histórico (hoje é checkbox nativo),
    campo de data como texto com `placeholder="00/00/2015"` (hoje é `type="date"`),
    fabricante como input/datalist (hoje é `<select>`), auditoria do `box-sizing:
    border-box` introduzido pelo V3 nos inputs do painel. Fonte:
    `legacy-source/14.6.1/menujs-top/novo.php`.
-4. **Quadro de Anotações** — `rows="20"` (hoje 14) + geometria do container/textarea,
+4. **Quadro de Anotações** - `rows="20"` (hoje 14) + geometria do container/textarea,
    estilo real do título (`panotacao`/`imganotacao`), remover o botão "Salvar
    anotação" (o legado salva durante a digitação; usar debounce + fetch moderno, sem
    botão visível). Fonte: `legacy-source/14.6.1/inc/startpage.php`.
-5. **Sidebar de contadores** — box model sem `border-box` (larguras históricas são de
+5. **Sidebar de contadores** - box model sem `border-box` (larguras históricas são de
    conteúdo, não de caixa), geometria do container (`width:280px;
    margin-right:-8px; margin-top:-15px`), e confirmar que cada contador continua
    sendo link para a listagem/filtro correspondente.
-6. **Separador antes do Centro de Avisos** — portar `separador2.png` (mesmos bytes,
+6. **Separador antes do Centro de Avisos** - portar `separador2.png` (mesmos bytes,
    hash conferido como os outros ícones desta frente) com `float:right;
    margin-top:50px; height:40px`.
-7. **Centro de Avisos** — ordem histórica dos grupos (mapear
+7. **Centro de Avisos** - ordem histórica dos grupos (mapear
    `legacy-source/14.6.1/inc/startpage.php` até o fim, não só os 10 primeiros
    includes citados nos prompts), composição própria por bloco (nem todo grupo é
-   "ícone + título + Mostrar + lista" — alguns têm tabela com colunas próprias,
+   "ícone + título + Mostrar + lista" - alguns têm tabela com colunas próprias,
    outros só "Nenhum item foi encontrado"), estado inicial real de
    mostrar/ocultar por grupo (não assumir que todos começam ocultos).
-8. **Fixture de QA com comprimento de dado realista** — só depois dos itens acima,
+8. **Fixture de QA com comprimento de dado realista** - só depois dos itens acima,
    para permitir comparação de densidade de linha sem a variável "tamanho do texto
    fictício" atrapalhar (ex.: `OS-QA-00059` vs `5947`). Não usar dado real do Legacy.
 9. **Investigação separada, não correção às cegas:** a máquina de estados `$TR1`
    entre tipos de alerta diferentes em Entrada/Encaminhado (`Rma::classeDeAlerta()`).
    Só abrir se houver evidência de runtime (sequência real de linhas divergindo do
-   Legado) — não alterar por suspeita.
+   Legado) - não alterar por suspeita.
 
 Ao final de cada item: `php artisan test`, `npm run build`,
 `npx playwright test tests/Browser` (os specs de paridade do V1 rodam no host, ver
@@ -2421,7 +2421,7 @@ Ao final de cada item: `php artisan test`, `npm run build`,
 testes"), `git status`, `git log --oneline`. Tabela final Legado×V3 por elemento,
 com caminho dos screenshots, no mesmo formato usado em `CMP-V1-002` a `CMP-V1-007`
 de `docs/produto/plano-execucao-paridade-estrutural-v1.md`. Não declarar equivalência
-visual só porque os testes passaram — só quando a diferença medida for zero ou
+visual só porque os testes passaram - só quando a diferença medida for zero ou
 explicada por limitação objetiva do browser/fonte (ex.: a diferença de 0.04px de
 `font-size` do `h3` de Concluídos, documentada em `CMP-V1-006`, herança de UA sem
 declaração explícita nos dois lados).

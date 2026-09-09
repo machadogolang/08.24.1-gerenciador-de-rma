@@ -2,10 +2,10 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Boletins relacionados — CellSystem RMA</title>
+    <title>Boletins relacionados - CellSystem RMA</title>
 </head>
 <body>
-    <h1>Boletins relacionados — RMA #{{ $registro->id }}</h1>
+    <h1>Boletins relacionados - RMA #{{ $registro->id }}</h1>
 
     {{-- View mínima, sem fidelidade visual (Fase 8). LEG-RMA-041, paginado. --}}
     <p><a href="{{ route('rmas.show', $registro->id) }}">Voltar ao RMA #{{ $registro->id }}</a></p>

@@ -1,4 +1,4 @@
-# INV-RMA-10 — Arquitetura, front-end e paridade de temas
+# INV-RMA-10 - Arquitetura, front-end e paridade de temas
 
 Data de abertura: 2026-08-25. Estado: **em execução**.
 
@@ -36,7 +36,7 @@ Decisão proporcional:
 
 ## Achados críticos
 
-### ARQ-001 — reconstruções do agregado apagam estado
+### ARQ-001 - reconstruções do agregado apagam estado
 
 Classificação: **CRÍTICO / CORREÇÃO / P0**.
 
@@ -50,7 +50,7 @@ Evidências: `app/Rma/Dominio/Rma.php`, `app/Rma/Aplicacao/{EditarRma,ReceberRma
 EncaminharRma,ConcluirRma,ArquivarRma,ReverterRmaParaEntrada,RegistrarSolucao}.php` e
 `app/Rma/Infraestrutura/RmasEmBanco.php`.
 
-### ARQ-002 — dry-run não valida a migração nem reconcilia o destino
+### ARQ-002 - dry-run não valida a migração nem reconcilia o destino
 
 Classificação: **CRÍTICO / CORREÇÃO / P0**.
 
@@ -64,7 +64,7 @@ Decisão: separar `origem`, `planejado`, `criado`, `atualizado`, `ignorado` e to
 no destino; dry-run percorre toda tradução sem efeito externo. Bloqueia
 `F10-DAD-04…09`.
 
-### ARQ-003 — Supervisor pode escalar privilégio
+### ARQ-003 - Supervisor pode escalar privilégio
 
 Classificação: **CRÍTICO / SEGURANÇA / P0**.
 
@@ -149,7 +149,7 @@ A matriz viva está em `docs/produto/matriz-paridade-temas-v1-v2-v3.md`.
 - **INVESTIGAR:** campos históricos editáveis × somente leitura, status importado nulo,
   criação/exclusão de usuários, mutações nas rotas prefixadas de QA e RN-12 no V1.
 
-## Tema 3 — Console Operacional Adaptativa
+## Tema 3 - Console Operacional Adaptativa
 
 Conceito reconciliado: mesa de trabalho orientada a fila, exceção, status e próxima
 ação. Prioriza produtividade/densidade no desktop e se adapta integralmente a tablet e
@@ -172,7 +172,7 @@ Tailwind 4 é candidato, não decisão; um spike compara utilitários com CSS se
 
 ## Evoluções justificadas
 
-### EVO-UX-002 — pesquisa global/lançador
+### EVO-UX-002 - pesquisa global/lançador
 
 Problema: busca atual exige entrar no módulo e não cobre parceiros.
 Proposta: buscar por número, SN, NF, descrição e contraparte, agrupando resultados sob
@@ -180,20 +180,20 @@ as mesmas policies. Benefício: menos navegação. Complexidade: média-alta. Ri
 performance/vazamento. Prioridade: média-alta pós-fundação. Temas: todos. Dependências:
 contrato de busca, índices, policies e tenancy quando aplicável.
 
-### EVO-UX-003 — filtros e vistas pessoais persistentes
+### EVO-UX-003 - filtros e vistas pessoais persistentes
 
 Problema: filas repetitivas perdem filtros. Proposta: salvar consultas nomeadas mantendo
 a URL como fonte. Benefício: produtividade. Complexidade/risco: médios. Prioridade:
 média. Temas: todos. Dependências: filtros/paginação e identidade/tenant.
 
-### EVO-UX-004 — atividade operacional recente
+### EVO-UX-004 - atividade operacional recente
 
 Problema: históricos estão separados da fila. Proposta: read model paginado e
 autorizado das últimas atividades. Benefício: consciência operacional. Complexidade e
 risco: médios. Prioridade: média. Temas: todos. Dependências: policies, performance e
 auditoria; não substitui `EVO-AUD-001`.
 
-### INV-UX-005 — ações em lote
+### INV-UX-005 - ações em lote
 
 Problema ainda hipotético. Medir volume e repetição antes de especificar. Benefício
 potencial alto; complexidade e risco altos. Prioridade baixa/investigação. Temas: todos.

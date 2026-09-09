@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
- * Uso interno de `App\Rma\Infraestrutura\RmasEmBanco` — não expor este model fora da
+ * Uso interno de `App\Rma\Infraestrutura\RmasEmBanco` - não expor este model fora da
  * classe de infra (o objeto de domínio puro é `App\Rma\Dominio\Rma`).
  */
 #[Fillable([
@@ -54,7 +54,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
     'lancadoretorno',
     'valor',
     'credito_disponivel',
-    // Fase 9 — colunas históricas de preservação (`INV-RMA-06` §1.2, §5, §7, §10),
+    // Fase 9 - colunas históricas de preservação (`INV-RMA-06` §1.2, §5, §7, §10),
     // preenchidas só pelo migrador, sem regra de negócio dona.
     'nf_devolucao_de_venda',
     'nf_entrada_cliente_legado',
@@ -98,13 +98,13 @@ class Rma extends Model
             'encaminhado_em' => 'datetime',
             'concluido_em' => 'datetime',
             'arquivado_em' => 'datetime',
-            // `origem` deliberadamente SEM cast para `Origem::class` — ver decisão
+            // `origem` deliberadamente SEM cast para `Origem::class` - ver decisão
             // registrada em `docs/produto/log-implementacao-v3.md` (Fase 5):
             // `comNormalizacaoDeGravacao()` (Fase 3) tem um ramo `default` que devolve
             // o valor original sem alterar, podendo persistir texto livre fora do
             // domínio fechado do enum; um cast Eloquent quebraria a hidratação
             // (`ValueError`) para esses registros. As 10 regras de alerta continuam
-            // usando `Origem::Cliente` etc. literalmente nas queries — o query
+            // usando `Origem::Cliente` etc. literalmente nas queries - o query
             // builder do Laravel converte `BackedEnum` para `->value` na construção do
             // SQL independente de cast no model (`Illuminate\Support\enum_value()`).
             'prioridade' => Prioridade::class,
@@ -123,7 +123,7 @@ class Rma extends Model
     }
 
     /**
-     * Usada por `NaoVaiDarGarantia` (RN-02) — join real via FK, não comparação de
+     * Usada por `NaoVaiDarGarantia` (RN-02) - join real via FK, não comparação de
      * string (`fabricante_id` existe desde a Fase 2/3).
      */
     public function fabricante(): BelongsTo
@@ -132,7 +132,7 @@ class Rma extends Model
     }
 
     /**
-     * Usada por `NaoVaiDarGarantia` (RN-02) — join real via FK.
+     * Usada por `NaoVaiDarGarantia` (RN-02) - join real via FK.
      */
     public function fornecedor(): BelongsTo
     {

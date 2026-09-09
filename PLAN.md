@@ -1,4 +1,4 @@
-# CellSystem RMA V3 — estado macro
+# CellSystem RMA V3 - estado macro
 
 Última atualização: 2026-09-09. **RMA V2 FINAL** = container 15.9.7; **TEMA V1** =
 14.6.1; **TEMA V2** = 15.8.1; **RMA V3** = este repositório.
@@ -17,7 +17,7 @@ sobre Git, OpenSpec, investigações e documentos de planejamento.
 - Handoff da sessão atual (2026-09-09): `docs/produto/handoff-sessao-2026-09-09.md`;
   `handoff-sessao-2026-08-25.md` e `handoff-sessao-2026-08-26.md` ficam como histórico.
 
-## Trilha A — reconstrução fiel
+## Trilha A - reconstrução fiel
 
 | Fase | Capacidade | Estado |
 |---|---|---|
@@ -37,7 +37,7 @@ IDEIA` e 1 (`LEG-RMA-002`) homologado em parecer formal. A suíte completa tem
 450 testes/1076 assertions no PHPUnit (100% verde nesta sessão) e 58 testes automatizados no Playwright
 Browser (100% verde).
 
-### Gate da Trilha A — APROVADO (2026-09-04)
+### Gate da Trilha A - APROVADO (2026-09-04)
 
 1. Funcional: 48 `LEG-RMA-*` reconciliados, 6 smokes M-01 a M-06 aprovados.
 2. Visual: Temas V1 e V2 homologados em 390/768/1440, auditoria navegacional NAV-01..NAV-05 fechada.
@@ -45,17 +45,17 @@ Browser (100% verde).
 4. Decisões residuais formalmente homologadas em parecer executivo de 2026-09-04.
 5. Suíte completa verde e relatório final emitido em `docs/qa/relatorio-paridade-final.md`.
 
-## Trilha B — evolução
+## Trilha B - evolução
 
 Trilha A encerrada em 2026-09-04 e Trilha B liberada para execução controlada em
 2026-09-09 (decisão do usuário nesta rodada). Primeira iniciativa:
-**EVO-SAAS-001 — fundação SaaS multiempresa**, em ondas pequenas com OpenSpec
+**EVO-SAAS-001 - fundação SaaS multiempresa**, em ondas pequenas com OpenSpec
 (`openspec/changes/saas-multiempresa/`), testes e commits atômicos. Abrange também
 tema V3, arquivos, configuração, domínio, automação, relatórios, segurança, auditoria,
 performance e IA, na ordem do backlog evolutivo; `EVO-SAAS-002/003` e demais frentes
 ficam depois da fundação multiempresa.
 
-## Frente — Arquitetura, Front-end e Paridade de Temas
+## Frente - Arquitetura, Front-end e Paridade de Temas
 
 Aberta em 2026-08-25 e incorporada a este plano, sem criar roadmap principal paralelo.
 Parecer e evidências: `docs/investigacoes-pendente/
@@ -70,7 +70,7 @@ matriz-paridade-temas-v1-v2-v3.md`; tarefas atômicas: checklist mestre, seção
   simetria V1×V2.
 - **Regra arquitetural:** temas podem divergir em identidade e composição, nunca em
   regra, permissão, informação ou ação disponível.
-- **T3 — Console Operacional Adaptativa:** implementação permanece Trilha B, depois de
+- **T3 - Console Operacional Adaptativa:** implementação permanece Trilha B, depois de
   G-07/G-08. Pode nascer incrementalmente oculto, mas só entra no seletor com a matriz
   funcional integral, E2E, acessibilidade e performance aprovadas.
 - **EVO:** pesquisa global, filtros pessoais e atividade recente foram registradas;

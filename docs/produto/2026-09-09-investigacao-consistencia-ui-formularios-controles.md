@@ -1,4 +1,4 @@
-# Investigação — consistência visual e de interação (formulários, controles e temas)
+# Investigação - consistência visual e de interação (formulários, controles e temas)
 
 Data: 2026-09-09. Frente: auditoria transversal de UI (V1 e V2). Objetivo: inventário
 executável, com IDs `UI-AUD-*`, antes de qualquer correção de
@@ -23,16 +23,16 @@ Blade/SCSS/JS/PHP. Este documento é o marco imutável da investigação
 Nenhum arquivo de código (views/sass/js/app/routes/database) foi alterado até o
 commit documental que fecha a Fase A.
 
-## 1. Reconciliacão P5/P6 — código, plano, OpenSpec e handoff
+## 1. Reconciliacão P5/P6 - código, plano, OpenSpec e handoff
 
 Resultado: **P5/P6 continuam presentes e concluídos no HEAD; não há nada a
 reimplementar.**
 
 ### Código/git
 
-- P5 (`12b74f0`) — “Adiciona detalhe de parceiros e RMAs relacionados”:
+- P5 (`12b74f0`) - “Adiciona detalhe de parceiros e RMAs relacionados”:
   presente em HEAD e em `origin/main` (merge-base já contém).
-- P6 (`13e4c3a`) — “Completa busca textual por contrapartes”:
+- P6 (`13e4c3a`) - “Completa busca textual por contrapartes”:
   presente em HEAD; é o próprio `origin/main`.
 - O HEAD local adiciona apenas `b14a6a8` (#QA-RMA, TAB após Ver) e `7397594`
   (#DOC-RMA, consolidação), sem reverter P5/P6.
@@ -41,9 +41,9 @@ reimplementar.**
 
 | Fonte | Estado antes desta sessão | Reconciliado |
 |---|---|---|
-| `PLANO-ATAQUE.md` | P5/P6 marcados concluídos; “515 testes / 1421 assertions” | OK — nenhuma mentira documental encontrada |
+| `PLANO-ATAQUE.md` | P5/P6 marcados concluídos; “515 testes / 1421 assertions” | OK - nenhuma mentira documental encontrada |
 | `openspec/changes/paridade-fluxos-legado-v3/tasks.md` | P5/P6 `[x]` com SHA | OK |
-| `docs/produto/handoff-sessao-2026-09-09.md` | P5/P6 concluídos, próximo P7 | OK — mantém-se como linha de frente de paridade; esta rodada é uma frente transversal nova (FRONT-003/UI-09) |
+| `docs/produto/handoff-sessao-2026-09-09.md` | P5/P6 concluídos, próximo P7 | OK - mantém-se como linha de frente de paridade; esta rodada é uma frente transversal nova (FRONT-003/UI-09) |
 | `openspec/changes/front-003-shell-telas-secundarias/tasks.md` | UI-05 aberta; UI-06/07/08 abertas; sem UI-09 | Será atualizada nesta rodada (ver seção “Plano de ondas”) |
 
 Conclusão: nenhuma pendência de P5/P6 foi reaberta; os testes dirigidos já
@@ -74,11 +74,11 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
 `PARIDADE-LEGACY`, `MELHORIA-UX`, `DOCUMENTACAO-DESATUALIZADA`,
 `NAO-CORRIGIR-FIDELIDADE`, `INVESTIGAR`, `ORFAO-CANDIDATO`.
 
-### UI-AUD-001 — RCD V1: título duplicado
+### UI-AUD-001 - RCD V1: título duplicado
 
 - **Rota:** `/rmas-relatorios/rcd`
 - **Tema/superfície:** V1 / relatório dentro do painel de sessão
-- **Sintoma:** dois títulos visíveis equivalentes — “Relatório de Créditos
+- **Sintoma:** dois títulos visíveis equivalentes - “Relatório de Créditos
   Disponíveis (RCD)”.
 - **Reprodução:** login com tema V1 e abrir a rota. Medido: H1
   `.titulo-v1` em `y=62` (font 14px) e H2 `.relatorio-titulo` em `y=96`
@@ -106,13 +106,13 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
 - **Prioridade/risco:** alta / baixo (mudança de classe visual pontual no layout
   V1; não afeta regra de negócio).
 - **Correção proposta:** no H1 do painel (`$painelSessao`), adicionar
-  `sr-only` quando `$omitirTituloPadrao` estiver presente — ou extrair o título
+  `sr-only` quando `$omitirTituloPadrao` estiver presente - ou extrair o título
   para um heading por tela. **Não remover o H2** (é o título real compartilhado
   que o Tema V2 também usa).
-- **Teste de regressão:** browser — contagem de headings visíveis com o mesmo
+- **Teste de regressão:** browser - contagem de headings visíveis com o mesmo
   texto deve ser 1; DOM pode manter o H1 `sr-only`.
 
-### UI-AUD-002 — RPEC V1: título duplicado
+### UI-AUD-002 - RPEC V1: título duplicado
 
 - **Rota:** `/rmas-relatorios/rpec`
 - Mesma causa raiz de UI-AUD-001 (mesmo layout V1; H1 `y=62` + H2 `y=96`,
@@ -123,7 +123,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
 - **Correção proposta:** mesma de UI-AUD-001.
 - **Teste:** idem.
 
-### UI-AUD-003 — RMPE V1: título duplicado
+### UI-AUD-003 - RMPE V1: título duplicado
 
 - **Rota:** `/rmas-relatorios/rmpe?data_inicio=2026-01-01&data_fim=2026-12-31`
 - Mesma causa raiz de UI-AUD-001; título “Relatório de Produtos Encaminhados
@@ -134,7 +134,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
 - **Correção proposta:** mesma de UI-AUD-001.
 - **Teste:** idem.
 
-### UI-AUD-004 — Parceiros V1 (4 tipos, create/edit): geometria divergente de controles
+### UI-AUD-004 - Parceiros V1 (4 tipos, create/edit): geometria divergente de controles
 
 - **Rotas:** `/parceiros/{clientes,fabricantes,fornecedores,
   assistencias-tecnicas}/{create,{id}/edit}` (tema V1) e equivalentes `/v1/...`
@@ -142,7 +142,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
 - **Tema/superfície:** V1 / formulário de cadastro de parceiro
 - **Sintoma:** input de texto com ~394px úteis; select UF com 186px fixo e
   centralizado; textarea Observação/Política com ~181px (largura padrão do
-  browser) — controles equivalentes não parecem pertencer à mesma grade.
+  browser) - controles equivalentes não parecem pertencer à mesma grade.
 - **Reprodução:** abrir `/v1/parceiros/fornecedores/create`; medir caixas.
   Exemplo medido (fornecedor):
   - `input.novo_formInput`: `x=549,2`, `w=393,8`;
@@ -162,7 +162,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   parceiros; cada tipo de controle herda regras globais distintas.
 - **Legacy V1:** V1 legado não tinha formulário vertical idêntico com esses
   campos; a gramática `.tablenovo`/`.novo_formInput` é do painel Novo. **Não
-  mudar `select { width:186px }` globalmente** — existem telas históricas onde
+  mudar `select { width:186px }` globalmente** - existem telas históricas onde
   isso é deliberado.
 - **Legacy V2:** formulário próprio (15.8.1) com outra composição; não copiar.
 - **Comportamento esperado:** dentro do mesmo formulário, controles com o mesmo
@@ -177,11 +177,11 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   `form-parceiro-v1`) + SCSS V1 escopado que (a) fixe largura das colunas de
   rótulo/controle ou use largura útil consistente para input/select/textarea do
   mesmo contrato; (b) evite `box-sizing` novo; (c) não altere outras telas.
-- **Teste de regressão:** browser — no mesmo formulário, `outerWidth` de input
+- **Teste de regressão:** browser - no mesmo formulário, `outerWidth` de input
   principal, select UF e textareas principais dentro de tolerância pequena
   (border/padding), para os 4 tipos em create/edit.
 
-### UI-AUD-005 — RMA edição V1 (`_campos`): mesma divergência de geometria
+### UI-AUD-005 - RMA edição V1 (`_campos`): mesma divergência de geometria
 
 - **Rotas:** `/rmas/{id}/edit` (tema V1) e `/v1/rma/{id}/edit`
 - **Sintoma:** no formulário vertical de edição, `select` fabricante/fornecedor
@@ -189,7 +189,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   ~394px.
 - **Blade:** `resources/views/temas/v1/rma/edit.blade.php` +
   `temas/v1/rma/_campos.blade.php`.
-- **Causa raiz:** mesma de UI-AUD-004 — o formulário é `<table class="tablenovo">`
+- **Causa raiz:** mesma de UI-AUD-004 - o formulário é `<table class="tablenovo">`
   com as mesmas classes globais.
 - **Classificação:** `INCONSISTENCIA`.
 - **Correção proposta:** classe semântica compartilhada com UI-AUD-004 (mesma
@@ -197,7 +197,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   ou reuso da classe do contrato de formulário V1.
 - **Teste:** idem.
 
-### UI-AUD-006 — Usuários V1: ações comprimidas e botões com largura inconsistente
+### UI-AUD-006 - Usuários V1: ações comprimidas e botões com largura inconsistente
 
 - **Rota:** `/usuarios` (tema V1)
 - **Sintoma:** célula de ações no limite; `.formButtonEnviarPanel` “SALVAR” com
@@ -219,10 +219,10 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
 - **Correção proposta:** redimensionar colunas da tabela (permissão/ações) e
   regras de flex escopadas que impeçam encolhimento de ações; manter densidade
   histórica (30px) e fontes legíveis; não alterar Policy/rotas.
-- **Teste:** browser — controles da mesma linha não ultrapassam a célula;
+- **Teste:** browser - controles da mesma linha não ultrapassam a célula;
   botões de mesma classe com mesma largura; TAB navegável.
 
-### UI-AUD-007 — Usuários V2: ações empilhadas e linhas excessivamente altas
+### UI-AUD-007 - Usuários V2: ações empilhadas e linhas excessivamente altas
 
 - **Rota:** `/v2/usuarios`
 - **Sintoma:** célula Papel empilha select + “Salvar papel”; célula Ações
@@ -240,7 +240,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
 - **SCSS:** `v2.scss`/Bootstrap 3 (`.form-inline`, `.form-control`,
   `.formSubmit`)
 - **Legacy V2:** `15.8.1/subp/usuarios.php` usa links/ícones para
-  resetar/mudar permissão/apagar em subpáginas, com linha de 30px — não há
+  resetar/mudar permissão/apagar em subpáginas, com linha de 30px - não há
   formulários inline no histórico; porém a arquitetura V3 (post+CSRF+validação)
   é decisão já tomada. A meta aqui é apresentação compacta sem mudar negócio.
 - **Classificação:** `INCONSISTENCIA`
@@ -248,10 +248,10 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   contenção escopada por célula (ex.: larguras fixas/mínimas para os inputs de
   senha e `white-space:nowrap` quando couber), mantendo 1 linha por ação quando
   houver espaço; sem flex global em todos os forms.
-- **Teste:** browser — controles da mesma ação na mesma linha (ou em no máximo
+- **Teste:** browser - controles da mesma ação na mesma linha (ou em no máximo
   2 quando a tabela for estreita), altura de linha <= ~50px em 1440/1600.
 
-### UI-AUD-008 — Todos os selects habilitados exibem `cursor: default`
+### UI-AUD-008 - Todos os selects habilitados exibem `cursor: default`
 
 - **Rotas:** amostra em `/rmas-relatorios/rpec`, `/v1/parceiros/*/create`,
   `/v2/parceiros/*/create`, `/usuarios`, `/v2/usuarios`, `/v1/rma/create`,
@@ -262,14 +262,14 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
 - **Causa raiz:** nenhum SCSS dos temas define cursor para `select`; só
   `button:not(:disabled)` tem contrato universal.
 - **Classificação:** `BUG-CONFIRMADO` (contrato explícito do dono desta rodada)
-- **Correção proposta:** uma regra base por tema —
+- **Correção proposta:** uma regra base por tema -
   `select:not(:disabled) { cursor:pointer }` e `select:disabled {
-  cursor:not-allowed }` (manter `default` se contrato atual disser o contrário) —
+  cursor:not-allowed }` (manter `default` se contrato atual disser o contrário) -
   sem criar dezenas de regras duplicadas.
 - **Teste:** em cada rota coberta, todo select habilitado visível tem cursor
   `pointer`; disabled permanece não-pointer.
 
-### UI-AUD-009 — Dropdown “Menu” V2: âncoras com 39px sobrepostas (herança do nav)
+### UI-AUD-009 - Dropdown “Menu” V2: âncoras com 39px sobrepostas (herança do nav)
 
 - **Rota:** páginas V2 com header (medido em `/v2/rma/create`)
 - **Sintoma:** itens `<li class="lidropdown">` com 25px, mas `<a>` internos com
@@ -282,7 +282,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   do viewport (x 1049–1213 em 1440); problema é a área clicável interna.
 - **Causa raiz:** em `_v2-base.scss`, `.nav-v2 li a { height:39px;
   line-height:39px }` usa descendente e alcança os links dentro do
-  `.dropdown-menu` do próprio `li.dropdown` — deveria ser limitado aos filhos
+  `.dropdown-menu` do próprio `li.dropdown` - deveria ser limitado aos filhos
   diretos da navegação (`> li > a` ou similar).
 - **Legacy V2:** fonte `pattern/15.8.1.css`/`inc/menu.php` usa itens de dropdown
   com `height:25px`; a regra de altura 39px pertence aos itens da barra superior,
@@ -294,61 +294,61 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
 - **Teste:** dropdown aberto: item clicável não invade a área do item seguinte;
   TAB percorre os itens; item ativo visível; sem clipping.
 
-### UI-AUD-010 — Hífen longo “—” em textos operacionais renderizados
+### UI-AUD-010 - Hífen longo “-” em textos operacionais renderizados
 
 - **Escopo:** partes operacionais da interface (labels, combos/opções,
   listagens, pendências curtas), nos dois temas.
-- **Inventário quantitativo:** 201 ocorrências de “—” em
+- **Inventário quantitativo:** 201 ocorrências de “-” em
   `resources/views` (total bruto, incluindo comentários); 371 nas fontes
   candidatas somando `app/` e `resources/js`. Após classificação manual, o
   subconjunto **operacional renderizado** é o listado abaixo (~30 ocorrências
   efetivas em views consumidas; as demais são comentários/prosa/documentação
-  ou views órfãs — ver UI-AUD-016).
+  ou views órfãs - ver UI-AUD-016).
 
 #### Operacionais confirmados para trocar por “-”
 
 | Arquivo | Ocorrência | Consumido? |
 |---|---|---|
-| `temas/v1/parceiros/_form.blade.php:76` | `<option value="">—</option>` | Sim |
-| `temas/v2/parceiros/_form.blade.php:76` | `<option value="">—</option>` | Sim |
-| `temas/v1/rma/_campos.blade.php` (2×) | options “—” | Sim (edição RMA V1) |
-| `temas/v2/rma/_campos.blade.php` (2×) | options “—” | Sim (edição RMA V2) |
-| `temas/v1/rma/_form_novo.blade.php:60` | option “—” (fabricante) | Sim (painel Novo V1) |
-| `rma/_centro_de_avisos.blade.php:99` | `#{{ id }} — {{ descricao }}` | Sim (home V1/V2) |
-| `rma/credito/_conteudo.blade.php` | `#{{ id }} — {{ descricao }}` | Sim |
-| `rma/alertas/_conteudo_painel.blade.php` (2×) | `#{{ id }} — {{ descricao }}` | Sim |
-| `temas/v1/rma/controle.blade.php` (labels 3×) | `FORNECEDOR — NOME:`, `FABRICANTE — NOME:`, `ASSISTÊNCIA — NOME:` | Sim |
-| `temas/v1/rma/controle.blade.php` (2×) | “Pendente — exclusão definitiva...” | Sim (texto curto de status) |
-| `temas/v1/identidade/perfil.blade.php` e `temas/v2/identidade/perfil.blade.php` (2× cada) | `nome — email — papel: ...` | Sim (linha de contexto) |
-| `temas/v1/rma/show.blade.php` (2×) | “NF de compra/venda — emissão” | Sim |
-| `identidade/historico-de-acesso/_conteudo.blade.php` (2×) | fallback `'—'` em células | Sim (quando dados ausentes) |
-| `emails/rma-concluido.blade.php` (3×) | fallback `'—'` no corpo do e-mail | Sim (mensagem operacional) |
+| `temas/v1/parceiros/_form.blade.php:76` | `<option value="">-</option>` | Sim |
+| `temas/v2/parceiros/_form.blade.php:76` | `<option value="">-</option>` | Sim |
+| `temas/v1/rma/_campos.blade.php` (2×) | options “-” | Sim (edição RMA V1) |
+| `temas/v2/rma/_campos.blade.php` (2×) | options “-” | Sim (edição RMA V2) |
+| `temas/v1/rma/_form_novo.blade.php:60` | option “-” (fabricante) | Sim (painel Novo V1) |
+| `rma/_centro_de_avisos.blade.php:99` | `#{{ id }} - {{ descricao }}` | Sim (home V1/V2) |
+| `rma/credito/_conteudo.blade.php` | `#{{ id }} - {{ descricao }}` | Sim |
+| `rma/alertas/_conteudo_painel.blade.php` (2×) | `#{{ id }} - {{ descricao }}` | Sim |
+| `temas/v1/rma/controle.blade.php` (labels 3×) | `FORNECEDOR - NOME:`, `FABRICANTE - NOME:`, `ASSISTÊNCIA - NOME:` | Sim |
+| `temas/v1/rma/controle.blade.php` (2×) | “Pendente - exclusão definitiva...” | Sim (texto curto de status) |
+| `temas/v1/identidade/perfil.blade.php` e `temas/v2/identidade/perfil.blade.php` (2× cada) | `nome - email - papel: ...` | Sim (linha de contexto) |
+| `temas/v1/rma/show.blade.php` (2×) | “NF de compra/venda - emissão” | Sim |
+| `identidade/historico-de-acesso/_conteudo.blade.php` (2×) | fallback `'-'` em células | Sim (quando dados ausentes) |
+| `emails/rma-concluido.blade.php` (3×) | fallback `'-'` no corpo do e-mail | Sim (mensagem operacional) |
 
-#### Prosa/documentação exibida — manter por ora
+#### Prosa/documentação exibida - manter por ora
 
 - Prosa da “Central de Ajuda” do Controle V1 (fidelidade ao texto legado).
 - Textos de documentação/títulos de página fora da interface operacional curta.
 
-#### Views órfãs com “—” — não tocar (remoção é UI-07/FRONT-006)
+#### Views órfãs com “-” - não tocar (remoção é UI-07/FRONT-006)
 
-- `parceiros/_form.blade.php` (option “—”)
+- `parceiros/_form.blade.php` (option “-”)
 - `rma/relatorios/*.blade.php`, `rma/_painel_de_alertas.blade.php`,
   `identidade/historico-de-acesso/index.blade.php`,
   `identidade/usuarios/index.blade.php`, `identidade/perfil/senha.blade.php`,
-  `rma/credito/index.blade.php`, etc. — ver UI-AUD-016.
+  `rma/credito/index.blade.php`, etc. - ver UI-AUD-016.
 
 - **Classificação:** `INCONSISTENCIA` (pontuação), com fronteira explícita para
   não alterar prosa/comentários/histórico.
 - **Correção proposta:** trocar somente os itens da tabela “operacionais
   confirmados” acima, sem `sed` global.
-- **Teste:** browser/texto — nenhum texto curto operacional dos itens listados
-  contém “—”.
+- **Teste:** browser/texto - nenhum texto curto operacional dos itens listados
+  contém “-”.
 
-### UI-AUD-011 — Controle V1 (UI-05 reaberta): bloco “ADICIONAR REPRESENTANTE” desalinhado
+### UI-AUD-011 - Controle V1 (UI-05 reaberta): bloco “ADICIONAR REPRESENTANTE” desalinhado
 
 - **Rota:** `/rmas-controle`
-- **Sintoma:** labels de tamanhos diferentes (“FORNECEDOR — NOME:”,
-  “FABRICANTE — NOME:”, “ASSISTÊNCIA — NOME:”) fazem os inputs começarem em x
+- **Sintoma:** labels de tamanhos diferentes (“FORNECEDOR - NOME:”,
+  “FABRICANTE - NOME:”, “ASSISTÊNCIA - NOME:”) fazem os inputs começarem em x
   diferentes (372/365/366) e botões em x diferentes (527/520/521), sem grade.
 - **Reprodução:** expandir todos os `<details>` e medir cada linha.
 - **Evidência runtime:** ver valores acima; painel `.JS-SessaoLEFT` 838px sem
@@ -372,7 +372,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   (ou diferença <=1px); overflow local apenas se necessário na tabela de
   arquivados.
 
-### UI-AUD-012 — V2: formulários `.form-horizontal` ultrapassam `.container` em 15px
+### UI-AUD-012 - V2: formulários `.form-horizontal` ultrapassam `.container` em 15px
 
 - **Rotas:** `/v2/parceiros/*/create`, `/v2/rma/create`, e edits equivalentes.
 - **Sintoma:** `.shell-v2 > .container` tem `clientWidth 990` e `scrollWidth
@@ -382,14 +382,14 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   (o Legacy V2 usava wrapper próprio). Não há scroll horizontal da página
   (`bodyScrollWidth 1440`), nem vazamento visível sobre a sidebar; rótulos
   começam 15px antes da borda do container.
-- **Classificação:** `INVESTIGAR`/baixa prioridade — impacto visual não
+- **Classificação:** `INVESTIGAR`/baixa prioridade - impacto visual não
   observado nas vistas testadas; não bloquear as ondas C1–C7.
 - **Correção opcional:** envolver o formulário em um wrapper com a mesma
   compensação de padding do legacy V2 (sem redesenhar).
 - **Teste (se corrigir):** `scrollWidth == clientWidth` no container das rotas
   V2 cobertas.
 
-### UI-AUD-013 — Ações de ciclo de vida (detalhe RMA): selects/inputs sem classe nos dois temas
+### UI-AUD-013 - Ações de ciclo de vida (detalhe RMA): selects/inputs sem classe nos dois temas
 
 - **Rotas:** `/v1/rma/{id}` e `/v2/rma/{id}` (detalhe; ações de transição).
 - **Sintoma:** no partial compartilhado `rma/_acoes_de_transicao.blade.php`, os
@@ -406,10 +406,10 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   `formSelect` + classe de geometria do contrato do tema), sem alterar
   rotas/validação; no V1 respeitar gramática `.formInputPanel`/seletor histórico;
   no V2 usar `.form-control` em largura contida (col-sm-6) dentro da ação.
-- **Teste:** browser nos detalhes — selects habilitados com cursor pointer,
+- **Teste:** browser nos detalhes - selects habilitados com cursor pointer,
   geometria consistente com o contrato do tema e sem estourar o container.
 
-### UI-AUD-014 — Listagens/abas V2: auditadas, sem bug confirmado
+### UI-AUD-014 - Listagens/abas V2: auditadas, sem bug confirmado
 
 - **Rotas:** `/v2/rma` (abas #entrada, #recebido, #encaminhado, #concluido).
 - **Resultado:** colunas históricas presentes (`DATA/ORIGEM/T/NF...`), tabela
@@ -420,7 +420,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   que os dados curtos do legado; não usar `white-space:nowrap` global para
   comprimir (regra do dono).
 
-### UI-AUD-015 — Listagens V1 por status: auditadas, sem bug confirmado
+### UI-AUD-015 - Listagens V1 por status: auditadas, sem bug confirmado
 
 - **Rotas:** `/rmas-entrada`, `/rmas-encaminhados`, `/rmas-aguardando-credito`,
   `/rmas-concluidos`.
@@ -428,7 +428,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   (`SuperTr`, zebra, links) preservadas.
 - **Classificação:** `NAO-CORRIGIR-FIDELIDADE` (ok nesta rodada).
 
-### UI-AUD-016 — Views genéricas/fallback sem consumidor (candidatas UI-07)
+### UI-AUD-016 - Views genéricas/fallback sem consumidor (candidatas UI-07)
 
 - **Critério:** view não referenciada por `view()`/`view_do_tema()` real nem
   incluída por partial consumido.
@@ -446,7 +446,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   teste.
 - **Classificação:** `ORFAO-CANDIDATO`
 
-### UI-AUD-017 — Relatórios V2: título único por construção
+### UI-AUD-017 - Relatórios V2: título único por construção
 
 - **Rotas:** `/rmas-relatorios/{rcd,rpec,rmpe}` com usuário V2 (ou via troca de
   tema).
@@ -454,7 +454,7 @@ Classificação permitida: `BUG-CONFIRMADO`, `INCONSISTENCIA`,
   o conteúdo compartilhado tem H2 único. Sem duplicidade.
 - **Classificação:** `NAO-CORRIGIR-FIDELIDADE`/`PARIDADE-LEGACY`.
 
-### UI-AUD-018 — Painel “Novo”/Create RMA V1: composição histórica preservada
+### UI-AUD-018 - Painel “Novo”/Create RMA V1: composição histórica preservada
 
 - **Rota:** `/v1/rma/create` e painel `#JS-Novo` inline.
 - **Resultado:** estrutura de 5 colunas `.tablenovo` (700px) com inputs alinhados
@@ -484,32 +484,32 @@ novo, não compensada por palpite.
 Ondas temáticas e pequenas, com testes antes/junto e commit por onda. Status no
 padrão canônico `[ ]`/`[R]`/`[x]`.
 
-- [x] C1 — Cursor de selects + pontuação operacional
+- [x] C1 - Cursor de selects + pontuação operacional
   - UI-AUD-008 e UI-AUD-010;
   - implementado e commitado em `22c48a7`;
   - contrato A do browser verde.
-- [x] C2 — Geometria dos formulários V1
+- [x] C2 - Geometria dos formulários V1
   - UI-AUD-004/005 (parceiros + edição RMA), classe `.tabela-form-v1`;
   - implementado e commitado em `22c48a7`;
   - contrato B do browser verde (4 tipos de parceiro).
-- [x] C3 — Gestão de usuários V1/V2
+- [x] C3 - Gestão de usuários V1/V2
   - UI-AUD-006/007;
   - implementado e commitado em `22c48a7`;
   - contratos D/D2 do browser verdes.
-- [x] C4 — Controle V1 (FRONT-003/UI-05)
+- [x] C4 - Controle V1 (FRONT-003/UI-05)
   - UI-AUD-011: causa raiz confirmada em `16c1913`;
   - implementado e commitado em `22c48a7`;
   - contrato E do browser verde;
   - [ ] regressão viewport/UI-08 ainda em aberto.
-- [x] C5 — RCD/RPEC/RMPE (título único V1)
+- [x] C5 - RCD/RPEC/RMPE (título único V1)
   - UI-AUD-001/002/003/017: causa raiz confirmada em `16c1913`;
   - correção commitada em `61222c8` + `1938247`;
   - contrato C do browser verde.
-- [x] C6 — Dropdown V2 e ações de ciclo de vida
+- [x] C6 - Dropdown V2 e ações de ciclo de vida
   - UI-AUD-009/013 (+ UI-AUD-012 observado sem correção);
   - implementado e commitado em `22c48a7`;
   - contrato F do browser verde.
-- [ ] C7 — Varredura residual
+- [ ] C7 - Varredura residual
   - executar nas mesmas classes de inconsistência em mais superfícies e
     viewports; UI-AUD-016 fica para a onda própria de UI-07, com prova de zero
     consumidor.
@@ -521,7 +521,7 @@ UI-05.
 
 Medições completas em arquivos temporários fora do repositório
 (`/tmp/audit-metrics.json`, `/tmp/audit-metrics-foco.json`,
-`/tmp/audit-tabelas.json`, `/tmp/audit-acoes-transicao.json`) — não versionados,
+`/tmp/audit-tabelas.json`, `/tmp/audit-acoes-transicao.json`) - não versionados,
 apenas ferramenta da Fase A. Nenhum screenshot novo foi necessário para fechar
 os achados; screenshots podem ser usados na Fase B/C como evidência adicional.
 

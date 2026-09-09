@@ -40,7 +40,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * EVO-SAAS-001 (S4) — todo usuário de teste nasce vinculado ao tenant semente
+     * EVO-SAAS-001 (S4) - todo usuário de teste nasce vinculado ao tenant semente
      * CellSystem, preservando o papel do usuário no vínculo. Isso mantém a suíte atual
      * autenticável quando o middleware de tenant passa a falhar sem vínculo.
      */

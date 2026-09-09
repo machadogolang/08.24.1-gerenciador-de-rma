@@ -1,4 +1,4 @@
-# Matriz viva — Legado × Tema 1 × Tema 2 × Tema 3
+# Matriz viva - Legado × Tema 1 × Tema 2 × Tema 3
 
 Data: 2026-08-25 (atualizada 2026-09-09). Estado: preliminar e executável; linhas fechadas por CP/NAV/F10 entre 08-25 e 09-09 foram reconciliadas nesta sessão, demais linhas seguem tarefas.
 

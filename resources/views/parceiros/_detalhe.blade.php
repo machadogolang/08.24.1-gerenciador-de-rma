@@ -1,4 +1,4 @@
-{{-- P5 — detalhe de parceiro e RMAs associados, compartilhado pelos temas. --}}
+{{-- P5 - detalhe de parceiro e RMAs associados, compartilhado pelos temas. --}}
 <div class="detalhe-parceiro">
     <p>
         <a href="{{ rota_tema('parceiros.' . $tipo . '.edit', $registro) }}" class="acao acao--primaria">Editar</a>

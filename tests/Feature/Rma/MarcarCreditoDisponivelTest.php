@@ -31,7 +31,7 @@ class MarcarCreditoDisponivelTest extends TestCase
     }
 
     /**
-     * ARQ-001 (`INV-RMA-10`) — antes desta correção, `MarcarCreditoDisponivel`
+     * ARQ-001 (`INV-RMA-10`) - antes desta correção, `MarcarCreditoDisponivel`
      * reconstruía o agregado campo a campo (`new Rma(...)`) em vez de usar
      * `comAlteracoes()`, apagando silenciosamente qualquer campo fora da lista
      * explícita. Achado ao adicionar `pn`/`snid` (VIS-V1-003): marcar crédito

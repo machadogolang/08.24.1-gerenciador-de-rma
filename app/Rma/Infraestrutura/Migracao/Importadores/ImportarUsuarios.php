@@ -16,13 +16,13 @@ use Illuminate\Support\Str;
 
 /**
  * `usuario` → `users` (`INV-RMA-06` §11). Dedup natural via `users.email` (já `UNIQUE`
- * desde a migration original do Laravel) — `updateOrCreate(['email' => ...], [...])` já
+ * desde a migration original do Laravel) - `updateOrCreate(['email' => ...], [...])` já
  * é idempotente por construção, sem precisar de coluna `id_legado`.
  *
- * **Senhas nunca são migradas como hash** — `Key1461`/`Key1581` são SHA1 sem salt,
+ * **Senhas nunca são migradas como hash** - `Key1461`/`Key1581` são SHA1 sem salt,
  * irreversível para bcrypt. Cada usuário recém-criado ganha senha aleatória temporária
  * e dispara o fluxo nativo de "esqueci minha senha" do Laravel (só na criação, não em
- * updates subsequentes — idempotência não deve reenviar e-mail nem trocar a senha de
+ * updates subsequentes - idempotência não deve reenviar e-mail nem trocar a senha de
  * quem já trocou desde a migração).
  */
 final class ImportarUsuarios
@@ -35,7 +35,7 @@ final class ImportarUsuarios
 
     public function executar(RelatorioDeReconciliacao $relatorio, bool $dryRun = false): void
     {
-        // A V3 (`LEG-RMA-003`) só tem reset de senha feito pelo administrador — não
+        // A V3 (`LEG-RMA-003`) só tem reset de senha feito pelo administrador - não
         // existe fluxo de "esqueci minha senha" autosserviço com rota nomeada
         // `password.reset` (fora do escopo desta fase criar essa UI). O broker nativo
         // do Laravel (`Password::sendResetLink()`) ainda é o mecanismo certo para gerar
@@ -59,7 +59,7 @@ final class ImportarUsuarios
                     $relatorio->registrarAnomalia(
                         'usuario',
                         $linha->id_usuario,
-                        "permissao='{$linha->permissao}' fora do domínio confirmado (-1/1/2/3/4) — usuário importado com Papel::Bloqueado (fail-safe)"
+                        "permissao='{$linha->permissao}' fora do domínio confirmado (-1/1/2/3/4) - usuário importado com Papel::Bloqueado (fail-safe)"
                     );
                     $papel = Papel::Bloqueado;
                 }
@@ -77,7 +77,7 @@ final class ImportarUsuarios
                 ]);
 
                 if ($novo) {
-                    // `password` é obrigatório na criação (NOT NULL) — senha aleatória
+                    // `password` é obrigatório na criação (NOT NULL) - senha aleatória
                     // temporária, nunca reaproveitada em updates subsequentes
                     // (idempotência não deve trocar a senha de quem já trocou desde a
                     // migração).
@@ -89,7 +89,7 @@ final class ImportarUsuarios
                         $relatorio->registrarAnomalia(
                             'usuario',
                             $linha->id_usuario,
-                            "data_de_cadastro='{$linha->data_de_cadastro}' inválida no legado — fallback para now()"
+                            "data_de_cadastro='{$linha->data_de_cadastro}' inválida no legado - fallback para now()"
                         );
                         $user->created_at = now();
                     }
@@ -99,7 +99,7 @@ final class ImportarUsuarios
 
                 // ARQ-002 (`INV-RMA-10`): dry-run roda a tradução/gravação inteira para
                 // detectar anomalia e contar corretamente (a transação é desfeita no
-                // fim), mas o e-mail de redefinição de senha não é transacional — nunca
+                // fim), mas o e-mail de redefinição de senha não é transacional - nunca
                 // pode ser disparado de verdade num dry-run.
                 if ($novo && ! $dryRun) {
                     Password::sendResetLink(['email' => $user->email]);

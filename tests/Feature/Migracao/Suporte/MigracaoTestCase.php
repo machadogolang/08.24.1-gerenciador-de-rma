@@ -17,7 +17,7 @@ abstract class MigracaoTestCase extends TestCase
     {
         parent::setUp();
 
-        // EVO-SAAS-001 (S11/S3.6) — testes do migrador rodam com tenant CellSystem
+        // EVO-SAAS-001 (S11/S3.6) - testes do migrador rodam com tenant CellSystem
         // explícito (igual ao runtime da migração), permitindo criações tenant-scoped.
         app(ContextoDeTenant::class)->definir(Company::query()->where('nome', 'CellSystem')->firstOrFail());
 

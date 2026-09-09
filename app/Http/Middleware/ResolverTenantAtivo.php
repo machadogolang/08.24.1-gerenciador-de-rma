@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * EVO-SAAS-001 (S4) — resolve a empresa ativa do usuário autenticado e define o
+ * EVO-SAAS-001 (S4) - resolve a empresa ativa do usuário autenticado e define o
  * `ContextoDeTenant`:
  *
  * 1. sem usuário autenticado (login/guest) → contexto vazio e segue;

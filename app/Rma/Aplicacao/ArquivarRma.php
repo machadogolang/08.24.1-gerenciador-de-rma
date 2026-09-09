@@ -10,10 +10,10 @@ use App\Rma\Dominio\Status;
 use Illuminate\Support\Facades\Date;
 
 /**
- * LEG-RMA-014 — reproduz `15.8.1/banco.php::arquivar()` (TEMA V2, funcional). TEMA V1
+ * LEG-RMA-014 - reproduz `15.8.1/banco.php::arquivar()` (TEMA V2, funcional). TEMA V1
  * (`14.6.1/post/arquivar.php`) tem `Fatal Error` incondicional (`new controle()`,
- * classe inexistente) — confirmado por leitura de código-fonte, não reproduzido (ver
- * `proposal.md`). Exige `Papel::podeGerenciarUsuarios()` — [INFERIDO]. Fase 7: dispara
+ * classe inexistente) - confirmado por leitura de código-fonte, não reproduzido (ver
+ * `proposal.md`). Exige `Papel::podeGerenciarUsuarios()` - [INFERIDO]. Fase 7: dispara
  * `RmaArquivado` ao final.
  */
 final class ArquivarRma

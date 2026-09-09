@@ -1,10 +1,10 @@
 {{--
-    "CENTRO DE AVISOS E RELATORIOS" — correção de fidelidade Fase 8 (2026-08-25).
+    "CENTRO DE AVISOS E RELATORIOS" - correção de fidelidade Fase 8 (2026-08-25).
     Fonte real confirmada por captura autenticada de `http://localhost:8094/15.8.1/` e
     `http://localhost:8094/14.6.1/` (as 10 regras da Fase 5, mesma composição de
     `PainelDeAlertasController::index()`, `$grupos` no mesmo formato
     `titulo => Collection<Rma>`). Compartilhado pelos DOIS temas (elemento idêntico nos
-    dois, só a folha de estilo em volta muda) — por isso vive em `resources/views/rma/`,
+    dois, só a folha de estilo em volta muda) - por isso vive em `resources/views/rma/`,
     não em `temas/{v1,v2}/`. Ícones vendorizados de `legacy-source/images/` (mesmos
     bytes do legado: `lembrete.png`, `retornou.png`, `separador.png`).
 --}}

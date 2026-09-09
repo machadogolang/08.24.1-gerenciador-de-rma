@@ -16,7 +16,7 @@ use App\Rma\Dominio\Eventos\SolucaoRegistrada;
 use RuntimeException;
 
 /**
- * `LEG-RMA-044` — listener que assina os 8 eventos de domínio disparados pelos casos
+ * `LEG-RMA-044` - listener que assina os 8 eventos de domínio disparados pelos casos
  * de uso de `App\Rma\Aplicacao` (Fases 3/4 + `ConcluirRma`), um único ponto de verdade
  * que substitui o `registra_modificacao()` chamado manualmente em cada arquivo do
  * legado. Nunca chamado diretamente por Controllers.
@@ -39,7 +39,7 @@ final class RegistrarModificacaoDeRma
 
     public function handle(object $evento): void
     {
-        // EVO-SAAS-001 (S7/S8) — a modificacao herda o tenant do RMA pai, mesmo quando
+        // EVO-SAAS-001 (S7/S8) - a modificacao herda o tenant do RMA pai, mesmo quando
         // o evento roda sem ContextoDeTenant (testes, jobs futuros). Nenhuma linha de
         // auditoria pode nascer com tenant nulo se o RMA ja tem tenant.
         $rma = RmaEloquent::query()

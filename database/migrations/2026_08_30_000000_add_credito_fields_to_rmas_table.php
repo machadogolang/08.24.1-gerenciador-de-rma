@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * `credito_disponivel` — flag manual gravada por `MarcarCreditoDisponivel`
+     * `credito_disponivel` - flag manual gravada por `MarcarCreditoDisponivel`
      * (`LEG-RMA-036`). Sem transição automática a partir de `solucao=GeradoCredito`;
      * o legado também não automatiza (controle manual em duas camadas independentes).
      */

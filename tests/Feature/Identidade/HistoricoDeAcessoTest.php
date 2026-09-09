@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * `LEG-RMA-043` — o dado (`tentativas_de_acesso`) já existe desde a Fase 1, esta fase
+ * `LEG-RMA-043` - o dado (`tentativas_de_acesso`) já existe desde a Fase 1, esta fase
  * só adiciona a tela de consulta. Mesma regra de autorização de
  * `HistoricoDeModificacaoTest` (`Papel::podeGerenciarUsuarios()`).
  */

@@ -10,10 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * `LEG-RMA-044` — equivalente ao `modificacao` do legado, com FK real para
+ * `LEG-RMA-044` - equivalente ao `modificacao` do legado, com FK real para
  * `rmas`/`users` (o legado grava `numero`/`email` sem constraint) e ação nomeada
  * (`AcaoDeModificacao`) em vez de só um retrato do estado final. Só é criado por
- * `App\Rma\Aplicacao\RegistrarModificacaoDeRma` (listener) — nunca diretamente por
+ * `App\Rma\Aplicacao\RegistrarModificacaoDeRma` (listener) - nunca diretamente por
  * controllers.
  */
 #[Fillable(['rma_id', 'user_id', 'acao', 'ip', 'user_agent', 'estado_apos'])]

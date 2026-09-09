@@ -43,7 +43,7 @@ class FornecedorFactory extends Factory
     }
 
     /**
-     * EVO-SAAS-001 (S5) — dados de teste/fixture nascem no tenant semente CellSystem
+     * EVO-SAAS-001 (S5) - dados de teste/fixture nascem no tenant semente CellSystem
      * para continuarem visíveis quando o Global Scope estiver ativo (web autenticado).
      * Cenários de Empresa B devem sobrescrever com `forceFill(['tenant_id' => ...])`
      * antes de salvar.

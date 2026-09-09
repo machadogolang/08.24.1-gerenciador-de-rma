@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Relatório de Produtos em Estoque para Contagem — CellSystem RMA</title>
+    <title>Relatório de Produtos em Estoque para Contagem - CellSystem RMA</title>
 </head>
 <body>
     <h1>Relatório de Produtos em Estoque para Contagem (RPEC)</h1>

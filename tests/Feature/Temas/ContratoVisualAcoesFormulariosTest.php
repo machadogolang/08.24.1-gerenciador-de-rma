@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * FRONT-003/UI-02C — contrato em formulários, crédito e identidade.
+ * FRONT-003/UI-02C - contrato em formulários, crédito e identidade.
  * Só inconsistências reais foram alteradas; componentes históricos (buttonSave,
  * formSubmit, formButtonEnviarPanel) permanecem como fidelidade de tema.
  */

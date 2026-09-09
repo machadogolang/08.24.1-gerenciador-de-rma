@@ -13,9 +13,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * Fase 8 — smoke: cada tela principal renderiza sem erro no TEMA V2, tanto pela rota
+ * Fase 8 - smoke: cada tela principal renderiza sem erro no TEMA V2, tanto pela rota
  * prefixada (`/v2/...`) quanto pelo fluxo normal (usuário com `tema_preferido` = V2).
- * O painel de RMAs (`temas/v2/rma/index.blade.php`) é o único com os 7 tab-panes —
+ * O painel de RMAs (`temas/v2/rma/index.blade.php`) é o único com os 7 tab-panes -
  * confirma que todos aparecem no mesmo HTML (ver design.md "Mecanismo de navegação
  * por tema").
  */
@@ -185,7 +185,7 @@ class RenderizaTemaV2Test extends TestCase
 
     public function test_alerta_nao_vai_dar_garantia_renderiza_a_tabela_historica(): void
     {
-        // CP12-05G V2 — mesmo _centro_de_avisos.blade.php compartilhado
+        // CP12-05G V2 - mesmo _centro_de_avisos.blade.php compartilhado
         $usuario = User::factory()->create(['papel' => Papel::Operador]);
         Rma::factory()->create([
             'status' => Status::Entrada,

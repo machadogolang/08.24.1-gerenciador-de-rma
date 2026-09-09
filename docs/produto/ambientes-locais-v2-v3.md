@@ -2,7 +2,7 @@
 
 Data da validação: 2026-08-25.
 
-## Legacy / RMA V2 — máquina do tempo
+## Legacy / RMA V2 - máquina do tempo
 
 - Repositório: `~/github/08.24.4-legacy-gerenciador-de-rma`
 - URLs: `http://localhost:8094/`, `/14.6.1/` (TEMA V1) e `/15.8.1/` (TEMA V2)
@@ -15,7 +15,7 @@ configure no `.env` o caminho absoluto externo e o SHA-256, selecione
 nunca entra no repositório; a conta lab é injetada somente na cópia local. O snapshot
 selecionado contém 10 tabelas, 1.379 RMAs e 165 clientes.
 
-## RMA V3 — produto em construção
+## RMA V3 - produto em construção
 
 - Repositório: `~/github/08.24.1-gerenciador-de-rma`
 - URL: `http://localhost:8095/login`

@@ -1,11 +1,11 @@
-{{-- CP23 (paridade visual V2) — fonte real `legacy-source/15.8.1/page/entrada.php`.
+{{-- CP23 (paridade visual V2) - fonte real `legacy-source/15.8.1/page/entrada.php`.
 Larguras: DATA 8%, ORIGEM 7%, T 4%, NF C 6%, NF V 6%, FABRICANTE 14%, DESCRICAO 13%,
 MODELO 20%, S/N 18%, OS 4%, A 2%.
 
-[INVESTIGAR] — igual à tabela de Pesquisa (CP20): o Legacy aqui só usa
+[INVESTIGAR] - igual à tabela de Pesquisa (CP20): o Legacy aqui só usa
 `TrInconformidade`/`TrZebrada1/2` (sem `TrUrgente`, sem checagem de prazo de 30 dias),
 diferente do que `Rma::classeDeAlerta()` produz (que inclui `origemEhTerceiroFora
-DoPrazo()`). Reaproveitado sem alteração — mesma disciplina de não reescrever regra
+DoPrazo()`). Reaproveitado sem alteração - mesma disciplina de não reescrever regra
 de negócio sem necessidade; divergência registrada, não corrigida às cegas. --}}
 @if (count($registros) === 0)
     <p style="text-align:left;padding:5px;">Nenhum produto</p>

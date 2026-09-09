@@ -7,14 +7,14 @@ use App\Rma\Aplicacao\Alertas\AguardandoCredito;
 use App\Rma\Aplicacao\Alertas\UrgenciaPorThreshold;
 
 /**
- * CP19 (paridade visual V2) — composição das 14 seções de
+ * CP19 (paridade visual V2) - composição das 14 seções de
  * `legacy-source/15.8.1/inc/rightmenu.php` num único array, mesmo padrão de
  * `Alertas\ListarGruposDeAlertas` (Fase 8). "URGENTE" e "PENDENTE CREDITO" reutilizam
- * classes de leitura já existentes (`UrgenciaPorThreshold`/`AguardandoCredito`) — as
+ * classes de leitura já existentes (`UrgenciaPorThreshold`/`AguardandoCredito`) - as
  * queries de `right_urgente()`/`right_pendentecredito()` do legado já tinham
  * equivalente exato implementado na Fase 5 (RN-11/RN-12), nenhuma regra de negócio
  * nova. Injetado no layout do TEMA V2 via `View::composer`
- * (`AppServiceProvider::boot()`) — a sidebar aparece em toda página, igual ao legado
+ * (`AppServiceProvider::boot()`) - a sidebar aparece em toda página, igual ao legado
  * (`inc/rightmenu.php` incluído por `index.php`, não por página específica).
  */
 final class ListarPainelLateral
@@ -37,15 +37,15 @@ final class ListarPainelLateral
     ) {}
 
     /**
-     * Cada seção normaliza para `{nome, valor, id?}` — `id` só existe nas seções
+     * Cada seção normaliza para `{nome, valor, id?}` - `id` só existe nas seções
      * `lista` (viram link para `rmas.show`); as `contagem` nunca são clicáveis no
-     * legado (nenhuma delas tem `<a>` de verdade — a única exceção do PHP fonte é uma
+     * legado (nenhuma delas tem `<a>` de verdade - a única exceção do PHP fonte é uma
      * condição residual `if ($q==1)` em duas seções, comportamento estranho demais
      * para reproduzir sem necessidade).
      *
-     * [BUG-LEGADO] `right_entrada()` formata a hora com `date('H:m', ...)` — `m` é
+     * [BUG-LEGADO] `right_entrada()` formata a hora com `date('H:m', ...)` - `m` é
      * mês, não minuto (`i`); exibiria "14:08" achando que é 14h08 quando na verdade é
-     * hora 14 do mês 08. Decisão: corrigir para `H:i` (hora:minuto) — diferente de
+     * hora 14 do mês 08. Decisão: corrigir para `H:i` (hora:minuto) - diferente de
      * uma inconsistência cosmética (ex.: encoding), isto exibe uma informação
      * literalmente errada ao usuário, mesmo padrão de correção já usado nos ARQ-*
      * desta base.

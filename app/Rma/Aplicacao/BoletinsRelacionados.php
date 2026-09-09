@@ -7,18 +7,18 @@ use App\Rma\Dominio\Rma;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
- * `LEG-RMA-041` — RMAs relacionados ao mesmo destinatário/fabricante/fornecedor de um
+ * `LEG-RMA-041` - RMAs relacionados ao mesmo destinatário/fabricante/fornecedor de um
  * RMA de referência, excluindo ele mesmo. Paginado (o legado não tem `LIMIT`, achado de
- * risco de performance já registrado) — resultado percebido pelo usuário é o mesmo
+ * risco de performance já registrado) - resultado percebido pelo usuário é o mesmo
  * conjunto de dados, só a forma de consumir muda.
  *
  * **Desvio do `design.md`:** o pseudocódigo original usa `orWhere('destinatario_id',
- * $rma->destinatarioId)` incondicionalmente — como o Query Builder do Laravel traduz
+ * $rma->destinatarioId)` incondicionalmente - como o Query Builder do Laravel traduz
  * `where('coluna', null)` para `coluna IS NULL`, um RMA de referência sem
  * destinatário/fabricante/fornecedor casaria com **todo** outro RMA igualmente sem
  * esses campos (falso positivo confirmado em teste manual via `tinker` durante esta
  * fase). Cada condição só entra na query quando o campo correspondente do RMA de
- * referência não é nulo — mesmo conjunto de dados pretendido ("RMAs que compartilham
+ * referência não é nulo - mesmo conjunto de dados pretendido ("RMAs que compartilham
  * alguma referência real"), sem o efeito colateral do `IS NULL` genérico.
  */
 final class BoletinsRelacionados

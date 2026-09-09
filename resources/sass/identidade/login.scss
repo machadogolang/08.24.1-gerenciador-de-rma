@@ -1,5 +1,5 @@
-// login.scss — entry point Vite exclusivo do gateway de login compartilhado
-// (`identidade/login.blade.php`). NÃO pertence a nenhum tema (V1/V2) — decisão já
+// login.scss - entry point Vite exclusivo do gateway de login compartilhado
+// (`identidade/login.blade.php`). NÃO pertence a nenhum tema (V1/V2) - decisão já
 // registrada em `openspec/changes/temas-v1-v2/design.md` ("Login-gateway
 // compartilhado"): o login é único, sempre respeita `tema_preferido`, e essa tela é o
 // próprio gateway, distinto dos dois bundles de tema.
@@ -9,10 +9,10 @@
 // 3.3.5 (grid `.row`/`.col-xs-*`, `.form-control`, glyphicons) + um `.jumbotron`
 // inline (banner laranja/azul-marinho linkando para a ferramenta 14.6.1). Importamos o
 // mesmo Bootstrap 3.3.5 self-hostado que o TEMA V2 usa (glyphicons/form-control) só
-// pela dependência de framework — esta tela não é TEMA V2.
+// pela dependência de framework - esta tela não é TEMA V2.
 @import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 
-// Paleta do gateway — nomeada aqui porque não pertence a nenhum $fundo/$acento de
+// Paleta do gateway - nomeada aqui porque não pertence a nenhum $fundo/$acento de
 // _compartilhado.scss/v1.scss/v2.scss (aqueles são de tema; este é o login-gateway).
 $fundo-gateway: #d2d6de; // AdminLTE.min.css: `.login-page,.register-page{background:#d2d6de}`
 $largura-login-box: 360px; // AdminLTE.min.css: `.login-box,.register-box{width:360px;margin:7% auto}`
@@ -51,7 +51,7 @@ body.login-page {
     color: #777;
 }
 
-// Banner "NÃO É O QUE PROCURA?" — fonte: gateway.html <style> inline (`.jumbotron`).
+// Banner "NÃO É O QUE PROCURA?" - fonte: gateway.html <style> inline (`.jumbotron`).
 .jumbotron {
     background-color: $laranja-banner;
     border-bottom: 5px solid $azul-marinho-banner;

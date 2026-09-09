@@ -13,17 +13,17 @@ use App\Rma\Dominio\StatusDeLancamento;
 
 /**
  * Único lugar do código onde um valor cru do legado (`'entrada'`, `-1`, `'14.6.1'`...)
- * é comparado por igualdade — `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`
+ * é comparado por igualdade - `docs/arquitetura/INV-RMA-06-estrategia-reconstrucao.md`
  * §2-§5, §9, §11. Todo o resto do migrador chama estes métodos estáticos, nunca compara
  * string/int legado diretamente. Cada método devolve `null` quando o valor não bate em
- * nenhum case conhecido — quem chama decide o que fazer (anomalia/fallback), esta
+ * nenhum case conhecido - quem chama decide o que fazer (anomalia/fallback), esta
  * classe nunca decide isso sozinha.
  */
 final class TabelaDeTraducao
 {
     /**
      * `INV-RMA-06` §2. Sem case para `'retornou'` (`Status` não tem esse case,
-     * `LEG-RMA-016`) — PENDÊNCIA-2: se aparecer em dado real, quem chama registra a
+     * `LEG-RMA-016`) - PENDÊNCIA-2: se aparecer em dado real, quem chama registra a
      * anomalia específica, esta classe só devolve `null` como para qualquer outro valor
      * não reconhecido.
      */
@@ -60,7 +60,7 @@ final class TabelaDeTraducao
     }
 
     /**
-     * `INV-RMA-06` §4. Não trata `'urgente'` aqui — é uma conversão assistida
+     * `INV-RMA-06` §4. Não trata `'urgente'` aqui - é uma conversão assistida
      * (condicional, não um mapeamento normal), decidida pelo importador chamador, que
      * registra a linha como conversão assistida no relatório em vez de tratar como
      * mapeamento silencioso.
@@ -76,7 +76,7 @@ final class TabelaDeTraducao
     }
 
     /**
-     * `INV-RMA-06` §4 — identifica o resíduo `'urgente'` (RN-08, usado em código de
+     * `INV-RMA-06` §4 - identifica o resíduo `'urgente'` (RN-08, usado em código de
      * destaque, nunca no `<select>`). Não é um mapeamento normal (por isso não vive
      * dentro de `prioridade()`): quem chama decide gravar `Prioridade::Alta` como
      * conversão assistida, registrada explicitamente no relatório, nunca silenciosa.
@@ -87,7 +87,7 @@ final class TabelaDeTraducao
     }
 
     /**
-     * `INV-RMA-06` §5 — 16 valores fechados na Fase 4, comparação exata por igualdade de
+     * `INV-RMA-06` §5 - 16 valores fechados na Fase 4, comparação exata por igualdade de
      * string (os cases do enum já são literalmente os valores do `<select>` original).
      */
     public static function solucao(?string $bruto): ?Solucao
@@ -131,7 +131,7 @@ final class TabelaDeTraducao
     }
 
     /**
-     * `INV-RMA-06` §11 — domínio `-1/1/2/3/4`. Fail-safe: qualquer valor não reconhecido
+     * `INV-RMA-06` §11 - domínio `-1/1/2/3/4`. Fail-safe: qualquer valor não reconhecido
      * devolve `null` (quem chama trata como anomalia e usa `Papel::Bloqueado`, nunca
      * concede acesso além do confirmado).
      */
@@ -148,7 +148,7 @@ final class TabelaDeTraducao
     }
 
     /**
-     * `INV-RMA-06` §11 — `''`/valor vazio cai no `default` (mesmo tratamento do fallback
+     * `INV-RMA-06` §11 - `''`/valor vazio cai no `default` (mesmo tratamento do fallback
      * `TemaPreferido::V1`, coerente com o default da coluna V3).
      */
     public static function temaPreferido(?string $bruto): TemaPreferido
@@ -160,7 +160,7 @@ final class TabelaDeTraducao
     }
 
     /**
-     * `INV-RMA-06` §6 — não é enum (nenhuma regra de negócio ramifica sobre `empresa`),
+     * `INV-RMA-06` §6 - não é enum (nenhuma regra de negócio ramifica sobre `empresa`),
      * mas ainda é uma comparação por igualdade de valor cru do legado, então vive aqui
      * pelo mesmo princípio. Só as 2 abreviações confirmadas são normalizadas; qualquer
      * outro valor (incluindo `NULL`) é devolvido sem alteração.

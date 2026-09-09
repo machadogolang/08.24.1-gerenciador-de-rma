@@ -1,4 +1,4 @@
-# Inventário técnico — backup CellSystem RMA 15.9.7
+# Inventário técnico - backup CellSystem RMA 15.9.7
 
 Data: 2026-08-24.
 
@@ -33,13 +33,13 @@ Data: 2026-08-24.
 ```
 
 Total: 1.147 entradas no tar. `app/15.9.7/framework/` e `app/15.9.7/lib/` contêm cópias
-idênticas de `LTE2.2.0` (AdminLTE) — duplicação de asset, não investigada a fundo.
+idênticas de `LTE2.2.0` (AdminLTE) - duplicação de asset, não investigada a fundo.
 
 ## Tecnologias catalogadas
 
 | Categoria | Item | Onde | Classificação preliminar (ver parecer) |
 |---|---|---|---|
-| Backend | PHP procedural, `mysqli` com prepared statements na maior parte (não em todos os pontos — ver `regras-negocio` para SQLi confirmada) | todo o código | reimplementar em Laravel |
+| Backend | PHP procedural, `mysqli` com prepared statements na maior parte (não em todos os pontos - ver `regras-negocio` para SQLi confirmada) | todo o código | reimplementar em Laravel |
 | Banco | MySQL/MariaDB `10.3.14-MariaDB-cll-lve` | cabeçalho dos dumps | migrar schema, não copiar 1:1 |
 | Admin UI framework | AdminLTE 2.2.0 | `framework/LTE2.2.0`, `lib/LTE2.2.0` | avaliar: comportamento/aparência a preservar, biblioteca em si pode ser substituída (ver INV-RMA-04, ainda não escrito) |
 | CSS grid/reset | Bootstrap 3.3.5 (via CDN, `maxcdn.bootstrapcdn.com`), Foundation | `15.9.7/index.php`, `framework/foundation/` | Bootstrap 3.3.5 → substituir por Bootstrap 5.3 (comportamento equivalente, não bit a bit) |
@@ -51,25 +51,25 @@ idênticas de `LTE2.2.0` (AdminLTE) — duplicação de asset, não investigada 
 
 ## Distinção A/B/C/D/E de bibliotecas (pedida explicitamente pelo usuário)
 
-Ainda **preliminar** — falta ler CSS/JS de `js/`, `framework/`, `lib/` em detalhe para
+Ainda **preliminar** - falta ler CSS/JS de `js/`, `framework/`, `lib/` em detalhe para
 fechar esta tabela. Primeira leitura:
 
 | Biblioteca | Categoria | Nota |
 |---|---|---|
-| AdminLTE 2.2.0 | **B/C** — asset visual reutilizável como referência, mas versão 2.2.0 é antiga (2016) e sem manutenção; comportamento (dashboard admin com sidebar) pode ser recriado com Bootstrap 5.3 puro | Confirmar se skin realmente ativa (nenhuma classe `skin-*` foi encontrada referenciada no HTML lido até agora) |
-| Bootstrap 3.3.5 (CDN) | **C** — versão antiga, sem motivo para manter; grid/componentes equivalentes existem em 5.3 | — |
-| jQuery 1.11/2.1 | **C/D** — comportamento (manipulação DOM, AJAX) replicável com JS moderno; não há evidência até agora de uso de plugin jQuery insubstituível além de iCheck/Lightbox | — |
-| iCheck | **C** — só estiliza checkbox/radio; CSS moderno resolve sem JS | — |
-| Lightbox2 | **[DÚVIDA]** — não confirmado onde é usado de fato no fluxo de RMA (pode ser resquício do template AdminLTE, não uso real do app) | Precisa verificação antes de decidir |
-| Fontes (Open Sans/Roboto) | **B** — preservar como parte da identidade visual (ver `matriz-comparacao-apps-rma.md`, paleta do app 15.8.1 usa essas fontes) | — |
-| Font Awesome | **D** — ainda amplamente usado e mantido, ok continuar ou trocar por SVG inline moderno | — |
+| AdminLTE 2.2.0 | **B/C** - asset visual reutilizável como referência, mas versão 2.2.0 é antiga (2016) e sem manutenção; comportamento (dashboard admin com sidebar) pode ser recriado com Bootstrap 5.3 puro | Confirmar se skin realmente ativa (nenhuma classe `skin-*` foi encontrada referenciada no HTML lido até agora) |
+| Bootstrap 3.3.5 (CDN) | **C** - versão antiga, sem motivo para manter; grid/componentes equivalentes existem em 5.3 | - |
+| jQuery 1.11/2.1 | **C/D** - comportamento (manipulação DOM, AJAX) replicável com JS moderno; não há evidência até agora de uso de plugin jQuery insubstituível além de iCheck/Lightbox | - |
+| iCheck | **C** - só estiliza checkbox/radio; CSS moderno resolve sem JS | - |
+| Lightbox2 | **[DÚVIDA]** - não confirmado onde é usado de fato no fluxo de RMA (pode ser resquício do template AdminLTE, não uso real do app) | Precisa verificação antes de decidir |
+| Fontes (Open Sans/Roboto) | **B** - preservar como parte da identidade visual (ver `matriz-comparacao-apps-rma.md`, paleta do app 15.8.1 usa essas fontes) | - |
+| Font Awesome | **D** - ainda amplamente usado e mantido, ok continuar ou trocar por SVG inline moderno | - |
 
 ## Banco de dados / dumps
 
 Três dumps, mesmo schema (9 tabelas idênticas): `app/1maiode2019.sql`,
-`app/2maiode2019.sql` (ambos com dados reais — ~1.332 RMAs, ~165 clientes, ~2.777 logs,
+`app/2maiode2019.sql` (ambos com dados reais - ~1.332 RMAs, ~165 clientes, ~2.777 logs,
 não abertos além de schema+contagem), `dump-cellsyst_rma-201912161213.sql` (schema
-idêntico, praticamente sem dados de exemplo — usado como fonte do schema documentado).
+idêntico, praticamente sem dados de exemplo - usado como fonte do schema documentado).
 
 Tabelas: `assistencia_tecnica`, `assistencias` (só referenciada pelo app 14.6.1, ver
 `modelo-dominio-rma-legado.md`), `bd`, `cliente`, `fabricante`, `fornecedor`, `log`,
@@ -77,35 +77,35 @@ Tabelas: `assistencia_tecnica`, `assistencias` (só referenciada pelo app 14.6.1
 `modelo-dominio-rma-legado.md`.
 
 **Anomalia técnica registrada, não é regra de negócio:** `bd` tem
-`AUTO_INCREMENT=2147483648` (exatamente 2^31) já no dump de maio/2019 — contador de
+`AUTO_INCREMENT=2147483648` (exatamente 2^31) já no dump de maio/2019 - contador de
 auto-incremento corrompido/resetado para o limite de `int` assinado. Irrelevante para o
 sistema novo porque `numero` é gerado em PHP, não pelo MySQL.
 
 ## Uploads, relatórios, documentos
 
 Nenhum diretório de upload de anexo (foto de equipamento, PDF de NF) encontrado em
-nenhum dos dois apps — os campos de NF armazenam só texto (número/chave), não arquivo.
+nenhum dos dois apps - os campos de NF armazenam só texto (número/chave), não arquivo.
 Relatórios geram HTML para impressão via navegador (sem PDF server-side).
 
 ## Código duplicado / morto (catálogo)
 
 | Item | Tipo | Situação |
 |---|---|---|
-| `framework/LTE2.2.0` vs `lib/LTE2.2.0` | Duplicação de asset completo | Não investigado a fundo — provavelmente resquício de reorganização de pastas |
+| `framework/LTE2.2.0` vs `lib/LTE2.2.0` | Duplicação de asset completo | Não investigado a fundo - provavelmente resquício de reorganização de pastas |
 | `subp/*_autorizada*` (4 arquivos) vs `subp/*_assistencia_tecnica*` | Código quase idêntico, sem rota | MORTO (ver `regras-negocio-rma-legado.md` RN-19) |
 | `subp/pesquisar_{rma,nf,sn,descricao}.php` (4 arquivos) | Mesmo MD5, mesma função `pesquisar()` chamada | UI oferece como buscas distintas, mas são idênticas |
-| `banco.php:novo()` vs `metodo.php:novo_bd()` | Duas funções para o mesmo INSERT | `novo()` tem SQL inválido (`INSERT numero SET`, sem `INTO`) e não é chamada — morta |
+| `banco.php:novo()` vs `metodo.php:novo_bd()` | Duas funções para o mesmo INSERT | `novo()` tem SQL inválido (`INSERT numero SET`, sem `INTO`) e não é chamada - morta |
 | 16 arquivos com 0 bytes no app 15.8.1 | Placeholders nunca implementados | Listados no relatório do agente de arqueologia; incluir na consolidação de `INV-RMA-00` |
 
 ## Arquivos potencialmente sensíveis (sem reprodução de valor)
 
-1. `app/15.9.7/conexao.php` — credencial de banco em texto plano.
-2. `app/15.9.7/14.6.1/config.php` — segredo fixo de convite de autocadastro (hash SHA1).
-3. `app/1maiode2019.sql`, `app/2maiode2019.sql` — dados reais de clientes/fabricantes/
+1. `app/15.9.7/conexao.php` - credencial de banco em texto plano.
+2. `app/15.9.7/14.6.1/config.php` - segredo fixo de convite de autocadastro (hash SHA1).
+3. `app/1maiode2019.sql`, `app/2maiode2019.sql` - dados reais de clientes/fabricantes/
    fornecedores e ~2.777 registros de log de acesso (e-mail, IP, navegador).
-4. `metodo.php`, `15.8.1/banco.php` — e-mails hardcoded de pessoas reais como
+4. `metodo.php`, `15.8.1/banco.php` - e-mails hardcoded de pessoas reais como
    destinatários fixos de notificação.
-5. Tabela `usuario` (nos três dumps) — hashes SHA1 sem salt de senha (`Key1461`,
+5. Tabela `usuario` (nos três dumps) - hashes SHA1 sem salt de senha (`Key1461`,
    `Key1581`).
 
 ## Cobertura desta arqueologia (transparência)

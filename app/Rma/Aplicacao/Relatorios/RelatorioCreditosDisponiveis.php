@@ -6,7 +6,7 @@ use App\Models\Rma;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RCD (`LEG-RMA-037`) — RMAs com crédito disponível para uso, marcados por
+ * RCD (`LEG-RMA-037`) - RMAs com crédito disponível para uso, marcados por
  * `MarcarCreditoDisponivel`.
  */
 final class RelatorioCreditosDisponiveis

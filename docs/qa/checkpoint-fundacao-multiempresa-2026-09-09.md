@@ -1,4 +1,4 @@
-# Checkpoint — Fundação multiempresa (EVO-SAAS-001)
+# Checkpoint - Fundação multiempresa (EVO-SAAS-001)
 
 Data: 2026-09-09. Estado: **marco parcialmente fechado (S1–S8, S9–S12, S3.6)**;
 EVO-SAAS-001 permanece aberto até S9.8/S10.4/S11.4/S13/S14.
@@ -21,10 +21,10 @@ EVO-SAAS-001 permanece aberto até S9.8/S10.4/S11.4/S13/S14.
 
 ## Migrations novas
 
-- `2026_09_09_000001`/`000002` — companies / company_user.
-- `2026_09_09_000003`/`000004` — tenant_id + CellSystem/backfill.
-- `2026_09_09_000005`/`000006` — contadores + numero_da_empresa.
-- `2026_09_09_000007` — NOT NULL/FK restritiva.
+- `2026_09_09_000001`/`000002` - companies / company_user.
+- `2026_09_09_000003`/`000004` - tenant_id + CellSystem/backfill.
+- `2026_09_09_000005`/`000006` - contadores + numero_da_empresa.
+- `2026_09_09_000007` - NOT NULL/FK restritiva.
 
 ## Testes
 
@@ -33,8 +33,8 @@ EVO-SAAS-001 permanece aberto até S9.8/S10.4/S11.4/S13/S14.
 
 ## Pendências reais (não escondidas)
 
-- `S9.8` — remover `users.papel` apenas quando consumidores legacy sumirem.
-- `S10.4` — prova de concorrência real fora do fork do PHPUnit.
-- `S11.4` — relatório do migrador com coluna de tenant (opcional).
-- `S13.2` — Playwright relevante/build (sem assets tocados nesta rodada).
-- `S14` — relatório de gate formal quando os pendentes acima fecharem.
+- `S9.8` - remover `users.papel` apenas quando consumidores legacy sumirem.
+- `S10.4` - prova de concorrência real fora do fork do PHPUnit.
+- `S11.4` - relatório do migrador com coluna de tenant (opcional).
+- `S13.2` - Playwright relevante/build (sem assets tocados nesta rodada).
+- `S14` - relatório de gate formal quando os pendentes acima fecharem.

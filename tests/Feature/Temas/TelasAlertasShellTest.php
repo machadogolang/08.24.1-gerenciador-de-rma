@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * FRONT-003/UI-04 — Painel de Alertas no shell V1/V2 com links de RMA no contrato.
+ * FRONT-003/UI-04 - Painel de Alertas no shell V1/V2 com links de RMA no contrato.
  */
 class TelasAlertasShellTest extends TestCase
 {

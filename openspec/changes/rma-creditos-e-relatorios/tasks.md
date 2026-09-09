@@ -1,4 +1,4 @@
-# Tasks — Créditos e relatórios
+# Tasks - Créditos e relatórios
 
 - [x] `database/migrations/2026_08_30_000000_add_credito_fields_to_rmas_table.php`
 - [x] `app/Rma/Aplicacao/MarcarCreditoDisponivel.php`

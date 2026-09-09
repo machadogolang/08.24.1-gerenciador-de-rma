@@ -13,11 +13,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * 3 relatórios fiscais/contábeis (`LEG-RMA-037/038/039`) — consultas de leitura sobre
+ * 3 relatórios fiscais/contábeis (`LEG-RMA-037/038/039`) - consultas de leitura sobre
  * `Rma` já maduro depois da Fase 5, não módulo próprio (`INV-RMA-05` §3). Sem PDF real
- * (`EVO-REL-001`, backlog evolutivo) — impressão via `Ctrl+P`, igual ao legado.
+ * (`EVO-REL-001`, backlog evolutivo) - impressão via `Ctrl+P`, igual ao legado.
  *
- * FRONT-003/UI-03 — relatórios passam pelo shell do tema ativo (`view_do_tema`) com
+ * FRONT-003/UI-03 - relatórios passam pelo shell do tema ativo (`view_do_tema`) com
  * conteúdo compartilhado e impressão limpa via `relatorio-print`.
  */
 class RelatorioController extends Controller
@@ -33,7 +33,7 @@ class RelatorioController extends Controller
     }
 
     /**
-     * RPEC — status é filtro configurável pelo usuário (query string opcional
+     * RPEC - status é filtro configurável pelo usuário (query string opcional
      * `status`), não hardcoded como no legado.
      */
     public function produtosEmEstoqueParaContagem(Request $request, RelatorioProdutosEmEstoqueParaContagem $relatorio): View
@@ -56,7 +56,7 @@ class RelatorioController extends Controller
     }
 
     /**
-     * RMPE — intervalo de datas real via Form Request (`data_inicio`/`data_fim`
+     * RMPE - intervalo de datas real via Form Request (`data_inicio`/`data_fim`
      * obrigatórios), substitui o intervalo hardcoded para "2014" do legado (bug de
      * manutenção, não RN documentada).
      */

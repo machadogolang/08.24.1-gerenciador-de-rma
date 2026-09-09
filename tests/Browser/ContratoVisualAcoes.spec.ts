@@ -18,7 +18,7 @@ async function loginV3(browser: Browser): Promise<Page> {
     return page;
 }
 
-test.describe('FRONT-003/UI-02D — contrato visual de ações (browser)', () => {
+test.describe('FRONT-003/UI-02D - contrato visual de ações (browser)', () => {
 
     test('Parceiros V1 e V2: Novo/Editar/Remover reconhecíveis, cursor, hover, TAB e semântica', async ({ browser }) => {
         for (const tema of ['v1', 'v2'] as const) {
@@ -67,7 +67,7 @@ test.describe('FRONT-003/UI-02D — contrato visual de ações (browser)', () =>
             await expect(remover).toHaveCSS('outline-style', 'solid');
 
             // Semântica: Novo/Editar continuam <a href> (GET); Remover é <button
-            // type=submit> dentro de POST/DELETE com CSRF — ENTER/SPACE disparam a
+            // type=submit> dentro de POST/DELETE com CSRF - ENTER/SPACE disparam a
             // mutação do navegador, sem JS novo.
             expect(await novo.evaluate(el => el.tagName)).toBe('A');
             expect(await editar.evaluate(el => el.tagName)).toBe('A');

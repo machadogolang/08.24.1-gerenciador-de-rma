@@ -11,10 +11,10 @@ const breakpoints = JSON.parse(
 };
 
 /**
- * Fase 8 — TEMA V2 tem breakpoints PRÓPRIOS (`15.8.1/css/media.php`,
+ * Fase 8 - TEMA V2 tem breakpoints PRÓPRIOS (`15.8.1/css/media.php`,
  * `resources/sass/temas/v2.scss:$breakpoints-tema-v2`/`$larguras-container-tema-v2`).
  * A asserção usa a largura de `.container` esperada pela regra `min-width` mais
- * próxima ABAIXO do breakpoint de QA (390/768/1440) — nenhum dos 6 valores é
+ * próxima ABAIXO do breakpoint de QA (390/768/1440) - nenhum dos 6 valores é
  * redigitado aqui, todos vêm de `Support/breakpoints-tema-v2.json` (gerado/mantido a
  * partir do mesmo mapa Sass).
  */

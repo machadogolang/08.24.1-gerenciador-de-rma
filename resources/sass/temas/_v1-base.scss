@@ -1,15 +1,15 @@
-// _v1-base.scss — port da primeira folha carregada pelo TEMA V1. Porta os seletores de
+// _v1-base.scss - port da primeira folha carregada pelo TEMA V1. Porta os seletores de
 // `legacy-source/pattern/14.6.1.css` (207 linhas). TEMA V1 NÃO depende de nenhum
-// framework CSS — formulários são `<table>` autoral (`.tablenovo`, confirmado em
+// framework CSS - formulários são `<table>` autoral (`.tablenovo`, confirmado em
 // `14.6.1/index.php`). Layout FIXO, sem NENHUM @media (ausência de breakpoint é o
-// próprio achado de fidelidade — não "consertar" a responsividade).
+// próprio achado de fidelidade - não "consertar" a responsividade).
 
 $fundo: #262626;
 $acento: #c3ff00;
 $texto: #fff;
 $fonte: "Open Sans", "Arial", "Fira Sans";
 
-// #BASE/#TOPO/#CONTEUDO no legado — nomeada para nunca reaparecer como "984px" solto.
+// #BASE/#TOPO/#CONTEUDO no legado - nomeada para nunca reaparecer como "984px" solto.
 $largura-fixa-tema-v1: 984px;
 
 // `14.6.1.css`: a família é aplicada diretamente a cada descendente. Isso é
@@ -145,10 +145,10 @@ hr {
     border-radius: 5px;
 }
 
-// VIS-V1-007 — o legado não tem heading `<h1>` padronizado; usado onde `$titulo` precisa
+// VIS-V1-007 - o legado não tem heading `<h1>` padronizado; usado onde `$titulo` precisa
 // continuar acessível/semântico sem aparecer visualmente (ex.: painel "Novo", cuja
 // composição real começa pelo ícone/texto do próprio `menujs-top/novo.php`, não por um
-// H1). Não é um padrão do legado — utilitário de acessibilidade V3, sem fonte a portar.
+// H1). Não é um padrão do legado - utilitário de acessibilidade V3, sem fonte a portar.
 .sr-only {
     position: absolute;
     width: 1px;
@@ -173,8 +173,8 @@ hr {
     clear: both;
 }
 
-// Formulário "Novo RMA" — HTML <table> autoral, sem grid de framework. Fonte real:
-// `pattern/14.6.1.css` (VIS-V1-004 — geometria fixa de 700px, não `width:100%`; cor
+// Formulário "Novo RMA" - HTML <table> autoral, sem grid de framework. Fonte real:
+// `pattern/14.6.1.css` (VIS-V1-004 - geometria fixa de 700px, não `width:100%`; cor
 // `#C3FF00` nos inputs numéricos/texto, distinta do branco genérico do resto do tema).
 .tablenovo {
     height: 22px;
@@ -186,10 +186,10 @@ hr {
     text-align: left;
 }
 
-// CP8-05 (fase 2 V1) — `pattern/14.6.1.css`/`15.9.7.css` não declaram `box-sizing`
+// CP8-05 (fase 2 V1) - `pattern/14.6.1.css`/`15.9.7.css` não declaram `box-sizing`
 // pra nenhuma destas 5 classes (era `content-box` no browser da época); o V3 tinha
 // adicionado `border-box` nas 5, o que reduz a largura renderizada em
-// padding+border (2-6px, dependendo da classe) contra o Legacy — removido pra bater
+// padding+border (2-6px, dependendo da classe) contra o Legacy - removido pra bater
 // exatamente com o `outerWidth` medido nos dois lados.
 .novo_formInput {
     height: 22px;
@@ -248,9 +248,9 @@ hr {
     font-size: 13px;
 }
 
-// CP8-02 — toggle "item é do estoque" (`pattern/15.9.7.css:286-296`), escopado a
-// `#JS-Novo` (regra global no Legacy, mas outros checkboxes do sistema — ex. login,
-// V2 — não devem herdar este estilo).
+// CP8-02 - toggle "item é do estoque" (`pattern/15.9.7.css:286-296`), escopado a
+// `#JS-Novo` (regra global no Legacy, mas outros checkboxes do sistema - ex. login,
+// V2 - não devem herdar este estilo).
 #JS-Novo {
     input[type="checkbox"] {
         display: none;
@@ -311,7 +311,7 @@ hr {
     margin: 0;
 }
 
-// Usado pelo painel "Novo" e pelas 4 listagens por status (VIS-V1-001) — texto de
+// Usado pelo painel "Novo" e pelas 4 listagens por status (VIS-V1-001) - texto de
 // contexto acima da tabela/formulário, sem heading `<h1>` (fonte real: `14.6.1.css`).
 .title-comicone {
     margin-top: 20px;
@@ -337,7 +337,7 @@ hr {
     color: $acento;
 }
 
-// "QUADRO DE ANOTACOES" + sidebar de contadores (correção Fase 8, 2026-08-25) — fonte
+// "QUADRO DE ANOTACOES" + sidebar de contadores (correção Fase 8, 2026-08-25) - fonte
 // real `14.6.1/index.php`: anotação flutua à esquerda (largura fixa), contadores à
 // direita, mesmo padrão de layout fixo (sem framework) do resto do TEMA V1.
 $largura-quadro-de-anotacoes: 675px;
@@ -354,10 +354,10 @@ $largura-sidebar-contadores: 280px;
     margin-left: 1px;
 }
 
-// CP9 (fase 2 V1) — `.panotacao`/`.imganotacao`/`.textareaanotacao` são as classes
+// CP9 (fase 2 V1) - `.panotacao`/`.imganotacao`/`.textareaanotacao` são as classes
 // reais do Legacy (`pattern/14.6.1.css:65-67`); `startpage.php` sobrepõe um `style`
 // inline em `.panotacao` (`border:0;width:664px;margin-top:-16px`) e na textarea
-// (`display:block;border:0`) — medidos via Playwright e já embutidos aqui como valor
+// (`display:block;border:0`) - medidos via Playwright e já embutidos aqui como valor
 // final da classe (sem inline no Blade, mesmo critério já usado no TEMA V2 pra
 // `#menuright`/CP18).
 .panotacao {
@@ -391,26 +391,26 @@ $largura-sidebar-contadores: 280px;
     letter-spacing: 1px;
     line-height: 1.5;
 
-    // CP9-05 — indicador discreto de falha no autosave (`v1.js`), sem
-    // alert/modal — só uma borda vermelha sutil enquanto a última alteração não
+    // CP9-05 - indicador discreto de falha no autosave (`v1.js`), sem
+    // alert/modal - só uma borda vermelha sutil enquanto a última alteração não
     // foi confirmada salva.
     &.textareaanotacao--erro {
         border: 1px solid rgba(219, 87, 77, 0.6);
     }
 }
 
-// Fonte real: `14.6.1.css:74-76` (`.formInputStats`/`.formLabelStats`) — rótulo com
+// Fonte real: `14.6.1.css:74-76` (`.formInputStats`/`.formLabelStats`) - rótulo com
 // largura fixa alinhado à direita + valor em caixa própria à direita dele, mesmo
 // padrão visual dos outros inputs "readonly" do TEMA V1.
 $largura-rotulo-stats: 198px;
 $largura-valor-stats: 45px;
 $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scss (14.6.1.css:76)
 
-// CP10 (fase 2 V1) — `[style="float:right;width:280px;margin-right:-8px;
+// CP10 (fase 2 V1) - `[style="float:right;width:280px;margin-right:-8px;
 // margin-top:-15px;"]` medido direto no Legacy (nenhum id/class próprio no
 // container-fonte). `box-sizing:border-box` removido de `.formLabelStats`/
 // `.formValorStats` (mesmo achado do CP8: nenhuma das duas classes reais declara a
-// propriedade — a largura do Legacy é width+padding+border, não só width).
+// propriedade - a largura do Legacy é width+padding+border, não só width).
 .contadores-do-painel {
     float: right;
     width: $largura-sidebar-contadores;
@@ -455,7 +455,7 @@ $cor-hover-stats: #904141; // mesmo valor de `$cor-alerta` em _compartilhado.scs
     }
 }
 
-// CP11 (fase 2 V1) — fonte real `startpage.php:182`.
+// CP11 (fase 2 V1) - fonte real `startpage.php:182`.
 .separador2-inicial {
     float: right;
     margin-top: 50px;
@@ -660,10 +660,10 @@ li {
     font-size: 11px;
 }
 
-// VIS-V1-010 — painel "Controle" (`pattern/14.6.1.css`: `.formTitlePanel`,
+// VIS-V1-010 - painel "Controle" (`pattern/14.6.1.css`: `.formTitlePanel`,
 // `.formLabelPanel`, `.trcontrole1`/`.tdcontrole1`). `<details>/<summary>` nativos
 // substituem o `expande()`/`minimize()` em JS do legado (mesmo comportamento de
-// painel colapsado por padrão, sem framework — ver VIS-V1-002).
+// painel colapsado por padrão, sem framework - ver VIS-V1-002).
 .formTitlePanel {
     clear: both;
     margin: 0 0 10px;
@@ -754,7 +754,7 @@ li {
     letter-spacing: 1px;
 }
 
-// CP7 (fase 2 V1) — nunca tinha sido portada (só existia como classe em
+// CP7 (fase 2 V1) - nunca tinha sido portada (só existia como classe em
 // `pattern/14.6.1.css`, sem `<select>` real usando-a antes desta correção). Medido
 // no Legacy via Playwright, computed style: `height:52px` (o valor cru da classe,
 // `text-align:center` incluso).
@@ -772,7 +772,7 @@ li {
     font-weight: bold;
 }
 
-// FRONT-003/UI-02B — contrato visual mínimo de ações/botões (TEMA V1).
+// FRONT-003/UI-02B - contrato visual mínimo de ações/botões (TEMA V1).
 // Semântica comum no HTML (`.acao` + papel); aparência própria do V1 com a gramática
 // do legado: cantos retos, superfície escura, hover na família vermelha do tema.
 // A regra global abaixo atende ao dono (botão habilitado sempre comunica cursor) e
@@ -870,7 +870,7 @@ button:disabled {
     }
 }
 
-// Superfície das ações de ciclo de vida (partial compartilhado) — só empacotamento
+// Superfície das ações de ciclo de vida (partial compartilhado) - só empacotamento
 // e fluxo de leitura; a aparência de cada ação vem de `.acao--*` acima.
 .acoes-de-transicao {
     margin: 8px 0;
@@ -887,7 +887,7 @@ button:disabled {
     }
 }
 
-// Foco por teclado de qualquer ação nativa dos dois temas (além do `.acao`) —
+// Foco por teclado de qualquer ação nativa dos dois temas (além do `.acao`) -
 // outline visível, sem remover substituto.
 button:focus-visible,
 a:focus-visible {
@@ -895,7 +895,7 @@ a:focus-visible {
     outline-offset: 1px;
 }
 
-// FRONT paridade (P1) — "Trocar p/ 15.8.1" como item de menu do TEMA V1, no mesmo
+// FRONT paridade (P1) - "Trocar p/ 15.8.1" como item de menu do TEMA V1, no mesmo
 // lugar visual do Legacy (`menuright.php`), mas POST/CSRF seguro (sem GET).
 .lisessao-form {
     margin: 0;
@@ -927,7 +927,7 @@ a:focus-visible {
     }
 }
 
-// UI-AUD-008 — todo select habilitado comunica interatividade; disabled não usa
+// UI-AUD-008 - todo select habilitado comunica interatividade; disabled não usa
 // pointer. Regra base única do TEMA V1 (contrato universal; geometria continua por
 // classe/contexto).
 select:not(:disabled) {
@@ -938,7 +938,7 @@ select:disabled {
     cursor: not-allowed;
 }
 
-// UI-AUD-004/005 — contrato de formulário vertical do TEMA V1 (parceiros e edição
+// UI-AUD-004/005 - contrato de formulário vertical do TEMA V1 (parceiros e edição
 // RMA): colunas de rótulo/controle fixas e controles do mesmo papel com a mesma
 // largura útil. Escopo é local (`.tabela-form-v1`); NÃO altera selects globais de
 // telas históricas (painel Novo etc.). `box-sizing:border-box` aqui evita o
@@ -977,7 +977,7 @@ select:disabled {
     }
 }
 
-// UI-AUD-006 — Usuários V1: células sem espremer; ações da mesma classe com a
+// UI-AUD-006 - Usuários V1: células sem espremer; ações da mesma classe com a
 // mesma largura; contrário do encolhimento por flex observado (RESETAR em 51px).
 .tabela-usuarios-v1 {
     th:nth-child(1) { width: 18%; }
@@ -1000,7 +1000,7 @@ select:disabled {
     }
 }
 
-// UI-AUD-011/UI-05 — Controle V1: coluna de rótulo com largura fixa para os três
+// UI-AUD-011/UI-05 - Controle V1: coluna de rótulo com largura fixa para os três
 // formulários de representante iniciarem inputs/botões na mesma coluna. `.formLabelPanel`
 // só é consumido por esta tela (verificado por busca de views).
 .formLabelPanel {
@@ -1012,7 +1012,7 @@ select:disabled {
     overflow-x: auto;
 }
 
-// UI-AUD-013 — controles de ciclo de vida (detalhe RMA V1): geometria contida e
+// UI-AUD-013 - controles de ciclo de vida (detalhe RMA V1): geometria contida e
 // alinhada com a gramática do painel.
 .acoes-de-transicao {
     .acao-controle-select {

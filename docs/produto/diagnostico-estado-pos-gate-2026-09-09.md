@@ -1,4 +1,4 @@
-# Diagnóstico de estado pós-gate — CellSystem RMA V3
+# Diagnóstico de estado pós-gate - CellSystem RMA V3
 
 Data-base da auditoria: 2026-09-09 (código e histórico lidos nesta sessão).
 Objetivo: responder ao checkpoint "como está o sistema e o que falta", cruzando o
@@ -14,11 +14,11 @@ gate da Trilha A (`F10-GATE-07`, 2026-09-04) com o estado documental e o código
   58 testes Playwright, migração histórica real de 9 tabelas com reconciliação e
   idempotência, parecer executivo de 2026-09-04 homologado.
 - Frentes visuais com gate fechado por evidência independente:
-  - Tema V1 fase 1 (CP0–CP5) — `plano-execucao-paridade-estrutural-v1.md`;
-  - Tema V1 fase 2 (CP6–CP15) — `plano-execucao-paridade-visual-v1-fase2.md`
+  - Tema V1 fase 1 (CP0–CP5) - `plano-execucao-paridade-estrutural-v1.md`;
+  - Tema V1 fase 2 (CP6–CP15) - `plano-execucao-paridade-visual-v1-fase2.md`
     (CP15 **APROVADO e FECHADO** em 2026-09-03, commit `8dcef5c`);
-  - Tema V2 (CP16–CP25) — `plano-execucao-paridade-v2.md` (CP25 APROVADO);
-  - Auditoria navegacional V1 (NAV-00..NAV-05) — APROVADA em 2026-09-04
+  - Tema V2 (CP16–CP25) - `plano-execucao-paridade-v2.md` (CP25 APROVADO);
+  - Auditoria navegacional V1 (NAV-00..NAV-05) - APROVADA em 2026-09-04
     (`plano-execucao-auditoria-navegacional-visual-v1.md`).
 - Runtime: containers Docker parados no momento da auditoria; imagens
   `sail-8.3/rma-v3-app`, `mysql:8.4` e `mailpit` disponíveis localmente; PHP 8.3.6,
@@ -42,7 +42,7 @@ reconciliação:
 
 ## 3. Lacunas reais confirmadas no código nesta auditoria
 
-### 3.1 FRONT-004 — raiz `/` ainda é scaffold `welcome`
+### 3.1 FRONT-004 - raiz `/` ainda é scaffold `welcome`
 
 - `routes/web.php`: `Route::get('/', fn () => view('welcome'))`.
 - `resources/views/welcome.blade.php` presente (scaffold Laravel).
@@ -53,7 +53,7 @@ reconciliação:
   (convidado → `login`; autenticado → dashboard/rota do tema), e os `ExampleTest`
   devem ser substituídos por teste real ou removidos.
 
-### 3.2 ARQ-004 / PAR-RMA-001 — busca por NF consulta `os`
+### 3.2 ARQ-004 / PAR-RMA-001 - busca por NF consulta `os`
 
 - `app/Rma/Infraestrutura/RmasEmBanco.php` (`buscar()`): `nota_fiscal` faz
   `where('os', like, ...)`, com docblock registrando que era provisório "até os campos
@@ -64,25 +64,25 @@ reconciliação:
 - Ação esperada: buscar nos campos fiscais reais (compra/venda/remessa/retorno
   conforme o histórico 14.6.1/15.8.1) e cobrir com teste funcional.
 
-### 3.3 ARQ-005 — validação de destinatário/erros esperados
+### 3.3 ARQ-005 - validação de destinatário/erros esperados
 
 - Encaminhamento usa tipo+ID cru; conversões de domínio (`Solucao::from` etc.) podem
   virar erro 500; RMA ausente em edição não tem tratamento explícito de 404/erro
   esperado. Confirmado pelo texto de `INV-RMA-10` §ARQ-005; sem commit posterior
   endereçando o item.
 
-### 3.4 ARQ-006 — unidade consistente de mutação/auditoria/notificação
+### 3.4 ARQ-006 - unidade consistente de mutação/auditoria/notificação
 
 - Confirmado pelo texto de `INV-RMA-10`; dependência implícita de `Auth` em
   criar/editar permanece sem commit posterior endereçando o item.
 
-### 3.5 ARQ-007 — custo da home
+### 3.5 ARQ-007 - custo da home
 
 - `RmaController::index` dispara `contadoresDoPainel()` com 16 counts independentes +
   `ListarGruposDeAlertas` + 4 listagens por status na mesma requisição; é o padrão
   documentado em ARQ-007. Sem medição/commit posterior de redução.
 
-### 3.6 ARQ-009 — duplicação/órfãos de parceiros e views
+### 3.6 ARQ-009 - duplicação/órfãos de parceiros e views
 
 - Sem commit posterior endereçando duplicação/órfãos; `FRONT-006` exige prova de
   ausência de consumidores antes de remover views genéricas.
@@ -102,12 +102,12 @@ reconciliação:
 
 ## 4. Pendências documentais menores
 
-- `DOC D-05` — contagens/resumos com números de suíte desatualizados nos documentos
+- `DOC D-05` - contagens/resumos com números de suíte desatualizados nos documentos
   correntes (ex.: `checklist-master-v3.md` consolidação 2026-08-25 com textos antigos).
-- `DOC D-07` — fechar OpenSpec da F10 por evidência.
+- `DOC D-07` - fechar OpenSpec da F10 por evidência.
 - `ARQ C-02` (RN-12 no Tema V1), `ARQ C-03` (Lightbox2), `ARQ C-04` (skin AdminLTE):
   investigações residuais sem fechamento.
-- `DECISAO C-08` — visibilidade do V3: decisão operacional do usuário, fora do
+- `DECISAO C-08` - visibilidade do V3: decisão operacional do usuário, fora do
   repositório.
 
 ## 5. Trilha B

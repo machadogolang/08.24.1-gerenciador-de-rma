@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
 /**
- * EVO-SAAS-001 (S5) — Global Scope de tenant. Só filtra quando o
+ * EVO-SAAS-001 (S5) - Global Scope de tenant. Só filtra quando o
  * `ContextoDeTenant` tem empresa ativa (requests web autenticados); em console/testes
  * sem contexto a query continua sem filtro para não esconder escrita/seed. A camada
  * web nunca chega a Controller sem contexto (middleware falha 403).

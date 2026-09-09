@@ -1,9 +1,9 @@
-# Proposal — Paridade total dirigida por fluxos (Legacy executável × V3)
+# Proposal - Paridade total dirigida por fluxos (Legacy executável × V3)
 
 Data: 2026-09-09. Esta frente **audita e fecha** paridade entre o Legacy executável
 (`08.24.4-legacy-gerenciador-de-rma`, `f83542c`) e a V3, por fluxos ponta a ponta e
 quatro quadrantes (Legacy V1/V2 × V3 V1/V2). Não cria arquitetura paralela e não
-duplica tasks dos OpenSpecs existentes — referencia `temas-v1-v2`,
+duplica tasks dos OpenSpecs existentes - referencia `temas-v1-v2`,
 `parceiros`, `rma-cadastro-e-localizacao`, `rma-ciclo-de-vida`,
 `rma-alertas-e-prioridade`, `rma-creditos-e-relatorios`, `rma-logistica-e-historico`,
 `autenticacao-usuarios`, `front-003-shell-telas-secundarias` e `saas-multiempresa`.

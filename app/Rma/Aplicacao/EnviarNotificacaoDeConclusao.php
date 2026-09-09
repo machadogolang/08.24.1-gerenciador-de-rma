@@ -7,7 +7,7 @@ use App\Rma\Dominio\Eventos\RmaConcluido;
 use Illuminate\Support\Facades\Mail;
 
 /**
- * `LEG-RMA-045` (`ezequiel()`) — destinatário via `config('rma.notificacoes.conclusao')`
+ * `LEG-RMA-045` (`ezequiel()`) - destinatário via `config('rma.notificacoes.conclusao')`
  * (`.env`), nunca hardcoded como no legado.
  */
 final class EnviarNotificacaoDeConclusao

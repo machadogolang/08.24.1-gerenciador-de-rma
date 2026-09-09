@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 return new class extends Migration
 {
     /**
-     * EVO-SAAS-001 (S3.1-S3.5) — cria o tenant `CellSystem` deterministicamente,
+     * EVO-SAAS-001 (S3.1-S3.5) - cria o tenant `CellSystem` deterministicamente,
      * vincula usuários existentes preservando `users.papel` e faz backfill das tabelas
      * tenant-scoped atuais para esse tenant. Idempotente: pode rodar com banco vazio
      * ou já vinculado.
@@ -32,7 +32,7 @@ return new class extends Migration
                 $id = $celula->id;
             }
 
-            // S3.2/S3.3 — usuário que ainda não tem vínculo nenhum ganha CellSystem com
+            // S3.2/S3.3 - usuário que ainda não tem vínculo nenhum ganha CellSystem com
             // o papel atual de `users.papel`; vínculos já existentes não são tocados.
             $usuariosSemVinculo = DB::table('users')
                 ->leftJoin('company_user', 'company_user.user_id', '=', 'users.id')
@@ -51,7 +51,7 @@ return new class extends Migration
                 ]);
             }
 
-            // S3.5 — backfill das linhas existentes para CellSystem (todas as linhas
+            // S3.5 - backfill das linhas existentes para CellSystem (todas as linhas
             // atuais são da empresa semente nesta fase).
             foreach ([
                 'clientes',

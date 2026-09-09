@@ -62,7 +62,7 @@ class GerenciarUsuariosTest extends TestCase
     }
 
     /**
-     * ARQ-003 (`INV-RMA-10`) — Supervisor não pode se autopromover a
+     * ARQ-003 (`INV-RMA-10`) - Supervisor não pode se autopromover a
      * SuperAdministrador por URL direta.
      */
     public function test_supervisor_nao_pode_promover_a_si_proprio_a_superadministrador(): void
@@ -77,7 +77,7 @@ class GerenciarUsuariosTest extends TestCase
         $this->assertSame(Papel::Supervisor, $supervisor->fresh()->papel);
     }
 
-    /** ARQ-003 — Supervisor não pode promover outro usuário a SuperAdministrador. */
+    /** ARQ-003 - Supervisor não pode promover outro usuário a SuperAdministrador. */
     public function test_supervisor_nao_pode_promover_outro_usuario_a_superadministrador(): void
     {
         $supervisor = User::factory()->create(['papel' => Papel::Supervisor]);
@@ -91,7 +91,7 @@ class GerenciarUsuariosTest extends TestCase
         $this->assertSame(Papel::Operador, $alvo->fresh()->papel);
     }
 
-    /** ARQ-003 — Supervisor não pode alterar o papel de um SuperAdministrador existente. */
+    /** ARQ-003 - Supervisor não pode alterar o papel de um SuperAdministrador existente. */
     public function test_supervisor_nao_pode_alterar_papel_de_superadministrador(): void
     {
         $supervisor = User::factory()->create(['papel' => Papel::Supervisor]);
@@ -105,7 +105,7 @@ class GerenciarUsuariosTest extends TestCase
         $this->assertSame(Papel::SuperAdministrador, $superAdmin->fresh()->papel);
     }
 
-    /** ARQ-003 — SuperAdministrador continua podendo gerenciar outro SuperAdministrador. */
+    /** ARQ-003 - SuperAdministrador continua podendo gerenciar outro SuperAdministrador. */
     public function test_superadministrador_pode_alterar_papel_de_outro_superadministrador(): void
     {
         $superAdmin = User::factory()->create(['papel' => Papel::SuperAdministrador]);

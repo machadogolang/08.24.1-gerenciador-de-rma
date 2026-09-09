@@ -10,7 +10,7 @@ use Carbon\Carbon;
  * `nf_remessa_emissao`/`nf_retorno_emissao` são todos `varchar` no legado, digitação
  * livre sem máscara (RN-02 documenta que `Diferenca_de_dias()` espera `d/m/Y`, mas o
  * campo não força esse formato). (a) tenta `d/m/Y`; (b) se falhar, tenta `Y-m-d`; (c) se
- * ambos falharem, devolve resultado não-parseável — **nunca lança exceção**, quem chama
+ * ambos falharem, devolve resultado não-parseável - **nunca lança exceção**, quem chama
  * decide o que fazer (gravar `NULL` + registrar no relatório de reconciliação com o
  * valor bruto original).
  */
@@ -29,14 +29,14 @@ final class ParserDeDataLegado
                 $data = Carbon::createFromFormat($formato, $bruto);
             } catch (\Throwable) {
                 // Carbon lança exceção (não devolve `false`) para entrada que não bate
-                // nem minimamente no formato tentado — tratado como "próxima
+                // nem minimamente no formato tentado - tratado como "próxima
                 // tentativa", nunca deixado escapar (nunca lança exceção que aborte a
                 // linha inteira, `INV-RMA-06` PENDÊNCIA-1).
                 continue;
             }
 
             if ($data !== false && $data->format($formato) === $bruto) {
-                // Formatos puramente de data — zera a hora para não herdar o
+                // Formatos puramente de data - zera a hora para não herdar o
                 // horário-corrente do momento em que o migrador rodou.
                 return new ResultadoDeParseDeData(data: $data->startOfDay(), ok: true, bruto: $bruto);
             }

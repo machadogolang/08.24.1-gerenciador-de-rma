@@ -11,8 +11,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * VIS-V1-010 — painel "Controle" do TEMA V1 (`14.6.1/page/controle.php`), distinto do
- * "Controle" do TEMA V2 (`rmas.historico.index`, inalterado — ver `HistoricoDeModificacaoTest`).
+ * VIS-V1-010 - painel "Controle" do TEMA V1 (`14.6.1/page/controle.php`), distinto do
+ * "Controle" do TEMA V2 (`rmas.historico.index`, inalterado - ver `HistoricoDeModificacaoTest`).
  */
 class ControlePainelTest extends TestCase
 {

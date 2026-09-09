@@ -1,6 +1,6 @@
-{{-- CP20 (paridade visual V2) — fonte real `legacy-source/15.8.1/page/pesquisar.php`
+{{-- CP20 (paridade visual V2) - fonte real `legacy-source/15.8.1/page/pesquisar.php`
 + `subp/pesquisar_rma.php`: breadcrumb de tipo, título "Pesquisar:", campo único e
-resultado. `page/inicio.php` inclui este MESMO arquivo por inteiro — não são duas
+resultado. `page/inicio.php` inclui este MESMO arquivo por inteiro - não são duas
 telas diferentes, por isso o V3 usa um único partial para as abas #inicio/#pesquisar. --}}
 <div class="boxtop-subpage">
     @include('temas.v2.rma._breadcrumb_pesquisar')

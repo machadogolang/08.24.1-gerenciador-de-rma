@@ -1,4 +1,4 @@
-# Parecer Executivo — Conclusão da Auditoria Navegacional e Visual do Tema V1
+# Parecer Executivo - Conclusão da Auditoria Navegacional e Visual do Tema V1
 
 **Data:** 2026-09-04  
 **Status:** **APROVADO E CONCLUÍDO**  
@@ -22,34 +22,34 @@ A auditoria navegacional e visual integral do Tema V1 foi planejada e executada 
 
 ## 2. Cobertura por Lotes
 
-### Lote NAV-00 — Infraestrutura Repetível
+### Lote NAV-00 - Infraestrutura Repetível
 - Criado gerador automatizado e reprodutível `scripts/qa/auditoria-navegacional-v1.mjs`.
 - Manifesto JSON estruturado em `docs/produto/evidencias-auditoria-v1/manifesto-navegacional-v1.json`.
 - Screenshots sanitizados gerados e versionados em `docs/produto/screenshots-auditoria-v1/`.
 
-### Lote NAV-01 — Menu Superior (10 alvos)
+### Lote NAV-01 - Menu Superior (10 alvos)
 - Todos os 10 alvos do menu horizontal (`Logo`, `Pag. Inicial`, `Novo`, `Localizar`, `Entrada`, `Encaminhado`, `Aguardando credito`, `Concluido!`, `MENU`, `SIGN OUT`) auditados e validados.
 - Correção integrada no `layout.blade.php` para contemplar rotas não-prefixadas (`rmas.*`), assegurando a correta ativação da classe visual `.active`.
 - Correção no `v1.js` para alternância de estado visual ativo no botão `MENU`.
 
-### Lote NAV-02 — Menu de Sessão (8 alvos)
+### Lote NAV-02 - Menu de Sessão (8 alvos)
 - Todos os 8 alvos do painel de sessão (`Fornecedores`, `Fabricantes`, `Assistências`, `Clientes`, `Controle`, `Créditos`, `Relatórios`, `Usuários`) auditados e validados.
 - Ajuste no seletor `$painelSessao` para exibir e manter aberto o painel lateral `#JS-Sessao`.
 - Adição de links de navegação reversa `Voltar` nos formulários de parceiros e edição.
 
-### Lote NAV-03 — Página Inicial e Centro de Avisos (16 contadores + 10 grupos de avisos)
+### Lote NAV-03 - Página Inicial e Centro de Avisos (16 contadores + 10 grupos de avisos)
 - Validados os 16 contadores laterais da Página Inicial com links e contagens funcionais.
 - Validados os 10 grupos do Centro de Avisos com alternância expandir/recolher (`Mostrar`/`Ocultar`) e tabelas históricas de 10 e 11 colunas.
 - Validados formulário Localizar e persistência em segundo plano do autosave de anotações pessoais via endpoint `/perfil/anotacao` (corrigido return type hint em `AnotacaoPessoalController`).
 
-### Lote NAV-04 — Ciclo de Vida e Links Internos (10 alvos)
+### Lote NAV-04 - Ciclo de Vida e Links Internos (10 alvos)
 - Validação do fluxo completo de ciclo de vida de RMA: criação via `#JS-Novo`, detalhe (`/rmas/{id}`), edição (`/rmas/{id}/edit`), reversão com `Voltar`, ações de transição (`Receber`, `Encaminhar`, `Concluir`, `Reverter para Entrada`, `Arquivar`).
 - Validação de listagem de arquivados no painel administrativo `Controle` (`/rmas-controle`).
 - Telas de histórico de modificações (`/rmas-historico`) e acessos (`/historico-de-acesso`) validadas com status 200 e tabelas funcionais.
 - Painel de perfil (`/perfil`) validado com alternância de tema, alteração de senha e notas pessoais.
 - Link externo no rodapé (`http://scripting.com.br`) validado com atributos de segurança `target="_blank"` e `rel="noopener"`.
 
-### Gate NAV-05 — Fechamento e Consolidação Geral
+### Gate NAV-05 - Fechamento e Consolidação Geral
 - Suíte completa de testes backend PHP: **388 testes / 941 asserções** aprovados sem falhas.
 - Suíte completa de testes Playwright Browser: **32 testes de auditoria navegacional** aprovados tanto no Host quanto dentro do container Docker.
 - Suíte de paridade visual Fase 1 e Fase 2: **12 testes aprovados** sem divergências estruturais.

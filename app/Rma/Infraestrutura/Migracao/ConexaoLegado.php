@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\LazyCollection;
 
 /**
- * Thin wrapper sobre `DB::connection('rma_legacy')` — um método por tabela legada,
+ * Thin wrapper sobre `DB::connection('rma_legacy')` - um método por tabela legada,
  * devolvendo `LazyCollection` (evita carregar as ~56 colunas × N linhas de `bd` inteiras
  * na memória de uma vez, `cursor()` do query builder). Único ponto do migrador que sabe
- * o nome real das 8 tabelas legadas (`relatorio`, a 9ª, nunca é lida — PENDÊNCIA-3
+ * o nome real das 8 tabelas legadas (`relatorio`, a 9ª, nunca é lida - PENDÊNCIA-3
  * resolvida por omissão, opção B, ver `TabelaDeTraducao`/`RelatorioDeReconciliacao`).
  *
- * Conexão configurada como só-leitura em `config/database.php` (`rma_legacy`) — esta
+ * Conexão configurada como só-leitura em `config/database.php` (`rma_legacy`) - esta
  * classe nunca grava, só expõe `LazyCollection`/`count()` de leitura.
  */
 final class ConexaoLegado

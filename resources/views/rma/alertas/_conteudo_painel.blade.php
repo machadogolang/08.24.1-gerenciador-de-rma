@@ -1,4 +1,4 @@
-{{-- FRONT-003/UI-04 — conteúdo do Painel de Alertas compartilhado pelos temas. --}}
+{{-- FRONT-003/UI-04 - conteúdo do Painel de Alertas compartilhado pelos temas. --}}
 <div class="painel-alertas">
     <h2 class="painel-alertas-titulo">Painel de alertas</h2>
 

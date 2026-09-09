@@ -1,5 +1,5 @@
 {{--
-    CP12-05I (fase 2 V1) — tabela histórica de listar_pgarantiafornecedorexpirado.php.
+    CP12-05I (fase 2 V1) - tabela histórica de listar_pgarantiafornecedorexpirado.php.
     Colunas: ENTRADA | ORIGEM | NF C | T C | NF V | FORNECEDOR | FABRICANTE | DESCRICAO | MODELO | OS | A
     Larguras: 8% | 7% | 6% | 6% | 6% | 12% | 15% | 15% | 18% | 5% | 2%
     T C = dias desde emissão da NF de compra (sempre > 365 neste grupo). [CONFIRMADO-15.8.1]

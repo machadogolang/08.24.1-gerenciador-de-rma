@@ -1,4 +1,4 @@
-# Design — Auditoria e fechamento de fluxos Legacy × V3
+# Design - Auditoria e fechamento de fluxos Legacy × V3
 
 ## Fontes
 

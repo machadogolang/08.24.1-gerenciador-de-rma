@@ -54,9 +54,9 @@ class CriarRmaTest extends TestCase
     public function test_normalizacao_hgst_roda_na_criacao(): void
     {
         // RN-13: "fabricante == HGST" é normalizado para "Hitachi" internamente (não é
-        // o campo `origem` que vira "Hitachi" — ver `Dominio\Rma::comNormalizacaoDeGravacao`
+        // o campo `origem` que vira "Hitachi" - ver `Dominio\Rma::comNormalizacaoDeGravacao`
         // no design.md). Prova de ponta a ponta: fabricante "HGST" + origem "Hitachi"
-        // (já igual ao nome pós-normalização) colapsa para "Unknown" via RN-14 — só
+        // (já igual ao nome pós-normalização) colapsa para "Unknown" via RN-14 - só
         // acontece se a conversão HGST→Hitachi realmente rodou antes da comparação.
         $operador = User::factory()->create(['papel' => Papel::Operador]);
         $fabricante = Fabricante::factory()->create(['nome' => 'HGST']);
@@ -89,7 +89,7 @@ class CriarRmaTest extends TestCase
     }
 
     /**
-     * VIS-V1-003 (Grupo A) — `marcarestoque`/`nfcompra`/`nfcompra_emissao`/`nfvenda`/
+     * VIS-V1-003 (Grupo A) - `marcarestoque`/`nfcompra`/`nfcompra_emissao`/`nfvenda`/
      * `nfvenda_emissao` já existiam no agregado e na coluna, mas `CriarRma` descartava
      * tudo ao montar `new Rma(...)` do zero. Prova de ponta a ponta: os 5 campos
      * persistem exatamente como enviados.
@@ -120,7 +120,7 @@ class CriarRmaTest extends TestCase
     }
 
     /**
-     * Checkbox HTML ausente da requisição quando desmarcado — mesma semântica do
+     * Checkbox HTML ausente da requisição quando desmarcado - mesma semântica do
      * legado (`isset($_POST['marcarestoque'])`, `post/novo.php`).
      */
     public function test_marcarestoque_fica_falso_quando_checkbox_nao_enviado(): void
@@ -140,7 +140,7 @@ class CriarRmaTest extends TestCase
     }
 
     /**
-     * VIS-V1-003 — `pn`/`snid` promovidos de coluna histórica de preservação para
+     * VIS-V1-003 - `pn`/`snid` promovidos de coluna histórica de preservação para
      * campo de primeira classe (evidência: `menujs-top/novo.php` + `banco.oo.php::novo()`
      * do Legacy 14.6.1, ver docblock do construtor de `App\Rma\Dominio\Rma`).
      */

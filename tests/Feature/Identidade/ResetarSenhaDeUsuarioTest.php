@@ -63,7 +63,7 @@ class ResetarSenhaDeUsuarioTest extends TestCase
     }
 
     /**
-     * ARQ-003 (`INV-RMA-10`) — Supervisor não pode resetar a senha de um
+     * ARQ-003 (`INV-RMA-10`) - Supervisor não pode resetar a senha de um
      * SuperAdministrador, nem via caso de uso direto nem por URL.
      */
     public function test_supervisor_nao_pode_resetar_senha_de_superadministrador(): void
@@ -90,7 +90,7 @@ class ResetarSenhaDeUsuarioTest extends TestCase
         $this->assertTrue(Hash::check('antiga', $alvo->fresh()->password));
     }
 
-    /** ARQ-003 — SuperAdministrador continua podendo resetar senha de outro. */
+    /** ARQ-003 - SuperAdministrador continua podendo resetar senha de outro. */
     public function test_superadministrador_pode_resetar_senha_de_outro_superadministrador(): void
     {
         $ator = User::factory()->create(['papel' => Papel::SuperAdministrador]);

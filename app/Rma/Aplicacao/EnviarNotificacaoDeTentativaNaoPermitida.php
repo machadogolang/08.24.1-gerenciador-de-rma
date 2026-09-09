@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
  *
  * **Decisão de implementação (sem Mailable dedicado):** diferente de
  * `EnviarNotificacaoDeConclusao`, o `design.md`/`tasks.md` não listam um Mailable
- * específico para este caso — só o listener. O canal escolhido é o log de aplicação
+ * específico para este caso - só o listener. O canal escolhido é o log de aplicação
  * (`Log::warning`, canal padrão), registrando quem tentou e quando; é o equivalente
  * funcional auditável ao e-mail avulso do legado sem introduzir um segundo template de
  * e-mail para um evento de acesso negado (que já fica auditável de outra forma: o

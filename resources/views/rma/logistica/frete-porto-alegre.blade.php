@@ -2,10 +2,10 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <title>Frete Porto Alegre — CellSystem RMA</title>
+    <title>Frete Porto Alegre - CellSystem RMA</title>
 </head>
 <body>
-    <h1>Frete consolidado — Porto Alegre</h1>
+    <h1>Frete consolidado - Porto Alegre</h1>
 
     {{-- View mínima, sem fidelidade visual (Fase 8). RN-16, LEG-RMA-040. Cidade
     "PORTO ALEGRE" hardcoded (comportamento documentado do legado). --}}

@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * FRONT-003/UI-02C — prova semântica do contrato visual de ações nos dois temas.
+ * FRONT-003/UI-02C - prova semântica do contrato visual de ações nos dois temas.
  * A prova visual/computed style fica no Playwright (UI-02D); aqui garantimos que o
  * HTML renderizado carrega o papel certo sem mudar rotas/CSRF/método.
  */

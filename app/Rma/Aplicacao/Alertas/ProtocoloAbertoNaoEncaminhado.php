@@ -7,7 +7,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RN-04 (`LEG-RMA-021`) — RMA recebido com protocolo (junto ao fabricante/fornecedor)
+ * RN-04 (`LEG-RMA-021`) - RMA recebido com protocolo (junto ao fabricante/fornecedor)
  * aberto, ainda não encaminhado.
  */
 final class ProtocoloAbertoNaoEncaminhado

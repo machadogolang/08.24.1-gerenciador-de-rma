@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
                 ]
             );
 
-            // EVO-SAAS-001 (S3.2/S3.3) — QA local: todo usuário entra na empresa
+            // EVO-SAAS-001 (S3.2/S3.3) - QA local: todo usuário entra na empresa
             // semente com o papel atual preservado no vínculo.
             $usuario->empresas()->syncWithoutDetaching([
                 $cell->id => ['papel' => $papel, 'ativo' => true],

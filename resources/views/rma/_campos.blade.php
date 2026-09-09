@@ -4,7 +4,7 @@
 
 <label>Fabricante
     <select name="fabricante_id">
-        <option value="">—</option>
+        <option value="">-</option>
         @foreach ($fabricantes as $fabricante)
             <option value="{{ $fabricante->id }}" @selected(old('fabricante_id', $registro?->fabricanteId) == $fabricante->id)>
                 {{ $fabricante->nome }}
@@ -15,7 +15,7 @@
 
 <label>Fornecedor
     <select name="fornecedor_id">
-        <option value="">—</option>
+        <option value="">-</option>
         @foreach ($fornecedores as $fornecedor)
             <option value="{{ $fornecedor->id }}" @selected(old('fornecedor_id', $registro?->fornecedorId) == $fornecedor->id)>
                 {{ $fornecedor->nome }}

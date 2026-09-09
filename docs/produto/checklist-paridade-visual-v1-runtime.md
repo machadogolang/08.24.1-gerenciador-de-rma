@@ -1,4 +1,4 @@
-# Checklist de paridade visual/interação — TEMA V1 runtime (reabertura 2026-08-25)
+# Checklist de paridade visual/interação - TEMA V1 runtime (reabertura 2026-08-25)
 
 Última atualização: 2026-08-30 16:24 (America/Sao_Paulo).
 
@@ -19,7 +19,7 @@ substituído pela fidelidade literal do Tema V1.
 Checklist/diário: `docs/produto/plano-execucao-paridade-estrutural-v1.md`. Parecer:
 `docs/pareceres/parecer-paridade-estrutural-v1-falhas-layout.md`.
 
-## CP15 — gate final da fase 2 (concluído)
+## CP15 - gate final da fase 2 (concluído)
 
 - [x] Matriz sanitizada e inspeção dos pares Legacy×V3 em 1440×1000, 1562×1400 e
   1700×1000; gerador e medidas em `scripts/qa/paridade-v1-fase2.mjs` e
@@ -30,14 +30,14 @@ Checklist/diário: `docs/produto/plano-execucao-paridade-estrutural-v1.md`. Pare
   grupos do Centro de Avisos uniforme coberta por teste automatizado, geometrias dos
   viewports aprovadas sem divergência estrutural. Fase 2 do Tema V1 encerrada.
 
-## Auditoria Navegacional e Visual Integral do Tema V1 (Lotes NAV-00 a NAV-05 — concluída)
+## Auditoria Navegacional e Visual Integral do Tema V1 (Lotes NAV-00 a NAV-05 - concluída)
 
-- [x] Lote NAV-00 — Infraestrutura repetível: gerador `scripts/qa/auditoria-navegacional-v1.mjs`, manifesto JSON em `docs/produto/evidencias-auditoria-v1/manifesto-navegacional-v1.json`, screenshots versionados em `docs/produto/screenshots-auditoria-v1/` e suíte `tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts`.
-- [x] Lote NAV-01 — Menu superior (10 alvos auditados e aprovados): logo, Pag. Inicial, Novo inline, Localizar inline, Entrada, Encaminhado, Aguardando crédito, Concluído, botão Menu e Logout.
-- [x] Lote NAV-02 — Menu de sessão (8 alvos auditados e aprovados): Fornecedores, Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários.
-- [x] Lote NAV-03 — Página Inicial e Centro de Avisos (16 contadores laterais, 10 grupos do Centro de Avisos, formulário Localizar e autosave de anotações auditados e aprovados).
-- [x] Lote NAV-04 — Ciclo de vida e links internos (10 alvos auditados e aprovados): detalhe do RMA, edição com retorno seguro, transições de estado (receber/encaminhar/concluir/reverter/arquivar), históricos administrativos, perfil de usuário e link de rodapé.
-- [x] Gate NAV-05 — Fechamento geral aprovado: 388 testes PHPUnit (941 asserções) sem falhas, 32 testes de auditoria Playwright aprovados no host e container, build Vite verde, tabela completa de cobertura sem pendências e parecer executivo em `docs/pareceres/2026-09-04-parecer-auditoria-navegacional-visual-v1.md`.
+- [x] Lote NAV-00 - Infraestrutura repetível: gerador `scripts/qa/auditoria-navegacional-v1.mjs`, manifesto JSON em `docs/produto/evidencias-auditoria-v1/manifesto-navegacional-v1.json`, screenshots versionados em `docs/produto/screenshots-auditoria-v1/` e suíte `tests/Browser/AuditoriaNavegacionalTemaV1.spec.ts`.
+- [x] Lote NAV-01 - Menu superior (10 alvos auditados e aprovados): logo, Pag. Inicial, Novo inline, Localizar inline, Entrada, Encaminhado, Aguardando crédito, Concluído, botão Menu e Logout.
+- [x] Lote NAV-02 - Menu de sessão (8 alvos auditados e aprovados): Fornecedores, Fabricantes, Assistências, Clientes, Controle, Créditos, Relatórios e Usuários.
+- [x] Lote NAV-03 - Página Inicial e Centro de Avisos (16 contadores laterais, 10 grupos do Centro de Avisos, formulário Localizar e autosave de anotações auditados e aprovados).
+- [x] Lote NAV-04 - Ciclo de vida e links internos (10 alvos auditados e aprovados): detalhe do RMA, edição com retorno seguro, transições de estado (receber/encaminhar/concluir/reverter/arquivar), históricos administrativos, perfil de usuário e link de rodapé.
+- [x] Gate NAV-05 - Fechamento geral aprovado: 388 testes PHPUnit (941 asserções) sem falhas, 32 testes de auditoria Playwright aprovados no host e container, build Vite verde, tabela completa de cobertura sem pendências e parecer executivo em `docs/pareceres/2026-09-04-parecer-auditoria-navegacional-visual-v1.md`.
 
 
 ## Estratégia de evidência visual (prints comparativos Legado×V3)
@@ -53,17 +53,17 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   só entra aqui quando a tela em si não renderiza linha de RMA/cliente/fornecedor (ex.:
   títulos de painel, texto de ajuda, tela 403).
 - **Print do Legacy com dado real** (o ambiente local roda em `LEGACY_DB_MODE=historical`,
-  1.379 RMAs/165 clientes reais — ver `docs/produto/ambientes-locais-v2-v3.md`) →
+  1.379 RMAs/165 clientes reais - ver `docs/produto/ambientes-locais-v2-v3.md`) →
   **nunca commitado** (mesma proteção já usada por `screenshots-paridade-v1/`). Gerar
   localmente quando precisar revisitar e referenciar no achado só o comando de
   reprodução + o seletor/URL exato, não o arquivo.
 - Resetar o Legacy para `LEGACY_DB_MODE=sanitized` (`./scripts/legacy-reset.sh`) é uma
   alternativa válida para tornar um print commitável, mas **derruba o volume atual do
   banco histórico** (`docker compose down -v`) e só volta com
-  `legacy-restore-historical.sh` + o dump externo — não fazer sem perguntar antes,
+  `legacy-restore-historical.sh` + o dump externo - não fazer sem perguntar antes,
   decisão explícita do usuário nesta sessão.
 
-## VIS-V1-001 — menu superior incompleto
+## VIS-V1-001 - menu superior incompleto
 
 - ID: VIS-V1-001
 - Tela: cabeçalho, todas as páginas autenticadas do TEMA V1
@@ -72,10 +72,10 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Categoria: [x] estrutura [x] controle ausente [x] funcionalidade
 - Evidência: `docs/investigacoes-pendente/INV-RMA-BUG-LAYOUT/(Legado) Tela Inicial do Tema 14.6.1.png`, `(V3) Tela Inicial do Tema 14.6.1.png`
 - Problema: faltam 4 atalhos de navegação superior, cada um abrindo uma listagem
-  filtrada por status com colunas e regras de cor próprias (não é só um link — ver
+  filtrada por status com colunas e regras de cor próprias (não é só um link - ver
   achado funcional abaixo).
 - Fonte Legacy: `legacy-source/14.6.1/page/{entrada,encaminhados,aguardandocredito,concluidos}.php`
-  — cada um consulta `bd` filtrando por `status`, com 8-10 colunas próprias e regras de
+  - cada um consulta `bd` filtrando por `status`, com 8-10 colunas próprias e regras de
   destaque de linha (`TrInconformidade`/`TrUrgente`/`TrZebrada1`/`TrZebrada2`) baseadas em
   solução, prioridade, origem e prazo de 30 dias.
 - Fonte V3: `app/Http/Controllers/Rma/RmaController.php` (só tem `index`/busca genérica,
@@ -92,30 +92,30 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Screenshot antes: `(V3) Tela Inicial do Tema 14.6.1.png` (nesta pasta)
 - Screenshot depois: `docs/produto/screenshots-vis-v1-001/01-home-header-com-4-atalhos.png`
   (header) e `02-entrada.png`/`03-encaminhados.png`/`04-aguardando-credito.png`/
-  `05-concluidos.png` (as 4 listagens) — dados fictícios do seed de QA (`v3-reset-qa.sh`,
+  `05-concluidos.png` (as 4 listagens) - dados fictícios do seed de QA (`v3-reset-qa.sh`,
   não é banco histórico), por isso versionados (diferente de
   `screenshots-paridade-v1/`, que compara com dado real do Legacy e por isso não é
   versionado).
 - Teste: `tests/Feature/Rma/ListagensPorStatusTest.php` (6 casos: filtro por
   status/solução de cada painel, destaque RN-11 reaproveitado, presença dos 4 links no
   header)
-- Status funcional: **CORRIGIDO NESTA SESSÃO** — 4 rotas novas (`rmas.entrada`,
+- Status funcional: **CORRIGIDO NESTA SESSÃO** - 4 rotas novas (`rmas.entrada`,
   `rmas.encaminhados`, `rmas.aguardando-credito`, `rmas.concluidos`), controller
   `ListagensPorStatusController`, caso de uso `ListarRmasDoPainel`, filtro no
   repositório (`RmasEmBanco::listarPorPainel()`, novo enum de domínio
   `PainelDeStatus`), views `temas/v1/rma/{entrada,encaminhados,aguardando-credito,concluidos}.blade.php`.
   Reaproveita a mesma regra de destaque RN-11 (`Rma::classeDeAlerta()` +
-  `classe_css_de_alerta()`) já provada pelas 10 regras de alerta da Fase 5 — nenhuma
+  `classe_css_de_alerta()`) já provada pelas 10 regras de alerta da Fase 5 - nenhuma
   lógica de negócio nova. Colunas seguem `page/*.php` linha a linha, com uma omissão
   documentada: "NF R" (`nfremessa`) não tem campo equivalente no domínio de aplicação
   atual (só existe como coluna histórica do migrador, `Rma::$fillable` Fase 9, sem dono)
-  — não simulado com dado falso. Exclusivo do TEMA V1 (o header do TEMA V2 não tem esses
+  - não simulado com dado falso. Exclusivo do TEMA V1 (o header do TEMA V2 não tem esses
   atalhos, achado original), por isso o controller renderiza `temas.v1.rma.*`
   diretamente em vez de `view_do_tema()`. Suíte completa: 337 testes / 716 assertions,
-  verde. **Status visual: REABERTO** — executar CP1–CP4 do plano estrutural antes de
+  verde. **Status visual: REABERTO** - executar CP1–CP4 do plano estrutural antes de
   voltar a marcar esta superfície como equivalente.
 
-## VIS-V1-002 — "Novo" perdeu a interação inline
+## VIS-V1-002 - "Novo" perdeu a interação inline
 
 - ID: VIS-V1-002
 - Tela: header (`Novo`) + qualquer superfície onde é aberto
@@ -134,21 +134,21 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Critério de aceite: abrir "Novo" em qualquer tela do TEMA V1 mantém o conteúdo da
   tela visível abaixo do formulário expandido; submissão continua validando/persistindo
   pelo caso de uso Laravel real (`CriarRmaTest.php`), sem PHP procedural
-- Status: **[x] CORRIGIDO NESTA SESSÃO** — sem framework front-end (JS nativo, mesma
+- Status: **[x] CORRIGIDO NESTA SESSÃO** - sem framework front-end (JS nativo, mesma
   filosofia do resto do TEMA V1). Partial compartilhado
   `temas/v1/rma/_form_novo.blade.php` incluído uma vez em `temas.v1.layout` dentro de
   `#JS-Novo` (oculto por `style="display:none;"`, mesma composição de
   `inc/menuright.php`), presente em toda página do TEMA V1. `v1.js` ganhou o handler de
   `#menu-novo` (equivalente a `NovoMaximize()`): `preventDefault()` + `display:block`,
   sem navegar; `href` continua apontando para `/rmas/create` como fallback funcional
-  (sem JS, ctrl-clique, etc.). POST normal para `rmas.store` — nenhum caso de uso novo.
+  (sem JS, ctrl-clique, etc.). POST normal para `rmas.store` - nenhum caso de uso novo.
   Prova end-to-end (Playwright, clique real de browser):
-  `tests/Browser/PainelNovoInlineTemaV1.spec.ts` — URL não muda, painel fica visível,
+  `tests/Browser/PainelNovoInlineTemaV1.spec.ts` - URL não muda, painel fica visível,
   conteúdo anterior (`Aguardando credito`) continua no DOM/visível, formulário aparece
   antes de `#CONTEUDO` na ordem do DOM. Screenshot:
   `docs/produto/screenshots-vis-v1-001/11-v3-novo-inline-sobre-aguardando-credito.png`.
 
-## VIS-V1-003 — formulário "Novo RMA" estruturalmente diferente
+## VIS-V1-003 - formulário "Novo RMA" estruturalmente diferente
 
 - ID: VIS-V1-003
 - Tela: formulário de criação de RMA
@@ -162,11 +162,11 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Categoria: [x] estrutura [x] geometria [x] controle ausente [x] funcionalidade
 - Evidência: `(Legado) Funcionalidade de adicionar Novo RMA.png`, `(V3) Funcionalidade de adicionar Novo RMA.png`
 - Problema: além da geometria, há campos do domínio potencialmente ausentes do
-  formulário atual — precisa verificar coluna a coluna se já existem em `rmas` (schema)
+  formulário atual - precisa verificar coluna a coluna se já existem em `rmas` (schema)
   antes de decidir se é lacuna de apresentação ou de funcionalidade.
 - Achado rápido desta sessão (leitura do schema, `DB::table('rmas')->first()`):
   `snid`, `nfcompra`+`nfcompra_emissao`, `nfvenda`+`nfvenda_emissao`, `pn` e
-  `marcarestoque` **já existem como colunas em `rmas`** — não é lacuna de domínio, é
+  `marcarestoque` **já existem como colunas em `rmas`** - não é lacuna de domínio, é
   campo existente não exposto no formulário do TEMA V1. Precisa conferir
   `app/Http/Requests`/caso de uso de criação para saber se já aceitam esses campos ou
   se também faltam na camada de aplicação.
@@ -175,42 +175,42 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Critério de aceite: formulário reproduz a composição de 5 colunas do legado, todos os
   campos citados presentes e funcionais (persistem, aparecem no detalhe), sem simular
   campo que não persiste de verdade
-- Status: **[x] CORRIGIDO NESTA SESSÃO** — reconstrução completa em
+- Status: **[x] CORRIGIDO NESTA SESSÃO** - reconstrução completa em
   `temas/v1/rma/_form_novo.blade.php` (5 colunas / 5 linhas, mesma ordem de campos de
   `menujs-top/novo.php`; ver VIS-V1-004 abaixo para a geometria/CSS).
   **Grupo A** (`marcarestoque`/`nfcompra`/`nfcompra_emissao`/`nfvenda`/`nfvenda_emissao`)
-  — já existiam no agregado e na coluna, mas `CriarRma::criar()` descartava tudo ao
+  - já existiam no agregado e na coluna, mas `CriarRma::criar()` descartava tudo ao
   montar `new Rma(...)` do zero; corrigido verticalmente: `RmaController::validarDados()`
   → `CriarRma` → `Rma` (construtor) → `RmasEmBanco` (já mapeava) → formulário V1 →
   detalhe V1 (`show.blade.php`) → `tests/Feature/Rma/CriarRmaTest.php` (3 casos novos:
-  persistência dos 5 campos, `marcarestoque=false` quando checkbox não enviado —
+  persistência dos 5 campos, `marcarestoque=false` quando checkbox não enviado -
   semântica de checkbox HTML, mesmo comportamento do legado). De brinde: achado e
   corrigido um bug pré-existente em `MarcarCreditoDisponivel` (reconstruía o agregado
-  campo a campo em vez de `comAlteracoes()`, o mesmo anti-padrão que motivou ARQ-001 —
+  campo a campo em vez de `comAlteracoes()`, o mesmo anti-padrão que motivou ARQ-001 -
   zeraria `pn`/`snid` silenciosamente; teste de regressão em
   `MarcarCreditoDisponivelTest`).
-  **PN/SNID** — investigação concluída (não ficou pendência): confirmado em runtime que
+  **PN/SNID** - investigação concluída (não ficou pendência): confirmado em runtime que
   são inputs reais de `menujs-top/novo.php` (linhas 51-52/105-106), gravados por
   `banco.oo.php::novo()` na criação; participam da assinatura de `banco.oo.php::salvar()`
-  (edição), mas essa função é **código morto** — nenhuma página do legado a chama, então
+  (edição), mas essa função é **código morto** - nenhuma página do legado a chama, então
   não são editáveis depois na prática; não aparecem em `detalhes.php` nem em nenhuma
   busca/regra de negócio. Decisão registrada: promovidos a campo de primeira classe do
   agregado (`App\Rma\Dominio\Rma`, docblock do construtor), expostos no formulário de
   criação e no detalhe do TEMA V1 (`show.blade.php`), **não expostos no formulário de
-  edição** (mesmo comportamento do legado — write-once). Teste:
+  edição** (mesmo comportamento do legado - write-once). Teste:
   `test_pn_e_snid_persistem_na_criacao`.
-  **Campos V3 extras classificados** — `Fornecedor` (`fornecedor_id`) **NÃO** existe em
+  **Campos V3 extras classificados** - `Fornecedor` (`fornecedor_id`) **NÃO** existe em
   `menujs-top/novo.php`; é campo que só o domínio moderno adicionou. Removido da
   reconstrução V1 (continua existindo normalmente em `_campos.blade.php`, usado pela
   Edição e pelo TEMA V2). `Fabricante` mantido como `<select fabricante_id>` (FK) em vez
-  do `<input list>` de texto livre do legado — classificado como modernização já
+  do `<input list>` de texto livre do legado - classificado como modernização já
   existente do domínio (não uma lacuna desta correção: reverter para texto livre exigiria
   um caso de uso de resolução por nome tipo `EncontrarOuCriarCliente`, que não existe
   hoje para Fabricante). Autocomplete via `<datalist>` de Descrição/Origem/Modelo/Empresa
   não reproduzido (perda de conveniência de digitação, sem impacto em estrutura/dado
-  persistido — fora do critério de aceite).
+  persistido - fora do critério de aceite).
 
-## VIS-V1-004 — CSS do "Novo RMA" não corresponde ao original
+## VIS-V1-004 - CSS do "Novo RMA" não corresponde ao original
 
 - ID: VIS-V1-004
 - Tela: formulário de criação de RMA (mesma superfície de VIS-V1-003)
@@ -219,7 +219,7 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   .formButtonEnviarNovo/.novo_defeito/.formInputObservacao`
 - V3: `.tablenovo` generalizada para `width:100%`, sem os seletores específicos
 - Categoria: [x] geometria [x] tipografia [x] cor
-- Status: **[x] CORRIGIDO NESTA SESSÃO** — valores reais de `pattern/14.6.1.css`
+- Status: **[x] CORRIGIDO NESTA SESSÃO** - valores reais de `pattern/14.6.1.css`
   portados para `resources/sass/temas/v1.scss`: `.tablenovo` (700px, não `width:100%`),
   `.novo_formInput`/`.novo_formInputDATE`/`.novo_formInputSmall` (22px altura, cor
   `#C3FF00`), `.novo_defeito`, `.formInputObservacao`, `.formButtonEnviarNovo`,
@@ -227,7 +227,7 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   desta correção, apesar de já usada por `VIS-V1-001`/`VIS-V1-010`). Nenhum seletor
   generalizado para `width:100%` onde o legado tem geometria própria.
 
-## VIS-V1-005 — Quadro de Anotações com botão "Salvar anotação" que não existia
+## VIS-V1-005 - Quadro de Anotações com botão "Salvar anotação" que não existia
 
 - ID: VIS-V1-005
 - Tela: Home (`Pag. Inicial`) e listagem `/rmas`
@@ -235,10 +235,10 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   permanente); sidebar ~280px
 - V3: textarea com botão `[ Salvar anotação ]` sempre visível
 - Categoria: [x] comportamento [x] estrutura
-- Status: **investigado nesta sessão, não corrigido** — ver nota no rodapé deste
+- Status: **investigado nesta sessão, não corrigido** - ver nota no rodapé deste
   documento (achado de implementação atual).
 
-## VIS-V1-006 — Home/Localizar com composição diferente
+## VIS-V1-006 - Home/Localizar com composição diferente
 
 - ID: VIS-V1-006
 - Tela: `/rmas` (Home/Localizar)
@@ -250,31 +250,31 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Achado confirmado nesta sessão (runtime real, ver `docs/qa/roteiro-paridade-funcional.md`
   M-03): a busca da V3 tem 3 tipos reais (`texto`/`serial`/`nota_fiscal`, todos
   funcionando), mas falta o segundo seletor "solução" (`QUALQUER UMA SOLUCAO` no
-  legado) e o combo "TODOS OS CAMPOS" — no legado a busca é campo+solução combinados,
+  legado) e o combo "TODOS OS CAMPOS" - no legado a busca é campo+solução combinados,
   na V3 é só um tipo por vez.
-- Status: **NÃO CORRIGIDO NESTA SESSÃO** — registrado para a próxima sessão.
+- Status: **NÃO CORRIGIDO NESTA SESSÃO** - registrado para a próxima sessão.
 
-## VIS-V1-007 — títulos `<h1>` que não existiam na composição original
+## VIS-V1-007 - títulos `<h1>` que não existiam na composição original
 
 - ID: VIS-V1-007
 - Tela: várias (ex.: "Novo RMA" acima do formulário)
 - Legacy: sem heading `<h1>` padronizado nas superfícies auditadas
 - V3: `<h1 class="titulo-v1">` injetado
 - Categoria: [x] estrutura [x] tipografia
-- Status: **NÃO AUDITADO TELA A TELA NESTA SESSÃO** — precisa passar por cada view do
+- Status: **NÃO AUDITADO TELA A TELA NESTA SESSÃO** - precisa passar por cada view do
   TEMA V1 conferindo se o legado tinha heading equivalente; registrado para a próxima
   sessão. **Impacto pontual corrigido nesta sessão**: a tela `/rmas/create`
   (`VIS-V1-002`) tinha `<h1 class="titulo-v1">Novo RMA</h1>` acima do painel, mas
   `menujs-top/novo.php` começa pelo ícone/texto próprios (`novoIconTitleTop`/
   `title-comicone`), sem H1. `temas.v1.layout` ganhou um utilitário `.sr-only` (sem
-  fonte no legado, utilitário de acessibilidade V3) aplicado só nessa rota — o H1
+  fonte no legado, utilitário de acessibilidade V3) aplicado só nessa rota - o H1
   continua no DOM (semântica/acessibilidade preservada), só não aparece visualmente.
   Demais telas do TEMA V1 continuam com o H1 visível (não auditadas, fora de escopo
   desta correção pontual). Teste: `PainelNovoTemaV1Test::test_titulo_novo_rma_fica_
   visualmente_oculto_mas_presente_no_dom` +
   `test_titulo_continua_visivel_nas_demais_paginas`.
 
-## VIS-V1-008 — MENU administrativo incompleto
+## VIS-V1-008 - MENU administrativo incompleto
 
 - ID: VIS-V1-008
 - Tela: dropdown `MENU`, todas as páginas autenticadas do TEMA V1
@@ -285,42 +285,42 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Categoria: [x] controle ausente
 - Achado confirmado nesta sessão: as rotas de `Controle`(histórico), `Créditos` e
   `Relatórios` **já existem** no V3 (`rmas.historico.index`, `rmas.credito.index`,
-  `rmas.relatorios.{rcd,rpec,rmpe}`, `routes/web.php:80-96`) — não é lacuna funcional,
+  `rmas.relatorios.{rcd,rpec,rmpe}`, `routes/web.php:80-96`) - não é lacuna funcional,
   só faltavam os links no MENU do TEMA V1.
 - Classificação:
   - `Controle` → **MANTER**, aponta para `rmas.historico.index`
   - `Créditos` → **MANTER**, aponta para `rmas.credito.index`
   - `Relatórios` → **MANTER**, aponta para `rmas.relatorios.rcd` (RCD como entrada;
     RPEC/RMPE ficam dentro da própria tela de relatórios, como já é a composição V3)
-  - `Trocar p/ 15.8.1` → **NÃO RECONSTRUIR** — decisão explícita: a arquitetura V3 não
+  - `Trocar p/ 15.8.1` → **NÃO RECONSTRUIR** - decisão explícita: a arquitetura V3 não
     tem um "outro tema" 15.8.1 irmão navegável por link cru como o legado; a troca de
     tema já existe por outro mecanismo (`/perfil`, "Alternar tema"), documentado em
     `docs/qa/roteiro-paridade-funcional.md` M-01.
-- Status: **CORRIGIDO NESTA SESSÃO** — ver commit.
+- Status: **CORRIGIDO NESTA SESSÃO** - ver commit.
 - **Refinamento aberto nesta sessão (auditoria de cobertura, ver `VIS-V1-010`
   abaixo): a classificação `Controle` → MANTER/`rmas.historico.index` está
   ERRADA.** Esse Controller reproduz o painel "Controle" do **V2** legado (logs de
   modificação/autenticação, `15.8.1/page/controle.php`), não o do **V1** (7 ações
   administrativas pontuais: adicionar representante, arquivar RMA, deletar RMA, deletar
-  usuário, ajuda, listar arquivados, mudar senha — `14.6.1/menujs-right/controle.php`).
+  usuário, ajuda, listar arquivados, mudar senha - `14.6.1/menujs-right/controle.php`).
   O link do MENU do TEMA V1 continua presente (não regride F10-V1-03), mas aponta para
-  a tela errada. Não corrigido ainda — ver `VIS-V1-010/011/012/013`.
+  a tela errada. Não corrigido ainda - ver `VIS-V1-010/011/012/013`.
 
-## VIS-V1-009 — Tela de detalhe do parceiro (com RMAs associados) ausente
+## VIS-V1-009 - Tela de detalhe do parceiro (com RMAs associados) ausente
 
 - ID: VIS-V1-009
 - Tela: detalhe de fornecedor/fabricante/cliente/assistência técnica/representante
 - Legacy: `legacy-source/14.6.1/page/{assistencia,assistencia_tecnica,cliente,fabricante,fornecedor}.php`
-  — `SELECT * FROM <tabela> WHERE id=...` (DDD, telefone, frete, e-mail, localidade, UF,
+  - `SELECT * FROM <tabela> WHERE id=...` (DDD, telefone, frete, e-mail, localidade, UF,
   CEP, CFOP, site, cidade, logradouro, bairro, complemento, observação) **mais**
   `SELECT * FROM bd WHERE destinatario='...'`/`cliente='...'` (RMAs associados a esse
   parceiro). Confirmado também no V2 legado:
   `legacy-source/15.8.1/subp/ver_{assistencia_tecnica,autorizada,cliente,fabricante,fornecedor}.php`
-- V3: `routes/web.php` registra os 4 resources de parceiro com `->except(['show'])` —
+- V3: `routes/web.php` registra os 4 resources de parceiro com `->except(['show'])` -
   nenhuma rota de detalhe para nenhum dos 4 tipos
 - Categoria: [x] controle ausente [x] funcionalidade
 - Evidência: `docs/produto/screenshots-vis-v1-001/09-v3-fornecedores-sem-detalhe.png`
-  (commitado — só mostra Editar/Remover, sem "Ver"); lado Legacy tem dado real de
+  (commitado - só mostra Editar/Remover, sem "Ver"); lado Legacy tem dado real de
   parceiro/RMA, reproduzir localmente (login `lab@localhost`/`rma-lab-2026` em
   `http://localhost:8094/14.6.1/`, MENU → Fornecedores → clicar num nome)
 - Problema: sem essa tela não há como ver o histórico de RMAs de um parceiro específico
@@ -329,14 +329,14 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Fontes V3: `routes/web.php` (resources `parceiros/*`),
   `app/Http/Controllers/Parceiros/*Controller.php`
 - Já rastreado em `docs/produto/matriz-paridade-temas-v1-v2-v3.md` como
-  `PAR-PARCEIRO-001` — este achado formaliza a mesma lacuna no formato do checklist
+  `PAR-PARCEIRO-001` - este achado formaliza a mesma lacuna no formato do checklist
   visual, com os arquivos-fonte concretos.
 - Critério de aceite: rota `GET` de detalhe para os 4 tipos de parceiro, view com todos
   os campos do domínio + lista de RMAs relacionados (reaproveitando `BuscarRmas` ou
   consulta equivalente, sem duplicar regra de negócio)
-- Status: **[ ] pendente** — já tinha tarefa aberta (`PAR-PARCEIRO-001`)
+- Status: **[ ] pendente** - já tinha tarefa aberta (`PAR-PARCEIRO-001`)
 
-## VIS-V1-010 — Refinamento de VIS-V1-008: "Controle" do V1 foi mapeado para a tela errada
+## VIS-V1-010 - Refinamento de VIS-V1-008: "Controle" do V1 foi mapeado para a tela errada
 
 - ID: VIS-V1-010
 - Tela: item "Controle" do MENU, TEMA V1
@@ -346,29 +346,29 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   representante, arquivar RMA por número, deletar RMA por número, deletar usuário por
   e-mail, texto de ajuda do procedimento, listar RMAs arquivados, mudar senha
 - V3: mapeado para `rmas.historico.index` (`HistoricoDeModificacaoController`), cujo
-  próprio docblock cita `subp/logs_de_modificacao.php` — tela do **V2** legado, não do
+  próprio docblock cita `subp/logs_de_modificacao.php` - tela do **V2** legado, não do
   painel "Controle" do V1. O "Controle" do V2 (`15.8.1/page/controle.php` +
-  `inc/menu_controle.php`) esse sim inclui logs — mapeamento correto só ali.
+  `inc/menu_controle.php`) esse sim inclui logs - mapeamento correto só ali.
 - Categoria: [x] funcionalidade [x] estrutura
 - Evidência: `docs/produto/screenshots-vis-v1-001/06-legacy-menu-controle-v1-colapsado.png`
-  e `07-legacy-menu-controle-v1-ajuda-expandida.png` (Legacy, painel real — commitados,
+  e `07-legacy-menu-controle-v1-ajuda-expandida.png` (Legacy, painel real - commitados,
   sem dado de RMA/cliente, só títulos de ação e texto estático) ×
   `08-v3-controle-aponta-para-historico-nao-acoes.png` (V3, "Histórico de modificações
-  de RMA" — tela diferente)
+  de RMA" - tela diferente)
 - Fontes: `legacy-source/14.6.1/page/controle.php`,
   `legacy-source/14.6.1/menujs-right/controle.php`,
   `legacy-source/15.8.1/page/controle.php`, `legacy-source/15.8.1/inc/menu_controle.php`,
   `app/Http/Controllers/Rma/HistoricoDeModificacaoController.php`
-- Critério de aceite: reclassificar `VIS-V1-008` — para o TEMA V1, "Controle" deveria
+- Critério de aceite: reclassificar `VIS-V1-008` - para o TEMA V1, "Controle" deveria
   apontar para uma composição própria com as ações do painel (arquivar/mudar senha já
   têm rota; faltam `VIS-V1-011/012/013`); `rmas.historico.index` continua correto como
   "Logs de modificação" do V2, só não é o "Controle" do V1
-- Status: **[x] CORRIGIDO NESTA SESSÃO** — novo `ControlePainelController`
+- Status: **[x] CORRIGIDO NESTA SESSÃO** - novo `ControlePainelController`
   (`app/Http/Controllers/Rma/ControlePainelController.php`), rota `GET /rmas-controle`
   (`rmas.controle.index`), view `temas/v1/rma/controle.blade.php`. MENU do TEMA V1
   ("Controle") agora aponta para essa rota; `rmas.historico.index`
   (`HistoricoDeModificacaoController`) não foi tocado e continua acessível pela própria
-  URL — é o "Controle" do TEMA V2, achado documentado acima, não removido. Composição
+  URL - é o "Controle" do TEMA V2, achado documentado acima, não removido. Composição
   reproduz as 7 ações do painel real (`14.6.1/page/controle.php`), na mesma ordem,
   reaproveitando ações V3 já existentes (nenhum caso de uso novo):
   - ADICIONAR REPRESENTANTE → 3 forms (Fornecedor/Fabricante/Assistência), cada um
@@ -388,33 +388,33 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
     `rmas.arquivar`/`rmas.reverter`, sem decisão de produto nova), mesmas colunas do
     legado (CHAVE/FABRICANTE/DESCRICAO/MODELO/S-N/OS).
   - MUDAR SENHA → reaproveita `identidade.perfil.senha.update` (exige senha atual +
-    confirmação); o legado só pedia "NOVA SENHA" sem senha atual — decisão deliberada de
+    confirmação); o legado só pedia "NOVA SENHA" sem senha atual - decisão deliberada de
     manter a rota V3 mais segura já existente em vez de reintroduzir o form inseguro
     (não é lacuna, é reaproveitamento com o contrato de segurança que já existia).
   - CSS: classes reais de `pattern/14.6.1.css` adicionadas a `resources/sass/temas/v1.scss`
     (`.formTitlePanel`, `.formLabelPanel`, `.trcontrole1`, `.tdcontrole1`); painéis usam
     `<details>/<summary>` nativos (substituem `expande()`/`minimize()` do legado sem JS
     novo).
-  - Teste: `tests/Feature/Rma/ControlePainelTest.php` (8 casos — autorização
+  - Teste: `tests/Feature/Rma/ControlePainelTest.php` (8 casos - autorização
     Supervisor/Operador/visitante, listagem de arquivados filtrada, "nenhum item
     arquivado", arquivar por número via rota reaproveitada, MENU aponta para a rota
     nova e não mais para `rmas.historico.index`, `rmas.historico.index` continua
     acessível pela própria URL).
   - Screenshot depois: `docs/produto/screenshots-vis-v1-001/10-v3-controle-painel-corrigido.png`
-    (V3, todos os painéis expandidos, dado fictício do seed de QA — commitável, mesma
+    (V3, todos os painéis expandidos, dado fictício do seed de QA - commitável, mesma
     regra dos demais prints desta pasta). Comparar com os já commitados
     `06-legacy-menu-controle-v1-colapsado.png`/`07-legacy-menu-controle-v1-ajuda-expandida.png`
     (Legacy).
 
-## VIS-V1-011 — Ação "Deletar RMA" (hard delete) ausente na V3
+## VIS-V1-011 - Ação "Deletar RMA" (hard delete) ausente na V3
 
 - ID: VIS-V1-011
 - Tela/ação: painel Controle do V1 → "DELETAR UMA SOLICITACAO DE RMA"
 - Legacy: `legacy-source/14.6.1/page/controle.php` (form NUMERO + botão DELETAR),
   executado por `legacy-source/14.6.1/banco.oo.php:441`
-  (`DELETE FROM bd WHERE numero = '$numero'`). Só no V1 — `15.8.1/banco.php` não tem
+  (`DELETE FROM bd WHERE numero = '$numero'`). Só no V1 - `15.8.1/banco.php` não tem
   `DELETE FROM bd` equivalente.
-- V3: `routes/web.php` — `Route::resource('rmas', RmaController::class)->except(['destroy'])`,
+- V3: `routes/web.php` - `Route::resource('rmas', RmaController::class)->except(['destroy'])`,
   sem decisão documentada explicando a exclusão (diferente do caso de crédito, que tem
   `LEG-RMA-048` documentado no próprio Controller)
 - Categoria: [x] funcionalidade [x] controle ausente
@@ -425,13 +425,13 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   omissão silenciosa, não decisão registrada.
 - Critério de aceite: OU implementar a ação com o mesmo contrato do legado, OU registrar
   formalmente a decisão de não reconstruir (mesmo padrão de `LEG-RMA-016`/`034`)
-- Status: **[ ] pendente — requer decisão de produto antes de implementar ou descartar**
+- Status: **[ ] pendente - requer decisão de produto antes de implementar ou descartar**
 
-## VIS-V1-012 — Ação "Deletar usuário" (hard delete) ausente na V3
+## VIS-V1-012 - Ação "Deletar usuário" (hard delete) ausente na V3
 
 - ID: VIS-V1-012
 - Tela/ação: painel Controle do V1 → "DELETAR UM USUARIO"; V2 → `subp/apagar_usuario.php`
-- Legacy: confirmado nos dois temas —
+- Legacy: confirmado nos dois temas -
   `legacy-source/14.6.1/page/controle.php` (form + `banco.oo.php:434
   DELETE FROM usuario WHERE email = '$email'`) e
   `legacy-source/15.8.1/subp/apagar_usuario.php`
@@ -446,7 +446,7 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   documentada para substituir por desativação/soft-delete
 - Status: **[ ] pendente**
 
-## VIS-V1-013 — Listagem "RMAs arquivados" sem equivalente na V3
+## VIS-V1-013 - Listagem "RMAs arquivados" sem equivalente na V3
 
 - ID: VIS-V1-013
 - Tela: painel Controle do V1 → item #8 "LISTAR SOLICITACOES DE RMA ARQUIVADAS"
@@ -461,26 +461,26 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   (título "LISTAR SOLICITACOES DE RMA ARQUIVADAS" visível no painel)
 - Critério de aceite: listagem (ou filtro de busca por status) para `Status::Arquivado`,
   acessível a partir de uma tela real
-- Status: **[x] CORRIGIDO NESTA SESSÃO** — implementado dentro do painel Controle
+- Status: **[x] CORRIGIDO NESTA SESSÃO** - implementado dentro do painel Controle
   (`VIS-V1-010`, `ControlePainelController::index`), seção "LISTAR SOLICITACOES DE RMA
   ARQUIVADAS", mesmas colunas do legado. Ver detalhes e teste em `VIS-V1-010` acima.
 
-## VIS-V1-014 — Tela de ajuda/procedimento estática ausente na V3
+## VIS-V1-014 - Tela de ajuda/procedimento estática ausente na V3
 
 - ID: VIS-V1-014
 - Tela: "help" (painel de ajuda do V1)
-- Legacy: `legacy-source/14.6.1/page/help.php` — texto estático explicando o fluxo
+- Legacy: `legacy-source/14.6.1/page/help.php` - texto estático explicando o fluxo
   Entrada → Recebido → Encaminhado → Concluído
 - V3: nenhuma view/rota com conteúdo equivalente
 - Categoria: [x] controle ausente
 - Evidência: `docs/produto/screenshots-vis-v1-001/07-legacy-menu-controle-v1-ajuda-expandida.png`
-  (texto completo do painel de ajuda, commitado — conteúdo estático, sem dado real)
+  (texto completo do painel de ajuda, commitado - conteúdo estático, sem dado real)
 - Problema: conteúdo puramente informativo, baixa prioridade
 - Critério de aceite: página de ajuda simples reproduzindo o texto, OU decisão de
   produto documentada de descartar
 - Status: **[ ] pendente, prioridade baixa**
 
-## VIS-V2-001 — Aba/listagem "Recebido" ausente na V3 (TEMA V2 legado)
+## VIS-V2-001 - Aba/listagem "Recebido" ausente na V3 (TEMA V2 legado)
 
 - ID: VIS-V2-001
 - Tela: aba de navegação "Recebido" do TEMA V2 legado
@@ -490,13 +490,13 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
   de destaque (`TrInconformidade`/`TrUrgente`) já usadas nas outras 4 listagens de
   `VIS-V1-001`
 - V3: `Status::Recebido` existe no domínio e a ação `rmas.receber` transiciona um RMA
-  para esse status, mas nenhuma rota lista "RMAs com status Recebido" — nem mesmo a
+  para esse status, mas nenhuma rota lista "RMAs com status Recebido" - nem mesmo a
   `ListagensPorStatusController` criada nesta sessão para `VIS-V1-001` (que replica só
   as 4 abas do V1; o V1 legado nunca teve aba "Recebido" própria, só o V2 tem)
 - Categoria: [x] controle ausente [x] funcionalidade [x] estrutura
 - Evidência: `legacy-source/15.8.1/page/recebido.php` linhas 1-30 (query via
   `listar_recebidos()`, mesmas classes CSS de destaque das outras listagens); print
-  Legacy não gerado (mostraria RMAs reais) — reproduzir localmente em
+  Legacy não gerado (mostraria RMAs reais) - reproduzir localmente em
   `http://localhost:8094/15.8.1/`
 - Problema: MESMA classe de lacuna do `VIS-V1-001` (tela do legado totalmente ausente na
   V3, não malfeita), só que para um status que só tem aba dedicada no TEMA V2 do legado.
@@ -509,7 +509,7 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 - Critério de aceite: rota `GET /rmas-recebidos` (ou nome equivalente) com listagem e
   regras de destaque próprias, seguindo o mesmo padrão de `ListagensPorStatusController`;
   decidir em qual(is) tema(s) da V3 ela aparece
-- Status: **[ ] pendente — sinalizado explicitamente para não fechar o gate visual sem
+- Status: **[ ] pendente - sinalizado explicitamente para não fechar o gate visual sem
   esta quinta listagem**
 
 ---
@@ -519,7 +519,7 @@ onde cada print pode viver, decidida com o usuário nesta sessão:
 Investigado nesta sessão: `app/Http/Controllers/QuadroDeAnotacoesController.php` (ou
 equivalente) e a view do TEMA V1 mostram um botão de submit explícito. Restaurar o
 salvamento "pelo comportamento do campo" do legado (sem botão, provavelmente
-`onblur`/debounce) é uma mudança de mecanismo de persistência, não só de CSS — a própria
+`onblur`/debounce) é uma mudança de mecanismo de persistência, não só de CSS - a própria
 investigação pede autosave seguro (debounce, feedback discreto, proteção contra chamada
 concorrente, tratamento de erro) em vez de reproduzir o JS antigo inseguro. Isso é
 trabalho de funcionalidade nova (mesmo que pequeno), não de reclassificação de link, e
@@ -530,17 +530,17 @@ por isso fica registrado para a próxima sessão junto de VIS-V1-001/002/003/004
 | ID | Status |
 |---|---|
 | VIS-V1-001 | **Corrigido e testado nesta sessão** |
-| VIS-V1-002 | **Corrigido e testado nesta sessão** — painel Novo inline, JS nativo |
-| VIS-V1-003 | **Corrigido e testado nesta sessão** — Grupo A + PN/SNID promovidos, Fornecedor removido |
-| VIS-V1-004 | **Corrigido nesta sessão** — geometria/CSS reais de `pattern/14.6.1.css` |
-| VIS-V1-005 | Registrado, não corrigido — mudança de mecanismo de persistência |
-| VIS-V1-006 | Registrado, não corrigido — falta segundo seletor "solução" |
-| VIS-V1-007 | Não auditado tela a tela — impacto pontual na tela Novo corrigido |
-| VIS-V1-008 | **Corrigido nesta sessão anterior — refinamento em `VIS-V1-010`** |
-| VIS-V1-009 | Pendente — 5 telas de detalhe de parceiro ausentes (`PAR-PARCEIRO-001`) |
-| VIS-V1-010 | **Corrigido e testado nesta sessão** — painel Controle V1 próprio, link reclassificado |
-| VIS-V1-011 | Pendente — ação "Deletar RMA" ausente, requer decisão de produto (mantido `[ ]` de propósito) |
-| VIS-V1-012 | Pendente — ação "Deletar usuário" ausente (V1 e V2) (mantido `[ ]` de propósito) |
-| VIS-V1-013 | **Corrigido nesta sessão** — implementado dentro do painel Controle V1 |
-| VIS-V1-014 | Pendente — tela de ajuda estática ausente, prioridade baixa |
-| VIS-V2-001 | Pendente — listagem "Recebido" (TEMA V2 legado) totalmente ausente |
+| VIS-V1-002 | **Corrigido e testado nesta sessão** - painel Novo inline, JS nativo |
+| VIS-V1-003 | **Corrigido e testado nesta sessão** - Grupo A + PN/SNID promovidos, Fornecedor removido |
+| VIS-V1-004 | **Corrigido nesta sessão** - geometria/CSS reais de `pattern/14.6.1.css` |
+| VIS-V1-005 | Registrado, não corrigido - mudança de mecanismo de persistência |
+| VIS-V1-006 | Registrado, não corrigido - falta segundo seletor "solução" |
+| VIS-V1-007 | Não auditado tela a tela - impacto pontual na tela Novo corrigido |
+| VIS-V1-008 | **Corrigido nesta sessão anterior - refinamento em `VIS-V1-010`** |
+| VIS-V1-009 | Pendente - 5 telas de detalhe de parceiro ausentes (`PAR-PARCEIRO-001`) |
+| VIS-V1-010 | **Corrigido e testado nesta sessão** - painel Controle V1 próprio, link reclassificado |
+| VIS-V1-011 | Pendente - ação "Deletar RMA" ausente, requer decisão de produto (mantido `[ ]` de propósito) |
+| VIS-V1-012 | Pendente - ação "Deletar usuário" ausente (V1 e V2) (mantido `[ ]` de propósito) |
+| VIS-V1-013 | **Corrigido nesta sessão** - implementado dentro do painel Controle V1 |
+| VIS-V1-014 | Pendente - tela de ajuda estática ausente, prioridade baixa |
+| VIS-V2-001 | Pendente - listagem "Recebido" (TEMA V2 legado) totalmente ausente |

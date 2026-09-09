@@ -1,5 +1,5 @@
 {{--
-    CP12-05H (fase 2 V1) — tabela histórica de listar_nfpendentelancar.php.
+    CP12-05H (fase 2 V1) - tabela histórica de listar_nfpendentelancar.php.
     Colunas: CONCLUIDO | T | ORIGEM | NF C | NF V | FORNECEDOR | FABRICANTE | DESCRICAO | MODELO | OS | A
     Larguras: 8% | 4% | 7% | 6% | 6% | 12% | 15% | 15% | 20% | 5% | 2%
     T = dias desde concluído (concluido_em). [CONFIRMADO-15.8.1]

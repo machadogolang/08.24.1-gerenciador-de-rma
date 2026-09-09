@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Fluxo único de crédito (`LEG-RMA-036`, ver `proposal.md` — reconstrói só a intenção
+ * Fluxo único de crédito (`LEG-RMA-036`, ver `proposal.md` - reconstrói só a intenção
  * do módulo de créditos quebrado em TEMA V2, `LEG-RMA-048`, não as 3 sub-rotas
  * `pendentes/usados/disponíveis`). View mínima, sem fidelidade visual (Fase 8).
  */

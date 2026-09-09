@@ -9,12 +9,12 @@ use App\Http\Controllers\Rma\RmaController;
 use Illuminate\Support\Facades\Route;
 
 /**
- * Fase 8 — rotas do TEMA V1, prefixo `/v1`. Mesmos Controllers de `routes/web.php`
- * (nenhuma lógica duplicada) — `tema_forcado` (lido por `ResolverTemaAtivo`) faz
+ * Fase 8 - rotas do TEMA V1, prefixo `/v1`. Mesmos Controllers de `routes/web.php`
+ * (nenhuma lógica duplicada) - `tema_forcado` (lido por `ResolverTemaAtivo`) faz
  * `view_do_tema()` sempre resolver `temas.v1.*`, independente de `tema_preferido` do
  * usuário. Usadas por QA visual (comparação com LEGACY-RUNTIME `:8094`) e pelos testes
  * de smoke `RenderizaTemaV1Test`. O fluxo real de navegação pós-login (rota sem
- * prefixo) já resolve o tema certo sozinho via `tema_preferido` — estas rotas
+ * prefixo) já resolve o tema certo sozinho via `tema_preferido` - estas rotas
  * existem para permitir visitar o tema explicitamente.
  */
 Route::prefix('v1')

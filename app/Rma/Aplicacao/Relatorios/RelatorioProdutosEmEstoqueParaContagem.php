@@ -7,9 +7,9 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RPEC (`LEG-RMA-038`) — produtos marcados para contagem de estoque
+ * RPEC (`LEG-RMA-038`) - produtos marcados para contagem de estoque
  * (`marcarestoque=true`). O status é filtro configurável pelo usuário (não hardcoded
- * como no legado) — `$status` opcional restringe a consulta quando informado.
+ * como no legado) - `$status` opcional restringe a consulta quando informado.
  */
 final class RelatorioProdutosEmEstoqueParaContagem
 {

@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(RepositorioDeRmas::class, RmasEmBanco::class);
 
-        // EVO-SAAS-001 (S4) — contexto de tenant por request, preenchido pelo
+        // EVO-SAAS-001 (S4) - contexto de tenant por request, preenchido pelo
         // middleware `ResolverTenantAtivo`.
         $this->app->singleton(ContextoDeTenant::class);
     }
@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
-     * Fase 7 (Auditoria) — projeto sem `EventServiceProvider` explícito (Laravel 13,
+     * Fase 7 (Auditoria) - projeto sem `EventServiceProvider` explícito (Laravel 13,
      * event discovery automático não se aplica a listeners com `handle(object $evento)`
      * genérico como `RegistrarModificacaoDeRma`), listeners registrados via
      * `Event::listen()` aqui.
@@ -63,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(RmaConcluido::class, EnviarNotificacaoDeConclusao::class);
         Event::listen(TentativaDeGravacaoNaoPermitida::class, EnviarNotificacaoDeTentativaNaoPermitida::class);
 
-        // VIS-V1-002 — `temas.v1.layout` inclui o painel "Novo" (`#JS-Novo`) em toda
+        // VIS-V1-002 - `temas.v1.layout` inclui o painel "Novo" (`#JS-Novo`) em toda
         // página do TEMA V1, não só na rota de criação; o `<select fabricante_id>`
         // precisa da lista independente de qual controller renderizou a página atual.
         // Mesmo comportamento do legado: `menujs-top/novo.php` roda
@@ -73,7 +73,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('fabricantes', Fabricante::query()->orderBy('nome')->get());
         });
 
-        // CP19 (paridade visual V2) — `inc/rightmenu.php` é incluído por `index.php`
+        // CP19 (paridade visual V2) - `inc/rightmenu.php` é incluído por `index.php`
         // em toda página do TEMA V2, não só numa rota específica (mesmo raciocínio do
         // composer acima para o painel "Novo" do TEMA V1).
         View::composer('temas.v2.layout', function ($view) {

@@ -1,8 +1,8 @@
-{{-- CP23 (paridade visual V2) — fonte real
+{{-- CP23 (paridade visual V2) - fonte real
 `legacy-source/15.8.1/page/encaminhado.php`. Larguras: DATA 8%, ORIGEM 7%, T 4%,
 NF C 5%, FABRICANTE 14%, DESCRICAO 13%, MODELO 16%, NF R 5%, PROTOCOLO 10%,
 DESTINATARIO 14%, OS 4%, A 2%. NF R (`nfremessa`) sem campo equivalente no domínio
-atual — mesma decisão já registrada para o TEMA V1 (`encaminhados.blade.php`), célula
+atual - mesma decisão já registrada para o TEMA V1 (`encaminhados.blade.php`), célula
 vazia, geometria preservada. --}}
 @if (count($registros) === 0)
     <p style="text-align:left;padding:5px;">Nenhum produto</p>

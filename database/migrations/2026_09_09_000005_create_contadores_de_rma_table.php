@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * EVO-SAAS-001 (S10) — contador transacional por empresa. Nunca `MAX(numero)+1`;
+     * EVO-SAAS-001 (S10) - contador transacional por empresa. Nunca `MAX(numero)+1`;
      * o próximo número é reservado com lock em transação (ver ReservarNumeroDeRma).
      */
     public function up(): void

@@ -1,4 +1,4 @@
-{{-- FRONT-003/UI-04 — conteúdo do histórico de modificações compartilhado. --}}
+{{-- FRONT-003/UI-04 - conteúdo do histórico de modificações compartilhado. --}}
 <div class="historico-tabela">
     <h2 class="historico-tabela-titulo">Histórico de modificações de RMA</h2>
 
@@ -21,9 +21,9 @@
                             #{{ $modificacao->rma_id }}
                         </a>
                     </td>
-                    <td>{{ $modificacao->user?->name ?? '—' }}</td>
+                    <td>{{ $modificacao->user?->name ?? '-' }}</td>
                     <td>{{ $modificacao->acao->name }}</td>
-                    <td>{{ $modificacao->ip ?? '—' }}</td>
+                    <td>{{ $modificacao->ip ?? '-' }}</td>
                 </tr>
             @empty
                 <tr><td colspan="5">Nenhuma modificação registrada.</td></tr>

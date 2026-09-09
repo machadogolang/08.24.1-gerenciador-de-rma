@@ -45,7 +45,7 @@ class User extends Authenticatable
     }
 
     /**
-     * EVO-SAAS-001 (S9) — papel no contexto da empresa ativa (vínculo `company_user`),
+     * EVO-SAAS-001 (S9) - papel no contexto da empresa ativa (vínculo `company_user`),
      * com fallback de compatibilidade para `users.papel` quando não há contexto web.
      * O fallback é removido na etapa S9.7/S9.8, quando nenhum consumidor depender dele.
      */

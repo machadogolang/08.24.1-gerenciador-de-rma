@@ -4,11 +4,11 @@
 @endsection
 
 @section('conteudo')
-    {{-- VIS-V1-001/CP3C — fonte real `legacy-source/14.6.1/page/encaminhados.php`:
+    {{-- VIS-V1-001/CP3C - fonte real `legacy-source/14.6.1/page/encaminhados.php`:
     `status='Encaminhado'`, ordenado por `encaminhado_em`. Coluna "NF R" (`nfremessa`)
     é geometria histórica confirmada (achado 6) mas não tem campo equivalente no
     domínio de aplicação atual (só existe como coluna histórica do migrador,
-    `Rma::$fillable` Fase 9, sem dono) — mantida vazia para preservar a largura/posição
+    `Rma::$fillable` Fase 9, sem dono) - mantida vazia para preservar a largura/posição
     da coluna, não simulada com dado falso. Regra de destaque reaproveitada de
     `Rma::classeDeAlerta()`/`classe_css_de_alerta()` (Fase 5), fora do escopo desta
     correção estrutural. --}}

@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * ARQ-001 (`INV-RMA-10`) — regressão para o achado de que edição e transições de ciclo
+ * ARQ-001 (`INV-RMA-10`) - regressão para o achado de que edição e transições de ciclo
  * de vida reconstruíam o agregado só com os campos do núcleo, apagando prioridade,
  * marcarestoque, notas fiscais, valor e crédito. Cada teste grava um RMA com esses
  * campos periféricos preenchidos de propósito e prova que a ação sob teste não os zera.

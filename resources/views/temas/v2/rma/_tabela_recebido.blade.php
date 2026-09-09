@@ -1,10 +1,10 @@
-{{-- CP23 (paridade visual V2) — fonte real `legacy-source/15.8.1/page/recebido.php`.
+{{-- CP23 (paridade visual V2) - fonte real `legacy-source/15.8.1/page/recebido.php`.
 Larguras: DATA 8%, ORIGEM 7%, T 4%, NF C 6%, NF V 6%, FABRICANTE 14%, DESCRICAO 13%,
 MODELO 18%, S/N 17%, OS 5%, A 2%. DATA aqui é `recebido_em` (não `created_at`).
 
-[INVESTIGAR] — o Legacy tem uma condição extra que `Rma::classeDeAlerta()` não tem:
+[INVESTIGAR] - o Legacy tem uma condição extra que `Rma::classeDeAlerta()` não tem:
 `(nfcompra<=0 AND nfvenda<=0)` também vira `TrInconformidade`. Reaproveitada a regra
-existente sem alteração — divergência registrada, mesma disciplina do restante desta
+existente sem alteração - divergência registrada, mesma disciplina do restante desta
 frente. --}}
 @if (count($registros) === 0)
     <p style="text-align:left;padding:5px;">Nenhum produto</p>

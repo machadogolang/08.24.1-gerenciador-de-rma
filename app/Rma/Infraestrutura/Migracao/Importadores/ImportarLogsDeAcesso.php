@@ -11,10 +11,10 @@ use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
 
 /**
  * `log` → `tentativas_de_acesso` (`INV-RMA-06` §12, Fase 1 já implementada). `nome`/
- * `sistema_operacional`/`app` não são migrados (decisão registrada, não pendência — o
+ * `sistema_operacional`/`app` não são migrados (decisão registrada, não pendência - o
  * schema atual já basta para `LEG-RMA-043`, nenhuma tela/regra consulta esses 2 campos).
  * `retorno` bate 1:1 com `ResultadoDeAcesso`; qualquer valor fora do domínio vira
- * anomalia e a linha é gravada sem `resultado` resolvido — o log em si nunca é perdido
+ * anomalia e a linha é gravada sem `resultado` resolvido - o log em si nunca é perdido
  * (idempotência aqui é "não reprocessar", não dedup por chave natural: `log` não tem
  * equivalente a `numero_legado`, então cada execução migra tudo que ainda não tem
  * `user_id`+`email_informado`+`created_at` idênticos já gravados).

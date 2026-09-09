@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Transições de ciclo de vida do RMA (`LEG-RMA-011` a `015`, `LEG-RMA-017`) — ações que
+ * Transições de ciclo de vida do RMA (`LEG-RMA-011` a `015`, `LEG-RMA-017`) - ações que
  * gravam campos além do que `RmaController` (CRUD núcleo, Fase 3) cobre. Mesma
  * convenção de parâmetro (id puro), mesma Policy (`RmaPolicy::update` como âncora de
  * autorização de escrita; a regra fina de papel é checada dentro de cada caso de uso).
@@ -30,7 +30,7 @@ class CicloDeVidaController extends Controller
 {
     /**
      * Mapeia o "tipo" vindo do formulário para a classe Eloquent da relação
-     * polimórfica `destinatario` — evita expor FQCN no HTML.
+     * polimórfica `destinatario` - evita expor FQCN no HTML.
      *
      * @var array<string, class-string>
      */

@@ -1,6 +1,6 @@
-{{-- FRONT-003/UI-04 — conteúdo do frete Porto Alegre compartilhado. --}}
+{{-- FRONT-003/UI-04 - conteúdo do frete Porto Alegre compartilhado. --}}
 <div class="logistica-tabela">
-    <h2 class="logistica-tabela-titulo">Frete consolidado — Porto Alegre</h2>
+    <h2 class="logistica-tabela-titulo">Frete consolidado - Porto Alegre</h2>
 
     <table class="Tabelinha-Table">
         <thead>

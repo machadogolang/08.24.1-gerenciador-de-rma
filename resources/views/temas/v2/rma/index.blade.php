@@ -6,22 +6,22 @@
     // #encaminhado, #concluido) vêm TODOS renderizados no mesmo HTML; a troca é o
     // plugin de abas nativo do Bootstrap 3 (`data-toggle="tab"`), sem AJAX/reload.
     //
-    // CP23 — achado que corrige um bug real: as 4 abas por status eram um recorte do
-    // resultado de BUSCA (`$rmas`), que só tem conteúdo quando há termo digitado —
+    // CP23 - achado que corrige um bug real: as 4 abas por status eram um recorte do
+    // resultado de BUSCA (`$rmas`), que só tem conteúdo quando há termo digitado -
     // ficavam vazias por padrão, diferente do Legacy (`page/{entrada,recebido,
     // encaminhado,concluido}.php` são listagens próprias, sempre cheias). Corrigido:
     // `RmaController@index` agora entrega `$porStatusV2` com as 4 listagens reais
     // (`PainelDeStatus::EntradaSomente/RecebidoSomente/Encaminhados/Concluidos`).
 
-    // CP22 (paridade visual V2) — `15.8.1/page/inicio.php` inclui só 10 dos 11
+    // CP22 (paridade visual V2) - `15.8.1/page/inicio.php` inclui só 10 dos 11
     // `subp/listar_*.php` que `ListarGruposDeAlertas` compõe (lido por inteiro nesta
-    // sessão, sem mais includes depois do último) — "Urgência por valor" não aparece
+    // sessão, sem mais includes depois do último) - "Urgência por valor" não aparece
     // na Home do TEMA V2 (pode ser exclusivo de outra tela/do TEMA V1, não
     // verificado aqui, fora de escopo). Ordem e texto do título conferidos linha a
-    // linha contra cada `subp/listar_*.php` (`<li ...>TITULO:</li>`) — os títulos de
+    // linha contra cada `subp/listar_*.php` (`<li ...>TITULO:</li>`) - os títulos de
     // `ListarGruposDeAlertas` são descritivos, não o texto literal do legado.
     // Reordenação/relabel só nesta view (não em `ListarGruposDeAlertas`, que também
-    // serve `PainelDeAlertasController` e o TEMA V1 — mudar a ordem/chave lá sem
+    // serve `PainelDeAlertasController` e o TEMA V1 - mudar a ordem/chave lá sem
     // verificar os dois primeiro seria risco desnecessário).
     $ordemHistoricaCentroDeAvisosV2 = [
         'Prioridade alta sem encaminhar' => 'PRODUTOS COM MAIOR PRIORIDADE SEM ENCAMINHAMENTO',
@@ -42,15 +42,15 @@
 @endphp
 
 @section('conteudo')
-    {{-- CP17 (`docs/produto/plano-execucao-paridade-v2.md`) — a `<ul class="nav
+    {{-- CP17 (`docs/produto/plano-execucao-paridade-v2.md`) - a `<ul class="nav
     nav-tabs">` histórica virou parte do header único (`temas/v2/layout.blade.php`),
     fonte real `legacy-source/15.8.1/inc/menu.php`: os 9 itens (Inicio…Logout) são um
-    componente do layout inteiro, não desta tela — mesmo tratamento já dado ao TEMA
+    componente do layout inteiro, não desta tela - mesmo tratamento já dado ao TEMA
     V1. --}}
     <div class="tab-content">
         <div id="inicio" class="tab-pane fade in active">
             {{-- `page/inicio.php` = `include("page/pesquisar.php")` por inteiro, depois
-            separador + Centro de Avisos — não é uma versão simplificada, é a MESMA
+            separador + Centro de Avisos - não é uma versão simplificada, é a MESMA
             composição da aba #pesquisar (achado confirmado lendo o PHP fonte
             completo nesta sessão; a suposição anterior de "busca simplificada" nesta
             aba estava errada, corrigida no CP20). --}}
@@ -61,7 +61,7 @@
             <div style="clear:both;"></div>
 
             {{-- `rma._centro_de_avisos` já renderiza o ícone/título/hr do Centro de
-            Avisos (`lembrete.png`/"CENTRO DE AVISOS E RELATORIOS"/`hrup`) — não
+            Avisos (`lembrete.png`/"CENTRO DE AVISOS E RELATORIOS"/`hrup`) - não
             duplicar aqui. --}}
             @include('rma._centro_de_avisos', [
                 'grupos' => $gruposCentroDeAvisosV2,

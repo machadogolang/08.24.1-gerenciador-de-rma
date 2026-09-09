@@ -14,7 +14,7 @@ use Tests\TestCase;
 
 /**
  * `LEG-RMA-045` (`naopermitido()`). `RmaPolicy::update()` dispara
- * `TentativaDeGravacaoNaoPermitida` antes de devolver `false` — o listener
+ * `TentativaDeGravacaoNaoPermitida` antes de devolver `false` - o listener
  * `EnviarNotificacaoDeTentativaNaoPermitida` assina o evento e loga a tentativa.
  */
 class EnviarNotificacaoDeTentativaNaoPermitidaTest extends TestCase

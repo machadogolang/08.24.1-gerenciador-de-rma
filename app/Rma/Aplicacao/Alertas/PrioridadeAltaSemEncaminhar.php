@@ -8,7 +8,7 @@ use App\Rma\Dominio\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * RN-08 (`LEG-RMA-025`) — RMA com prioridade alta ainda não encaminhado.
+ * RN-08 (`LEG-RMA-025`) - RMA com prioridade alta ainda não encaminhado.
  */
 final class PrioridadeAltaSemEncaminhar
 {

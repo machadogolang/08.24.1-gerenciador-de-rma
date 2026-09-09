@@ -18,7 +18,7 @@
         <tr><td>Cliente</td><td>{{ $cliente?->nome }}</td></tr>
         <tr><td>Defeito</td><td>{{ $registro->defeito }}</td></tr>
         <tr><td>Observação</td><td>{{ $registro->observacao }}</td></tr>
-        {{-- VIS-V1-003 (Grupo A + PN/SNID) — campos do painel "Novo" do TEMA V1 que
+        {{-- VIS-V1-003 (Grupo A + PN/SNID) - campos do painel "Novo" do TEMA V1 que
         antes não persistiam (Grupo A) ou não existiam no agregado (PN/SNID, ver
         docblock de `App\Rma\Dominio\Rma`). --}}
         <tr><td>P/N</td><td>{{ $registro->pn }}</td></tr>

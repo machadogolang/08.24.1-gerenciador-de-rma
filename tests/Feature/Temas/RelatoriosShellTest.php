@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * FRONT-003/UI-03 — RCD/RPEC/RMPE renderizam dentro do shell do tema ativo com
+ * FRONT-003/UI-03 - RCD/RPEC/RMPE renderizam dentro do shell do tema ativo com
  * `relatorio-print` no body (impressão limpa) e contrato `.acao` nos filtros.
  */
 class RelatoriosShellTest extends TestCase

@@ -37,14 +37,14 @@ class RmaController extends Controller
         $tipo = $request->query('tipo', 'texto');
         $valor = (string) $request->query('valor', '');
 
-        // CP7 (fase 2 V1) — painel Localizar histórico (`menujs-top/localizar.php`)
+        // CP7 (fase 2 V1) - painel Localizar histórico (`menujs-top/localizar.php`)
         // manda `campo` (13 opções + TUDO) em vez de `tipo`; mapeado aqui, na camada
         // de apresentação, para os tipos que `CriterioDeBusca`/`RmasEmBanco::buscar()`
         // aceitam. ARQ-004 (2026-09-09): `NF`→`nota_fiscal` (campos fiscais reais,
         // fonte `page/localizar.php:9`) e `os`→`os` (coluna própria, mesma fonte,
         // ramo `else`); `SNPNSNID`→serial. Os demais campos sem coluna direta no
         // agregado (`fabricante`/`cliente`/`destinatario`/`protocolo`/`numero` etc.)
-        // continuam no fallback `texto` — `[GAP]` documentado, coberto por PAR-RMA-003.
+        // continuam no fallback `texto` - `[GAP]` documentado, coberto por PAR-RMA-003.
         if ($request->has('campo')) {
             $tipo = match ($request->query('campo')) {
                 'NF' => 'nota_fiscal',
@@ -68,9 +68,9 @@ class RmaController extends Controller
 
         $rmas = ($valor !== '' || $solucao !== null) ? $caso->buscar($criterio) : [];
 
-        // CP23 (paridade visual V2) — as abas Entrada/Recebido/Encaminhado/Concluído
+        // CP23 (paridade visual V2) - as abas Entrada/Recebido/Encaminhado/Concluído
         // (`15.8.1/page/{entrada,recebido,encaminhado,concluido}.php`) são listagens
-        // próprias por status, sempre cheias — NÃO um recorte do resultado de busca
+        // próprias por status, sempre cheias - NÃO um recorte do resultado de busca
         // (achado: a implementação anterior filtrava `$rmas`, que só tem conteúdo
         // quando há termo de busca, deixando essas 4 abas vazias por padrão).
         $porStatusV2 = [
@@ -91,14 +91,14 @@ class RmaController extends Controller
             'rmas' => $rmas,
             'tipo' => $tipo,
             'valor' => $valor,
-            // CP7 (fase 2 V1) — reflete a última busca nos selects de
+            // CP7 (fase 2 V1) - reflete a última busca nos selects de
             // `_form_localizar.blade.php` (o Legacy não fazia isso, `<option
-            // selected>` estático — melhoria de UX sem custo de fidelidade visual
+            // selected>` estático - melhoria de UX sem custo de fidelidade visual
             // estática, mesmo critério já usado para o autosave de Anotações).
             'campo' => $request->query('campo', 'TUDO'),
             'solucao' => $solucaoQuery !== '' ? $solucaoQuery : '%',
             'porStatusV2' => $porStatusV2,
-            // CP20/CP23 (paridade visual V2) — as tabelas históricas mostram nome de
+            // CP20/CP23 (paridade visual V2) - as tabelas históricas mostram nome de
             // fabricante/destinatário, não só o id; mesmo padrão de
             // `ListagensPorStatusController::mapaDeFabricantes()`/
             // `mapaDeDestinatarios()`, agora cobrindo busca + as 4 abas por status.
@@ -106,14 +106,14 @@ class RmaController extends Controller
             'fornecedores' => $this->mapaDeFornecedores($todosOsRegistrosDaPagina),
             'destinatarios' => $this->mapaDeDestinatarios($todosOsRegistrosDaPagina),
             // "CENTRO DE AVISOS E RELATORIOS" (correção de fidelidade Fase 8,
-            // 2026-08-25) — a aba "Início"/"Pág. Inicial" dos dois temas mostra as
+            // 2026-08-25) - a aba "Início"/"Pág. Inicial" dos dois temas mostra as
             // mesmas 10 regras da Fase 5 (`PainelDeAlertasController`), sempre
             // presente no HTML (mesmo mecanismo de abas client-side documentado no
             // design.md). `ListarGruposDeAlertas` é a mesma composição usada por
-            // `PainelDeAlertasController` — nenhuma regra de negócio nova, nenhuma
+            // `PainelDeAlertasController` - nenhuma regra de negócio nova, nenhuma
             // duplicação de lógica entre as duas telas.
             'grupos' => $grupos,
-            // Sidebar "contadores por solução" — só consumida pelo TEMA V1
+            // Sidebar "contadores por solução" - só consumida pelo TEMA V1
             // (`14.6.1/index.php`, achado confirmado por captura de referência),
             // fonte real: contagem de RMAs por `status`/`solucao`. Consulta de
             // composição direta (não é caso de uso/regra de negócio nova).
@@ -136,7 +136,7 @@ class RmaController extends Controller
     }
 
     /**
-     * CP12-05 (fase 2 V1) — as tabelas históricas do Centro de Avisos mostram o
+     * CP12-05 (fase 2 V1) - as tabelas históricas do Centro de Avisos mostram o
      * nome do fornecedor. Resolve ids na apresentação sem acoplar o domínio ao
      * Eloquent e incluindo os registros dos grupos, que não necessariamente estão
      * nas quatro abas carregadas na mesma requisição.
@@ -155,7 +155,7 @@ class RmaController extends Controller
     }
 
     /**
-     * `destinatarioType`/`destinatarioId` são polimórficos, sem `morphMap` — mesmo
+     * `destinatarioType`/`destinatarioId` são polimórficos, sem `morphMap` - mesmo
      * padrão de `ListagensPorStatusController::mapaDeDestinatarios()`.
      *
      * @param  Rma[]  $registros
@@ -228,7 +228,7 @@ class RmaController extends Controller
 
         $dados = $this->validarDados($request);
         // Checkbox HTML: ausente na requisição quando desmarcado (mesma semântica do
-        // legado, `isset($_POST['marcarestoque'])` — ver `post/novo.php`).
+        // legado, `isset($_POST['marcarestoque'])` - ver `post/novo.php`).
         $dados['marcarestoque'] = $request->boolean('marcarestoque');
 
         $rma = $caso->criar($dados);
@@ -285,10 +285,10 @@ class RmaController extends Controller
      */
     private function validarDados(Request $request): array
     {
-        // CP8 (fase 2 V1) — `menujs-top/novo.php` usa `type="text"
+        // CP8 (fase 2 V1) - `menujs-top/novo.php` usa `type="text"
         // placeholder="00/00/2015"` pras datas, não `type="date"` (o TEMA V2 e o
         // fallback `/rmas/create` continuam com o date picker nativo, que já manda
-        // ISO `Y-m-d`) — normaliza só quando o valor bate com `dd/mm/aaaa`, mantendo
+        // ISO `Y-m-d`) - normaliza só quando o valor bate com `dd/mm/aaaa`, mantendo
         // o `Y-m-d` do TEMA V2 intocado.
         foreach (['nfcompra_emissao', 'nfvenda_emissao'] as $campo) {
             $valor = $request->input($campo);
@@ -309,7 +309,7 @@ class RmaController extends Controller
             'cliente_nome' => ['nullable', 'string', 'max:255'],
             'defeito' => ['required', 'string', 'max:255'],
             'observacao' => ['nullable', 'string'],
-            // VIS-V1-003 (Grupo A) — já existiam no agregado (`App\Rma\Dominio\Rma`) e
+            // VIS-V1-003 (Grupo A) - já existiam no agregado (`App\Rma\Dominio\Rma`) e
             // na coluna, mas nunca chegavam validados até `CriarRma`. `pn`/`snid`
             // promovidos de coluna histórica para campo de primeira classe (ver
             // docblock do construtor de `Rma`).

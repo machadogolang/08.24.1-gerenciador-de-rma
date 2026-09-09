@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * `LEG-RMA-040`, RN-16 — TEMA V2 como especificação, cidade "PORTO ALEGRE" hardcoded.
+ * `LEG-RMA-040`, RN-16 - TEMA V2 como especificação, cidade "PORTO ALEGRE" hardcoded.
  */
 class ConsolidarFretePorCidadeTest extends TestCase
 {

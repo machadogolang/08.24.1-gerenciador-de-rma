@@ -59,13 +59,13 @@ class QaSeeder extends Seeder
                 default => $fabricantes[($indice - 1) % $fabricantes->count()],
             };
 
-            // CP13 (fase 2 V1, `plano-execucao-paridade-visual-v1-fase2.md`) —
+            // CP13 (fase 2 V1, `plano-execucao-paridade-visual-v1-fase2.md`) -
             // comprimento de texto comparável ao Legacy real (ex.: `os` como
             // "5947"/"6040", 4-5 dígitos, não "OS-QA-00059"; `descricao` como
-            // "NOBREAK 700VA"/"ESTABILIZADOR 300VA", ~13-20 caracteres) — só o
+            // "NOBREAK 700VA"/"ESTABILIZADOR 300VA", ~13-20 caracteres) - só o
             // COMPRIMENTO muda, o dado continua 100% fictício e determinístico.
             // `PendenteCredito` (CP13-02): nenhum registro do seed anterior tinha
-            // esse valor de `solucao` — a tela "Aguardando Crédito" (fase 1,
+            // esse valor de `solucao` - a tela "Aguardando Crédito" (fase 1,
             // CMP-V1-005) só tinha sido comparada por teste automatizado, sem par de
             // screenshot, por falta de dado. O 3º registro (primeiro
             // `Status::Encaminhado`) ganha esse valor aditivamente, sem remover
@@ -82,7 +82,7 @@ class QaSeeder extends Seeder
                 'fornecedor_id' => $fornecedores[($indice - 1) % $fornecedores->count()]->id,
                 'cliente_id' => $clientes[($indice - 1) % $clientes->count()]->id,
                 'modelo' => sprintf('MODELO-QA-%03d', $indice),
-                // CP12-05C — uma única linha recebida sem S/N mantém o gerador
+                // CP12-05C - uma única linha recebida sem S/N mantém o gerador
                 // Legacy×V3 reexecutável para listar_semsn.php, sem fabricar nem
                 // alterar dado no banco histórico somente leitura.
                 'sn' => $indice === 2 ? null : sprintf('SN-QA-%06d', $indice),

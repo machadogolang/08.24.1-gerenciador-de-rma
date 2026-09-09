@@ -153,15 +153,17 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 
 ## S12 — Suíte arquitetural de isolamento (gate da Trilha B)
 
-- [ ] S12.1 — teste permanente parametrizado A×B por model tenant-scoped.
-- [ ] S12.2 — relatórios/alertas/histórico não somam A em B.
-- [ ] S12.3 — `tenant_id` nunca aceito do request.
-- [ ] S12.4 — lista canônica de models tenant-scoped obrigatória (novo model sem
-      cobertura falha em teste de inventário).
+- [x] S12.1 — teste permanente parametrizado por model tenant-scoped (GateDeIsolamentoTest).
+- [x] S12.2 — relatório RCD e alertas A×B testados (histórico já em S8).
+- [x] S12.3 — `tenant_id` fora do `$fillable` e testado por model.
+- [x] S12.4 — lista canônica obrigatória via data provider do GateDeIsolamentoTest.
 - Commit: `#QA-RMA - Cria suite arquitetural de isolamento multiempresa`.
 
 ## S13 — Regressão e segurança
 
+- [x] S12.5 — auditoria de consumidores fora do request (console/jobs/seeders): sem
+      Jobs/scheduler reais; migrador define CellSystem explicitamente; listener de
+      modificacao herda tenant do RMA; seeders/factories usam tenant semente.
 - [ ] S13.1 — tenancy + domínio afetado + PHPUnit completo.
 - [ ] S13.2 — Playwright relevante e build.
 - [ ] S13.3 — auditoria CSRF/mass assignment/IDOR/route binding/policies/spoofing.

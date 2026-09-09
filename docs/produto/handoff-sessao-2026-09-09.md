@@ -24,11 +24,12 @@ somente com prova funcional.
 2. 2beecb3 - #FRONT-RMA - Restaura edicao inline do boletim no Tema V1.
 3. 70a2ed8 - #QA-RMA - Cobre edicao e alinhamento do detalhe RMA V1.
 4. b0a9155 - #DOC-RMA - Reconcilia paridade funcional do detalhe RMA V1.
+5. ae6edc1 - #QA-RMA - Cobre textarea e credito no detalhe RMA V1.
 
 ### QA
 
 - PHPUnit completo: 523 testes / 1518 assertions, 100% verde.
-- Playwright EdicaoInlineDetalheV1: 3/3 verdes.
+- Playwright EdicaoInlineDetalheV1: 3/3 verdes (TDDX, TDD_NF, textarea/observacao, disabled, estoque, credito, acao do rodape e bounding boxes).
 - Playwright V1/V2/consistencia dirigido: 27/27 verdes.
 - Vite build verde e git diff --check limpo.
 

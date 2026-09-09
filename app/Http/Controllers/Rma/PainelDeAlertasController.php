@@ -21,7 +21,8 @@ class PainelDeAlertasController extends Controller
     {
         Gate::authorize('viewAny', RmaEloquent::class);
 
-        return view('rma._painel_de_alertas', [
+        return view_do_tema('rma.alertas.index', [
+            'titulo' => 'Painel de alertas',
             'grupos' => $listarGruposDeAlertas->listar(),
         ]);
     }

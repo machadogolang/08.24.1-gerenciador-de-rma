@@ -22,7 +22,8 @@ async function login(page: Page): Promise<void> {
 async function criarRmaV2(page: Page, descricao: string): Promise<number> {
     await page.goto(`${V3}/v2/rma/create`, { waitUntil: 'domcontentloaded' });
     await page.fill('input[name="descricao"]', descricao);
-    await page.fill('input[name="defeito"]', 'Defeito do detalhe funcional V2');
+    await page.fill('textarea[name="defeito"]', 'Defeito do detalhe funcional V2');
+    await page.selectOption('select[name="origem"]', 'Loja');
     await Promise.all([
         page.waitForURL(/\/v2\/rma\/\d+$/),
         page.click('.shell-v2 .container button[type="submit"]'),

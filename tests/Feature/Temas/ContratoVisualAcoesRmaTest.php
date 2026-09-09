@@ -57,12 +57,20 @@ class ContratoVisualAcoesRmaTest extends TestCase
             ->assertOk();
 
         $response->assertViewIs("temas.{$tema->value}.rma.show");
-        $response->assertSee('class="acao acao--primaria', false);
-        $response->assertSee('>Editar</a>', false);
         if ($tema === TemaPreferido::V1) {
+            // PAR-DET-V1-EDIT-01 - detalhe V1 mantem o papel primario no rodape e o
+            // link Editar para a rota dedicada.
+            $response->assertSee('class="acao acao--primaria', false);
+            $response->assertSee('>Editar</a>', false);
             $response->assertSee('value="Detalhe contrato acoes"', false);
         } else {
-            $response->assertSeeText('Detalhe contrato acoes');
+            // PAR-V2-DETAIL-02 - detalhe V2 e formulario operacional (15.8.1):
+            // SALVAR/OK no cabecalho/rodape e link secundario para a pagina de
+            // edicao dedicada.
+            $response->assertSee('detalhe-rma-v2__form', false);
+            $response->assertSee('name="acao" value="salvar"', false);
+            $response->assertSee('>Abrir pagina de edicao</a>', false);
+            $response->assertSee('value="Detalhe contrato acoes"', false);
         }
     }
 }

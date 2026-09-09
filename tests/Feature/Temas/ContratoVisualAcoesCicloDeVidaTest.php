@@ -56,8 +56,10 @@ class ContratoVisualAcoesCicloDeVidaTest extends TestCase
             ->get("/{$tema->value}/rma/{$rma->id}")
             ->assertOk();
 
-        // Nenhum botão cru de transição: todo submit carrega `.acao`.
-        $response->assertDontSee('<button type="submit">', false);
+        // Bloco avancado usa o contrato `.acao`; o formulario do detalhe V2 tem
+        // SALVAR/OK nativos do 15.8.1 (contrato funcional PAR-V2-DETAIL-02) e nao
+        // participa desta assercao de transicao.
+        $response->assertSee('detalhe-bd-acoes-avancadas', false);
         $response->assertSee('class="acao acao--primaria">Salvar solução</button>', false);
 
         if ($acaoPrincipal !== null) {

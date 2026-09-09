@@ -83,7 +83,7 @@ class ContratoVisualAcoesFormulariosTest extends TestCase
         $response->assertSee('class="acao acao--primaria">Marcar crédito disponível</button>', false);
     }
 
-    public function test_aba_novo_rma_do_tema_v2_marca_acao_primaria(): void
+    public function test_aba_novo_rma_do_tema_v2_exibe_formulario_operacional(): void
     {
         $usuario = User::factory()->create([
             'papel' => Papel::Operador,
@@ -92,6 +92,11 @@ class ContratoVisualAcoesFormulariosTest extends TestCase
 
         $response = $this->actingAs($usuario)->get('/v2/rma')->assertOk();
 
-        $response->assertSee('class="acao acao--primaria btn formSubmit">Abrir novo RMA</a>', false);
+        // PAR-V2-NOVO-01 - a aba Novo virou formulario inline (15.8.1); o link
+        // "Abrir novo RMA" deixou de existir.
+        $response->assertSee('CRIAR BD', false);
+        $response->assertSee('name="descricao"', false);
+        $response->assertSee('name="origem"', false);
+        $response->assertDontSee('Abrir novo RMA', false);
     }
 }

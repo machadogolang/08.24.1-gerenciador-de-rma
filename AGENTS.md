@@ -51,3 +51,13 @@ Reconstrução do CellSystem RMA como produto moderno, em duas trilhas separadas
 
 Checkpoints curtos: o que foi documentado, achados principais (3-5 pontos), estado,
 commit local, próximo passo. Detalhe completo fica nos arquivos, não na resposta.
+
+## Nota operacional — falha de sandbox (2026-09-09)
+
+Se um comando local simples falhar antes de executar com
+`bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`, o problema é do
+wrapper de sandbox do ambiente, não do repositório. Não repetir o mesmo comando.
+Após no máximo 2 variações equivalentes, trocar de mecanismo: usar prefixo de comando
+já aprovado (ex.: `cat`, `git log`, `git status`) ou escalar a leitura pontual com
+`sandbox_permissions: require_escalated` e prefixo estreito. Registro completo:
+`docs/operacao/incidentes/2026-09-09-sandbox-bwrap-loopback.md`.

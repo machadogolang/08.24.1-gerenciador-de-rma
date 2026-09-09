@@ -172,3 +172,32 @@ de login/troca de tenant/autorização e, em paralelo, a prova externa `S10.4`.
 docker compose up -d mysql laravel.test
 docker compose exec -T laravel.test php artisan test
 ```
+
+
+## Atualização — frente FRONT-003 (shell das telas secundárias)
+
+**HEAD inicial:** `57c48b7`. **HEAD final:** `e883c14` + commits de UI/documentação
+desta frente.
+
+### O que foi feito
+- Investigação completa das superfícies standalone (crédito, relatórios, alertas,
+  históricos, logística) registrada em
+  `docs/produto/2026-09-09-investigacao-front-003-shell-telas-secundarias.md`.
+- OpenSpec executável em `openspec/changes/front-003-shell-telas-secundarias/`.
+- **Crédito corrigido** com shell V1/V2 (view_do_tema + partial compartilhado),
+  mantendo Gate/tenant/POST; teste `TelasSecundariasShellTest`.
+- Suíte: **450 testes / 1076 assertions verdes**.
+
+### Commits desta frente
+- `df0d02e` — Integra crédito ao shell dos temas V1 e V2.
+- `e883c14` — Investiga FRONT-003 e especifica correção do shell das telas secundárias.
+
+### Telas pendentes (ordem no OpenSpec)
+- UI-03: RCD/RPEC/RMPE; UI-04: alertas/históricos/logística; UI-05: Controle V1;
+  UI-06: auditoria id/NUMERO; UI-07: limpeza FRONT-006; UI-08: regressão browser.
+
+### Próximo item EXATO
+`UI-03` — integrar RCD/RPEC/RMPE aos temas preservando impressão limpa.
+
+### EVO-SAAS-001
+- Continua ABERTO (S9.8/S10.4/S11.4/S13.2/S14). Não será fechado pela correção visual.

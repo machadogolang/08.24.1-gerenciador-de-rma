@@ -323,3 +323,117 @@ select:disabled {
     padding: 3px 5px;
     line-height: 19px;
 }
+
+
+// PAR-DET-V2-01 - identidade do detalhe RMA V2 em leitura. Fonte real:
+// pattern/15.8.1.css (formgroupnf/Label1/inputs) + 15.9.7 (fontes/final). Aparece
+// somente no show V2; o edit do Tema V2 usa o mesmo bootstrap/form-control existente.
+.detalhe-rma-v2 {
+  .numerodobd {
+    letter-spacing: 1px;
+    color: #fff;
+  }
+
+  &__acao-cabecalho {
+    // Mesmo ajuste do Legacy (`15.8.1/page/rma.php`): acao no cabecalho, ao lado
+    // do breadcrumb, sem empilhar no topo.
+    margin-top: -35px;
+  }
+
+  .formgroupnf {
+    padding: 15px 0;
+    background-color: #272822;
+    margin: -20px 0 0 0;
+
+    + .formgroupnf {
+      margin-top: 0;
+    }
+  }
+
+  .Label1 {
+    color: #eee;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 5px;
+    float: left;
+    letter-spacing: 1px;
+
+    &.importante {
+      background-color: rgba(95, 80, 80, 0.3);
+    }
+  }
+
+  .formlabeldefeito {
+    color: #bcc0c0;
+    float: left;
+    font-size: 12px;
+    font-weight: normal;
+    color: #fffcfc;
+    margin: 10px;
+  }
+
+  .formLabelTextArea {
+    color: #fffcfc;
+    float: right;
+    margin-top: 15px;
+  }
+
+  &__valor {
+    clear: both;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 30px;
+    margin: 0 0 8px;
+    padding: 5px;
+    border: 1px solid #3e3b3a;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #f8d6c1;
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    line-height: 20px;
+    word-break: break-word;
+
+    &--os {
+      width: 100px;
+    }
+  }
+
+  &__texto-longo {
+    clear: both;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 90px;
+    margin: 10px 0 0;
+    padding: 8px;
+    border: 1px solid #3f3d3d;
+    border-left: 0;
+    border-right: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #f8caa9;
+    font-size: 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  &__politica-titulo {
+    background-color: #2b352c;
+    color: #eee;
+    border: 0;
+    padding: 10px;
+    margin: 0;
+    float: none;
+    width: 100%;
+  }
+
+  &__politica-texto {
+    border-left: 0;
+    border-right: 0;
+  }
+
+  &__acoes-finais {
+    margin-top: 20px;
+    clear: both;
+  }
+}

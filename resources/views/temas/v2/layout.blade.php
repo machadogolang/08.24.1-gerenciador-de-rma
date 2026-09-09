@@ -56,7 +56,9 @@
                         <li class="lidropdown menuz"><a href="{{ rota_tema('parceiros.fabricantes.index') }}">Fabricantes</a></li>
                         <li class="lidropdown"><a href="{{ rota_tema('parceiros.fornecedores.index') }}">Fornecedores</a></li>
                         <li class="lidropdown menuz"><a href="{{ rota_tema('parceiros.clientes.index') }}">Clientes</a></li>
-                        <li class="lidropdown"><a href="{{ route('rmas.relatorios.rcd') }}">Relatorios</a></li>
+                        <li class="lidropdown"><a href="{{ route('rmas.relatorios.rcd') }}">Relatorio RCD</a></li>
+                        <li class="lidropdown menuz"><a href="{{ route('rmas.relatorios.rpec') }}">Relatorio RPEC</a></li>
+                        <li class="lidropdown"><a href="{{ route('rmas.relatorios.rmpe') }}">Relatorio RMPE</a></li>
                         {{-- [GAP] "Anotacoes" era página própria em `15.8.1/page/anotacoes.php`;
                         V3 só tem o widget de anotação pessoal (`identidade.perfil.anotacao.update`,
                         sem página de listagem dedicada) — aponta para o perfil até essa

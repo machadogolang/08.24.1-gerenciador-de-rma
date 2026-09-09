@@ -110,6 +110,8 @@
                     @endcan
                     <a class="lisessao" href="{{ route('rmas.credito.index') }}">Créditos</a>
                     <a class="lisessao" href="{{ route('rmas.relatorios.rcd') }}">Relatórios</a>
+                    <a class="lisessao" href="{{ route('rmas.relatorios.rpec') }}">Relatório RPEC</a>
+                    <a class="lisessao" href="{{ route('rmas.relatorios.rmpe') }}">Relatório RMPE</a>
                     @can('gerenciar', \App\Models\User::class)
                         <a class="lisessao" href="{{ rota_tema('identidade.usuarios.index') }}">Usuários</a>
                     @endcan

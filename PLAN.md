@@ -90,7 +90,7 @@ matriz-paridade-temas-v1-v2-v3.md`; tarefas atômicas: checklist mestre, seção
   `openspec/changes/tema-v3-console-operacional/`. Implementacao segue em gate
   futuro ([GATE-PENDENTE]); V3 nao selecionavel.
 
-- **T3-08/T3-09/T3-10 implementados (ocultos, 2026-09-09):** fundacao/shell,
-  dashboard e listagem de RMAs do Tema V3 disponiveis somente via rotas `/v3`;
-  V3 nao aparece no seletor e permanece nao selecionavel. Evidencia:
-  `docs/produto/2026-09-09-checkpoint-arquitetural-tema-v3.md`.
+- **T3-08 a T3-12 implementados (ocultos, 2026-09-09):** shell, dashboard,
+  listagem, detalhe e formularios de RMA do Tema V3 disponiveis somente via rotas
+  `/v3`; T3-11/T3-12 localmente concluidos e reconciliados. V3 nao aparece no
+  seletor e permanece nao selecionavel ate T3-GATE.

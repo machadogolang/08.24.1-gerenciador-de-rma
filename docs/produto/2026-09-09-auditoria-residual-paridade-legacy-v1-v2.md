@@ -1,0 +1,63 @@
+# Auditoria residual - paridade visual/funcional Legacy x V1 x V2
+
+Data: 2026-09-09. Frente aberta por nova instrucao do dono: o handoff PAR-V2
+anterior (`93fd4e4`) e um checkpoint, nao o fim do trabalho. O dono considera que
+ainda existem detalhes de layout/paridade incorretos em V1/14.6.1 e V2/15.8.1,
+mesmo sem screenshot apontado nesta nova sessao.
+
+## Baseline real (reconferido nesta sessao)
+
+- `git status --short --branch`: `## main...origin/main [ahead 3]`, working tree
+  limpa no inicio.
+- `git rev-parse HEAD`: `b49bda00426ee8e1f498563157df275852267524`.
+- `git rev-parse origin/main`: `93fd4e4387140be3d2395717b53dad3fec944136`.
+- Local HEAD contem tres commits alem do main remoto (abertura T3-12, front
+  T3-12 e doc T3-12), feitos na sessao anterior com autorizacao do dono; nenhum
+  push foi executado por mim.
+- `git diff --check`: limpo.
+
+## Metodo
+
+- Comparacao ativa Legacy (`:8094`) x V3 (`:8095`), pagina por pagina.
+- Medicoes via `getBoundingClientRect()` e `getComputedStyle()` em viewports de
+  referencia e faixas historicas (568/768/800/992/1080/1280; 1366/1440/1600/
+  1920).
+- Fonte Legacy sempre como verdade para V1/V2, respeitando seguranca moderna
+  (CSRF/Policy/tenant e metodos corretos).
+- Cada achado recebe ID PAR-RES-NNN com classificacao obrigatoria.
+
+## Matriz de achados
+
+| ID | Tema | Tela | Legacy | Atual | Diferenca | Causa | Classificacao | Status | Teste |
+|---|---|---|---|---|---|---|---|---|---|
+| PAR-RES-001 | V2 | Entrada | Linhas sem garantia e prioridade alta usam `TrInconformidade`; nao existe `TrUrgente`; zebra `TrZebrada1/2` | `classe_css_de_alerta()` pode gerar `TrUrgente` (prioridade alta/prazo) e `TrSemGarantia1/2` | Classes de destaque incorretas na aba Entrada | Partial `_tabela_entrada` reutiliza regra generica de alerta que mistura criterios de Recebido/Encaminhado/Concluido | BUG-CONFIRMADO | [ ] | Playwright de classes/cores por linha |
+| PAR-RES-002 | V2 | Recebido | Sem garantia e sem NF usam `TrInconformidade`; prioridade alta e prazo de 30 dias usam `TrUrgente` | Sem garantia vira `TrSemGarantia1/2`; criterio "sem NF compra/venda" ausente | Classes incorretas e criterio faltante | Mesma regra generica + dominio nao carrega sem-NF como classe | BUG-CONFIRMADO | [ ] | Playwright de classes/cores por linha |
+| PAR-RES-003 | V2 | Encaminhado | Sem garantia usa `TrInconformidade`; prioridade alta e prazo de 30 dias usam `TrUrgente` | Sem garantia vira `TrSemGarantia1/2` | Classes incorretas no destaque sem garantia | Mesma regra generica | BUG-CONFIRMADO | [ ] | Playwright de classes/cores por linha |
+| PAR-RES-004 | V2 | Concluido | Zebra binaria `TrSemGarantia1/2`/`TrZebrada1/2` sem alertas | Mesma estrutura no partial proprio | Sem diferenca confirmada | - | SEM-PROBLEMA | [R] | ampliar prova com fixture SemGarantia |
+| PAR-RES-005 | V2 | listagens | Linhas de uma linha medem 26px; linhas com quebra medem ~32px | Linhas com quebra medem ~32px; base depende do conteudo | Sem diferenca sistematica confirmada alem de dados de QA mais longos | Conteudo de QA diferente do banco Legacy | SEM-PROBLEMA | [R] | fixture curto em Playwright |
+| PAR-RES-006 | V2 | Centro de Avisos e relatorios | Cada grupo tem tabela propria | Lista generica compartilhada | Composicao por grupo ainda nao reproduzida | gap documentado desde CP22/CMP-V2-004 | PARIDADE-LEGACY | [R] | auditado em onda E |
+| PAR-RES-007 | V2 | Anotacoes | Pagina propria em `15.8.1/page/anotacoes.php` | Menu aponta para perfil | Pagina dedicada ausente | gap documentado desde CP17 | PARIDADE-LEGACY | [R] | task P8 |
+| PAR-RES-008 | V1/V2 | Novo RMA | Autocomplete historico (datalist) | Selects modernos com mesmos valores | Implementacao moderna segura, visual funcional equivalente | decisao arquitetural registrada (NOVO-01.4/PAR-V2-NOVO-01) | FIDELIDADE-INTENCIONAL | [x] | coberto por Playwright |
+| PAR-RES-009 | V1/V2 | diversos | Layout historico | Layout moderno | Nao e espaco de redesign | regra do projeto | MELHORIA-V3 | - | nao corrigir em V1/V2 |
+
+## Plano de ondas
+
+- [ ] ONDA A - Shell/navbar/menu/dropdown/footer (V1/V2).
+- [ ] ONDA B - Listagens/pesquisa/tabelas/zebra/sidebar (PAR-RES-001..005).
+- [ ] ONDA C - Create/show/edit RMA e ciclo (V1/V2).
+- [ ] ONDA D - Parceiros/admin/Controle/usuarios.
+- [ ] ONDA E - Relatorios/Avisos/Anotacoes/secundarias (PAR-RES-006/007).
+- [ ] ONDA F - Viewport/print/regressao residual.
+
+Cada onda: investigar -> corrigir -> PHPUnit dirigido -> Playwright/browser ->
+atualizar matriz/plano -> `git diff --check` -> commit atomico -> proxima onda.
+
+## Reconciliacao documental desta sessao
+
+- T3-11: confirmado `[x]` por codigo/testes/commits (ver A7/T3-11).
+- T3-12: confirmado `[x]` localmente (57f1c13; 536/1619 e Playwright 2/2) e
+  registrado como local-only nesta auditoria (nao remoto).
+- Textos antigos de "V3 nao implementado" foram localizados em PLANO/PLAN/matriz
+  e serao reconciliados narrativamente junto deste checkpoint; o V3 permanece
+  oculto e nao selecionavel ate T3-GATE.
+- Baseline de suíte atual: 536 testes / 1619 assertions (nao 515/1421).

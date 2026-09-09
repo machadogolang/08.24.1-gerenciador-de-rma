@@ -5,12 +5,25 @@ Ultima atualizacao: 2026-09-09 (America/Sao_Paulo). Status no padrao canonico
 nunca usar hifen longo, sempre hifen simples (ver `docs/operacao/regra-hifen.md`).
 Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
 
-## PAUSA CONTROLADA - Tema V3/T3-12 (2026-09-09)
+## CONTINUIDADE - Auditoria residual Legacy x V1/V2 (2026-09-09)
 
-T3-12 (e qualquer avanco do Tema V3) fica PAUSADO enquanto a rodada de correcao de
-regressoes/paridade dos temas legados estiver aberta. Fonte da rodada:
-`docs/produto/2026-09-09-reabertura-paridade-v2-validacao-manual-dono.md`.
-Baseline real reconferido: HEAD = origin/main = `24ffd4e`, working tree limpo.
+O handoff PAR-V2 (`93fd4e4`) e um checkpoint, nao o fim do trabalho. Nova frente
+aberta pelo dono: [R] PAR-LEGACY-RESIDUAL-01 - auditoria visual residual V1/V2.
+Fonte viva: `docs/produto/2026-09-09-auditoria-residual-paridade-legacy-v1-v2.md`.
+Baseline real: origin/main `93fd4e4`; local `b49bda0` (contem T3-12 local, sem
+push). Suíte completa atual: 536 testes / 1619 assertions.
+
+Ondas da auditoria (cada uma atomica):
+- [ ] ONDA A - Shell/navbar/menu/dropdown/footer.
+- [ ] ONDA B - Listagens/pesquisa/tabelas/zebra/sidebar (PAR-RES-001..005).
+- [ ] ONDA C - Create/show/edit RMA e ciclo.
+- [ ] ONDA D - Parceiros/admin/Controle/usuarios.
+- [ ] ONDA E - Relatorios/Avisos/Anotacoes/secundarias.
+- [ ] ONDA F - Viewport/print/regressao residual.
+
+Apos fechar a paridade residual e as regressoes bloqueantes, o plano segue para
+P7/P8/P9/P10/P11/P12/P13/P14 e depois T3-13 em diante (T3-12 ja implementado
+localmente em 57f1c13).
 
 ## AGORA - Correcao de regressoes/paridade V2 (rodada do dono, 2026-09-09)
 
@@ -55,8 +68,8 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   - [x] UI-09.6 - Controle V1 (onda C4/UI-05).
   - [x] UI-09.7 - Titulo unico RCD/RPEC/RMPE no V1 (onda C5).
   - [x] UI-09.8 - Dropdown V2 + ciclo de vida (onda C6).
-  - [R] UI-09.9 - Regressao dirigida 9/9 e PHPUnit 515/1421; regressao ampla
-    depende de Legacy `:8094` de pe e execucao serial.
+  - [R] UI-09.9 - Regressao dirigida 9/9 e PHPUnit 536/1619 (baseline real
+    2026-09-09); regressao ampla depende de Legacy de pe e execucao serial.
   - [ ] UI-09.10 - C7: varredura residual e viewports (1366/1440/1600; 390/768 V2)
     + regressao UI-08/print.
 
@@ -150,7 +163,8 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 - [ ] P10 - Reconciliacao documental (checklist, paridade, matriz temas, roteiro).
 - [ ] P11 - Regressao funcional por fluxo.
 - [ ] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/`.
-- [ ] P13 - PHPUnit completo + build final (baseline real 515/1421).
+- [ ] P13 - PHPUnit completo + build final (baseline real atual 536/1619;
+  execucao completa ja verde, pendente apenas da rodada final apos P7-P12).
 - [ ] P14 - Fechamento/handoff da paridade.
 - [ ] EVO-SAAS-001 - S10.4/S11.4/S13.2/S14.
 
@@ -177,11 +191,11 @@ depende de P7-P12.
 
 UI-09: auditoria commitada; bugs confirmados corrigidos e testados; C7/UI-08
 concluidos; docs reconciliadas. EVO-UX-001: especificacao completa e commitada;
-V3 nao implementado nem selecionavel. Paridade: P0-P14 fechados sem bloqueio, full
+V3 implementado de forma oculta (T3-08..T3-12) e ainda NAO selecionavel. Paridade: P0-P14 fechados sem bloqueio, full
 suite e Playwright quatro quadrantes verdes.
 
 ## NAO FAZER AINDA
 
-Editar Legacy; reproduzir bugs/rotas mortas; relaxar Policy/tenant; implementar
-Tema V3; push/PR/merge; remover views orfas antes da onda UI-07; aplicar replace
+Editar Legacy; reproduzir bugs/rotas mortas; relaxar Policy/tenant; expor
+Tema V3 no seletor antes de T3-GATE; push/PR/merge; remover views orfas antes da onda UI-07; aplicar replace
 global de hifen longo; marcar `[x]` sem evidencia real.

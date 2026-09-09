@@ -1,6 +1,6 @@
 # Checklist mestre executável — CellSystem RMA V3
 
-Última consolidação: 2026-08-25. Este é o documento operacional definitivo. `PLAN.md`
+Última consolidação: 2026-09-09. Checkboxes de fases fechadas entre 2026-08-25 e 2026-09-09 reconciliados nesta sessão com evidência; divergência residual e lacunas reais estão em `docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`. Este é o documento operacional definitivo. `PLAN.md`
 resume fases; `PLANO-ATAQUE.md` seleciona o lote corrente. Em divergência, prevalecem
 código/testes/runtime, Git, OpenSpec, investigações e, por fim, planejamento.
 
@@ -275,11 +275,20 @@ Gate comum: F10-GATE-07. Investigação/especificação pode avançar; código n
 - [x] **GATE G-01 — arqueologia suficiente.** Inventários/regras/banco/visual/parecer.
 - [x] **GATE G-02 — F1–F8 implementadas/testadas.** Dependências satisfeitas.
 - [x] **GATE G-03 — F9 implementada/testada por fixture.** Não é reconciliação real.
-- [ ] **GATE G-04 — F10 funcional.** Seção funcional concluída.
-- [ ] **GATE G-05 — F10 visual.** Seção visual concluída.
-- [ ] **GATE G-06 — F10 dados.** Seção de dados concluída.
-- [ ] **GATE G-07 — Trilha A encerrada.** Fechamento e relatório aprovados.
-- [ ] **GATE G-08 — Trilha B liberada.** Somente após G-07.
+- [x] **GATE G-04 — F10 funcional.** Fechado por evidência: `F10-FUN-01..09` e
+  `F10-GATE-02` `[x]`, smokes M-01..M-06 aprovados, matriz de 48 IDs reconciliada
+  em `docs/qa/relatorio-paridade-final.md`.
+- [x] **GATE G-05 — F10 visual.** Fechado por evidência: `F10-GATE-03`, CP0..CP15
+  (V1), CP16..CP25 (V2) e NAV-00..NAV-05 aprovados/commitados.
+- [x] **GATE G-06 — F10 dados.** Fechado por evidência: `F10-GATE-04` e
+  `F10-DAD-01..09`, migração real e idempotência provadas.
+- [x] **GATE G-07 — Trilha A encerrada.** Fechado por evidência: `F10-GATE-07`
+  declara gate aprovado em 2026-09-04 e `docs/qa/relatorio-paridade-final.md`
+  formaliza o encerramento.
+- [ ] **GATE G-08 — Trilha B liberada.** Somente após G-07 (que já está
+  fechado). Mantém-se em aberto: a liberação formal depende do plano da
+  primeira iniciativa com escolha do usuário; evoluções `EVO-*` não entram
+  em código antes disso.
 
 ## H. Frente — Arquitetura, Front-end e Paridade de Temas
 
@@ -343,10 +352,12 @@ avançar antes, código não sai do seletor.
 
 ### H.3 Front-end
 
-- [ ] **DEV H-011 (`FRONT-001`) — corrigir `Rma::classeDeAlerta()`.** Retornar
-  `Urgente`/`SemGarantia`, hoje inalcançáveis apesar do CSS existente.
-- [ ] **DEV H-012 (`FRONT-002`/`PAR-V2-001`) — corrigir abas por status do Tema 2.** Não
-  podem depender de haver termo de busca preenchido.
+- [x] **DEV H-011 (`FRONT-001`) — corrigir `Rma::classeDeAlerta()`.** Fechado em
+  2026-09-04 (commit `71b8781`): `Rma::classeDeAlerta()` devolve
+  `Urgente`/`SemGarantia`; parecer executivo §4 e `ClasseDeAlertaTest` 8/8.
+- [x] **DEV H-012 (`FRONT-002`/`PAR-V2-001`) — corrigir abas por status do Tema 2.**
+  Fechado por evidência (CP23, commit `a8e0daa`): `RmaController::index` carrega
+  as abas por status sempre, independente de termo de busca.
 - [ ] **DEV H-013 (`FRONT-003`) — dar shell/navegação comuns.** Alertas, crédito,
   relatórios, histórico e logística hoje são documentos isolados; ações de ciclo também
   precisam de contrato visual.
@@ -371,7 +382,11 @@ Gate por linha definido na matriz. Código `PAR-*` de cada item está na coluna
 - [ ] **PAR H-019 (`PAR-V1-002`) — repor no Tema 1 filas acionáveis no dashboard e
   reavaliar o filtro por solução do legado.**
 - [ ] **PAR H-020 (`PAR-V2-003`) — repor no Tema 2 o painel lateral do dashboard.**
-- [ ] **PAR H-021 (`PAR-RMA-001`/`ARQ-004`) — corrigir busca por NF nos dois temas.**
+- [x] **PAR H-021 (`PAR-RMA-001`/`ARQ-004`) — corrigir busca por NF nos dois temas.**
+  Fechado em 2026-09-09 (commit `9657236`): `nota_fiscal` busca `nfcompra`/
+  `nfvenda`/`nf_remessa`/`nf_retorno_numero`/campos fiscais históricos e `os`
+  virou critério próprio; rastreio legado 14.6.1 `page/localizar.php:9` e
+  15.8.1 `banco.php::pesquisar()`; 8 testes / 23 assertions verdes.
 - [ ] **PAR H-022 (`PAR-RMA-002`/`PAR-RMA-004`) — implementar busca por número** nos dois
   temas, hoje ausente.
 - [ ] **PAR H-023 (`PAR-RMA-003`) — ampliar busca por texto** além dos 6 campos atuais

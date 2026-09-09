@@ -1,6 +1,6 @@
 # Matriz viva — Legado × Tema 1 × Tema 2 × Tema 3
 
-Data: 2026-08-25. Estado: **preliminar e executável**; não é declaração de conclusão.
+Data: 2026-08-25 (atualizada 2026-09-09). Estado: preliminar e executável; linhas fechadas por CP/NAV/F10 entre 08-25 e 09-09 foram reconciliadas nesta sessão, demais linhas seguem tarefas.
 
 Esta matriz complementa `paridade-v2-v3.md`: aquela rastreia 48 capacidades históricas;
 esta mede também descobribilidade, composição de tela, ações e estados por tema. `sim`
@@ -26,7 +26,7 @@ atingir paridade integral.
 | Dashboard/avisos | filas, alertas, atalhos | alertas+contadores+anotação, sem filas acionáveis | alertas+abas, sem painel lateral | planejado | UX-01; PAR-V1-002; PAR-V2-003 |
 | Busca por texto | ampla, cerca de 23 campos | parcial: 6 campos | parcial: 6 campos | planejado | PAR-RMA-003; contrato e testes |
 | Busca por serial | sim | `sn` | `sn` | planejado | confirmar PN/SNID em INV-LEGADO-RMA-001 |
-| Busca por NF | compra/venda/remessa | incorreta: consulta `os` | incorreta: consulta `os` | planejado | ARQ-004 / PAR-RMA-001 |
+| Busca por NF | compra/venda/remessa | sim (campos fiscais reais) | sim (campos fiscais reais) | planejado | ARQ-004/PAR-RMA-001 fechado 2026-09-09; remessa/retorno cobertos no mesmo critério |
 | Busca por número | número histórico | ausente | ausente | planejado | PAR-RMA-002/004 |
 | Filtro por status | filas | ausente como ação | abas vazias sem busca | planejado | PAR-V1-001; FRONT-002/PAR-V2-001 |
 | Filtro por solução | sim no V1 legado | ausente | ausente | planejado | PAR-V1-002; avaliar apresentação equivalente nos demais |

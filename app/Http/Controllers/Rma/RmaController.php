@@ -288,6 +288,9 @@ class RmaController extends Controller
                 ]
                 : null,
             'politicaDeGarantia' => $this->politicaDeGarantiaParaDetalhe($legado, $registro, $fabricante, $fornecedor),
+            // PAR-V2-DETAIL-02 - a view usa a Policy para liberar/desabilitar os
+            // controles; a autorizacao real de escrita continua no update.
+            'podeEditar' => Gate::allows('update', RmaEloquent::class),
         ]);
     }
 
@@ -511,6 +514,8 @@ class RmaController extends Controller
             'snretorno' => ['nullable', 'string', 'max:255'],
             'marcarestoque' => ['sometimes', 'boolean'],
             'credito_disponivel' => ['sometimes', 'boolean'],
+            'prioridade' => ['nullable', 'string', 'in:baixa,media,alta,Baixa,Media,Alta,Normal,normal'],
+            'lancadoretorno' => ['nullable', 'string', 'in:pendente,nf_devolucao,sem_movimentacao,nao,sim'],
             'solucao' => ['nullable', 'string', 'in:' . implode(',', array_column(Solucao::cases(), 'value'))],
             'nfcompra' => ['nullable', 'string', 'max:255'],
             'nfcompra_emissao' => ['nullable', 'date'],

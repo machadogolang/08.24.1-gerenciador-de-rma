@@ -6,7 +6,10 @@ use App\Models\Fabricante;
 use App\Models\Fornecedor;
 use App\Parceiros\Aplicacao\EncontrarOuCriarCliente;
 use App\Rma\Dominio\Eventos\RmaEditado;
+use App\Rma\Dominio\Prioridade;
+use App\Rma\Dominio\StatusDeLancamento;
 use App\Rma\Dominio\RepositorioDeRmas;
+use DateTimeImmutable;
 use App\Rma\Dominio\Rma;
 use Illuminate\Support\Facades\Auth;
 use RuntimeException;
@@ -108,14 +111,29 @@ final class EditarRma
         }
 
         if (array_key_exists('marcarestoque', $dados)) {
-            $alteracoes['marcarestoque'] = (bool) $dados['marcarestoque'];
+            // PAR-V2-DETAIL-02 - select Sim/Nao envia '1'/'0'; o cast booleano do
+            // PHP trataria '0' como true, entao normalizamos explicitamente.
+            $alteracoes['marcarestoque'] = in_array($dados['marcarestoque'], [true, 1, '1', 'on'], true);
         }
 
         if (array_key_exists('credito_disponivel', $dados)) {
-            // PAR-DET-V1-STOCK-01 - flag de leitura/gravação do detalhe. A regra do
-            // fluxo de crédito (MarcarCreditoDisponivel) permanece como está; aqui
-            // apenas refletimos o que o usuário marcou no boletim.
-            $alteracoes['creditoDisponivel'] = (bool) $dados['credito_disponivel'];
+            // PAR-DET-V1-STOCK-01/PAR-V2-DETAIL-02 - flag de leitura/gravacao do
+            // detalhe (mesma normalizacao do estoque para select Sim/Nao).
+            $alteracoes['creditoDisponivel'] = in_array($dados['credito_disponivel'], [true, 1, '1', 'on'], true);
+        }
+
+        if (array_key_exists('prioridade', $dados)) {
+            $alteracoes['prioridade'] = match (mb_strtolower(trim((string) $dados['prioridade']))) {
+                'baixa' => Prioridade::Baixa,
+                'media', 'normal' => Prioridade::Media,
+                'alta' => Prioridade::Alta,
+                default => null,
+            };
+        }
+
+        if (array_key_exists('lancadoretorno', $dados)) {
+            $valor = trim((string) $dados['lancadoretorno']);
+            $alteracoes['lancadoretorno'] = $valor === '' ? null : StatusDeLancamento::tryFrom($valor);
         }
 
         if ($fabricante !== null) {

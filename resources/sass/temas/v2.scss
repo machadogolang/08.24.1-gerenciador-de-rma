@@ -511,6 +511,82 @@ select:disabled {
 }
 
 
+
+// PAR-V2-DETAIL-02 - controles reais do formulario do detalhe V2 (15.8.1): caixa
+// escura com borda, cor clara e mesma familia do `.form-control` Bootstrap, sem
+// trocar o layout dos demais formularios V2.
+.detalhe-rma-v2 {
+  .form-group .form-control {
+    clear: both;
+  }
+
+  .form-control.detalhe-rma-v2__controle {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 30px;
+    margin: 0 0 8px;
+    padding: 5px 8px;
+    border: 1px solid #3e3b3a;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: none;
+    color: #f8d6c1;
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    line-height: 20px;
+
+    &--os {
+      width: 100px;
+    }
+
+    &:disabled,
+    &[disabled] {
+      cursor: default;
+      opacity: 0.75;
+    }
+
+    &:focus {
+      border-color: #f67d7d;
+      box-shadow: 0 0 0 1px rgba(246, 125, 125, 0.25);
+    }
+  }
+
+  .form-control.detalhe-rma-v2__textarea {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 90px;
+    margin: 10px 0 0;
+    padding: 8px;
+    border: 1px solid #3f3d3d;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: none;
+    color: #f8caa9;
+    font-size: 12px;
+    line-height: 18px;
+    resize: vertical;
+    white-space: pre-wrap;
+
+    &--grande {
+      min-height: 160px;
+    }
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.75;
+    }
+  }
+
+  &__somente-leitura {
+    color: #e1deac;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+}
+
 // PAR-V2-PESQ-01 - composicao Pesquisar V2. Regras ausentes do CSS compilado,
 // portadas de pattern/15.8.1.css + pattern/15.9.7.css. Declaradas depois do
 // Bootstrap no bundle final, como no runtime Legacy (15.8.1/15.9.7 apos o CDN).

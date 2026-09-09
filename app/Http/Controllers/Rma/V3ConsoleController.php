@@ -88,9 +88,7 @@ final class V3ConsoleController extends Controller
             $consulta->orderByDesc('id');
         }
 
-        $registros = $q !== ''
-            ? $consulta->get()->sortByDesc('id')->values()
-            : $consulta->get();
+        $registros = $consulta->get();
 
         return view_do_tema('rma.index', [
             'titulo' => 'RMAs',

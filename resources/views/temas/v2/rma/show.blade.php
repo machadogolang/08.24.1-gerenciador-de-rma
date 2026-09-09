@@ -5,7 +5,7 @@
         <p class="centrodeavisos">{{ session('status') }}</p>
     @endif
 
-    <p><a href="{{ rota_tema('rmas.edit', ['rma' => $registro->id]) }}" class="btn formSubmit">Editar</a></p>
+    <p><a href="{{ rota_tema('rmas.edit', ['rma' => $registro->id]) }}" class="acao acao--primaria btn formSubmit">Editar</a></p>
 
     @include('rma._acoes_de_transicao')
 

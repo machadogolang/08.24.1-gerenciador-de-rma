@@ -1,7 +1,7 @@
 @extends('temas.v1.layout')
 
 @section('conteudo')
-    <p><a href="{{ rota_tema('rmas.edit', ['rma' => $registro->id]) }}">Editar</a></p>
+    <p><a href="{{ rota_tema('rmas.edit', ['rma' => $registro->id]) }}" class="acao acao--primaria">Editar</a></p>
 
     @include('rma._acoes_de_transicao')
 

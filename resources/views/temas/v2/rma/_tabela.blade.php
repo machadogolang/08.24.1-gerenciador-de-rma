@@ -21,8 +21,8 @@
                     <td>{{ $registro->defeito }}</td>
                     <td>{{ $registro->origem }}</td>
                     <td>
-                        <a href="{{ rota_tema('rmas.show', ['rma' => $registro->id]) }}">Ver</a>
-                        <a href="{{ rota_tema('rmas.edit', ['rma' => $registro->id]) }}">Editar</a>
+                        <a href="{{ rota_tema('rmas.show', ['rma' => $registro->id]) }}" class="acao acao--secundaria acao--compacta">Ver</a>
+                        <a href="{{ rota_tema('rmas.edit', ['rma' => $registro->id]) }}" class="acao acao--secundaria acao--compacta">Editar</a>
                     </td>
                 </tr>
             @endforeach

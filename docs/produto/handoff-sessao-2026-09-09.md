@@ -1,6 +1,22 @@
 # Handoff de sessão - CellSystem RMA V3
 
 
+## Checkpoint - T3-11: detalhe operacional do RMA no Tema V3 (2026-09-09)
+
+Apos A5/A6 fechados com paridade funcional, o dono autorizou seguir para os proximos
+itens. T3-11 foi implementado e fechado.
+
+- Rota GET /v3/rma/{rma} com cabecalho operacional e 7 secoes (Resumo, Produto,
+  Parceiros/origem, Fiscal, Destinatario/logistica, Solucao/credito, Historico).
+- Listagem V3 linka para o detalhe; CSS V3 apenas em v3.scss.
+- Feature 5/5 em RenderizaTemaV3Test; Playwright DetalheRmaV3 2/2 e T3-08/09/10 3/3.
+- PHPUnit completo: 524 testes / 1533 assertions, 100% verde.
+- Commits: 5885073 (front), 9f2e492 (QA), 5ad3c3f (docs).
+
+Proximo item exato: T3-12 - RMA formularios no Tema V3.
+
+
+
 ## Checkpoint - reabertura funcional A5 e edicao inline do detalhe V1 (2026-09-09)
 
 O dono validou no browser e encontrou duas regressoes: detalhe V1 virou leitura e o

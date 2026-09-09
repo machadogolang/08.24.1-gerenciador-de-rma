@@ -1,6 +1,44 @@
 # Handoff de sessão - CellSystem RMA V3
 
 
+## Checkpoint - reabertura funcional A5 e edicao inline do detalhe V1 (2026-09-09)
+
+O dono validou no browser e encontrou duas regressoes: detalhe V1 virou leitura e o
+rodape operacional perdeu a composicao. A5 foi reaberto como [R] e voltou a [x]
+somente com prova funcional.
+
+### Correcoes
+
+- PAR-DET-V1-EDIT-01: show V1 voltou a ser form com inputs reais, CSRF/PUT e casos
+  de uso; digitar/salvar/reload persistido em teste browser.
+- PAR-DET-V1-STOCK-01: marcarestoque e creditodisponivel sao checkboxes reais com
+  rotulo alternando.
+- PAR-DET-V1-ACTION-01: rodape esquerda/direita com select acao + OK; acoes
+  avancadas continuam em details recolhido.
+- Backend: dominio/infra passam a persistir campos historicos; EditarRma atualiza o
+  boletim completo; RmaController despacha acao para casos de uso modernos.
+
+### Commits
+
+1. 93487b8 - #DOC-RMA - Reabre paridade funcional do detalhe RMA V1.
+2. 2beecb3 - #FRONT-RMA - Restaura edicao inline do boletim no Tema V1.
+3. 70a2ed8 - #QA-RMA - Cobre edicao e alinhamento do detalhe RMA V1.
+4. b0a9155 - #DOC-RMA - Reconcilia paridade funcional do detalhe RMA V1.
+
+### QA
+
+- PHPUnit completo: 523 testes / 1518 assertions, 100% verde.
+- Playwright EdicaoInlineDetalheV1: 3/3 verdes.
+- Playwright V1/V2/consistencia dirigido: 27/27 verdes.
+- Vite build verde e git diff --check limpo.
+
+### Proximo item exato
+
+A7/T3-11 - detalhe operacional do RMA no Tema V3 (agora com o detalhe V1 fechado
+como referencia funcional completa). T3-17 permanece [R].
+
+
+
 ## Checkpoint atual - detalhes RMA V1/V2 e geometria V2 (2026-09-09)
 
 Rodada do dono: reproduzir quatro prints, corrigir A5 (detalhe V1), A6 (detalhe

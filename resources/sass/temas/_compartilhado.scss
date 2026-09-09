@@ -338,7 +338,12 @@ th {
 }
 
 // FRONT-003/UI-03 - superfície e impressão dos relatórios (compartilhado V1/V2).
+.relatorio {
+    width: 100%;
+}
+
 .relatorio-tabela {
+    width: 100%;
     background-color: #fff;
     color: #222;
 
@@ -373,6 +378,7 @@ th {
 .relatorio-titulo {
     margin: 0 0 12px;
     color: #fff;
+    font-size: 18px;
 }
 
 @media print {

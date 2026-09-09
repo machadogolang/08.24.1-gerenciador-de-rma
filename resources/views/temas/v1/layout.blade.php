@@ -122,7 +122,7 @@
                 </nav>
                 <div class="JS-SessaoLEFT">
                     <div class="JS-DivLEFT">
-                        <h1 class="titulo-v1 {{ $omitirTituloPadrao ? 'sr-only' : '' }}">{{ $titulo ?? '' }}</h1>
+                        <h1 class="titulo-v1 {{ ($painelSessao && $omitirTituloPadrao) ? 'sr-only' : '' }}">{{ $titulo ?? '' }}</h1>
                         @if ($painelSessao)
                             @yield('conteudo')
                         @endif

@@ -6,7 +6,8 @@
     <title>{{ $titulo ?? 'RMA' }} — CellSystem RMA</title>
     @vite(['resources/js/temas/v2.js'])
 </head>
-<body>
+<body class="{{ request()->routeIs('rmas.relatorios.*') ? 'relatorio-print' : '' }}">
+    {{-- FRONT-003/UI-03: relatórios imprimem sem menu/nav (ver _compartilhado.scss). --}}
     @php
         // CP17 (`docs/produto/plano-execucao-paridade-v2.md`) — fonte real
         // `legacy-source/15.8.1/inc/menu.php`: os 7 primeiros itens (Inicio…

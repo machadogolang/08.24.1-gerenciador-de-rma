@@ -8,7 +8,8 @@
     <title>{{ $titulo ?? 'RMA' }} — CellSystem RMA</title>
     @vite(['resources/js/temas/v1.js'])
 </head>
-<body>
+<body class="{{ request()->routeIs('rmas.relatorios.*') ? 'relatorio-print' : '' }}">
+    {{-- FRONT-003/UI-03: relatórios imprimem sem menu/nav (ver _compartilhado.scss). --}}
     @php
         $painelSessao = request()->routeIs(
             'parceiros.*',

@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Gate;
 /**
  * 3 relatórios fiscais/contábeis (`LEG-RMA-037/038/039`) — consultas de leitura sobre
  * `Rma` já maduro depois da Fase 5, não módulo próprio (`INV-RMA-05` §3). Sem PDF real
- * (`EVO-REL-001`, backlog evolutivo) — impressão via `Ctrl+P`, igual ao legado. Views
- * mínimas, sem fidelidade visual (Fase 8).
+ * (`EVO-REL-001`, backlog evolutivo) — impressão via `Ctrl+P`, igual ao legado.
+ *
+ * FRONT-003/UI-03 — relatórios passam pelo shell do tema ativo (`view_do_tema`) com
+ * conteúdo compartilhado e impressão limpa via `relatorio-print`.
  */
 class RelatorioController extends Controller
 {
@@ -24,7 +26,8 @@ class RelatorioController extends Controller
     {
         Gate::authorize('viewAny', RmaEloquent::class);
 
-        return view('rma.relatorios.rcd', [
+        return view_do_tema('rma.relatorios.rcd', [
+            'titulo' => 'Relatório de Créditos Disponíveis (RCD)',
             'registros' => $relatorio->listar(),
         ]);
     }
@@ -45,7 +48,8 @@ class RelatorioController extends Controller
             ? collect(Status::cases())->first(fn (Status $caso) => $caso->name === $dados['status'])
             : null;
 
-        return view('rma.relatorios.rpec', [
+        return view_do_tema('rma.relatorios.rpec', [
+            'titulo' => 'Relatório de Produtos em Estoque para Contagem (RPEC)',
             'registros' => $relatorio->listar($status),
             'status' => $status,
         ]);
@@ -70,7 +74,8 @@ class RelatorioController extends Controller
             new \DateTimeImmutable($dados['data_fim'] . ' 23:59:59'),
         );
 
-        return view('rma.relatorios.rmpe', [
+        return view_do_tema('rma.relatorios.rmpe', [
+            'titulo' => 'Relatório de Produtos Encaminhados (RMPE)',
             'registros' => $registros,
             'dataInicio' => $dados['data_inicio'],
             'dataFim' => $dados['data_fim'],

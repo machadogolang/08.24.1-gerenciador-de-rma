@@ -336,3 +336,88 @@ th {
     text-align: center;
     border: 1px solid rgba(87, 84, 84, 0.4) !important;
 }
+
+// FRONT-003/UI-03 — superfície e impressão dos relatórios (compartilhado V1/V2).
+.relatorio-tabela {
+    background-color: #fff;
+    color: #222;
+
+    th,
+    td {
+        background-color: #fff !important;
+        color: #222 !important;
+        font-family: "Arial", "Open Sans", "Fira Mono" !important;
+        text-align: left;
+        text-transform: none;
+        border: 1px solid #999 !important;
+        padding: 4px 8px;
+    }
+}
+
+.relatorio-filtro {
+    margin: 0 0 12px;
+
+    .acao-label {
+        display: inline-block;
+        margin-right: 12px;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    .form-control,
+    .formSelect {
+        margin-left: 4px;
+    }
+}
+
+.relatorio-titulo {
+    margin: 0 0 12px;
+    color: #fff;
+}
+
+@media print {
+    body.relatorio-print {
+        background-color: #fff !important;
+    }
+
+    body.relatorio-print #FIXADO,
+    body.relatorio-print #TOPO,
+    body.relatorio-print #RODAPE,
+    body.relatorio-print .header-v2,
+    body.relatorio-print .shell-v2,
+    body.relatorio-print .shell-v2__sidebar,
+    body.relatorio-print .designedby,
+    body.relatorio-print .JS-Novo,
+    body.relatorio-print .JS-Localizar,
+    body.relatorio-print .JS-SessaoRIGHT {
+        display: none !important;
+    }
+
+    body.relatorio-print #BASE,
+    body.relatorio-print .shell-v2 > .container {
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        float: none !important;
+    }
+
+    body.relatorio-print .JS-Sessao {
+        display: block !important;
+        background: #fff !important;
+    }
+
+    body.relatorio-print .JS-SessaoLEFT {
+        float: none !important;
+        width: auto !important;
+    }
+
+    body.relatorio-print .relatorio,
+    body.relatorio-print .relatorio * {
+        background-color: #fff !important;
+        color: #000 !important;
+    }
+
+    body.relatorio-print .relatorio a {
+        color: #000 !important;
+    }
+}

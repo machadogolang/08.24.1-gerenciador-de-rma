@@ -5,6 +5,38 @@ Ultima atualizacao: 2026-09-09 (America/Sao_Paulo). Status no padrao canonico
 nunca usar hifen longo, sempre hifen simples (ver `docs/operacao/regra-hifen.md`).
 Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
 
+## PAUSA CONTROLADA - Tema V3/T3-12 (2026-09-09)
+
+T3-12 (e qualquer avanco do Tema V3) fica PAUSADO enquanto a rodada de correcao de
+regressoes/paridade dos temas legados estiver aberta. Fonte da rodada:
+`docs/produto/2026-09-09-reabertura-paridade-v2-validacao-manual-dono.md`.
+Baseline real reconferido: HEAD = origin/main = `24ffd4e`, working tree limpo.
+
+## AGORA - Correcao de regressoes/paridade V2 (rodada do dono, 2026-09-09)
+
+- [R] PAR-V2-THEME-01 - Troca V1 <-> V2 quebrada em rota prefixada (back() volta
+  para a rota que o middleware forca para o tema antigo). Evidencia no addendum.
+- [R] PAR-V2-NAV-02 - Navbar V2: texto centralizado (line-height 39px + padding do
+  Bootstrap desloca ~10px), Logout/Menu com seletor errado e breakpoints fixos em
+  1190px/11,1%.
+- [R] PAR-V2-DROPDOWN-02 - Dropdown Menu V2 com moldura/faixa branca (camada
+  Bootstrap visivel + geometria duplicada li/a).
+- [R] PAR-V2-CURSOR-02 - Reabertura de UI-09.3 (varredura ampla + residuo de
+  cursor default no link ativo da navbar V2).
+- [R] PAR-V2-DETAIL-02 - A6 reaberto: detalhe RMA V2 precisa voltar a ser
+  formulario operacional editavel como 15.8.1 (nao leitura).
+- [R] PAR-V2-NOVO-01 - Novo RMA V2 inline na aba Novo com grade 3 colunas,
+  condicionais, estoque e store moderno.
+- [ ] PAR-V2-SWEEP-01 - Varredura residual 15.8.1 x V2 nas superfícies do addendum.
+
+Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
+
+- [ ] ONDA 1 - PAR-V2-THEME-01 + testes de troca.
+- [ ] ONDA 2 - PAR-V2-NAV-02 + PAR-V2-DROPDOWN-02 + PAR-V2-CURSOR-02.
+- [ ] ONDA 3 - PAR-V2-DETAIL-02 (A6 funcional).
+- [ ] ONDA 4 - PAR-V2-NOVO-01 (Novo RMA inline).
+- [ ] ONDA 5 - PAR-V2-SWEEP-01.
+
 ## AGORA - UI/paridade corrente
 
 - [R] UI-09 - Consistencia de formularios, selects e controles (V1/V2).
@@ -12,7 +44,8 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
   (UI-AUD-001..018), commit `16c1913`.
   - [x] UI-09.1 - Auditar superfícies (UI-AUD-001..018).
   - [x] UI-09.2 - Commit documental da Fase A (`16c1913`).
-  - [x] UI-09.3 - Cursor de selects + pontuacao operacional (onda C1).
+  - [R] UI-09.3 - Cursor de selects + pontuacao operacional (onda C1; reaberta
+    2026-09-09 pela validacao manual do dono - ver PAR-V2-CURSOR-02).
   - [x] UI-09.4 - Geometria dos formularios V1 (onda C2).
   - [x] UI-09.5 - Gestao de usuarios V1/V2 (onda C3).
   - [x] UI-09.6 - Controle V1 (onda C4/UI-05).
@@ -75,13 +108,19 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
   - [x] A5.4 - Restaurar controles estoque/credito (checkboxes reais) - 2beecb3.
   - [x] A5.5 - Restaurar composicao operacional das acoes (rodape esquerda/direita) - 2beecb3.
   - [x] A5.6 - QA funcional + visual contra Legacy (digitar/salvar/reload) - 70a2ed8.
-- [x] A6 - Paridade detalhe RMA Tema V2 (Legacy 15.8.1).
+- [R] A6 - Paridade detalhe RMA Tema V2 (Legacy 15.8.1). Reaberto em 2026-09-09:
+  o dono confirmou no browser que o detalhe virou leitura (`show.blade.php` com
+  paragrafos) e o Legacy `page/rma.php` e formulario operacional editavel. Ver
+  PAR-V2-DETAIL-02.
   - [x] A6.1 - Reproducao/documentacao com metricas e screenshots
     (`docs/produto/2026-09-09-addendum-paridade-detalhe-rma-v1-v2.md`, PAR-DET-V2-01).
   - [x] A6.2 - Restaurar cabecalho operacional e grupos/colunas do `show` V2 - 6b78ac3.
   - [x] A6.3 - Acoes/cabecalho integrados sem duplicar regra de negocio - 6b78ac3.
   - [x] A6.4 - Browser regression V2 (abas, show/edit/acoes) - 10f786f +
-    a71a3d8.
+    a71a3d8 (evidencia invalidada para o contrato funcional; mantida como prova de
+    estrutura).
+  - [ ] A6.5 - Detalhe V2 funcional: campos editaveis, salvar, reload, acoes e
+    Policy de escrita/leitura (PAR-V2-DETAIL-02, onda 3).
 - [x] PAR-V2-GEO-01 - Geometria das abas/listagens V2 (delta medido: tabela -7px;
   documento no addendum).
   - [x] V2-GEO-01.1 - Alinhar conteudo das abas V2 a y=47px e reconferir rodape - c030e87.

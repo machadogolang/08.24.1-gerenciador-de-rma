@@ -26,3 +26,7 @@
   falta C7 (varredura residual) e regressão multi-viewport.
   Pontuação operacional, parceiros V1, usuários V1/V2, Controle, relatórios,
   dropdown/menu V2 implementados e testados no browser (9/9).
+  UI-09.3 REABERTO [R] em 2026-09-09 pela validacao manual do dono
+  (PAR-V2-CURSOR-02): regras de select continuam no lugar, mas a varredura ampla
+  deve incluir as superficies restauradas das ondas 3/4 e corrigir residuo de
+  cursor default no link ativo da navbar V2.

@@ -7,6 +7,7 @@ use App\Identidade\Aplicacao\ResetarSenhaDeUsuario;
 use App\Identidade\Aplicacao\SenhaAtualIncorretaException;
 use App\Identidade\Aplicacao\TrocarPropriaSenha;
 use App\Identidade\Dominio\Papel;
+use App\Models\CompanyUser;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -57,7 +58,31 @@ class UsuarioController extends Controller
         // próprio) a SuperAdministrador.
         abort_unless($request->user()->papelAtivo()->podeOperarSobrePapel($papelPretendido), 403);
 
-        $usuario->update(['papel' => $dados['papel']]);
+        // EVO-SAAS-001 (S9): Papel vive no vínculo company_user da empresa ativa. O
+        // espelho em users.papel só ocorre quando o usuário tem um único vínculo ativo
+        // (compatibilidade); multi-vínculo mantém papéis independentes por empresa.
+        $empresaId = app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId();
+        if ($empresaId !== null) {
+            $vinculo = CompanyUser::query()
+                ->where('company_id', $empresaId)
+                ->where('user_id', $usuario->id)
+                ->first();
+
+            if ($vinculo === null) {
+                $usuario->empresas()->attach($empresaId, [
+                    'papel' => $papelPretendido,
+                    'ativo' => true,
+                ]);
+            } else {
+                $vinculo->update(['papel' => $papelPretendido]);
+            }
+
+            if ($usuario->empresas()->wherePivot('ativo', true)->count() === 1) {
+                $usuario->update(['papel' => $dados['papel']]);
+            }
+        } else {
+            $usuario->update(['papel' => $dados['papel']]);
+        }
 
         return back()->with('status', 'Papel atualizado.');
     }

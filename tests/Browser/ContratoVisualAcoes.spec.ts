@@ -26,6 +26,7 @@ test.describe('FRONT-003/UI-02D — contrato visual de ações (browser)', () =>
             await page.goto(`${V3}/${tema}/parceiros/fornecedores`, { waitUntil: 'load' });
 
             const novo = page.locator('a.acao--primaria:has-text("Novo")').first();
+            const ver = page.locator('a.acao--secundaria.acao--compacta:has-text("Ver")').first();
             const editar = page.locator('a.acao--secundaria.acao--compacta:has-text("Editar")').first();
             const remover = page.locator('button.acao--perigo.acao--compacta:has-text("Remover")').first();
 
@@ -55,8 +56,10 @@ test.describe('FRONT-003/UI-02D — contrato visual de ações (browser)', () =>
             const depoisHover = await remover.evaluate(el => getComputedStyle(el).backgroundColor);
             expect(depoisHover).not.toBe(antesHover);
 
-            // TAB alcança Editar e Remover e o focus-visible tem outline.
+            // TAB percorre Ver → Editar → Remover e o focus-visible tem outline.
             await novo.focus();
+            await page.keyboard.press('Tab');
+            await expect(ver).toBeFocused();
             await page.keyboard.press('Tab');
             await expect(editar).toBeFocused();
             await page.keyboard.press('Tab');

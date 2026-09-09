@@ -82,3 +82,10 @@ obrigatoriamente os marcadores `[ ]` (PENDENTE), `[R]` (REVISADO) e
 - Sequência padrão: INVESTIGAR → DOCUMENTAR → COMMIT DOCUMENTAL → EXECUTAR EM
   CICLOS PEQUENOS → TESTAR/COMMITAR → RECONCILIAR → HANDOFF → COMMIT DO HANDOFF
   POR ÚLTIMO.
+
+## Regra do hifen curto (regra do dono, 2026-09-09)
+
+Nunca usar hifen longo (em dash, U+2014); usar sempre hifen simples ("-") em todo
+conteudo do projeto, incluindo documentacao, planos, OpenSpec, interface
+operacional e mensagens. Referencia: `docs/operacao/regra-hifen.md`. A regra
+tambem foi registrada no AGENTS global do Codex.

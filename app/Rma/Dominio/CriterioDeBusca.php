@@ -5,7 +5,7 @@ namespace App\Rma\Dominio;
 final class CriterioDeBusca
 {
     private function __construct(
-        private readonly string $tipo,   // 'texto' | 'nota_fiscal' | 'os' | 'serial'
+        private readonly string $tipo,   // 'texto' | 'nota_fiscal' | 'os' | 'serial' | 'numero'
         private readonly string $valor,
         // CP7 (fase 2 V1) — `menujs-top/localizar.php` tem um 2º select
         // independente (`solucao`, "QUALQUER UMA SOLUCAO" por padrão) que o legado
@@ -28,6 +28,11 @@ final class CriterioDeBusca
     public static function porOs(string $valor, ?Solucao $solucao = null): self
     {
         return new self('os', $valor, $solucao);
+    }
+
+    public static function porNumero(string $valor, ?Solucao $solucao = null): self
+    {
+        return new self('numero', $valor, $solucao);
     }
 
     public static function porSerial(string $valor, ?Solucao $solucao = null): self

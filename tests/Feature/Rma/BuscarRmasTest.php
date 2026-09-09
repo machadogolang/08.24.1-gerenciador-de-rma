@@ -113,4 +113,43 @@ class BuscarRmasTest extends TestCase
         $response->assertSee('OS pelo campo OS');
         $response->assertDontSee('NF com mesmo numero');
     }
+
+    public function test_busca_por_numero_legado(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create(['descricao' => 'RMA com chave historica', 'numero_legado' => 2026]);
+        Rma::factory()->create(['descricao' => 'Outro RMA', 'numero_legado' => 1999]);
+
+        $response = $this->actingAs($usuario)->get('/rmas?tipo=numero&valor=2026');
+
+        $response->assertOk();
+        $response->assertSee('RMA com chave historica');
+        $response->assertDontSee('Outro RMA');
+    }
+
+    public function test_campo_numero_do_tema_v1_mapeia_para_numero_legado(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create(['descricao' => 'Chave pelo campo numero', 'numero_legado' => 333]);
+        Rma::factory()->create(['descricao' => 'OS com o mesmo texto', 'os' => '333']);
+
+        $response = $this->actingAs($usuario)->get('/rmas?campo=numero&valor=333');
+
+        $response->assertOk();
+        $response->assertSee('Chave pelo campo numero');
+        $response->assertDontSee('OS com o mesmo texto');
+    }
+
+    public function test_busca_por_texto_alcanca_campos_diretos_do_legado(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create(['descricao' => 'RMA com protocolo', 'protocolo' => 'PROT-881']);
+        Rma::factory()->create(['descricao' => 'RMA com rastreio', 'rastreio_ida' => 'RASTRO-771']);
+
+        $response = $this->actingAs($usuario)->get('/rmas?tipo=texto&valor=PROT-881');
+
+        $response->assertOk();
+        $response->assertSee('RMA com protocolo');
+        $response->assertDontSee('RMA com rastreio');
+    }
 }

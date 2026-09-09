@@ -60,8 +60,27 @@ final class RmasEmBanco implements RepositorioDeRmas
                     ->orWhere('observacao', 'like', $valor)
                     ->orWhere('modelo', 'like', $valor)
                     ->orWhere('origem', 'like', $valor)
-                    ->orWhere('empresa', 'like', $valor);
+                    ->orWhere('empresa', 'like', $valor)
+                    // PAR-RMA-003 (parcial, 2026-09-09): campos diretos que o legado
+                    // já pesquisava no modo TUDO (14.6.1 `page/localizar.php:15`).
+                    // Nomes via relacionamento (fabricante/cliente/destinatario) ficam
+                    // para a tarefa integral — `[GAP]` mantido no checklist.
+                    ->orWhere('sn', 'like', $valor)
+                    ->orWhere('pn', 'like', $valor)
+                    ->orWhere('snid', 'like', $valor)
+                    ->orWhere('os', 'like', $valor)
+                    ->orWhere('protocolo', 'like', $valor)
+                    ->orWhere('rastreio_ida', 'like', $valor)
+                    ->orWhere('rastreio_retorno', 'like', $valor)
+                    ->orWhere('nfcompra', 'like', $valor)
+                    ->orWhere('nfvenda', 'like', $valor)
+                    ->orWhere('nf_remessa', 'like', $valor)
+                    ->orWhere('nf_retorno_numero', 'like', $valor)
+                    ->orWhere('numero_legado', 'like', $valor)
+                    ->orWhere('destinatario_nome_legado', 'like', $valor)
+                    ->orWhere('cliente_email_legado', 'like', $valor);
             }),
+            'numero' => $consulta->where('numero_legado', 'like', '%' . $criterio->valor() . '%'),
             'serial' => $consulta->where('sn', 'like', '%' . $criterio->valor() . '%'),
             'nota_fiscal' => $consulta->where(function ($query) use ($criterio) {
                 $valor = '%' . $criterio->valor() . '%';

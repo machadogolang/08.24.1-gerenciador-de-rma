@@ -50,6 +50,7 @@ class RmaController extends Controller
                 'NF' => 'nota_fiscal',
                 'os' => 'os',
                 'SNPNSNID' => 'serial',
+                'numero' => 'numero',
                 default => 'texto',
             };
         }
@@ -61,6 +62,7 @@ class RmaController extends Controller
             'serial' => CriterioDeBusca::porSerial($valor, $solucao),
             'nota_fiscal' => CriterioDeBusca::porNotaFiscal($valor, $solucao),
             'os' => CriterioDeBusca::porOs($valor, $solucao),
+            'numero' => CriterioDeBusca::porNumero($valor, $solucao),
             default => CriterioDeBusca::porTexto($valor, $solucao),
         };
 

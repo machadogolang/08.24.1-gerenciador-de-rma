@@ -7,7 +7,7 @@
 <body>
     <h1>Meu perfil</h1>
 
-    <p>{{ $usuario->name }} — {{ $usuario->email }} — papel: {{ $usuario->papel->name }}</p>
+    <p>{{ $usuario->name }} — {{ $usuario->email }} — papel: {{ $usuario->papelAtivo()->name }}</p>
 
     @if (session('status'))
         <p>{{ session('status') }}</p>

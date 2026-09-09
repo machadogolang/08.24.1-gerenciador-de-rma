@@ -1,7 +1,7 @@
 @extends('temas.v2.layout')
 
 @section('conteudo')
-    <p>{{ $usuario->name }} — {{ $usuario->email }} — papel: {{ $usuario->papel->name }}</p>
+    <p>{{ $usuario->name }} — {{ $usuario->email }} — papel: {{ $usuario->papelAtivo()->name }}</p>
 
     @if (session('status'))
         <p class="centrodeavisos">{{ session('status') }}</p>

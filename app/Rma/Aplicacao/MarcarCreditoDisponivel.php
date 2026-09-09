@@ -23,7 +23,7 @@ final class MarcarCreditoDisponivel
 
     public function marcar(User $ator, Rma $rma): Rma
     {
-        abort_unless($ator->papel->podeGravar(), 403);
+        abort_unless($ator->papelAtivo()->podeGravar(), 403);
         abort_unless($rma->solucao === Solucao::GeradoCredito, 422);
 
         // ARQ-001 — reconstrução manual campo a campo trocada por `comAlteracoes()`:

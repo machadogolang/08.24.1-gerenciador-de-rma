@@ -13,7 +13,7 @@ class UserPolicy
      */
     public function gerenciar(User $ator): bool
     {
-        return $ator->papel->podeGerenciarUsuarios();
+        return $ator->papelAtivo()->podeGerenciarUsuarios();
     }
 
     /**
@@ -23,6 +23,11 @@ class UserPolicy
      */
     public function gerenciarUsuario(User $ator, User $alvo): bool
     {
-        return $ator->papel->podeOperarSobrePapel($alvo->papel);
+        $empresaId = app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId();
+        $papelDoAlvo = $empresaId !== null
+            ? ($alvo->papelNaEmpresa($empresaId) ?? $alvo->papel)
+            : $alvo->papel;
+
+        return $ator->papelAtivo()->podeOperarSobrePapel($papelDoAlvo);
     }
 }

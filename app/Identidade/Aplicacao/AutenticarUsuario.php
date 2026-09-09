@@ -29,7 +29,24 @@ final class AutenticarUsuario
         }
 
         // Bloqueio é checado antes da senha (ordem confirmada no legado).
-        if (! $usuario->papel->podeAutenticar()) {
+        //
+        // EVO-SAAS-001 (S9): com Papel por vínculo, a decisão usa os vínculos ativos:
+        // - usuário sem vínculo (transição/legado) mantém o fallback `users.papel`;
+        // - com vínculos ativos, autentica se pelo menos UM vínculo tiver papel que
+        //   permite autenticar; nega se todos forem Bloqueado/ativos=false.
+        // Semântica documentada; `[DECISAO-PENDENTE-S9-AUTH]` se produto exigir
+        // "empresa obrigatória no login" ou regra distinta de multi-vínculo.
+        $vinculosAtivos = $usuario->empresas()
+            ->wherePivot('ativo', true)
+            ->get();
+
+        $podeAutenticar = $vinculosAtivos->isEmpty()
+            ? $usuario->papel->podeAutenticar()
+            : $vinculosAtivos->contains(
+                fn ($vinculo) => $vinculo->pivot->papel->podeAutenticar()
+            );
+
+        if (! $podeAutenticar) {
             $this->registrar($usuario, $email, $ip, $userAgent, ResultadoDeAcesso::Bloqueado);
             $this->falhar();
         }

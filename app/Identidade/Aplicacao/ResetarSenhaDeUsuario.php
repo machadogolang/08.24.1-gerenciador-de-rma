@@ -11,7 +11,12 @@ final class ResetarSenhaDeUsuario
     {
         // ARQ-003 (`INV-RMA-10`): Supervisor não pode resetar senha de um
         // SuperAdministrador — `podeOperarSobrePapel` já inclui `podeGerenciarUsuarios()`.
-        abort_unless($ator->papel->podeOperarSobrePapel($alvo->papel), 403);
+        $empresaId = app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId();
+        $papelDoAlvo = $empresaId !== null
+            ? ($alvo->papelNaEmpresa($empresaId) ?? $alvo->papel)
+            : $alvo->papel;
+
+        abort_unless($ator->papelAtivo()->podeOperarSobrePapel($papelDoAlvo), 403);
         $alvo->update(['password' => Hash::make($novaSenha)]);
     }
 }

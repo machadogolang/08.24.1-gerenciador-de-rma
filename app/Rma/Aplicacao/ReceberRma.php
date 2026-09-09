@@ -20,7 +20,7 @@ final class ReceberRma
 
     public function receber(User $ator, Rma $rma): Rma
     {
-        abort_unless($ator->papel->podeGravar(), 403);
+        abort_unless($ator->papelAtivo()->podeGravar(), 403);
         abort_unless($rma->status->podeReceber(), 422);
 
         $atualizado = $rma->comAlteracoes([

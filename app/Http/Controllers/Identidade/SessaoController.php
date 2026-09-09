@@ -34,7 +34,7 @@ class SessaoController extends Controller
         $request->session()->put('tema_preferido', $tema->value);
 
         $usuario = Auth::user();
-        $destino = $usuario->papel->podeGerenciarUsuarios()
+        $destino = $usuario->papelAtivo()->podeGerenciarUsuarios()
             ? route('identidade.usuarios.index')
             : route('identidade.perfil.show');
 

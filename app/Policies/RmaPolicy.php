@@ -33,12 +33,12 @@ class RmaPolicy
 
     public function create(User $ator): bool
     {
-        return $ator->papel->podeGravar();
+        return $ator->papelAtivo()->podeGravar();
     }
 
     public function update(User $ator): bool
     {
-        if ($ator->papel->podeGravar()) {
+        if ($ator->papelAtivo()->podeGravar()) {
             return true;
         }
 

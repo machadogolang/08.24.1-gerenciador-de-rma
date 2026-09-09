@@ -22,11 +22,11 @@ final class ReverterRmaParaEntrada
 
     public function reverter(User $ator, Rma $rma): Rma
     {
-        abort_unless($ator->papel->podeGravar(), 403);
+        abort_unless($ator->papelAtivo()->podeGravar(), 403);
         abort_unless($rma->status->podeReverterParaEntrada(), 422);
 
         $mesmoDia = $rma->encaminhadoEm?->isToday() ?? true;
-        abort_unless($mesmoDia || $ator->papel->podeReverterAlemDoMesmoDia(), 403);
+        abort_unless($mesmoDia || $ator->papelAtivo()->podeReverterAlemDoMesmoDia(), 403);
 
         $atualizado = $rma->comAlteracoes([
             'status' => Status::Entrada,

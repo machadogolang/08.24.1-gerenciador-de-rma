@@ -24,7 +24,7 @@ final class ArquivarRma
 
     public function arquivar(User $ator, Rma $rma): Rma
     {
-        abort_unless($ator->papel->podeGerenciarUsuarios(), 403);
+        abort_unless($ator->papelAtivo()->podeGerenciarUsuarios(), 403);
         abort_unless($rma->status->podeArquivar(), 422);
 
         $atualizado = $rma->comAlteracoes([

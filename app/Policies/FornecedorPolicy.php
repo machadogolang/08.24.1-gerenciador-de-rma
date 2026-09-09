@@ -22,16 +22,16 @@ class FornecedorPolicy
 
     public function create(User $ator): bool
     {
-        return $ator->papel->podeGravar();
+        return $ator->papelAtivo()->podeGravar();
     }
 
     public function update(User $ator): bool
     {
-        return $ator->papel->podeGravar();
+        return $ator->papelAtivo()->podeGravar();
     }
 
     public function delete(User $ator): bool
     {
-        return $ator->papel->podeGravar();
+        return $ator->papelAtivo()->podeGravar();
     }
 }

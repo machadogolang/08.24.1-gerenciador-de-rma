@@ -22,7 +22,7 @@ final class EncaminharRma
 
     public function encaminhar(User $ator, Rma $rma, string $destinatarioType, int $destinatarioId): Rma
     {
-        abort_unless($ator->papel->podeGravar(), 403);
+        abort_unless($ator->papelAtivo()->podeGravar(), 403);
         abort_unless($rma->status->podeEncaminhar(), 422);
         abort_unless($destinatarioType !== '' && $destinatarioId > 0, 422);
 

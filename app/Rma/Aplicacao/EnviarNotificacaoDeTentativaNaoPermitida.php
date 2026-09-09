@@ -26,7 +26,7 @@ final class EnviarNotificacaoDeTentativaNaoPermitida
     {
         Log::warning('Tentativa de gravação de RMA não permitida.', [
             'user_id' => $evento->ator->id,
-            'papel' => $evento->ator->papel->name,
+            'papel' => $evento->ator->papelAtivo()->name,
         ]);
     }
 }

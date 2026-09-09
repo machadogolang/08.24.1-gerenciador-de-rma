@@ -28,8 +28,8 @@ class UsuarioController extends Controller
 
         $usuarios = User::query()->orderBy('name')->get()
             ->when(
-                ! $ator->papel->podeGerenciarUsuarios() || $ator->papel !== Papel::SuperAdministrador,
-                fn ($usuarios) => $usuarios->reject(fn (User $u) => $u->papel->ocultoDaListagemDeUsuarios())
+                ! $ator->papelAtivo()->podeGerenciarUsuarios() || $ator->papelAtivo() !== Papel::SuperAdministrador,
+                fn ($usuarios) => $usuarios->reject(fn (User $u) => ($u->papelNaEmpresa(app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId()) ?? $u->papel)->ocultoDaListagemDeUsuarios())
             );
 
         return view_do_tema('identidade.usuarios', ['titulo' => 'Usuários', 'usuarios' => $usuarios]);
@@ -55,7 +55,7 @@ class UsuarioController extends Controller
 
         // ARQ-003: nem por atribuição — Supervisor não pode promover ninguém (nem a si
         // próprio) a SuperAdministrador.
-        abort_unless($request->user()->papel->podeOperarSobrePapel($papelPretendido), 403);
+        abort_unless($request->user()->papelAtivo()->podeOperarSobrePapel($papelPretendido), 403);
 
         $usuario->update(['papel' => $dados['papel']]);
 

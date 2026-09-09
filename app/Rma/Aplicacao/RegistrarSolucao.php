@@ -22,7 +22,7 @@ final class RegistrarSolucao
 
     public function registrar(User $ator, Rma $rma, Solucao $solucao): Rma
     {
-        abort_unless($ator->papel->podeGravar(), 403);
+        abort_unless($ator->papelAtivo()->podeGravar(), 403);
 
         $comSolucao = $rma->comAlteracoes(['solucao' => $solucao]);
 

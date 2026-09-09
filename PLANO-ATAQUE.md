@@ -14,8 +14,8 @@ Baseline real reconferido: HEAD = origin/main = `24ffd4e`, working tree limpo.
 
 ## AGORA - Correcao de regressoes/paridade V2 (rodada do dono, 2026-09-09)
 
-- [R] PAR-V2-THEME-01 - Troca V1 <-> V2 quebrada em rota prefixada (back() volta
-  para a rota que o middleware forca para o tema antigo). Evidencia no addendum.
+- [x] PAR-V2-THEME-01 - Troca V1 <-> V2 em rota prefixada corrigida (9fbeac1);
+  testes PHPUnit 4/4 e Playwright 1/1 verdes.
 - [R] PAR-V2-NAV-02 - Navbar V2: texto centralizado (line-height 39px + padding do
   Bootstrap desloca ~10px), Logout/Menu com seletor errado e breakpoints fixos em
   1190px/11,1%.
@@ -31,7 +31,7 @@ Baseline real reconferido: HEAD = origin/main = `24ffd4e`, working tree limpo.
 
 Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 
-- [ ] ONDA 1 - PAR-V2-THEME-01 + testes de troca.
+- [x] ONDA 1 - PAR-V2-THEME-01 + testes de troca (9fbeac1).
 - [ ] ONDA 2 - PAR-V2-NAV-02 + PAR-V2-DROPDOWN-02 + PAR-V2-CURSOR-02.
 - [ ] ONDA 3 - PAR-V2-DETAIL-02 (A6 funcional).
 - [ ] ONDA 4 - PAR-V2-NOVO-01 (Novo RMA inline).

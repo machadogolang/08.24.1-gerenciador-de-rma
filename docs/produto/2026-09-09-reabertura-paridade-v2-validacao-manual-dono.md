@@ -222,3 +222,17 @@ gigante.
 
 Nenhuma implementacao de codigo aconteceu antes deste addendum; este documento e o
 registro da reproducao (regra do dono desta rodada).
+
+## 13. Resultado pos-correcao - ONDA 1 (PAR-V2-THEME-01)
+
+- Commit local: `9fbeac1` (#FRONT-RMA).
+- `TemaPreferidoController::update()` agora redireciona para a contraparte do
+  outro tema quando o referer e `/v1/...` ou `/v2/...`, preservando caminho,
+  query e fragmento; rota canonica continua com `back()` (a preferencia passa a
+  mandar na view).
+- Testes novos: `tests/Feature/Temas/TrocarTemaEmRotaPrefixadaTest.php` (4 testes /
+  17 assertions, incluindo relogin) e `tests/Browser/ParidadeTrocaTemaPrefixada.spec.ts`.
+- PHPUnit dirigido: 4/4 verdes. Playwright dirigido: 1/1 verde.
+- PUSH NAO REALIZADO.
+
+Proximo: ONDA 2 (navbar/dropdown/cursor).

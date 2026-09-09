@@ -12,6 +12,8 @@
 - [x] P6 - Busca textual integral por contrapartes (fabricante/fornecedor/cliente/
   destinatário) com prova A×B - `13e4c3a`.
 - [ ] P7 - Encaminhar por seleção validada e conclusão Legacy (UX-003/PAR-RMA-008).
+- [x] PAR-V2-THEME-01 (addendum 2026-09-09) - troca V1/V2 em rota prefixada
+  corrigida (9fbeac1; PHPUnit 4/4, Playwright 1/1).
 - [ ] P8 - Anotações V2 dedicada, confirmação de remoção, UX-001/UX-004.
 - [ ] P9 - Inventário de rotas/plugins residuais (avisar, enviar_email,
   representantes, marcarcomo, pomodoro já classificado J).

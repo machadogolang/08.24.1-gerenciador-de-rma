@@ -73,7 +73,9 @@
         </div>
 
         <div id="novo_rma" class="tab-pane fade">
-            <p><a href="{{ rota_tema('rmas.create') }}" class="acao acao--primaria btn formSubmit">Abrir novo RMA</a></p>
+            {{-- PAR-V2-NOVO-01 - formulario operacional inline do 15.8.1 na propria
+            aba; /create continua existindo como fallback e usa o mesmo partial. --}}
+            @include('temas.v2.rma._form_novo_v2')
         </div>
 
         <div id="entrada" class="tab-pane fade">

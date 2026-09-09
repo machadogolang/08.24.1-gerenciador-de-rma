@@ -6,6 +6,7 @@ use App\Models\Fabricante;
 use App\Models\Fornecedor;
 use App\Parceiros\Aplicacao\EncontrarOuCriarCliente;
 use App\Rma\Dominio\Eventos\RmaCriado;
+use App\Rma\Dominio\Prioridade;
 use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
 use Illuminate\Support\Facades\Auth;
@@ -68,6 +69,18 @@ final class CriarRma
             ? Fornecedor::query()->find($dados['fornecedor_id'])
             : null;
 
+        // PAR-V2-NOVO-01 - prioridade do formulario Novo (15.8.1): enviada como
+        // baixa/media/alta e convertida para o enum de dominio na criacao.
+        $prioridade = null;
+        if (array_key_exists('prioridade', $dados)) {
+            $prioridade = match (mb_strtolower(trim((string) $dados['prioridade']))) {
+                'baixa' => Prioridade::Baixa,
+                'media', 'normal' => Prioridade::Media,
+                'alta' => Prioridade::Alta,
+                default => null,
+            };
+        }
+
         $rma = new Rma(
             id: null,
             descricao: $dados['descricao'],
@@ -85,10 +98,13 @@ final class CriarRma
             // mas este caso de uso descartava tudo silenciosamente ao montar `new
             // Rma(...)` do zero; corrigido para repassar o que o form manda.
             marcarestoque: $dados['marcarestoque'] ?? true,
+            prioridade: $prioridade,
             nfcompra: $dados['nfcompra'] ?? null,
             nfcompraEmissao: filled($dados['nfcompra_emissao'] ?? null) ? new \DateTimeImmutable($dados['nfcompra_emissao']) : null,
+            nfcompraChave: $dados['nfcompra_chave'] ?? null,
             nfvenda: $dados['nfvenda'] ?? null,
             nfvendaEmissao: filled($dados['nfvenda_emissao'] ?? null) ? new \DateTimeImmutable($dados['nfvenda_emissao']) : null,
+            nfvendaChave: $dados['nfvenda_chave'] ?? null,
             pn: $dados['pn'] ?? null,
             snid: $dados['snid'] ?? null,
         );

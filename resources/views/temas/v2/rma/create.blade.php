@@ -9,9 +9,7 @@
         </ul>
     @endif
 
-    <form method="POST" action="{{ rota_tema('rmas.store') }}" class="form-horizontal">
-        @csrf
-        @include('temas.v2.rma._campos', ['registro' => null, 'fabricantes' => $fabricantes, 'fornecedores' => $fornecedores])
-        <button type="submit" class="btn formSubmit">Salvar</button>
-    </form>
+    {{-- PAR-V2-NOVO-01 - fallback de rota /create usa o mesmo formulario inline
+    da aba Novo do Tema V2 (15.8.1), sem formulario vertical duplicado. --}}
+    @include('temas.v2.rma._form_novo_v2')
 @endsection

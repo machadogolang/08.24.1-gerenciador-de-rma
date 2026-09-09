@@ -29,6 +29,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // PAR-V2-NOVO-01 - condicional do 15.8.1 (page/novo_rma.php + JS do legado):
+    // Origem = Cliente mostra o bloco NF Venda/Cliente; qualquer outra origem mostra
+    // NF Compra/Fornecedor. Funciona na aba #novo_rma e na rota /create (mesmo
+    // partial), sem codigo legado inline.
+    document.querySelectorAll('.form-novo-v2').forEach((formulario) => {
+        const origem = formulario.querySelector('select[name="origem"]');
+        const blocoCliente = formulario.querySelector('#cli');
+        const blocoOutraOrigem = formulario.querySelector('#outraorigem');
+        if (! origem || ! blocoCliente || ! blocoOutraOrigem) return;
+
+        const atualizarBloco = () => {
+            const ehCliente = origem.value === 'Cliente';
+            blocoCliente.style.display = ehCliente ? 'block' : 'none';
+            blocoOutraOrigem.style.display = ehCliente ? 'none' : 'block';
+        };
+
+        origem.addEventListener('change', atualizarBloco);
+        atualizarBloco();
+    });
+
     // CP17 - fora de `v2.rmas.index` o header aponta de volta para lá com uma âncora
     // (`#entrada`, `#pesquisar` etc., ver `temas/v2/layout.blade.php`); ao chegar,
     // abre a aba correspondente sem precisar de reload nem de rota própria por aba.

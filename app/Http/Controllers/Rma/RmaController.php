@@ -126,6 +126,11 @@ class RmaController extends Controller
             // fonte real: contagem de RMAs por `status`/`solucao`. Consulta de
             // composição direta (não é caso de uso/regra de negócio nova).
             'contadores' => $this->contadoresDoPainel(),
+            // PAR-V2-NOVO-01 - listas Eloquent para o formulario inline da aba Novo
+            // (a index ja busca mapas de nomes para as tabelas; aqui sao listas
+            // para selects do formulario, mesmo padrao de `RmaController::create`).
+            'fabricantesParaNovo' => Fabricante::query()->orderBy('nome')->get(),
+            'fornecedoresParaNovo' => Fornecedor::query()->orderBy('nome')->get(),
         ]);
     }
 

@@ -106,3 +106,13 @@ Não executei `git push` em nenhum momento desta sessão. Porém o reflog de
 atual aponta para `16c1913` (commit documental da Fase A); os commits de código
 (`22c48a7`, `61222c8`, `d1c85dc`, `1938247`, `35f089e`) continuam **somente
 locais** (`main ahead 5`). Nenhum código desta frente foi enviado ao remoto.
+
+## Nota de QA adicional (Playwright existente)
+
+A regressão Playwright ampla (Smokes/Fluxos/Auditoria) não é executável de forma
+confiável neste estado do ambiente: os specs esperam o Legacy em `:8094` (parado)
+e foram desenhados para rodar em série com usuário dedicado — a execução em
+paralelo com o usuário compartilhado muda `tema_preferido` entre testes e gera
+falsos negativos (ex.: esperar `#FIXADO` com o usuário já em V2). O spec dirigido
+`ConsistenciaVisualControles.spec.ts` (9/9) é a prova desta frente; a regressão
+ampla deve ser rerodada em série com Legacy de pé.

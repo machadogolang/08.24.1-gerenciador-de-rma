@@ -67,15 +67,14 @@ Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
   + V3 por sessao de QA local ate a matriz fechar.
 - [R] A4 - Residuos de botoes: nenhum novo confirmado alem de V3 nao ter acoes de
   detalhe (aguarda T3-11).
-- [x] A5 - Paridade detalhe RMA Tema V1 (Legacy 14.6.1).
-  - [x] A5.1 - Reproducao/documentacao com metricas e screenshots
-    (`docs/produto/2026-09-09-addendum-paridade-detalhe-rma-v1-v2.md`, PAR-DET-V1-01).
-  - [x] A5.2 - Restaurar estrutura/identidade do `show` V1 (BOLETIM DE DEFEITO,
-    grupos 4 colunas, celulas densas historicas) - e91cdae.
-  - [x] A5.3 - Restaurar informacoes com prova de campo (dominio/relacionamento/
-    snapshot legado; sem migration nova) - e91cdae.
-  - [x] A5.4 - Browser regression V1 (listagens/show/edit/acoes) - 1fc2a86 +
-    regressao 21/21 Playwright.
+- [R] A5 - Paridade detalhe RMA Tema V1 (Legacy 14.6.1) - REABERTO por
+  regressao funcional (PAR-DET-V1-EDIT-01/ACTION-01/STOCK-01).
+  - [x] A5.1 - Estrutura visual BOLETIM DE DEFEITO restaurada.
+  - [x] A5.2 - Campos historicos apresentados.
+  - [ ] A5.3 - Restaurar edicao inline do detalhe (inputs reais + persistencia).
+  - [ ] A5.4 - Restaurar controles estoque/credito (checkboxes reais).
+  - [ ] A5.5 - Restaurar composicao operacional das acoes (rodape esquerda/direita).
+  - [ ] A5.6 - QA funcional + visual contra Legacy (digitar/salvar/reload).
 - [x] A6 - Paridade detalhe RMA Tema V2 (Legacy 15.8.1).
   - [x] A6.1 - Reproducao/documentacao com metricas e screenshots
     (`docs/produto/2026-09-09-addendum-paridade-detalhe-rma-v1-v2.md`, PAR-DET-V2-01).

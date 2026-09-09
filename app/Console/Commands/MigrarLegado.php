@@ -10,6 +10,9 @@ use App\Rma\Infraestrutura\Migracao\Importadores\ImportarLogsDeAcesso;
 use App\Rma\Infraestrutura\Migracao\Importadores\ImportarModificacoesDeRma;
 use App\Rma\Infraestrutura\Migracao\Importadores\ImportarRmas;
 use App\Rma\Infraestrutura\Migracao\Importadores\ImportarUsuarios;
+use App\Compartilhado\Tenant\ContextoDeTenant;
+use App\Models\Company;
+use App\Models\CompanyUser;
 use App\Rma\Infraestrutura\Migracao\RelatorioDeReconciliacao;
 use Illuminate\Console\Command;
 
@@ -35,6 +38,12 @@ final class MigrarLegado extends Command
         $dryRun = (bool) $this->option('dry-run');
         $forcar = (bool) $this->option('forcar');
 
+        // EVO-SAAS-001 (S11) — o tenant histórico é EXPLÍCITO e determinístico; o
+        // Observer preenche tenant_id em todas as entidades tenant-scoped criadas pelos
+        // importadores, sem depender de request/ContextoDeTenant vazio.
+        $cell = Company::query()->where('nome', 'CellSystem')->firstOrFail();
+        app(ContextoDeTenant::class)->definir($cell);
+
         if ($dryRun) {
             $this->warn('--dry-run: nenhuma escrita será feita, só tradução + contagem + anomalias.');
         }
@@ -46,7 +55,13 @@ final class MigrarLegado extends Command
         }
 
         $passos = [
-            'usuarios' => fn () => (new ImportarUsuarios)->executar($relatorio, $dryRun),
+            'usuarios' => function () use ($relatorio, $dryRun, $cell): void {
+                (new ImportarUsuarios)->executar($relatorio, $dryRun);
+
+                if (! $dryRun) {
+                    $this->vincularUsuariosImportados($cell);
+                }
+            },
             'clientes' => fn () => (new ImportarClientes)->executar($relatorio, $dryRun),
             'fabricantes' => fn () => (new ImportarFabricantes)->executar($relatorio, $dryRun),
             'fornecedores' => fn () => (new ImportarFornecedores)->executar($relatorio, $dryRun),
@@ -85,5 +100,28 @@ final class MigrarLegado extends Command
         }
 
         return self::SUCCESS;
+    }
+    /**
+     * EVO-SAAS-001 (S11) — usuários importados entram no vínculo CellSystem com o papel
+     * preservado de `users.papel` (mesmo padrão do backfill S3).
+     */
+    private function vincularUsuariosImportados(Company $cell): void
+    {
+        $agora = now();
+
+        $usuariosSemVinculo = \App\Models\User::query()
+            ->whereDoesntHave('empresas', fn ($q) => $q->where('companies.id', $cell->id))
+            ->get();
+
+        foreach ($usuariosSemVinculo as $usuario) {
+            CompanyUser::query()->insertOrIgnore([
+                'company_id' => $cell->id,
+                'user_id' => $usuario->id,
+                'papel' => $usuario->papel->name,
+                'ativo' => true,
+                'created_at' => $agora,
+                'updated_at' => $agora,
+            ]);
+        }
     }
 }

@@ -108,4 +108,31 @@ class MigrarLegadoComandoTest extends MigracaoTestCase
         $this->assertSame(1, Rma::query()->where('numero_legado', 3001)->count());
         $this->assertSame(1, ModificacaoDeRma::query()->count());
     }
+    public function test_migracao_carimba_cell_system_e_vincula_usuarios(): void
+    {
+        Storage::fake('local');
+        $this->inserirFixtureCompleta();
+
+        $this->artisan('rma:migrar-legado')->assertSuccessful();
+
+        $cellId = DB::table('companies')->where('nome', 'CellSystem')->value('id');
+        $this->assertNotNull($cellId);
+
+        foreach ([
+            'clientes',
+            'fabricantes',
+            'fornecedores',
+            'assistencias_tecnicas',
+            'rmas',
+            'modificacoes_de_rma',
+        ] as $tabela) {
+            $this->assertSame(0, DB::table($tabela)->whereNull('tenant_id')->count(), $tabela);
+        }
+
+        $this->assertSame(1, DB::table('company_user')
+            ->where('company_id', $cellId)
+            ->where('user_id', DB::table('users')->where('email', 'ana@example.com')->value('id'))
+            ->where('ativo', true)
+            ->count());
+    }
 }

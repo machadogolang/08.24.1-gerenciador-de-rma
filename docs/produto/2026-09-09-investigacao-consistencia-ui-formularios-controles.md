@@ -505,3 +505,28 @@ Medições completas em arquivos temporários fora do repositório
 apenas ferramenta da Fase A. Nenhum screenshot novo foi necessário para fechar
 os achados; screenshots podem ser usados na Fase B/C como evidência adicional.
 
+
+---
+
+## 7. Status pós-ondas C1–C6 (mesma sessão)
+
+- UI-AUD-001/002/003 (título duplicado V1): corrigidos em `61222c8`/`1938247`;
+  contrato no browser 9/9 inclui um único título visível.
+- UI-AUD-004/005 (formulários V1): corrigidos em `22c48a7` via `.tabela-form-v1`;
+  contrato B do browser valida os 4 tipos de parceiro.
+- UI-AUD-006/007 (usuários V1/V2): corrigidos em `22c48a7`; contratos D/D2 verdes.
+- UI-AUD-008 (cursor): corrigido nos dois temas; contrato A verde.
+- UI-AUD-009 (dropdown V2): corrigido em `22c48a7`; contrato F verde.
+- UI-AUD-010 (hífen operacional): substituições executadas apenas nos arquivos
+  listados; contrato verificado por busca dirigida.
+- UI-AUD-011 (Controle/UI-05): corrigido em `22c48a7`; contrato E verde; aceite
+  viewport final fica na UI-08.
+- UI-AUD-012: observado sem impacto visual, sem correção nesta rodada.
+- UI-AUD-013 (ciclo de vida): corrigido em `22c48a7`.
+- UI-AUD-014/015/017/018: sem alteração (fidelidade/OK).
+- UI-AUD-016: candidatas registradas para UI-07, sem alteração.
+- PHPUnit completo real: 515 testes / 1421 assertions verdes; Vite build verde.
+- PUSH NÃO REALIZADO.
+
+Pendências reais para a próxima continuação: C7 (varredura residual em mais
+superfícies), UI-08 (regressão viewport/print) e fechamento formal de handoff.

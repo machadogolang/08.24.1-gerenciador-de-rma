@@ -73,3 +73,27 @@ documentação) concluída.
 - Frente FRONT-003/UI-09 em Fase A commitada; correções começam na onda C1.
 - Suíte PHPUnit anterior: 515 testes / 1421 assertions, 100% verde (baseline a
   reconferir após as ondas); Vite build verde; PUSH NÃO REALIZADO.
+
+---
+
+## Checkpoint final — FRONT-003/UI-09 (mesma sessão, após ondas C1–C6)
+
+- Investigação documentada em commit `16c1913`.
+- Ondas C1–C6 implementadas e commitadas:
+  - `22c48a7` — #FRONT-RMA - Corrige consistencia de controles, formularios e
+    usuarios (V1/V2): cursor de selects, hífen operacional, contrato de
+    formulários V1 (parceiros + edição RMA), usuários V1/V2, Controle/UI-05,
+    dropdown V2 e controles de ciclo de vida.
+  - `61222c8` — #FRONT-RMA - Remove duplicidade visual dos relatorios no Tema V1.
+  - `1938247` — #FRONT-RMA - Escopa sr-only dos relatorios ao painel ativo no
+    Tema V1 (correção de regressão do teste `PainelNovoTemaV1Test`).
+- QA dirigido: `d1c85dc` — #QA-RMA - Cobre consistencia visual de controles no
+  browser (`tests/Browser/ConsistenciaVisualControles.spec.ts`, 9/9 verdes).
+- PHPUnit completo real: **515 testes / 1421 assertions, 100% verde**
+  (duração ~132s). Vite build verde. `git diff --check` pendente de execução.
+- P5/P6 continuam concluídos e presentes; nada reimplementado.
+- Pendências reais da frente: varredura residual C7 em mais superfícies/viewports
+  (1366/1440/1600 e 390/768 no V2), regressão UI-08/print media e a lista de
+  decisões/produto já registrada (UI-06, UI-07 com órfãs UI-AUD-016,
+  PAR-RMA-008, UX-003/P7).
+- PUSH NÃO REALIZADO.

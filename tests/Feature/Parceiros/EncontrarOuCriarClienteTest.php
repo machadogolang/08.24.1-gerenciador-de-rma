@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Parceiros;
 
+use App\Compartilhado\Tenant\ContextoDeTenant;
 use App\Models\Cliente;
+use App\Models\Company;
 use App\Parceiros\Aplicacao\EncontrarOuCriarCliente;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -10,6 +12,13 @@ use Tests\TestCase;
 class EncontrarOuCriarClienteTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        app(ContextoDeTenant::class)->definir(Company::query()->where('nome', 'CellSystem')->firstOrFail());
+    }
 
     public function test_nome_novo_cria_cliente(): void
     {

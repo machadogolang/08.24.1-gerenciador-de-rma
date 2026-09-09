@@ -133,8 +133,8 @@ docker compose exec -T laravel.test php artisan test
 
 ## Atualização final — ondas S9 a S12 + S3.6
 
-**SHA inicial desta rodada:** `46c8204`. **SHA final:** `201f3ff` (working tree limpa;
-origin será sincronizado por fora). PUSH NÃO REALIZADO.
+**SHA inicial desta rodada:** `46c8204`. **SHA final:** `2c5fde2` (working tree limpa;
+origin sincronizado por fora até `ff2d6fa`). PUSH NÃO REALIZADO.
 
 ### Commits desta rodada
 - `375d26b` — Reconcilia estado atual do EVO-SAAS-001 antes da onda S9.

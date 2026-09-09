@@ -5,7 +5,7 @@
         <p class="centrodeavisos">{{ session('status') }}</p>
     @endif
 
-    <table class="table Tabelinha-Table">
+    <table class="table Tabelinha-Table tabela-usuarios-v2">
         <thead>
             <tr>
                 <th>Nome</th>

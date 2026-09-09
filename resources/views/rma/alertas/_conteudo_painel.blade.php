@@ -12,7 +12,7 @@
                     @foreach ($rmas as $registro)
                         <li>
                             <a href="{{ route('rmas.show', $registro->id) }}" class="acao acao--secundaria acao--compacta">
-                                #{{ $registro->id }} — {{ $registro->descricao }}
+                                #{{ $registro->id }} - {{ $registro->descricao }}
                             </a>
                         </li>
                     @endforeach

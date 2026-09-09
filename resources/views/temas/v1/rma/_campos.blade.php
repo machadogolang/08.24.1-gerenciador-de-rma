@@ -1,6 +1,6 @@
 {{-- Formulário "Novo RMA"/edição — HTML <table> autoral (`.tablenovo`), confirmado em
 `14.6.1/index.php` (painel "Novo"). TEMA V1 não usa nenhum framework CSS/grid. --}}
-<table class="tablenovo">
+<table class="tablenovo tabela-form-v1">
     <tr>
         <td>Descrição</td>
         <td><input class="novo_formInput" type="text" name="descricao" value="{{ old('descricao', $registro?->descricao) }}" required></td>
@@ -9,7 +9,7 @@
         <td>Fabricante</td>
         <td>
             <select name="fabricante_id" class="formSelect">
-                <option value="">—</option>
+                <option value="">-</option>
                 @foreach ($fabricantes as $fabricante)
                     <option value="{{ $fabricante->id }}" @selected(old('fabricante_id', $registro?->fabricanteId) == $fabricante->id)>
                         {{ $fabricante->nome }}
@@ -22,7 +22,7 @@
         <td>Fornecedor</td>
         <td>
             <select name="fornecedor_id" class="formSelect">
-                <option value="">—</option>
+                <option value="">-</option>
                 @foreach ($fornecedores as $fornecedor)
                     <option value="{{ $fornecedor->id }}" @selected(old('fornecedor_id', $registro?->fornecedorId) == $fornecedor->id)>
                         {{ $fornecedor->nome }}

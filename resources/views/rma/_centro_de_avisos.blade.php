@@ -96,7 +96,7 @@
                     @foreach ($rmas as $registro)
                         <li>
                             <a href="{{ rota_tema('rmas.show', ['rma' => $registro->id]) }}">
-                                #{{ $registro->id }} — {{ $registro->descricao }}
+                                #{{ $registro->id }} - {{ $registro->descricao }}
                             </a>
                         </li>
                     @endforeach

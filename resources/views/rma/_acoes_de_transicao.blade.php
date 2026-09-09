@@ -15,14 +15,14 @@ tema estiliza em seu SCSS. Rotas, CSRF, Gates, regras de status e inputs preserv
         <form method="POST" action="{{ route('rmas.encaminhar', $registro->id) }}">
             @csrf
             <label>Tipo
-                <select name="destinatario_tipo">
+                <select name="destinatario_tipo" class="formSelect acao-controle-select">
                     <option value="assistencia_tecnica">Assistência técnica</option>
                     <option value="fornecedor">Fornecedor</option>
                     <option value="fabricante">Fabricante</option>
                 </select>
             </label>
             <label>Destinatário (id)
-                <input type="number" name="destinatario_id">
+                <input type="number" name="destinatario_id" class="acao-controle-input">
             </label>
             <button type="submit" class="acao acao--operacional">Encaminhar</button>
         </form>
@@ -32,7 +32,7 @@ tema estiliza em seu SCSS. Rotas, CSRF, Gates, regras de status e inputs preserv
         <form method="POST" action="{{ route('rmas.concluir', $registro->id) }}">
             @csrf
             <label>Solução
-                <select name="solucao">
+                <select name="solucao" class="formSelect acao-controle-select">
                     @foreach (\App\Rma\Dominio\Solucao::cases() as $solucao)
                         <option value="{{ $solucao->value }}">{{ $solucao->value }}</option>
                     @endforeach
@@ -59,7 +59,7 @@ tema estiliza em seu SCSS. Rotas, CSRF, Gates, regras de status e inputs preserv
     <form method="POST" action="{{ route('rmas.solucao', $registro->id) }}">
         @csrf
         <label>Registrar solução (a qualquer momento)
-            <select name="solucao">
+            <select name="solucao" class="formSelect acao-controle-select">
                 @foreach (\App\Rma\Dominio\Solucao::cases() as $solucao)
                     <option value="{{ $solucao->value }}" @selected($registro->solucao === $solucao)>{{ $solucao->value }}</option>
                 @endforeach

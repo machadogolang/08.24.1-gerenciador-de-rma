@@ -251,3 +251,75 @@ a:focus-visible {
     outline: 1px solid #f67d7d;
     outline-offset: 1px;
 }
+
+// UI-AUD-008 — mesmo contrato universal de selects no TEMA V2 (depois do Bootstrap;
+// regra simples por tema, sem duplicação por classe).
+select:not(:disabled) {
+    cursor: pointer;
+}
+
+select:disabled {
+    cursor: not-allowed;
+}
+
+// UI-AUD-007 — Usuários V2: células com ações em linha quando há espaço; flex
+// escopado à tabela (sem flex global nos forms) para remover o empilhamento e a
+// linha de 85px. Larguras mínimas preservam placeholders legíveis.
+.tabela-usuarios-v2 {
+    table-layout: fixed;
+
+    th:nth-child(1) { width: 15%; }
+    th:nth-child(2) { width: 18%; }
+    th:nth-child(3) { width: 32%; }
+    th:nth-child(4) { width: 35%; }
+
+    .form-inline {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 4px;
+
+        select.form-control {
+            flex: 0 0 170px;
+            width: 170px;
+        }
+
+        input.form-control {
+            flex: 0 0 120px;
+            width: 120px;
+        }
+
+        .formSubmit {
+            flex: 0 0 88px;
+            width: 88px;
+        }
+    }
+}
+
+// UI-AUD-013 — controles de ciclo de vida (detalhe RMA V2): selects/input recebem
+// a mesma linguagem `.form-control` do tema, em largura contida na linha da ação.
+.acoes-de-transicao {
+    .form-control {
+        display: inline-block;
+        width: 220px;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    label {
+        display: block;
+    }
+}
+
+// UI-AUD-009 — override explícito do dropdown: `.nav-v2 li > a` alcança também os
+// itens do menu (o `li` é descendente). Aqui a regra de maior especificidade limita
+// os itens do dropdown a 25px, sem sobreposição de área clicável.
+.nav-v2 .dropdown-menu > li > a,
+.nav-v2 .dropdown-menu > li > form .link-como-item-dropdown {
+    display: block;
+    box-sizing: border-box;
+    height: 25px;
+    padding: 3px 5px;
+    line-height: 19px;
+}

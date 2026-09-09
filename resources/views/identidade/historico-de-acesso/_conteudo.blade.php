@@ -17,8 +17,8 @@
                 <tr>
                     <td>{{ $tentativa->created_at }}</td>
                     <td>{{ $tentativa->email_informado }}</td>
-                    <td>{{ $tentativa->user?->name ?? '—' }}</td>
-                    <td>{{ $tentativa->ip ?? '—' }}</td>
+                    <td>{{ $tentativa->user?->name ?? '-' }}</td>
+                    <td>{{ $tentativa->ip ?? '-' }}</td>
                     <td>{{ $tentativa->resultado->name }}</td>
                 </tr>
             @empty

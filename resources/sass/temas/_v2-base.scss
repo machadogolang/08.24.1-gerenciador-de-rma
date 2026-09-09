@@ -111,8 +111,8 @@ $vermelho-hover-v2: #f67d7d;
             border: 0;
         }
 
-        a,
-        .link-como-item-dropdown {
+        > a,
+        .logoutx .link-como-item-dropdown {
             margin: 0;
             border: 0;
             border-radius: 0;
@@ -121,14 +121,14 @@ $vermelho-hover-v2: #f67d7d;
             line-height: 39px;
         }
 
-        .link-como-item-dropdown {
+        .logoutx .link-como-item-dropdown {
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        a,
-        .link-como-item-dropdown {
+        > a,
+        .logoutx .link-como-item-dropdown {
             &:active,
             &:hover,
             &:focus {

@@ -57,7 +57,7 @@ Campos do legado não reproduzidos aqui, por classificação explícita (VIS-V1-
             <td><div style="margin-left:10px;">Fabricante:</div></td>
             <td>
                 <select class="novo_formInput" name="fabricante_id">
-                    <option value="">—</option>
+                    <option value="">-</option>
                     @foreach ($fabricantes as $fabricante)
                         <option value="{{ $fabricante->id }}" @selected(old('fabricante_id') == $fabricante->id)>{{ $fabricante->nome }}</option>
                     @endforeach

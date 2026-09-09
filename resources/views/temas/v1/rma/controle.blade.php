@@ -27,21 +27,21 @@ nenhum caso de uso novo foi criado para esta tela. --}}
 
         <form method="POST" action="{{ route('parceiros.fornecedores.store') }}">
             @csrf
-            <p class="fl formLabelPanel">FORNECEDOR — NOME:</p>
+            <p class="fl formLabelPanel">FORNECEDOR  - NOME:</p>
             <p class="fl"><input class="formInputPanel" type="text" name="nome" maxlength="255" required></p>
             <p class="fl"><button class="formButtonEnviarPanel" type="submit">ADICIONAR</button></p>
             <div style="height:10px;clear:both;"></div>
         </form>
         <form method="POST" action="{{ route('parceiros.fabricantes.store') }}">
             @csrf
-            <p class="fl formLabelPanel">FABRICANTE — NOME:</p>
+            <p class="fl formLabelPanel">FABRICANTE  - NOME:</p>
             <p class="fl"><input class="formInputPanel" type="text" name="nome" maxlength="255" required></p>
             <p class="fl"><button class="formButtonEnviarPanel" type="submit">ADICIONAR</button></p>
             <div style="height:10px;clear:both;"></div>
         </form>
         <form method="POST" action="{{ route('parceiros.assistencias-tecnicas.store') }}">
             @csrf
-            <p class="fl formLabelPanel">ASSISTÊNCIA — NOME:</p>
+            <p class="fl formLabelPanel">ASSISTÊNCIA  - NOME:</p>
             <p class="fl"><input class="formInputPanel" type="text" name="nome" maxlength="255" required></p>
             <p class="fl"><button class="formButtonEnviarPanel" type="submit">ADICIONAR</button></p>
             <div style="height:10px;clear:both;"></div>
@@ -71,7 +71,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
     pendente — não implementado por inferência, só a pendência fica registrada aqui. --}}
     <details>
         <summary class="formTitlePanel">DELETAR UMA SOLICITACAO DE RMA</summary>
-        <p>Pendente — exclusão definitiva de RMA depende de decisão de produto/segurança
+        <p>Pendente - exclusão definitiva de RMA depende de decisão de produto/segurança
             ainda não tomada (ver <code>VIS-V1-011</code> em
             <code>docs/produto/checklist-paridade-visual-v1-runtime.md</code>). Hoje só
             existe arquivamento (reversível), acima.</p>
@@ -81,7 +81,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
     produto pendente. --}}
     <details>
         <summary class="formTitlePanel">DELETAR UM USUARIO</summary>
-        <p>Pendente — exclusão definitiva de usuário depende de decisão de produto/segurança
+        <p>Pendente - exclusão definitiva de usuário depende de decisão de produto/segurança
             ainda não tomada (ver <code>VIS-V1-012</code> em
             <code>docs/produto/checklist-paridade-visual-v1-runtime.md</code>).</p>
     </details>
@@ -140,6 +140,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
     <details>
         <summary class="formTitlePanel">LISTAR SOLICITACOES DE RMA ARQUIVADAS</summary>
 
+        <div class="controle-arquivados-scroll">
         @if ($arquivados->isEmpty())
             <p>Nenhum item arquivado</p>
         @else
@@ -163,6 +164,7 @@ nenhum caso de uso novo foi criado para esta tela. --}}
                 </tbody>
             </table>
         @endif
+        </div>
     </details>
 
     {{-- #09 MUDAR SENHA — legado troca só a senha do usuário logado (ver

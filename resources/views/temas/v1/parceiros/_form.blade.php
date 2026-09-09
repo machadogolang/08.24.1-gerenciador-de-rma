@@ -15,7 +15,7 @@
             @method('PUT')
         @endif
 
-        <table class="tablenovo">
+        <table class="tablenovo tabela-form-v1">
             <tr>
                 <td>Nome</td>
                 <td><input class="novo_formInput" type="text" name="nome" value="{{ old('nome', $registro->nome) }}" required></td>
@@ -74,7 +74,7 @@
                 <td>UF</td>
                 <td>
                     <select name="uf" class="formSelect">
-                        <option value="">—</option>
+                        <option value="">-</option>
                         @foreach (\App\Compartilhado\Uf::cases() as $uf)
                             <option value="{{ $uf->value }}" @selected(old('uf', $registro->uf?->value) === $uf->value)>
                                 {{ $uf->value }}

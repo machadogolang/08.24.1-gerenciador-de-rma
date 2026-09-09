@@ -10,7 +10,7 @@ TEMA V2 (design.md "Organização Vite/Sass por tema"). --}}
     <label class="col-sm-2 control-label">Fabricante</label>
     <div class="col-sm-6">
         <select name="fabricante_id" class="form-control formSelect">
-            <option value="">—</option>
+            <option value="">-</option>
             @foreach ($fabricantes as $fabricante)
                 <option value="{{ $fabricante->id }}" @selected(old('fabricante_id', $registro?->fabricanteId) == $fabricante->id)>
                     {{ $fabricante->nome }}
@@ -23,7 +23,7 @@ TEMA V2 (design.md "Organização Vite/Sass por tema"). --}}
     <label class="col-sm-2 control-label">Fornecedor</label>
     <div class="col-sm-6">
         <select name="fornecedor_id" class="form-control formSelect">
-            <option value="">—</option>
+            <option value="">-</option>
             @foreach ($fornecedores as $fornecedor)
                 <option value="{{ $fornecedor->id }}" @selected(old('fornecedor_id', $registro?->fornecedorId) == $fornecedor->id)>
                     {{ $fornecedor->nome }}

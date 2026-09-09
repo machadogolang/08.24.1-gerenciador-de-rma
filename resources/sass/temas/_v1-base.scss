@@ -926,3 +926,109 @@ a:focus-visible {
         color: rgba(255, 255, 255, 0.8);
     }
 }
+
+// UI-AUD-008 — todo select habilitado comunica interatividade; disabled não usa
+// pointer. Regra base única do TEMA V1 (contrato universal; geometria continua por
+// classe/contexto).
+select:not(:disabled) {
+    cursor: pointer;
+}
+
+select:disabled {
+    cursor: not-allowed;
+}
+
+// UI-AUD-004/005 — contrato de formulário vertical do TEMA V1 (parceiros e edição
+// RMA): colunas de rótulo/controle fixas e controles do mesmo papel com a mesma
+// largura útil. Escopo é local (`.tabela-form-v1`); NÃO altera selects globais de
+// telas históricas (painel Novo etc.). `box-sizing:border-box` aqui evita o
+// transbordo de 4px já medido (content-box do `.novo_formInput` em célula larga).
+.tabela-form-v1 {
+    table-layout: fixed;
+
+    td:first-child {
+        width: 36%;
+        text-align: left;
+    }
+
+    td:last-child {
+        width: 64%;
+        text-align: left;
+    }
+
+    input,
+    select,
+    textarea {
+        box-sizing: border-box;
+    }
+
+    .novo_formInput,
+    select,
+    textarea {
+        width: 100%;
+    }
+
+    select {
+        height: 22px;
+    }
+
+    textarea {
+        padding: 2px;
+    }
+}
+
+// UI-AUD-006 — Usuários V1: células sem espremer; ações da mesma classe com a
+// mesma largura; contrário do encolhimento por flex observado (RESETAR em 51px).
+.tabela-usuarios-v1 {
+    th:nth-child(1) { width: 18%; }
+    th:nth-child(2) { width: 22%; }
+    th:nth-child(3) { width: 20%; }
+    th:nth-child(4) { width: 40%; }
+
+    .form-usuario-v1 {
+        flex-wrap: nowrap;
+
+        .formInputPanel {
+            flex: 0 0 110px;
+            width: 110px;
+        }
+
+        .formButtonEnviarPanel {
+            flex: 0 0 75px;
+            width: 75px;
+        }
+    }
+}
+
+// UI-AUD-011/UI-05 — Controle V1: coluna de rótulo com largura fixa para os três
+// formulários de representante iniciarem inputs/botões na mesma coluna. `.formLabelPanel`
+// só é consumido por esta tela (verificado por busca de views).
+.formLabelPanel {
+    width: 180px;
+}
+
+// Overflow local da tabela de arquivados (sem arrastar o menu/página).
+.controle-arquivados-scroll {
+    overflow-x: auto;
+}
+
+// UI-AUD-013 — controles de ciclo de vida (detalhe RMA V1): geometria contida e
+// alinhada com a gramática do painel.
+.acoes-de-transicao {
+    .acao-controle-select {
+        width: 186px;
+        height: 22px;
+        box-sizing: border-box;
+    }
+
+    .acao-controle-input {
+        box-sizing: border-box;
+        width: 140px;
+        height: 22px;
+        padding: 0 2px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        background-color: #26251f;
+        color: #fff;
+        font-size: 12px;
+    }
+}

@@ -73,7 +73,7 @@
             <label class="col-sm-2 control-label">UF</label>
             <div class="col-sm-6">
                 <select name="uf" class="form-control formSelect">
-                    <option value="">—</option>
+                    <option value="">-</option>
                     @foreach (\App\Compartilhado\Uf::cases() as $uf)
                         <option value="{{ $uf->value }}" @selected(old('uf', $registro->uf?->value) === $uf->value)>
                             {{ $uf->value }}

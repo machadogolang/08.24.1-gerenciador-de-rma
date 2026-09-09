@@ -19,7 +19,7 @@ marcado disponível abaixo.</p>
         @foreach ($aguardandoCredito as $registro)
             <li>
                 <a href="{{ route('rmas.show', $registro->id) }}">
-                    #{{ $registro->id }} — {{ $registro->descricao }}
+                    #{{ $registro->id }} - {{ $registro->descricao }}
                 </a>
             </li>
         @endforeach

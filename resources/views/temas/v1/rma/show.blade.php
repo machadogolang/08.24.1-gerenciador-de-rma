@@ -24,9 +24,9 @@
         <tr><td>P/N</td><td>{{ $registro->pn }}</td></tr>
         <tr><td>SNID</td><td>{{ $registro->snid }}</td></tr>
         <tr><td>NF de compra</td><td>{{ $registro->nfcompra }}</td></tr>
-        <tr><td>NF de compra — emissão</td><td>{{ $registro->nfcompraEmissao?->format('d/m/Y') }}</td></tr>
+        <tr><td>NF de compra - emissão</td><td>{{ $registro->nfcompraEmissao?->format('d/m/Y') }}</td></tr>
         <tr><td>NF de venda</td><td>{{ $registro->nfvenda }}</td></tr>
-        <tr><td>NF de venda — emissão</td><td>{{ $registro->nfvendaEmissao?->format('d/m/Y') }}</td></tr>
+        <tr><td>NF de venda - emissão</td><td>{{ $registro->nfvendaEmissao?->format('d/m/Y') }}</td></tr>
         <tr><td>Item de estoque</td><td>{{ $registro->marcarestoque ? 'Sim' : 'Não' }}</td></tr>
         <tr><td>Recebido em</td><td>{{ $registro->recebidoEm }}</td></tr>
         <tr><td>Encaminhado em</td><td>{{ $registro->encaminhadoEm }}</td></tr>

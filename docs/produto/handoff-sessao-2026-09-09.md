@@ -1,6 +1,103 @@
 # Handoff de sessão - CellSystem RMA V3
 
 
+## Checkpoint - Rodada PAR-V2 de regressoes/paridade por validacao manual do dono (2026-09-09)
+
+### Baseline real (reconferido, nao confiado em estado antigo)
+
+- HEAD = origin/main = `24ffd4e5fb9968762cb083713748ab2e413927da`, working tree limpa.
+- Legacy de referencia (somente leitura): `08.24.4-legacy-gerenciador-de-rma`.
+- Tema V3/T3-12 pausado durante toda a rodada; nenhum push.
+
+### Bugs confirmados e causas raiz
+
+1. PAR-V2-THEME-01: troca V1/V2 em rotas QA prefixadas nao mudava visualmente
+   (`back()` voltava para URL prefixada que o middleware forcava para o tema antigo).
+2. PAR-V2-NAV-02: navbar V2 com `line-height:39px` + padding do Bootstrap deslocava o
+   texto ~10px para baixo; seletor do Logout (`li .logoutx .link...`) nao casava com o
+   HTML real; breakpoints ficavam fixos em 1190px/11,1%.
+3. PAR-V2-DROPDOWN-02: camada Bootstrap do `.dropdown-menu` (fundo branco, borda,
+   padding e sombra) criava moldura/faixa branca e a geometria ficava duplicada entre
+   `li` e `a`.
+4. PAR-V2-CURSOR-02/UI-09.3: Bootstrap declara `cursor:default` no item ativo de
+   `.nav-tabs`; regra universal `a[href]` nao vencia a especificidade.
+5. PAR-V2-DETAIL-02/A6: detalhe RMA V2 havia sido fechado "em leitura" (paragrafos),
+   enquanto o Legacy 15.8.1 e formulario operacional editavel.
+6. PAR-V2-NOVO-01: aba Novo do V2 tinha somente link para `/create`; o Legacy tem o
+   formulario inline na propria aba com 3 colunas e condicional Origem/NF.
+
+### Reaberturas formais
+
+- A6: `[x]` -> `[R]` -> `[x]` de novo com formulario operacional.
+- UI-09.3: `[x]` -> `[R]` -> `[x]` com varredura ampliada.
+- PAR-V2-THEME/NAV/DROPDOWN/DETAIL/NOVO: criados como `[R]`, agora `[x]`.
+- PAR-V2-SWEEP-01: executado; residuos conhecidos classificados no addendum.
+
+### O que foi corrigido por onda
+
+- ONDA 1 (9fbeac1): troca V1/V2 redireciona para a contraparte `/v1/...` x `/v2/...`
+  preservando caminho/query; rota canonica continua com `back()`.
+- ONDA 2 (62cbb27): navbar centralizada, Logout com caixa de `<a>` via POST, dropdown
+  sem moldura/faixa branca, breakpoints 12,5%/11,1%, cursor do item ativo.
+- ONDA 3 (127b94d): detalhe RMA V2 como formulario operacional (inputs/selects/
+  textareas reais, SALVAR no cabecalho e rodape com acao), `EditarRma` grava
+  prioridade/lancadoretorno e normaliza booleanos; Policy de leitura desabilita.
+- ONDA 4 (e46fd3f): Novo RMA V2 inline na aba (grade 3 colunas, condicional
+  Origem/NF, estoque, CRIAR BD) e `/create` com o mesmo partial; `CriarRma` grava
+  prioridade/chaves.
+- ONDA 5 (82bb2c3 + 4e2294e): varredura residual e fechamento de cursor.
+
+### Commits da rodada (todos locais, nenhum push)
+
+1. 63904f1 - doc addendum/reaberturas (checkpoint obrigatorio).
+2. 9fbeac1 - front troca de tema prefixada.
+3. 49a5f9d - doc ONDA 1.
+4. 62cbb27 - front navbar/dropdown/cursor.
+5. f285adb - doc ONDA 2.
+6. 127b94d - front detalhe RMA V2 funcional.
+7. fce2985 - doc ONDA 3.
+8. e46fd3f - front Novo RMA V2 inline.
+9. 40866c9 - doc ONDA 4.
+10. 2081ed6 - QA/reconciliacao de contratos de teste.
+11. 4e2294e - QA varredura A de cursor (detalhes V1/V2).
+12. 82bb2c3 - doc ONDA 5 e varredura.
+13. (proximo) - handoff final.
+
+### Testes executados
+
+- PHPUnit completo real: 532 testes / 1582 assertions, 100% verde.
+- Vite build verde.
+- Playwright dirigido em serie: 22/22 verdes (Fluxos/Tema 1/1,
+  ConsistenciaVisualControles 9/9, EdicaoInlineDetalheV1 3/3,
+  ParidadeDetalheRmaV2 3/3, ParidadeDetalheRmaV2Funcional 1/1,
+  ParidadeNovoRmaV2 1/1, ParidadeNavbarDropdownV2 4/4). Uma execucao do helper de
+  criacao falhou por seletor `input` x `textarea`; corrigido e verde isolado.
+- Regressao ampla Legacy x V3 nao executada em serie completa nesta rodada (mesma
+  limitacao ja registrada de usuario compartilhado); os specs dirigidos com Legacy
+  (ParidadeDetalheRmaV2 e V1) passaram.
+
+### Diferencas Legacy restantes (nao bloqueiam esta rodada)
+
+- Novo RMA V2 usa selects modernos no lugar dos datalists historicos (decisao
+  registrada em NOVO-01.4).
+- Zebra fina das listagens V2 (`[INVESTIGAR]`, CMP-V2-006), Centro de Avisos
+  por-grupo e pagina "Anotacoes" seguem como trabalhos abertos anteriores.
+- Regressao browser ampla com usuario dedicado e viewport/print (UI-08/C7) segue
+  como frente aberta do plano.
+
+### Decisoes que dependem do dono
+
+- Nenhuma nova decisao bloqueante ficou em aberto nesta rodada. Residuos
+  classificados no addendum (secao 17) podem virar novas tarefas se o dono quiser.
+- Proximo item exato apos este handoff: retomar T3-12 (formularios V3) apenas com
+  autorizacao do dono, ou continuar a rodada PAR-V2 se houver mais regressoes.
+
+### Git final e push
+
+- O commit deste handoff e o ultimo da sessao. Depois dele nao havera alteracao de
+  codigo/plano nem novo commit.
+- PUSH NAO REALIZADO.
+
 ## Checkpoint - T3-11: detalhe operacional do RMA no Tema V3 (2026-09-09)
 
 Apos A5/A6 fechados com paridade funcional, o dono autorizou seguir para os proximos

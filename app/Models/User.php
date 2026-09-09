@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['name', 'email', 'password', 'papel', 'tema_preferido', 'anotacao'])]
@@ -32,5 +33,13 @@ class User extends Authenticatable
             'papel' => Papel::class,
             'tema_preferido' => TemaPreferido::class,
         ];
+    }
+
+    public function empresas(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class)
+            ->using(CompanyUser::class)
+            ->withPivot(['papel', 'ativo'])
+            ->withTimestamps();
     }
 }

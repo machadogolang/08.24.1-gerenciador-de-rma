@@ -208,3 +208,88 @@ dono, iniciar T3-08 (shell oculto) com o plano e o OpenSpec ja prontos.
 
 Working tree limpo apos este commit. Nenhum push executado por mim.
 PUSH NAO REALIZADO.
+
+---
+
+# Checkpoint - Primeira implementacao do Tema V3 (2026-09-09)
+
+## Baseline
+
+- HEAD inicial: `1f5acb3`; origin/main inicial: `1f5acb3`; working tree limpa.
+
+## Commits da tranche
+
+- `e9014c0` #DOC-RMA - Planeja primeira onda de implementacao do Tema V3
+- `06ed7a5` #FRONT-RMA - Cria fundacao oculta e shell do Tema V3
+- `572d20b` #FRONT-RMA - Implementa dashboard operacional do Tema V3
+- `1bc15ea` #FRONT-RMA - Implementa listagem operacional de RMAs no Tema V3
+- `b7f04d9` #QA-RMA - Cobre primeira tranche do Tema V3 no browser
+- `2672847` #FRONT-RMA - Ajusta listagem V3 e registra checkpoint arquitetural
+- `3ba4d12` #DOC-RMA - Reconcilia primeira tranche V3 em plano e OpenSpec
+- proximo: este commit do handoff
+
+## T3-08 - Fundacao/shell
+
+- `TemaPreferido::V3` adicionado sem expor alternancia publica.
+- `ResolverTemaAtivo` forca V3 apenas em rotas `v3.*`.
+- Rotas `/v3` e `/v3/rmas`; bundle Vite proprio `v3.js`/`v3.scss`.
+- Shell com topbar, rail recolhivel no desktop e drawer no mobile.
+- Acessibilidade base: landmarks, aria-expanded, aria-current, focus e TAB.
+
+## T3-09 - Dashboard
+
+- Busca rapida (reusa BuscarRmas), filas operacionais acionaveis e painel de
+  alertas com destino real.
+
+## T3-10 - Listagem RMAs
+
+- Tabela densa no desktop, cartoes equivalentes no mobile, filtros enderecaveis
+  por fila (todos, entrada, recebido, encaminhado, aguardando credito,
+  concluido, arquivado) e busca.
+
+## Arquitetura
+
+- Componentes criados: AppShell/Navigation/PageHeader/EmptyState/StatusBadge e
+  primitivas de cartao/segmento/grade.
+- Tokens nomeados no Sass V3; bundle proprio; V1/V2 sem import de V3.
+- Checkpoint: `docs/produto/2026-09-09-checkpoint-arquitetural-tema-v3.md`.
+
+## QA
+
+- Feature V3: 4 testes / 20 assertions.
+- PHPUnit completo: 519 testes / 1441 assertions verdes.
+- Playwright dirigido V3: 3 testes verdes (390/768/1440, drawer, filtros,
+  regressao V1/V2).
+- Playwright regressao: Fluxos/Tema 1/1 verde (serial, usuario V1) e
+  ConsistenciaVisualControles 9/9 verde.
+- Vite build verde. Viewports validados: 390/768/1440.
+
+## Problemas registrados
+
+- Execucao paralela de specs Playwright que compartilham o mesmo usuario muda
+  `tema_preferido` e causa falsos negativos; specs sensiveis devem rodar serial
+  com usuario dedicado (mesma limitacao ja registrada no handoff anterior).
+
+## Plano/estado
+
+- `PLANO-ATAQUE.md`: [x] T3-08, [x] T3-09, [x] T3-10; EVO-UX-001 continua [R];
+  T3-11+ e T3-GATE continuam [ ].
+
+## Gate
+
+[GATE-PENDENTE]
+
+TEMA V3 CONTINUA OCULTO E NAO SELECIONAVEL. Nenhum usuario normal recebe V3;
+nenhum link publico aponta para `/v3`; preferencias V1/V2 preservadas.
+
+## Proximo item exato
+
+- T3-11 - Detalhe do RMA no Tema V3 (cabecalho operacional + secoes + historico),
+  usando o mesmo checkpoint aprovado.
+
+## Git final da rodada
+
+- Working tree limpa apos este commit. Nenhum push executado por mim; reflog
+  registra avanco externo de origin/main ate `b7f04d9` (automacao do ambiente).
+
+PUSH NAO REALIZADO.

@@ -74,3 +74,50 @@ de estado e lacunas: `docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`.
 - Playwright visual: `ParidadeVisualTemaV1.spec.ts` roda do host, os demais specs no
   container (ver handoff 2026-08-26).
 - Screenshots com dado real do Legacy continuam fora do diretório versionado.
+
+
+## Atualização final — execução EVO-SAAS-001 (ondas S1 a S8)
+
+**SHA inicial da segunda rodada:** `64f1a31`. **SHA final:** `d763bd3` (após commits
+abaixo). Origin/main foi sincronizado por fora da sessão e está X commits atrás; nada
+foi pushado por este agente.
+
+### Commits desta segunda rodada (10 código/doc + tasks)
+- `6f80445` — Reconcilia estado pós-gate e abre Trilha B para execução controlada.
+- `d466829` — Especifica fundação SaaS multiempresa com OpenSpec executável e mapa tenant-scoped.
+- `b9e0e1a` — Introduz Company e vínculo de usuários com papel por empresa.
+- `d135534` — Marca S1.7 e S2 como concluídas no OpenSpec.
+- `13124af` — Cria tenant CellSystem e faz backfill dos dados existentes.
+- `c52f008` — Adiciona TenantContext e resolução de empresa após autenticação.
+- `14a92fb` — Adiciona isolamento automático de tenant em parceiros, RMA e histórico.
+- `d9cc5b2` — Isola parceiros por tenant com suíte A×B permanente.
+- `7710546` — Isola repositório de RMA por tenant com suíte A×B.
+- `a53f10d` — Escopa auditoria/histórico por tenant com prova A×B.
+- `d763bd3` — Marca ondas S3-S8 no OpenSpec e registra pendência S3.6.
+
+### Testes executados
+- PHPUnit completo: **431 testes / 1023 assertions verdes**.
+- Suítes dirigidas: CompanyUser, TenantSemente, ContextoDeTenant, IsolamentoBasico,
+  ParceirosIsolamento (16), RmaIsolamento (4), AuditoriaIsolamento (1), mais regressão
+  ampla de Identidade/Parceiros/Temas.
+
+### Estado EVO-SAAS-001
+- Ondas concluídas: S1-S8 (mapeamento, fundação, tenant inicial/backfill, contexto,
+  isolamento por construção, parceiros, RMA, auditoria).
+- Pendente: S3.6 (hardening NOT NULL, adiado por segurança), S9-S14.
+- Gate de isolamento: não declarado (aguarda S12 e prova em dado real).
+
+### Decisões pendentes para o usuário
+1. Representação do administrador de plataforma — ortogonal a `Papel`; só exigida
+   quando a plataforma tiver ação real.
+2. UI de seletor de empresa (multi-vínculo): backend pronto; sem decisão de produto.
+
+### Próximo item EXATO
+`S9.1` — mapear todos os consumidores de `users.papel` e iniciar leitura do papel do
+vínculo ativo no `ContextoDeTenant`/User, mantendo compatibilidade até S9.7.
+
+### Comando de retomada
+```
+docker compose up -d mysql laravel.test
+docker compose exec -T laravel.test php artisan test
+```

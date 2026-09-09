@@ -1,130 +1,72 @@
-# Plano de ataque — CellSystem RMA
+# Plano de ataque — CellSystem RMA (Trilha B / EVO-SAAS-001)
 
-Última atualização: 2026-09-09 (America/Sao_Paulo). Fonte granular:
-`docs/produto/checklist-master-v3.md`.
-Handoff para nova sessão: `docs/produto/handoff-sessao-2026-09-09.md` (substitui o
-handoff de 2026-08-26, mantido só como histórico).
-
-## AGORA — sessão pós-gate (2026-09-09)
-
-Estado reconciliado e lacunas reais em
-`docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`. Trilha A encerrada
-(`G-04..G-07` fechados); `G-08` segue aberto aguardando a escolha da primeira
-iniciativa da Trilha B pelo usuário.
-
-Executado nesta sessão, em ciclos pequenos commitados:
-- FRONT-004/D-06: `/` redireciona (login/dashboard); scaffold `welcome` e
-  `ExampleTest` placeholders removidos; teste real de raiz.
-- ARQ-004/PAR-RMA-001: busca por NF usa campos fiscais reais; `os` virou critério
-  próprio; rastreio no legado 14.6.1/15.8.1.
-- PAR-RMA-002/PAR-RMA-003 parcial: busca pela chave histórica (`numero_legado`) e
-  campos diretos no texto (fonte `page/localizar.php`).
-- Reconciliados no checklist: G-04..G-07, H-011, H-012, H-014, H-021, H-022, D-06;
-  H-023 parcial com `[GAP]` explícito.
-- Suíte completa renovada: **396 testes / 967 assertions PHPUnit 100% verde**.
-
-### Próximo passo exato (retomada)
-
-1. Fechar a reconciliação documental residual das seções F10-V1/F10-VIS do
-   `checklist-master-v3.md` com ponteiros para CP0..CP15/CP16..CP25/NAV-00..05
-   (evidência já registrada no diário de cada frente).
-2. Abrir os próximos lotes pequenos da frente H com prova histórica:
-   `ARQ-008` (docblock), `ARQ-005` (destinatário/erros), `FRONT-005`
-   (disclosure `.pmo`), `PAR-PARCEIRO-001` (detalhe do parceiro) — um item por
-   commit, com teste/evidência.
-3. Investigar `C-02/C-03/C-04` residuais com evidência dirigida à fonte histórica.
-4. Apresentar a primeira iniciativa da Trilha B para decisão do usuário (sugestão:
-   `EVO-CONF-001`, OpenSpec completo em `openspec/changes/configuracao-admin/`).
+Última atualização: 2026-09-09 (America/Sao_Paulo).
+Fonte granular: `docs/produto/checklist-master-v3.md` e
+`openspec/changes/saas-multiempresa/tasks.md`.
+Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
 
 ## AGORA
 
-**Frentes Visuais e Navegacionais Encerradas e Aprovadas:**
-- Fase 1 (`docs/produto/plano-execucao-paridade-estrutural-v1.md`, CP1 a CP5) — **fechada**;
-- Fase 2 (`docs/produto/plano-execucao-paridade-visual-v1-fase2.md`, CP6 a CP15) — **fechada**;
-- Frente Paralela Tema V2 (`docs/produto/plano-execucao-paridade-v2.md`, CP16 a CP25) — **fechada**;
-- Auditoria Navegacional e Visual do Tema V1 (`docs/produto/plano-execucao-auditoria-navegacional-visual-v1.md`, NAV-00 a NAV-05) — **fechada e consolidada** (`1a0aff2`).
+Execução controlada da primeira iniciativa da Trilha B: **EVO-SAAS-001 — fundação SaaS
+multiempresa**.
 
----
+Ondas concluídas e commitadas nesta rodada:
+- S0 — reconciliação/baseline e pequenos bloqueadores reais.
+- S1 — OpenSpec `openspec/changes/saas-multiempresa/` + mapa tenant-scoped
+  (`docs/produto/mapa-tenant-scoped-2026-09-09.md`).
+- S2 — `companies`, `company_user` (papel por vínculo), models/factories/relações.
+- S3 — tenant semente `CellSystem`, colunas `tenant_id` e backfill (migrations 000003/000004).
+- S4 — `ContextoDeTenant` + `ResolverTenantAtivo` (403 sem vínculo; multi-vínculo no backend).
+- S5 — `PertenceATenant`/`EscopoDeTenant`: Global Scope, observer, mass assignment e
+  route binding tenant-aware por membership.
+- S6 — parceiros isolados por tenant com suíte A×B (16 testes).
+- S7 — RMA isolado via escopo + repositório com suíte A×B (4 testes).
+- S8 — auditoria/histórico isolados; listener herda tenant do RMA; decisão de não
+  escopar `TentativaDeAcesso` nesta fase.
 
-### Esteira de Execução Sequencial Priorizada (Fase 10 / Fechamento da Trilha A)
-
-Executar sequencialmente, um item por vez, com teste, evidência e commit atômico:
-
-#### 1. Eixo Funcional (`F10-FUN`)
-- [x] **ETA-01** — Executar e registrar formalmente os 6 smokes cruzados (M-01 a M-06) em `docs/qa/roteiro-paridade-funcional.md`, consolidando as evidências já obtidas em NAV-01..NAV-05 e Playwright (`tests/Browser/SmokesParidadeFuncional.spec.ts`).
-- [x] **ETA-02** — Reconciliar a matriz completa de 48 IDs em `docs/produto/paridade-v2-v3.md` e fechar `F10-FUN-07` e `F10-FUN-08` no `checklist-master-v3.md`.
-
-#### 2. Decisões e Refinamentos de Domínio / Produto
-- [x] **ETA-03** — Formalizar decisão `LEG-RMA-002` (`DECISAO C-01`): modelo seguro de provisionamento (admin-only via `UsuarioController` / convite administrativo, sem chave estática exposta; parecer de 2026-09-04).
-- [x] **ETA-04** — Formalizar decisão `VIS-V1-011` / `VIS-V1-012` (`F10-COB-03` e `F10-COB-04`): proteção de integridade referencial e auditoria imutável (arquivamento e soft-delete seguro contra hard-delete destrutivo; parecer de 2026-09-04).
-- [x] **ETA-05** — Resolver achado CP14 (`Rma::classeDeAlerta()` com `ClasseDeAlerta::Urgente` para prioridade alta e prazo 30 dias estourado), com prova automatizada em teste unitário e de feature.
-
-#### 3. Eixo de Dados (`F10-DAD`)
-- [x] **ETA-06** — Viabilizar rede Docker V3→Legacy (`OPS F10-DAD-01` a `03`) conectando `rma-v3-laravel.test-1` à rede `rma-legacy_legacy-lab` do MariaDB na porta 3306/3309 com usuário `rma_legacy_readonly` estrito.
-- [x] **ETA-07** — Executar `php artisan rma:migrar-legado --dry-run` contra a base de dados histórica, gerar relatório de reconciliação das 9 tabelas, auditar anomalias e provar idempotência no alvo descartável `rma_v3_descartavel` (`QA F10-DAD-04` a `09`).
-
-#### 4. Fechamento da Fase 10 e Gate da Trilha A (`F10-GATE`)
-- [x] **ETA-08** — Rodar suíte completa de regressão técnica: 388 testes / 941 asserções no PHPUnit e 58 testes no Playwright Browser (100% verde).
-- [x] **ETA-09** — Produzir o relatório consolidado final em `docs/qa/relatorio-paridade-final.md` integrando os três eixos (funcional, visual e dados).
-- [x] **ETA-10** — Atualizar `checklist-master-v3.md` declarando o cumprimento integral da Fase 10 e encerramento formal da Trilha A.
-
-## CHECKPOINT INCORPORADO — ARQUITETURA, FRONT-END E PARIDADE DE TEMAS
-
-Investigação consolidada em `INV-RMA-10` e matriz em
-`docs/produto/matriz-paridade-temas-v1-v2-v3.md`. A nova frente não libera código do
-Tema 3 e não substitui F10. Ela corrige a ordem quando um achado compromete integridade,
-segurança ou a validade do próprio gate de QA.
-
-## CHECKPOINT REABERTO — PARIDADE VISUAL TEMA V1
-
-O checkpoint que havia sido concluído em 2026-08-25 foi reaberto por evidência visual
-estrutural em `INV-RMA-BUG-LAYOUT-falhas.md`. A comparação anterior cobriu
-14.6.1 × V3 em dez superfícies/1440 px, correção estrutural de Blade/CSS, Fira Mono e
-logo locais, teste permanente de assets/geometria e matriz em
-`docs/produto/paridade-visual-tema-v1.md`, mas não detectou cascata invertida, H1/ícones,
-famílias de linha, colunas e resumo de Concluído. O gate visual permanece aberto.
-
-O lote funcional volta a `F10-FUN-07` somente depois de CP1–CP15 (fase 1 + fase 2).
+Suíte atual: **431 testes / 1023 assertions PHPUnit verdes** (última execução
+2026-09-09).
 
 ## DEPOIS
 
-1. **P0 dados:** fechar `ARQ-002` antes do dry-run histórico.
-2. **F10 visual:** fechar 2 temas × 3 breakpoints × telas principais, reutilizando
-   evidências válidas da F8 e capturando somente o que falta.
-3. **F10 dados:** conectar a origem histórica de forma controlada, executar `--dry-run`,
-   revisar anomalias e importar em base V3 descartável.
-4. **F10 fechamento:** decidir ou adiar questões residuais, produzir
-   `docs/qa/relatorio-paridade-final.md` e avaliar o gate da Trilha A.
-5. **Trilha B/Tema 3:** somente após o gate, seguir a seção H do checklist e nunca
-   expor Tema 3 antes da matriz integral.
+- S9 — migrar leitura de Papel para o vínculo `company_user` (Policies/Gates).
+- S10 — numeração transacional de RMA por empresa (nunca `MAX+1`).
+- S11 — migrador histórico carimbando `CellSystem`.
+- S12 — suíte arquitetural permanente de isolamento (relatórios/alertas/inventário de models).
+- S13 — regressão/segurança completa.
+- S14 — relatório/checkpoint da fundação multiempresa e fechamento do primeiro marco.
+- Endurecimento `tenant_id` NOT NULL/FK (`S3.6`) após prova zero-órfãos em dado real.
+- Pendências pequenas de baseline fora do SaaS (PAR/UX/ARQ-005/007) quando não
+  bloquearem o marco atual.
 
-## BLOQUEADOS / DECISÃO EXTERNA
+## DEPENDÊNCIAS
 
-- `LEG-RMA-002`: autocadastro com convite ou criação só por admin.
-- Migração histórica: requer conexão controlada e alvo descartável; nunca usar a base
-  corrente por inferência.
-- Visibilidade do repositório V3: decisão operacional do usuário.
+- S9 depende de S2-S5 (vínculo/contexto/policies existentes).
+- S10 depende de S7 (RMA escopado) e S9 (papel do vínculo, se exigir).
+- S11 depende de S3 (tenant semente) e S7.
+- S12 depende de S5-S8 (isolamento implementado).
+- S14 depende de S9-S13 e do endurecimento S3.6 auditado.
 
-## INVESTIGAÇÕES RESIDUAIS
+## DECISÕES ADIADAS
 
-- RN-12 no TEMA V1: fechar ausência/presença com evidência dirigida.
-- Lightbox2 e skin AdminLTE: uso real ou resíduo de template.
-- Datas inválidas e `status='retornou'`: decidir apenas se surgirem no dado real.
-- Campos históricos editáveis × somente leitura; criação/exclusão de usuários;
-  mutações nas rotas prefixadas de QA.
+- Representação do administrador de plataforma (ortogonal ao `Papel` de tenant).
+- UI de seletor de empresa para usuários multi-vínculo (backend pronto).
+- `EVO-SAAS-002/003`, Tema V3 e demais evoluções.
+- Agregação de segurança cross-tenant.
+- Gatilho futuro de isolamento físico por tenant.
 
-## TRILHA B
+## CRITÉRIO DE SAÍDA (gate de isolamento)
 
-- Fundação: `EVO-SAAS-001/002/003`.
-- Experiência/capacidades: `EVO-UX-001`, `EVO-CONF-001`, `EVO-ARQ-001`,
-  `EVO-DOM-001/002/003`.
-- Operação/evolução: `EVO-AUT-001/002`, `EVO-REL-001/002`, `EVO-SEG-001`,
-  `EVO-AUD-001`, `EVO-PERF-001`, `EVO-IA-001`.
+- Nenhuma entidade tenant-scoped lista/busca/abre/edita dado de outra empresa A×B.
+- Migração sem linha órfã; rollback/compatibilidade comprovados.
+- Numeração por empresa sem `MAX+1`.
+- Migrador histórico idempotente carimba `CellSystem`.
+- Suíte arquitetural de isolamento permanente verde + PHPUnit completo + segurança S13.
 
 ## NÃO FAZER AINDA
 
-- Não implementar item `EVO-*`.
-- Não alterar código-fonte ou dumps históricos.
-- Não importar dados sem origem, alvo e rollback explícitos.
-- Não publicar nem alterar visibilidade remota sem autorização.
-- Não declarar paridade apenas pela existência de código ou fixture.
+- `EVO-SAAS-002/003`; Tema V3; anexos/configuração antes do gate de isolamento.
+- `git push`, PR, merge remoto ou reescrita de história.
+- Alterar fontes históricas/backups.
+- Usar `tenant_id` vindo de request; confiar só em Policy ou só em Global Scope.
+- Usar `MAX+1` em numeração; biblioteca de tenancy externa sem necessidade.

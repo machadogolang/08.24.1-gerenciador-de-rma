@@ -2,10 +2,10 @@
 Larguras: DATA 8%, ORIGEM 7%, T 4%, NF C 6%, NF V 6%, FABRICANTE 14%, DESCRICAO 13%,
 MODELO 18%, S/N 17%, OS 5%, A 2%. DATA aqui é `recebido_em` (não `created_at`).
 
-[INVESTIGAR] - o Legacy tem uma condição extra que `Rma::classeDeAlerta()` não tem:
-`(nfcompra<=0 AND nfvenda<=0)` também vira `TrInconformidade`. Reaproveitada a regra
-existente sem alteração - divergência registrada, mesma disciplina do restante desta
-frente. --}}
+PAR-RES-002 - corrigido: `classe_css_linha_v2('recebido', ...)` reproduz o PHP
+fonte: sem garantia -> `TrInconformidade`; prazo de 30 dias e prioridade alta ->
+`TrUrgente`; estoque/origem e sem-NF compra/venda -> `TrInconformidade`; zebra
+`TrZebrada1/2`. --}}
 @if (count($registros) === 0)
     <p style="text-align:left;padding:5px;">Nenhum produto</p>
 @else
@@ -28,11 +28,12 @@ frente. --}}
             <th>OS</th>
             <th>A</th>
         </tr>
-        @foreach ($registros as $indice => $registro)
+                @php $zebraV2 = false; @endphp
+@foreach ($registros as $indice => $registro)
             @php
                 $tempo = $registro->recebidoEm ? $registro->recebidoEm->diffInDays(now(), true) : 0;
             @endphp
-            <tr class="{{ classe_css_de_alerta($registro->classeDeAlerta(), \App\Identidade\Dominio\TemaPreferido::V2, $indice) }}">
+            <tr class="{{ classe_css_linha_v2('recebido', $registro, $zebraV2) }}">
                 <td>{{ $registro->recebidoEm?->format('d/m/Y') }}</td>
                 <td style="text-align:center;">{{ origem_abreviada_v1($registro->origem) }}</td>
                 <td>{{ $tempo > 0 ? (int) $tempo : '' }}</td>

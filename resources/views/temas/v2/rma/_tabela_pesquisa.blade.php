@@ -8,15 +8,10 @@ DESCRICAO 13%, MODELO 20%, S/N 16%, OS 5%, S(status) 2%, A(ação) 2%. O legado 
 (dead code confirmado por leitura completa do arquivo) - sem resumo inferior aqui,
 diferente de Concluídos no Tema V1.
 
-[INVESTIGAR] - zebra desta tabela específica difere do padrão RN-11 já implementado em
-`classe_css_de_alerta()`: o PHP fonte só usa `TrSemGarantia1/2` quando
-`status=concluido AND solucao=SEM GARANTIA` (fora dessa combinação, solução
-"SEM GARANTIA" cai no mesmo `TrInconformidade`/`TrZebrada` que os demais critérios).
-`Rma::classeDeAlerta()` (Fase 5) mapeia solução SemGarantia para `Inconformidade`
-incondicionalmente, sem olhar o status - não é a mesma regra. Reaproveitado aqui sem
-alteração (mesma disciplina de "não reescrever regra de negócio sem necessidade" já
-seguida no restante desta frente) - divergência registrada para investigação futura,
-não corrigida às cegas. --}}
+PAR-RES-PESQ - corrigido: `classe_css_linha_v2('pesquisa', ...)` reproduz o PHP
+fonte: `TrSemGarantia1/2` apenas para `status=concluido AND solucao=SEM GARANTIA`;
+os demais destaques (estoque/origem, prazo e prioridade alta) sao
+`TrInconformidade`, nunca `TrUrgente`. --}}
 @if ($valor !== '' && count($rmas) === 0)
     {{-- Fonte não emite nenhuma mensagem quando a busca não retorna nada
     (`else { }` vazio) - mantido em branco por fidelidade; nenhum HTML aqui. --}}
@@ -41,7 +36,8 @@ não corrigida às cegas. --}}
             <th>S</th>
             <th>A</th>
         </tr>
-        @foreach ($rmas as $indice => $registro)
+                @php $zebraV2 = false; @endphp
+@foreach ($rmas as $indice => $registro)
             @php
                 $iconeStatus = match ($registro->status) {
                     \App\Rma\Dominio\Status::Entrada => 'entrada',
@@ -50,7 +46,7 @@ não corrigida às cegas. --}}
                     \App\Rma\Dominio\Status::Concluido, \App\Rma\Dominio\Status::Arquivado => 'concluido',
                 };
             @endphp
-            <tr class="{{ classe_css_de_alerta($registro->classeDeAlerta(), \App\Identidade\Dominio\TemaPreferido::V2, $indice) }}">
+            <tr class="{{ classe_css_linha_v2('pesquisa', $registro, $zebraV2) }}">
                 <td class="Tabelinha-TD"><div>{{ $registro->createdAt?->format('d/m/Y') }}</div></td>
                 <td style="text-align:center;"><div>{{ $registro->origem }}</div></td>
                 <td class="Tabelinha-TD"><div>{{ (float) $registro->nfcompra > 0 ? $registro->nfcompra : '' }}</div></td>

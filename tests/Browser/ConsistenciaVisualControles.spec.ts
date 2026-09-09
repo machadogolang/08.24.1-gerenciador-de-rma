@@ -131,7 +131,9 @@ test.describe('UI-AUD - consistência de formulários e controles', () => {
 
     test('D - Usuários V1: controles não estouram a célula e botões não encolhem', async ({ browser }) => {
         const page = await loginV3(browser);
-        await page.goto(`${V3}/usuarios`, { waitUntil: 'load' });
+        // Rota forcada /v1 para o teste nao depender da preferencia compartilhada
+        // do usuario QA (estado de tema muda entre specs na mesma sessao).
+        await page.goto(`${V3}/v1/usuarios`, { waitUntil: 'load' });
         const primeiraLinha = page.locator('.tabela-usuarios-v1 tbody tr').first();
         const caixas = await primeiraLinha.evaluate((tr) => {
             const box = (el: Element) => {

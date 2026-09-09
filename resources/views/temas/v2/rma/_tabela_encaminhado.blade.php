@@ -3,7 +3,11 @@
 NF C 5%, FABRICANTE 14%, DESCRICAO 13%, MODELO 16%, NF R 5%, PROTOCOLO 10%,
 DESTINATARIO 14%, OS 4%, A 2%. NF R (`nfremessa`) sem campo equivalente no domínio
 atual - mesma decisão já registrada para o TEMA V1 (`encaminhados.blade.php`), célula
-vazia, geometria preservada. --}}
+vazia, geometria preservada.
+
+PAR-RES-003 - corrigido: `classe_css_linha_v2('encaminhado', ...)` reproduz o PHP
+fonte: sem garantia -> `TrInconformidade`; prazo de 30 dias e prioridade alta ->
+`TrUrgente`; estoque/origem -> `TrInconformidade`; zebra `TrZebrada1/2`. --}}
 @if (count($registros) === 0)
     <p style="text-align:left;padding:5px;">Nenhum produto</p>
 @else
@@ -27,11 +31,12 @@ vazia, geometria preservada. --}}
             <th>OS</th>
             <th>A</th>
         </tr>
-        @foreach ($registros as $indice => $registro)
+                @php $zebraV2 = false; @endphp
+@foreach ($registros as $indice => $registro)
             @php
                 $tempo = $registro->encaminhadoEm ? $registro->encaminhadoEm->diffInDays(now(), true) : 0;
             @endphp
-            <tr class="{{ classe_css_de_alerta($registro->classeDeAlerta(), \App\Identidade\Dominio\TemaPreferido::V2, $indice) }}">
+            <tr class="{{ classe_css_linha_v2('encaminhado', $registro, $zebraV2) }}">
                 <td>{{ $registro->encaminhadoEm?->format('d/m/Y') }}</td>
                 <td style="text-align:center;">{{ origem_abreviada_v1($registro->origem) }}</td>
                 <td>{{ $tempo > 0 ? (int) $tempo : '' }}</td>

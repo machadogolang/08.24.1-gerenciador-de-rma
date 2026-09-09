@@ -124,3 +124,95 @@ if (! function_exists('origem_abreviada_v1')) {
         };
     }
 }
+
+if (! function_exists('classe_css_linha_v2')) {
+    /**
+     * PAR-LEGACY-RESIDUAL-01/PAR-RES-001..003 - classes de linha das listagens
+     * V2 reproduzidas por TELA, conforme o PHP fonte 15.8.1 (entrada, recebido,
+     * encaminhado e pesquisa), em vez da regra generica de alerta RN-11 que mistura
+     * criterios de telas diferentes. `$zebraLigada` controla o alternado real do
+     * Legacy (TR1): inicia false e alterna apenas onde o PHP fonte alterna.
+     *
+     * @param  string  $tela  entrada|recebido|encaminhado|pesquisa
+     */
+    function classe_css_linha_v2(string $tela, \App\Rma\Dominio\Rma $registro, bool &$zebraLigada): string
+    {
+        $semGarantia = $registro->solucao === \App\Rma\Dominio\Solucao::SemGarantia;
+        $alta = $registro->prioridade === \App\Rma\Dominio\Prioridade::Alta;
+        $origemCliente = $registro->origem === 'Cliente';
+        $foraEstoqueOrigem = ! $registro->marcarestoque
+            && in_array($registro->origem, ['Cliente', 'Licitação'], true);
+        $prazoEstourado = $registro->createdAt !== null && $registro->prazoLegal()->isPast();
+        $semNota = ((float) $registro->nfcompra <= 0) && ((float) $registro->nfvenda <= 0);
+
+        $zebra = static function () use (&$zebraLigada): string {
+            $zebraLigada = ! $zebraLigada;
+            return $zebraLigada ? 'TrZebrada2' : 'TrZebrada1';
+        };
+
+        if ($tela === 'entrada') {
+            // 15.8.1/page/entrada.php: sem garantia e prioridade alta viram
+            // Inconformidade; nao existe TrUrgente nesta tela; sem regra de 30 dias.
+            if ($semGarantia) {
+                $zebra();
+                return 'TrInconformidade';
+            }
+            if ($alta) {
+                return 'TrInconformidade';
+            }
+            if ($foraEstoqueOrigem) {
+                $zebra();
+                return 'TrInconformidade';
+            }
+            return $zebra();
+        }
+
+        if ($tela === 'recebido' || $tela === 'encaminhado') {
+            // 15.8.1/page/{recebido,encaminhado}.php: sem garantia -> Inconformidade
+            // (nunca TrSemGarantia); prazo de 30 dias e prioridade alta -> Urgente;
+            // Recebido ainda tem sem-NF -> Inconformidade.
+            if ($semGarantia) {
+                $zebra();
+                return 'TrInconformidade';
+            }
+            if ($origemCliente && ! $registro->marcarestoque && $prazoEstourado) {
+                return 'TrUrgente';
+            }
+            if ($alta) {
+                return 'TrUrgente';
+            }
+            if ($foraEstoqueOrigem) {
+                $zebra();
+                return 'TrInconformidade';
+            }
+            if ($tela === 'recebido' && $semNota) {
+                $zebra();
+                return 'TrInconformidade';
+            }
+            return $zebra();
+        }
+
+        if ($tela === 'pesquisa') {
+            // 15.8.1/subp/pesquisar_rma.php: TrSemGarantia apenas quando status
+            // concluido + SEM GARANTIA; todos os demais destaques sao
+            // TrInconformidade (prazo incluido), nunca TrUrgente.
+            if ($registro->status === \App\Rma\Dominio\Status::Concluido && $semGarantia) {
+                $zebraLigada = ! $zebraLigada;
+                return $zebraLigada ? 'TrSemGarantia2' : 'TrSemGarantia1';
+            }
+            if ($foraEstoqueOrigem) {
+                $zebra();
+                return 'TrInconformidade';
+            }
+            if ($origemCliente && ! $registro->marcarestoque && $prazoEstourado) {
+                return 'TrInconformidade';
+            }
+            if ($alta) {
+                return 'TrInconformidade';
+            }
+            return $zebra();
+        }
+
+        throw new \LogicException("Tela de listagem V2 desconhecida: {$tela}.");
+    }
+}

@@ -2,11 +2,10 @@
 Larguras: DATA 8%, ORIGEM 7%, T 4%, NF C 6%, NF V 6%, FABRICANTE 14%, DESCRICAO 13%,
 MODELO 20%, S/N 18%, OS 4%, A 2%.
 
-[INVESTIGAR] - igual à tabela de Pesquisa (CP20): o Legacy aqui só usa
-`TrInconformidade`/`TrZebrada1/2` (sem `TrUrgente`, sem checagem de prazo de 30 dias),
-diferente do que `Rma::classeDeAlerta()` produz (que inclui `origemEhTerceiroFora
-DoPrazo()`). Reaproveitado sem alteração - mesma disciplina de não reescrever regra
-de negócio sem necessidade; divergência registrada, não corrigida às cegas. --}}
+PAR-RES-001 - corrigido: as classes agora sao decididas por tela
+(`classe_css_linha_v2('entrada', ...)`) como no PHP fonte: sem garantia e prioridade
+alta viram `TrInconformidade`; nao existe `TrUrgente` nem checagem de prazo nesta
+tela; zebra alterna `TrZebrada1/2`. --}}
 @if (count($registros) === 0)
     <p style="text-align:left;padding:5px;">Nenhum produto</p>
 @else
@@ -29,11 +28,12 @@ de negócio sem necessidade; divergência registrada, não corrigida às cegas. 
             <th>OS</th>
             <th>A</th>
         </tr>
-        @foreach ($registros as $indice => $registro)
+                @php $zebraV2 = false; @endphp
+@foreach ($registros as $indice => $registro)
             @php
                 $tempo = $registro->createdAt ? $registro->createdAt->diffInDays(now(), true) : 0;
             @endphp
-            <tr class="{{ classe_css_de_alerta($registro->classeDeAlerta(), \App\Identidade\Dominio\TemaPreferido::V2, $indice) }}">
+            <tr class="{{ classe_css_linha_v2('entrada', $registro, $zebraV2) }}">
                 <td>{{ $registro->createdAt?->format('d/m/Y') }}</td>
                 <td style="text-align:center;">{{ origem_abreviada_v1($registro->origem) }}</td>
                 <td>{{ $tempo > 0 ? (int) $tempo : '' }}</td>

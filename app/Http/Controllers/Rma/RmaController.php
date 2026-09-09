@@ -39,18 +39,16 @@ class RmaController extends Controller
 
         // CP7 (fase 2 V1) — painel Localizar histórico (`menujs-top/localizar.php`)
         // manda `campo` (13 opções + TUDO) em vez de `tipo`; mapeado aqui, na camada
-        // de apresentação, para os 3 tipos que `CriterioDeBusca`/`RmasEmBanco::buscar()`
-        // realmente aceitam — não inventa filtro por coluna que não existe.
-        // `os`→nota_fiscal (mesma coluna já buscada por esse tipo) e
-        // `SNPNSNID`→serial (busca só `sn`; `pn`/`snid` sem equivalente, `[GAP]`) têm
-        // encaixe literal; os demais campos sem coluna própria de busca
-        // (`fabricante`/`cliente`/`destinatario`/`rastreio_ida`/`protocolo`/`NF`/
-        // `numero`) caem no fallback `texto` (mesmo tratamento já aceito para `os`
-        // antes desta fase, ver docblock de `RmasEmBanco`) — `[GAP]` documentado,
-        // não é uma busca escopada à coluna que o rótulo sugere.
+        // de apresentação, para os tipos que `CriterioDeBusca`/`RmasEmBanco::buscar()`
+        // aceitam. ARQ-004 (2026-09-09): `NF`→`nota_fiscal` (campos fiscais reais,
+        // fonte `page/localizar.php:9`) e `os`→`os` (coluna própria, mesma fonte,
+        // ramo `else`); `SNPNSNID`→serial. Os demais campos sem coluna direta no
+        // agregado (`fabricante`/`cliente`/`destinatario`/`protocolo`/`numero` etc.)
+        // continuam no fallback `texto` — `[GAP]` documentado, coberto por PAR-RMA-003.
         if ($request->has('campo')) {
             $tipo = match ($request->query('campo')) {
-                'os' => 'nota_fiscal',
+                'NF' => 'nota_fiscal',
+                'os' => 'os',
                 'SNPNSNID' => 'serial',
                 default => 'texto',
             };
@@ -62,6 +60,7 @@ class RmaController extends Controller
         $criterio = match ($tipo) {
             'serial' => CriterioDeBusca::porSerial($valor, $solucao),
             'nota_fiscal' => CriterioDeBusca::porNotaFiscal($valor, $solucao),
+            'os' => CriterioDeBusca::porOs($valor, $solucao),
             default => CriterioDeBusca::porTexto($valor, $solucao),
         };
 

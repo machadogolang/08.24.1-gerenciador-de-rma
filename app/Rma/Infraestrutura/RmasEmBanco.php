@@ -15,13 +15,13 @@ use App\Rma\Dominio\Status;
  * classe — nunca é devolvido nem recebido por fora daqui, o restante da aplicação só
  * conhece `App\Rma\Dominio\Rma`.
  *
- * `buscar()`: os 4 arquivos `pesquisar_{rma,nf,sn,descricao}.php` do legado eram
- * byte-idênticos (mesma função `pesquisar()`, LIKE genérico em 23 colunas) — a
- * distinção de "tipo" era só rótulo de UI. Nesta fase o schema ainda não tem os campos
- * de nota fiscal (`nfcompra`/`nfremessa`/`nfvenda` só entram na Fase 6, crédito/NF); até
- * lá, `CriterioDeBusca::porNotaFiscal()` busca em `os` (ordem de serviço), o campo mais
- * próximo de um identificador de documento já existente neste núcleo — decisão
- * registrada, revisitar quando os campos reais de NF forem introduzidos.
+ * `buscar()`: os 4 arquivos `pesquisar_{rma,nf,sn,descricao}.php` do 15.8.1 eram
+ * byte-idênticos (mesma função `pesquisar()`, LIKE genérico) — a distinção de "tipo"
+ * era só rótulo de UI; no 14.6.1, porém, o campo `NF` do painel Localizar filtrava
+ * explicitamente `nfcompra`/`nfvenda`/`nfremessa` (`page/localizar.php:9`), e `os`
+ * filtrava só a coluna `os`. ARQ-004 (fechado em 2026-09-09): `nota_fiscal` busca os
+ * campos fiscais reais (primeira classe + históricos preservados pelo migrador), e
+ * `os` virou critério próprio — nada mais busca `os` no lugar de NF.
  */
 final class RmasEmBanco implements RepositorioDeRmas
 {
@@ -63,7 +63,17 @@ final class RmasEmBanco implements RepositorioDeRmas
                     ->orWhere('empresa', 'like', $valor);
             }),
             'serial' => $consulta->where('sn', 'like', '%' . $criterio->valor() . '%'),
-            'nota_fiscal' => $consulta->where('os', 'like', '%' . $criterio->valor() . '%'),
+            'nota_fiscal' => $consulta->where(function ($query) use ($criterio) {
+                $valor = '%' . $criterio->valor() . '%';
+                $query->where('nfcompra', 'like', $valor)
+                    ->orWhere('nfvenda', 'like', $valor)
+                    ->orWhere('nf_remessa', 'like', $valor)
+                    ->orWhere('nf_retorno_numero', 'like', $valor)
+                    ->orWhere('nf_devolucao_de_venda', 'like', $valor)
+                    ->orWhere('nf_entrada_cliente_legado', 'like', $valor)
+                    ->orWhere('nf_retorno_cliente_legado', 'like', $valor);
+            }),
+            'os' => $consulta->where('os', 'like', '%' . $criterio->valor() . '%'),
         };
 
         // CP7 (fase 2 V1) — filtro aditivo independente do texto (`solucao` do

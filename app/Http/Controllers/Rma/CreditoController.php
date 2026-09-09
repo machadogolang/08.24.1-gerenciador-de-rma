@@ -24,7 +24,8 @@ class CreditoController extends Controller
     {
         Gate::authorize('viewAny', RmaEloquent::class);
 
-        return view('rma.credito.index', [
+        return view_do_tema('rma.credito.index', [
+            'titulo' => 'Créditos',
             'aguardandoCredito' => $aguardandoCredito->listar(),
         ]);
     }

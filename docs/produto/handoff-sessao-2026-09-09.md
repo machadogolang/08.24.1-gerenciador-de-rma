@@ -116,3 +116,95 @@ paralelo com o usuário compartilhado muda `tema_preferido` entre testes e gera
 falsos negativos (ex.: esperar `#FIXADO` com o usuário já em V2). O spec dirigido
 `ConsistenciaVisualControles.spec.ts` (9/9) é a prova desta frente; a regressão
 ampla deve ser rerodada em série com Legacy de pé.
+
+---
+
+# Checkpoint - Investigacao e planejamento do Tema V3 (2026-09-09)
+
+## Baseline
+
+- HEAD inicial da rodada: `87625b9`
+- origin/main inicial: `16c1913` (avanco externo por reflog, sem push executado
+  por mim)
+- Working tree inicial: limpa
+
+## V1 analisado (14.6.1)
+
+Principais pontos bons: densidade, acesso rapido, atalhos operacionais e eficiencia
+do usuario experiente. Limitacoes: layout fixo 984px, sem mobile, navegacao por
+estados, superfícies secundarias isoladas.
+
+## V2 analisado (15.8.1/15.9.7)
+
+Principais pontos bons: contextualizacao por abas, composicao de formulario,
+menu dropdown e separacao de areas. Limitacoes: abas por status sem dominio,
+largura por faixa sem fluidez, 390px nao suportado, acoes administrativas
+empilhadas na tabela de usuarios.
+
+## V3 - conceito final
+
+Console Operacional Adaptativa: mesa orientada a fila, excecao, status e proxima
+acao. Arquitetura de informacao por dominios: Dashboard, RMAs, Parceiros,
+Relatorios, Administracao, Perfil e Ajuda. Dashboard com busca, novo RMA, filas,
+alertas e atividade. RMAs com listagem densa/cartoes, detalhe com cabecalho
+operacional e secoes, formulario agrupado por significado. Parceiros com
+lista/busca/detalhe e form em secoes. Usuarios com acoes contextuais. Relatorios
+em hub. Administracao substitui o antigo Controle como conceito, sem perder
+capacidade. Mobile-first com alvo de toque 44px e densidade desktop preservada.
+
+## Documentos criados
+
+- `docs/arquitetura/2026-09-09-refinamento-evo-ux-001-tema-v3-console-operacional.md`
+- `docs/produto/2026-09-09-matriz-aproveitamento-v1-v2-para-v3.md`
+- `docs/produto/2026-09-09-mapa-telas-tema-v3.md`
+- `docs/produto/2026-09-09-wireframes-tema-v3.md`
+- `docs/arquitetura/2026-09-09-spike-t3-tailwind-vs-css-semantico-v3.md`
+- OpenSpec `openspec/changes/tema-v3-console-operacional/` (proposal/design/tasks)
+
+## Decisoes registradas
+
+- V3 usa o melhor de V1/V2 sem copiar limitacoes estruturais.
+- Navegacao por dominios, status viram filtros.
+- Controle V1 e decomposto conceitualmente (Parceiros, RMAs, Admin, Perfil, Ajuda).
+- Relatorios viram hub.
+- Historico de RMA e boletins entram no detalhe.
+- Troca de tema vira selecao explicita V1/V2/V3 documentada, sem alterar
+  enum/controller nesta rodada.
+- T3-SPIKE-01 recomenda Sass/CSS semantico moderno para V3; Tailwind 4 continua
+  candidato. Decisao final no gate de implementacao.
+
+## Plano
+
+`PLANO-ATAQUE.md` no padrao `[ ]`/`[R]`/`[x]`. Resumo: [x] T3-00..T3-07
+(documentacao), [ ] T3-08..T3-GATE (implementacao futura), [R] EVO-UX-001.
+
+## Commits desta rodada
+
+- `5191837` #DOC-RMA - Refina arquitetura de informacao do Tema V3
+- `c31e76d` #DOC-RMA - Especifica Console Operacional Adaptativa em OpenSpec
+- `bd871d0` #DOC-RMA - Registra regra do hifen curto no projeto
+- `7103bcb` #DOC-RMA - Normaliza hifen longo para hifen simples no projeto
+- `fd5fb2f` #DOC-RMA - Reconciles matriz e checklist com o refinamento V3
+- proximo: este commit do handoff
+
+## Regra global do hifen
+
+Registrada em `/home/legionario/.codex-deepseek/AGENTS.md` (AGENTS global do
+Codex), em `AGENTS.md` do projeto e em `docs/operacao/regra-hifen.md`.
+
+## Gate
+
+[GATE-PENDENTE] TEMA V3 AINDA NAO IMPLEMENTADO E NAO SELECIONAVEL. Gate de
+implementacao depende de frente UI/paridade segura, matriz funcional sem lacuna,
+OpenSpec aprovado e qualidade E2E/mobile/desktop/acessibilidade/Policy/tenant/
+erros/performance/build.
+
+## Proximo item exato
+
+Proxima sessao: fechar UI-09.10/C7/UI-08 da frente corrente OU, apos aprovacao do
+dono, iniciar T3-08 (shell oculto) com o plano e o OpenSpec ja prontos.
+
+## Git final da rodada
+
+Working tree limpo apos este commit. Nenhum push executado por mim.
+PUSH NAO REALIZADO.

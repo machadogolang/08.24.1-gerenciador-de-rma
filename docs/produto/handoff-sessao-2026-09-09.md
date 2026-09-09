@@ -1,203 +1,105 @@
 # Handoff de sessão — CellSystem RMA V3
 
-Data de encerramento: 2026-09-09. Substitui
-`docs/produto/handoff-sessao-2026-08-26.md` como ponto de partida (os anteriores
-ficam como histórico). Fonte de status sempre atualizada: `PLANO-ATAQUE.md`; leitura
-de estado e lacunas: `docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`.
+Data de encerramento: 2026-09-09 (fechamento parcial da frente de ações; sessão em
+andamento até UI-03+). Substitui o conteúdo anterior deste arquivo como ponto de
+partida. Fonte de status sempre atualizada: `PLANO-ATAQUE.md`; leitura de estado e
+lacunas: `docs/produto/diagnostico-estado-pos-gate-2026-09-09.md`.
 
 ## Estado geral
 
-- Trilha A formalmente encerrada em 2026-09-04 (`F10-GATE-07`); `G-04..G-07` fechados
-  e `G-08` (Trilha B liberada) fechado em 2026-09-09 no checklist, por decisão do
-  usuário para execução controlada do EVO-SAAS-001.
-- **EVO-SAAS-001 em execução**: S1–S8 + S9–S12 + S3.6 implementados/commitados
-  (OpenSpec/mapa, Company/company_user, tenant CellSystem/backfill, TenantContext,
-  isolamento por construção, papel por vínculo, numeração por empresa, migrador
-  CellSystem, gate arquitetural, hardening NOT NULL). Restam S9.8, S10.4, S11.4,
-  S13 completo e S14/gate formal.
-- `main` local limpa e sincronizada com `origin/main` em `46c8204` nesta retomada
-  (nada foi enviado/pushado por agente).
-- Suíte PHPUnit corrente: **448 testes / 1070 assertions, 100% verde**.
-- Runtime Docker local iniciado para validação (`rma-v3-mysql-1`,
-  `rma-v3-laravel.test-1`, `rma-v3-mailpit-1`); imagens locais disponíveis.
+- Frente ativa **FRONT-003**: UI-01/UI-02 (crédito com shell) e **UI-02B/C/D**
+  (auditoria + contrato visual de ações/botões) concluídas nesta sessão.
+- Trilha A formalmente encerrada; EVO-SAAS-001 permanece ABERTO (S9.8/S10.4/S11.4/
+  S13/S14) e não é fechado pela correção visual.
+- Suíte PHPUnit corrente: **477 testes / 1242 assertions, 100% verde**.
+- Vite build verde (SCSS V1/V2 alterado); Playwright dirigido verde (2 testes).
+- PUSH NÃO REALIZADO por agente; `origin/main` avançou por sincronização externa
+  até `694732d` durante a sessão.
 
-O histórico dos primeiros ciclos da sessão (baseline FRONT-004/ARQ-004 etc., suíte
-396/967) permanece nas seções abaixo como registro da sessão — não compete com o
-estado corrente acima.
+## Incidente operacional
 
-## Incidente operacional registrado
+- Sandbox continua com `bwrap: loopback: Failed RTM_NEWADDR` para comandos não
+  aprovados; `apply_patch` não edita arquivos existentes por depender do mesmo
+  wrapper. Solução comprovada: scripts temporários em `/tmp` + execução escalada
+  para edição pontual, conforme `docs/operacao/incidentes/2026-09-09-sandbox-bwrap-loopback.md`.
 
-- Sandbox do harness falha para qualquer comando não aprovado com
-  `bwrap: loopback: Failed RTM_NEWADDR` (mesmo `pwd`). Causa na camada de sandbox,
-  não no repositório.
-- Solução comprovada: prefixos já aprovados ou execução escalada de leitura pontual;
-  edições de arquivos existentes via comando fora do sandbox com aprovação, porque o
-  `apply_patch` também depende do sandbox para leitura.
-- Registro e regra operacional: `docs/operacao/incidentes/2026-09-09-sandbox-bwrap-loopback.md`
-  e nota no `AGENTS.md`.
+## A Frente de Ações — baseline e resultado
 
-## O que foi feito nesta sessão (commits)
+**SHA inicial da frente:** `78e4719` (HEAD = origin/main, working tree limpa).
 
-1. `47c1414` — `#OPS-RMA`: registro do incidente de sandbox + regra operacional.
-2. `77a8caa` — `#DOC-RMA`: diagnóstico de estado pós-gate (feito, doc obsoleta,
-   lacunas reais).
-3. `5d6baed` — `#ARQ-RMA`: FRONT-004/D-06 — `/` redireciona convidado para `login` e
-   autenticado para `dashboard`; `welcome.blade.php` e os dois `ExampleTest`
-   placeholders removidos; novo `RaizRedirecionamentoTest` (2 testes).
-4. `9657236` — `#ARQ-RMA`: ARQ-004/PAR-RMA-001 — busca por NF consulta campos
-   fiscais reais (`nfcompra`/`nfvenda`/`nf_remessa`/`nf_retorno_numero`/campos
-   históricos); `os` vira critério próprio; mapeamento `NF` e `os` do painel
-   Localizar V1 corrigido com fonte 14.6.1/15.8.1; 8 testes/23 assertions.
-5. `c8fc639` — `#DOC-RMA`: reconciliação de gates G-04..G-07, H-011, H-012, H-021 e
-   matriz de busca por NF.
-6. `3b9e016` — `#ARQ-RMA`: PAR-RMA-002/PAR-RMA-003 parcial — busca pela chave
-   histórica (`numero_legado`, critério `numero` + campo `CHAVE` do V1) e campos
-   diretos do legado no texto; 3 testes novos.
-7. `86bc9f4` — `#DOC-RMA`: reconciliação H-022 fechado e H-023 parcial.
+### Causa raiz
+- V1 Parceiros: `Novo`/`Editar` como `<a>` crus; `Remover` `<button>` cru sem
+  `cursor:pointer` (SCSS `button` não definia cursor).
+- V2 Parceiros: `Novo` `btn formSubmit`, `Editar` cru, `Remover` `btn btn-xs` —
+  três linguagens na mesma tabela.
+- Problema transversal: `rma._acoes_de_transicao` crua, crédito cru, relatórios
+  standalone com `Filtrar` cru, formulários sem papel distinto.
 
-## Regras verificadas nesta sessão
+### Legado consultado (fonte histórica real)
+- V1 14.6.1: lista de parceiros com linha inteira navegável, detalhe com botão
+  desabilitado `USE A 15.8.1 P/ SALVAR`; paleta de botão `#662D37`, hover
+  `#9B3949`/`gold`, sem cursor em `button`.
+- V2 15.8.1: breadcrumb `Novo`, coluna ACAO com ícones Apagar/Ver, form com
+  `btn btn-default formButtonCadastrar2`; paleta `#224A5D`, hover `#185A78`,
+  `#333`/`#E1DEAC`, vermelho `#904141`.
+- Evidência e decisões completas:
+  `docs/produto/2026-09-09-investigacao-contrato-visual-acoes-botoes.md`.
 
-- Nunca alterar fontes históricas: leituras da arqueologia foram feitas apenas em
-  `~/github/_rma-arqueologia/backup-15.9.7/extracted/`.
-- Sem push, PR ou merge remoto.
-- Commits locais pequenos por fase, com teste/evidência antes do commit.
+### Contrato definido
+- HTML carrega semântica por papel: `.acao`, `.acao--primaria`, `.acao--secundaria`,
+  `.acao--perigo`, `.acao--operacional`, `.acao--compacta`; cada tema estiliza no
+  próprio SCSS (V1 não passa a parecer V2).
+- Estados: hover, `:focus-visible` com outline, `button:not(:disabled)` com
+  `cursor:pointer`, `button:disabled` sem pointer + opacidade.
+- Semântica preservada: GET continua `<a href>`; mutações continuam `<button>` em
+  `<form>` com CSRF/Gates; nenhum JS de navegação novo.
 
-## Próximos passos (ordem sugerida no PLANO-ATAQUE)
+### Telas auditadas e tratadas
+- Parceiros V1/V2 (clientes, fabricantes, fornecedores, assistências): Novo/Editar/
+  Remover com contrato.
+- RMA: busca V1 (Ver/Editar compactas), detalhe V1/V2 (Editar primário; V2 mantém
+  ícone "Ver" no índice por fidelidade do legado).
+- Ciclo de vida: `rma._acoes_de_transicao` com papéis semânticos.
+- Crédito: `Marcar crédito disponível` primário.
+- Formulários/identidade: Voltar V1 secundário, Alternar tema V1 secundário, Abrir
+  novo RMA V2 primário, foco global por tema.
+- Resíduo classificado: views genéricas órfãs (UI-07), relatórios standalone
+  RPEC/RMPE (UI-03), componentes históricos de geometria própria (buttonSave/
+  formSubmit/formButtonEnviarPanel/JSformLocalizarButton) — todos agora com
+  cursor/foco globais.
 
-1. Reconciliar itens documentais residuais das seções F10-V1/F10-VIS com ponteiros
-   para os diários CP/NAV (evidência já registrada).
-2. Executar lotes pequenos da frente H com prova histórica, um por commit:
-   `ARQ-008` (docblock), `ARQ-005` (destinatário/erros esperados), `FRONT-005`
-   (disclosure `.pmo`), `PAR-PARCEIRO-001` (detalhe/RMAs do parceiro).
-3. Investigar `C-02/C-03/C-04` (RN-12 V1, Lightbox2, skin AdminLTE) com evidência
-   dirigida à fonte histórica.
-4. Definir com o usuário a primeira iniciativa da Trilha B (sugestão:
-   `EVO-CONF-001` — OpenSpec completo em `openspec/changes/configuracao-admin/`).
-
-## Notas operacionais
-
-- Para rodar testes: containers locais já sobem com `docker compose up -d mysql
-  laravel.test`; suíte completa: `docker compose exec -T laravel.test php artisan
-  test` (~60-80s).
-- Playwright visual: `ParidadeVisualTemaV1.spec.ts` roda do host, os demais specs no
-  container (ver handoff 2026-08-26).
-- Screenshots com dado real do Legacy continuam fora do diretório versionado.
-
-
-## Atualização final — execução EVO-SAAS-001 (ondas S1 a S8)
-
-**SHA inicial da segunda rodada:** `64f1a31`. **SHA final:** `012a479`. **origin/main
-no fechamento:** `d466829` (HEAD local 10 commits à frente). Nada foi pushado por
-este agente; a sincronização do origin aconteceu por fora da sessão.
-
-### Commits desta segunda rodada (10 código/doc + tasks)
-- `6f80445` — Reconcilia estado pós-gate e abre Trilha B para execução controlada.
-- `d466829` — Especifica fundação SaaS multiempresa com OpenSpec executável e mapa tenant-scoped.
-- `b9e0e1a` — Introduz Company e vínculo de usuários com papel por empresa.
-- `d135534` — Marca S1.7 e S2 como concluídas no OpenSpec.
-- `13124af` — Cria tenant CellSystem e faz backfill dos dados existentes.
-- `c52f008` — Adiciona TenantContext e resolução de empresa após autenticação.
-- `14a92fb` — Adiciona isolamento automático de tenant em parceiros, RMA e histórico.
-- `d9cc5b2` — Isola parceiros por tenant com suíte A×B permanente.
-- `7710546` — Isola repositório de RMA por tenant com suíte A×B.
-- `a53f10d` — Escopa auditoria/histórico por tenant com prova A×B.
-- `d763bd3` — Marca ondas S3-S8 no OpenSpec e registra pendência S3.6.
-
-### Testes executados
-- PHPUnit completo: **431 testes / 1023 assertions verdes**.
-- Suítes dirigidas: CompanyUser, TenantSemente, ContextoDeTenant, IsolamentoBasico,
-  ParceirosIsolamento (16), RmaIsolamento (4), AuditoriaIsolamento (1), mais regressão
-  ampla de Identidade/Parceiros/Temas.
-
-### Estado EVO-SAAS-001
-- Ondas concluídas: S1-S8 (mapeamento, fundação, tenant inicial/backfill, contexto,
-  isolamento por construção, parceiros, RMA, auditoria).
-- Pendente: S3.6 (hardening NOT NULL, adiado por segurança), S9-S14.
-- Gate de isolamento: não declarado (aguarda S12 e prova em dado real).
-
-### Decisões pendentes para o usuário
-1. Representação do administrador de plataforma — ortogonal a `Papel`; só exigida
-   quando a plataforma tiver ação real.
-2. UI de seletor de empresa (multi-vínculo): backend pronto; sem decisão de produto.
-
-### Próximo item EXATO
-`S9.1` — mapear todos os consumidores de `users.papel` e iniciar leitura do papel do
-vínculo ativo no `ContextoDeTenant`/User, mantendo compatibilidade até S9.7.
-
-### Comando de retomada
-```
-docker compose up -d mysql laravel.test
-docker compose exec -T laravel.test php artisan test
-```
-
-
-## Atualização final — ondas S9 a S12 + S3.6
-
-**SHA inicial desta rodada:** `46c8204`. **SHA final:** `2c5fde2` (working tree limpa;
-origin sincronizado por fora até `ff2d6fa`). PUSH NÃO REALIZADO.
-
-### Commits desta rodada
-- `375d26b` — Reconcilia estado atual do EVO-SAAS-001 antes da onda S9.
-- `bfbfd16` — Adiciona leitura do Papel pelo vínculo ativo no contexto de tenant.
-- `4db743d` — Adapta Policies e casos de uso ao Papel da empresa ativa.
-- `6f3a590` — Prova papéis distintos do mesmo usuário entre empresas e login por vínculo.
-- `df9613a` — Passa gestão de papel a gravar no vínculo da empresa ativa.
-- `aec1af4` — Adapta tela de usuários e seed de QA ao papel do vínculo.
-- `ff2d6fa` — Registra matriz de consumidores e status S9 no OpenSpec.
-- `65e2c01` — Adiciona numeração transacional de RMA por empresa com contador dedicado.
-- `8810fcd` — Prova sequência 1 e 2 de RMA na mesma empresa com id técnico global.
-- `b72df75` — Registra status S10 no OpenSpec e pendência do teste concorrente.
-- `9066a47` — Integra tenant CellSystem ao migrador histórico com vínculo de usuários.
-- `3b7ba16` — Registra status S11 no OpenSpec.
-- `5932197` — Cria suite arquitetural de isolamento multiempresa com inventário canônico.
-- `6f498b0` — Endurece tenant_id NOT NULL e garante contexto CellSystem nos importadores.
-- `201f3ff` — Garante contexto CellSystem no teste do helper de cliente.
+### Commits da frente (ordem)
+1. `694732d` — `#DOC-RMA - Audita contrato visual das acoes no V1 e V2`.
+2. `624e548` — `#FRONT-RMA - Padroniza acoes de parceiros nos temas V1 e V2`.
+3. `1c1a1e6` — `#FRONT-RMA - Padroniza acoes das listagens e detalhe de RMA`.
+4. `5ce8654` — `#FRONT-RMA - Padroniza botoes do ciclo de vida do RMA`.
+5. `42a4235` — `#FRONT-RMA - Padroniza acoes de formularios credito e identidade`.
+6. `7a17120` — `#QA-RMA - Cobre contrato visual de acoes no browser`.
+7. `da43f14` — `#DOC-RMA - Atualiza plano e tasks apos contrato visual de acoes`.
 
 ### Testes
-- PHPUnit completo: **448 testes / 1070 assertions verdes** (última execução 2026-09-09).
+- PHPUnit completo: **477 testes / 1242 assertions** (regressão ampla, incluindo
+  novos testes de contrato em `tests/Feature/Temas/ContratoVisual*`).
+- Playwright dirigido: `tests/Browser/ContratoVisualAcoes.spec.ts` — 2 testes:
+  Parceiros V1/V2 (`computedStyle.cursor === 'pointer'`, hover, TAB/focus-visible,
+  semântica `<a>`/POST+DELETE) e Detalhe RMA + Crédito V1/V2.
+- Build Vite verde; `git diff --check` limpo antes de cada commit.
 
-### Estado EVO-SAAS-001
-- Concluído: S1–S8, S9 (papel por vínculo), S10 (contador/numeração), S11
-  (migrador CellSystem), S12 (gate arquitetural) e S3.6 (hardening NOT NULL).
-- Pendente: S9.8 (remover users.papel), S10.4 (concorrência por processo externo),
-  S11.4 (tenant no relatório do migrador), S13 (Playwright/segurança final), S14
-  (gate formal).
+## Próximos itens exatos
 
-### Próximo item EXATO
-`S13.1→S13.2` já fechados; próximo: `S13` completo começando por Playwright relevante
-de login/troca de tenant/autorização e, em paralelo, a prova externa `S10.4`.
+1. **UI-03** — RCD/RPEC/RMPE em shell V1/V2 com impressão limpa; filtros já nascem
+   com `.acao`.
+2. **UI-04** — alertas/históricos/logística em shell.
+3. **UI-05** — Controle V1 (alinhamento do bloco representante).
+4. **UI-06** — auditoria de identificador RMA.
+5. **UI-07/FRONT-006** — remover views genéricas órfãs com zero consumidor
+   (inventário em `2026-09-09-investigacao-contrato-visual-acoes-botoes.md`).
+6. **UI-08** — regressão browser ampla (já incorpora UI-02D).
+7. Depois: EVO-SAAS-001 S10.4, S11.4, S13.2, S14.
 
-### Comando de retomada
+## Comando de retomada
 ```
 docker compose up -d mysql laravel.test
 docker compose exec -T laravel.test php artisan test
+docker compose exec -T laravel.test npx playwright test tests/Browser/ContratoVisualAcoes.spec.ts --project=chromium
 ```
-
-
-## Atualização — frente FRONT-003 (shell das telas secundárias)
-
-**HEAD inicial:** `57c48b7`. **HEAD final:** `e883c14` + commits de UI/documentação
-desta frente.
-
-### O que foi feito
-- Investigação completa das superfícies standalone (crédito, relatórios, alertas,
-  históricos, logística) registrada em
-  `docs/produto/2026-09-09-investigacao-front-003-shell-telas-secundarias.md`.
-- OpenSpec executável em `openspec/changes/front-003-shell-telas-secundarias/`.
-- **Crédito corrigido** com shell V1/V2 (view_do_tema + partial compartilhado),
-  mantendo Gate/tenant/POST; teste `TelasSecundariasShellTest`.
-- Suíte: **450 testes / 1076 assertions verdes**.
-
-### Commits desta frente
-- `df0d02e` — Integra crédito ao shell dos temas V1 e V2.
-- `e883c14` — Investiga FRONT-003 e especifica correção do shell das telas secundárias.
-
-### Telas pendentes (ordem no OpenSpec)
-- UI-03: RCD/RPEC/RMPE; UI-04: alertas/históricos/logística; UI-05: Controle V1;
-  UI-06: auditoria id/NUMERO; UI-07: limpeza FRONT-006; UI-08: regressão browser.
-
-### Próximo item EXATO
-`UI-03` — integrar RCD/RPEC/RMPE aos temas preservando impressão limpa.
-
-### EVO-SAAS-001
-- Continua ABERTO (S9.8/S10.4/S11.4/S13.2/S14). Não será fechado pela correção visual.

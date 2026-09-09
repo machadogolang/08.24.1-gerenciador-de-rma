@@ -144,3 +144,17 @@ recebido e confirmado.
   POST/CSRF; se juntar telas for decisao de produto, registrar DECISAO-PENDENTE e
   seguir ondas independentes.
 
+
+### Resultado - ONDA C/D/E parcial (commits 1007ad0/24c7c3a/bbea068)
+
+- PAR-RES-C-01 corrigido: rodape do detalhe V2 sem link/bloco moderno extra e com
+  select `#224A5D` historico (1007ad0).
+- PAR-RES-D-01..04 corrigido: formularios V2 de parceiros em grade historica com
+  controles escuros (24c7c3a).
+- PAR-RES-E-01..03 corrigido: relatorios com largura integrada e titulo 18px
+  (bbea068); folha branca mantida como superfície de relatorio/impressao.
+- PAR-RES-E-04 Perfil/Anotacoes: no Legacy V2 Anotacoes e pagina propria
+  (`page/anotacoes.php`) e Alterar senha e subpaginacao separada
+  (`subp/senha.php`); juntar tudo em /perfil e decisao de produto. Classificacao:
+  DECISAO-PENDENTE, registro mantido; tarefas independentes continuam.
+

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Identidade\HistoricoDeAcessoController;
 use App\Http\Controllers\Identidade\UsuarioController;
+use App\Http\Controllers\Rma\HistoricoDeModificacaoController;
 use App\Http\Controllers\Parceiros\AssistenciaTecnicaController;
 use App\Http\Controllers\Parceiros\ClienteController;
 use App\Http\Controllers\Parceiros\FabricanteController;
@@ -52,4 +54,9 @@ Route::prefix('v2')
         // recebe esta organizacao.
         Route::get('/anotacoes', [UsuarioController::class, 'anotacoes'])->name('identidade.anotacoes.index');
         Route::get('/perfil/senha', [UsuarioController::class, 'alterarSenha'])->name('identidade.perfil.senha');
+
+        // PAR15-AUD-001/005 - hub Controle do TEMA V2 (prefixo) + superficies do menu historico.
+        Route::get('/controle', [\App\Http\Controllers\Identidade\ControleController::class, 'index'])->name('identidade.controle.index');
+        Route::get('/historico-de-acesso', [HistoricoDeAcessoController::class, 'index'])->name('identidade.historico-de-acesso.index');
+        Route::get('/rmas-historico', [HistoricoDeModificacaoController::class, 'index'])->name('rmas.historico.index');
     });

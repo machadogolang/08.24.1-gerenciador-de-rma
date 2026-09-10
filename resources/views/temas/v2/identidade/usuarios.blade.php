@@ -7,6 +7,7 @@ CSRF, superficies dedicadas); o que voltou ao contrato do Legacy foi a composica
 da tela. `QT Login`/`Ultimo login` sao projecao de `tentativas_de_acesso`
 (`ResumoDeAcessoDosUsuarios`), nunca coluna duplicada (PAR15-DATA-001/002). --}}
 @section('conteudo')
+    @include('temas.v2.identidade._menu_controle', ['subpAtual' => 'usuarios'])
     @if (session('status'))
         <p class="centrodeavisos">{{ session('status') }}</p>
     @endif

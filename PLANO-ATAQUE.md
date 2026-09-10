@@ -43,7 +43,8 @@ Fila de correcao apos o checkpoint documental (secao 6 da matriz):
 2. [x] PAR15-RMA-DET-001 - select operacional + OK no topo (e rodape) do detalhe V2.
 3. [x] PAR14/PAR15-RMA-STOCK/CREDIT - fechados: V2 select 30px, V1 check custom
    475x40 identico ao Legacy, persistencia (salvar/reload) e Policy provadas.
-4. [ ] PAR15-AUD-001..005 - auditoria/historico V2.
+4. [x] PAR15-AUD-001..005 - hub Controle V2, colunas do Legacy projetadas de
+   estado_apos/user_agent, acao Ver e SO/APP preservados (AUD-005 geometria em PF-14).
 5. [ ] PAR14-REL-RPEC-001..005 - RPEC V1.
 6. [ ] PAR14-REL-RCD-001..003 - RCD V1.
 7. [ ] PAR15-REL-001..010 - Relatorios V2.

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['user_id', 'email_informado', 'ip', 'user_agent', 'resultado'])]
+#[Fillable(['user_id', 'email_informado', 'ip', 'user_agent', 'resultado', 'sistema_operacional_legado', 'app_legado'])]
 class TentativaDeAcesso extends Model
 {
     protected $table = 'tentativas_de_acesso';

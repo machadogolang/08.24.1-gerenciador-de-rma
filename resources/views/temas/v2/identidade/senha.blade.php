@@ -1,6 +1,7 @@
 @extends('temas.v2.layout')
 
 @section('conteudo')
+    @include('temas.v2.identidade._menu_controle', ['subpAtual' => 'senha'])
     {{-- PAR-RES-E-04 - "Alterar senha" como superficie separada do TEMA V2 (fonte
     Legacy `15.8.1/subp/senha.php`, subpagina de Controle). O legado trocava a senha
     sem exigir a atual; aqui mantemos `TrocarPropriaSenha` (senha atual + confirmacao

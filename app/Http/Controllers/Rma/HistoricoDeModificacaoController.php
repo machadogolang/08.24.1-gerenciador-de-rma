@@ -19,8 +19,9 @@ class HistoricoDeModificacaoController extends Controller
     {
         Gate::authorize('gerenciar', User::class);
 
+        // PAR15-AUD-002 - a view V2 projeta FABRICANTE do snapshot ou do RMA pai.
         $modificacoes = ModificacaoDeRma::query()
-            ->with(['rma', 'user'])
+            ->with(['rma.fabricante', 'user'])
             ->latest()
             ->paginate(20);
 

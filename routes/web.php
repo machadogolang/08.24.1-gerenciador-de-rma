@@ -125,6 +125,9 @@ Route::middleware('auth')->group(function () {
     // histórico de acesso (dado já existe desde a Fase 1, só falta a tela). Mesma
     // Gate `'gerenciar'` de `UsuarioController` (tela administrativa).
     Route::get('/rmas-historico', [HistoricoDeModificacaoController::class, 'index'])->name('rmas.historico.index');
+
+    // PAR15-AUD-001/005 - hub Controle do TEMA V2 (fonte `15.8.1/page/controle.php`).
+    Route::get('/controle', [\App\Http\Controllers\Identidade\ControleController::class, 'index'])->name('identidade.controle.index');
     Route::get('/historico-de-acesso', [HistoricoDeAcessoController::class, 'index'])->name('identidade.historico-de-acesso.index');
 
     // VIS-V1-010 - painel "Controle" do TEMA V1 (`14.6.1/page/controle.php`), distinto

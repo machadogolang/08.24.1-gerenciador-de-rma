@@ -54,9 +54,19 @@ final class ImportarLogsDeAcesso
                     ->where('email_informado', $linha->email)
                     ->where('ip', $linha->ip)
                     ->where('created_at', $linha->data)
-                    ->exists();
+                    ->first();
 
-                if ($jaMigrado) {
+                if ($jaMigrado !== null) {
+                    // PAR15-AUD-004 - backfill seguro: instala\u00e7\u00f5es que migraram antes
+                    // dos campos historicos existirem recebem SO/APP da fonte, sem tocar no
+                    // que ja esta gravado.
+                    if ($jaMigrado->sistema_operacional_legado === null && $linha->sistema_operacional !== null) {
+                        $jaMigrado->forceFill([
+                            'sistema_operacional_legado' => $linha->sistema_operacional,
+                            'app_legado' => $linha->app,
+                        ])->save();
+                    }
+
                     continue;
                 }
 
@@ -73,6 +83,8 @@ final class ImportarLogsDeAcesso
                     'email_informado' => $linha->email,
                     'ip' => $linha->ip,
                     'user_agent' => $linha->navegador,
+                    'sistema_operacional_legado' => $linha->sistema_operacional,
+                    'app_legado' => $linha->app,
                     'resultado' => $resultado,
                     'created_at' => $linha->data,
                     'updated_at' => $linha->data,

@@ -36,8 +36,16 @@ class HistoricoShellTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs("temas.{$tema->value}.rma.historico.index");
-        $response->assertSeeText('Histórico de modificações de RMA');
-        $response->assertSee('class="historico-tabela"', false);
+
+        if ($tema === TemaPreferido::V2) {
+            // PAR15-AUD-002/003 - contrato do Legacy `subp/logs_de_modificacao.php`.
+            $response->assertSeeText('Logs de modificacao');
+            $response->assertSeeText('BD NUMERO');
+            $response->assertSeeText('NAVEGADOR');
+        } else {
+            $response->assertSeeText('Histórico de modificações de RMA');
+            $response->assertSee('class="historico-tabela"', false);
+        }
     }
 
     #[DataProvider('temasProvider')]
@@ -52,7 +60,14 @@ class HistoricoShellTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs("temas.{$tema->value}.identidade.historico-de-acesso.index");
-        $response->assertSeeText('Histórico de acesso');
-        $response->assertSee('class="historico-tabela"', false);
+
+        if ($tema === TemaPreferido::V2) {
+            // PAR15-AUD-004 - contrato do Legacy `subp/logs_de_autenticacao.php`.
+            $response->assertSeeText('SISTEMA OPERACIONAL');
+            $response->assertSeeText('Quantidade retornada');
+        } else {
+            $response->assertSeeText('Histórico de acesso');
+            $response->assertSee('class="historico-tabela"', false);
+        }
     }
 }

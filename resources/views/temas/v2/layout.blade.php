@@ -63,7 +63,7 @@
                         (`15.8.1/page/anotacoes.php`), dedicada e fora do /perfil. --}}
                         <li class="lidropdown menuz"><a href="{{ rota_tema('identidade.anotacoes.index') }}">Anotacoes</a></li>
                         @can('gerenciar', \App\Models\User::class)
-                            <li class="lidropdown"><a href="{{ route('rmas.controle.index') }}">Controle</a></li>
+                            <li class="lidropdown"><a href="{{ rota_tema('identidade.controle.index') }}">Controle</a></li>
                             {{-- Usuários não está no dropdown histórico do 15.8.1, mas precisa
                             estar alcançável em algum lugar do TEMA V2 - mesmo critério já usado
                             no TEMA V1 (achado VIS-V1-008). --}}

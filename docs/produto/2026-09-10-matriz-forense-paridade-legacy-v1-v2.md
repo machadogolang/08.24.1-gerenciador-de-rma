@@ -268,7 +268,7 @@ Base: `database/migrations/2026_08_25_000001_create_tentativas_de_acesso_table.p
 | PAR15-RMA-LIST-002 | V2 | Retornou | `page/retornou.php` (0 bytes) | nao existe | Rota morta no Legacy | F | [x] | Nao reconstruir (LEG-RMA-016) |
 | PAR15-RMA-LIST-003 | V2 | Novo RMA | `page/novo_rma.php` | aba Novo (`_form_novo_v2`) | Equivalente (PAR-V2-NOVO-01) | E | [x] | Manter |
 | PAR15-SEARCH-001 | V2 | Pesquisar | `subp/pesquisar_rma.php`, `pesquisar_sn.php`, `pesquisar_nf.php`, `pesquisar_descricao.php` | aba Pesquisar (`_pesquisar_conteudo`) | Conferir abrangencia de campos | A | [R] | PAR-RMA-003 |
-| PAR15-CREDIT-001 | V2 | Creditos | `page/credito.php` | `/rmas-credito` | Conferir acoes/colunas | A | [R] | Reabrir |
+| PAR15-CREDIT-001 | V2 | Creditos | `page/credito.php` | `/rmas-credito` | Tabela real de 11 colunas | A | [x] | FECHADO 2026-09-10: regra `creditodisponivel=1` + colunas do Legacy (detalhe na secao 11) |
 | PAR15-PART-001 | V2 | Parceiros CRUD | `subp/listar_*` / `ver_*` / `novo_*` / `apagar_*` | `temas.v2.parceiros.*` | Detalhe/RMAs do parceiro ainda ausentes | A | [R] | PAR-PARCEIRO-001 |
 | PAR15-LOG-001 | V2 | Login/Logout/Troca de versao | `login.php`, `page/logout.php`, `../trocarapp.php` | `identidade.login`, `logout`, `tema.alternar` | Equivalente moderno | E | [x] | Manter |
 | PAR15-EMAIL-001 | V2 | Enviar e-mail / Avisar alguem | `page/enviar_email.php`, `page/avisar_alguem.php` | nao existe | Decisao de produto registrada | H | [R] | DEC-02 |

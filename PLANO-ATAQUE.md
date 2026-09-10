@@ -22,8 +22,8 @@ Ondas da auditoria (cada uma atomica):
 - [x] ONDA D - Parceiros/admin/Controle/usuarios (PAR-RES-D-01..04 corrigidos em
   24c7c3a; PHPUnit dirigido 35/35 + Playwright 4/4 verdes em 2026-09-10).
 - [R] ONDA E - Relatorios/Avisos/Anotacoes/secundarias (PAR-RES-E-01..03
-  corrigidos em bbea068; PAR-RES-E-04 Perfil/Anotacoes com DECISAO-PENDENTE
-  de produto - continuar itens independentes).
+  corrigidos em bbea068; PAR-RES-E-04 anotacoes/senha V2 dedicadas concluido em
+  2026-09-10; resta PAR-RES-006 Centro de Avisos).
 - [ ] ONDA F - Viewport/print/regressao residual.
 
 Apos fechar a paridade residual e as regressoes bloqueantes, o plano segue para

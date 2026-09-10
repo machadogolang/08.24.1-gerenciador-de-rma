@@ -59,11 +59,9 @@
                         <li class="lidropdown"><a href="{{ route('rmas.relatorios.rcd') }}">Relatorio RCD</a></li>
                         <li class="lidropdown menuz"><a href="{{ route('rmas.relatorios.rpec') }}">Relatorio RPEC</a></li>
                         <li class="lidropdown"><a href="{{ route('rmas.relatorios.rmpe') }}">Relatorio RMPE</a></li>
-                        {{-- [GAP] "Anotacoes" era página própria em `15.8.1/page/anotacoes.php`;
-                        V3 só tem o widget de anotação pessoal (`identidade.perfil.anotacao.update`,
-                        sem página de listagem dedicada) - aponta para o perfil até essa
-                        página existir. --}}
-                        <li class="lidropdown menuz"><a href="{{ rota_tema('identidade.perfil.show') }}">Anotacoes</a></li>
+                        {{-- PAR-RES-E-04 - "Anotacoes" volta a ser pagina propria no TEMA V2
+                        (`15.8.1/page/anotacoes.php`), dedicada e fora do /perfil. --}}
+                        <li class="lidropdown menuz"><a href="{{ rota_tema('identidade.anotacoes.index') }}">Anotacoes</a></li>
                         @can('gerenciar', \App\Models\User::class)
                             <li class="lidropdown"><a href="{{ route('rmas.controle.index') }}">Controle</a></li>
                             {{-- Usuários não está no dropdown histórico do 15.8.1, mas precisa

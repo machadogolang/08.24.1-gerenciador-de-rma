@@ -7,6 +7,7 @@ use App\Identidade\Aplicacao\ResetarSenhaDeUsuario;
 use App\Identidade\Aplicacao\SenhaAtualIncorretaException;
 use App\Identidade\Aplicacao\TrocarPropriaSenha;
 use App\Identidade\Dominio\Papel;
+use App\Identidade\Dominio\TemaPreferido;
 use App\Models\CompanyUser;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -116,6 +117,38 @@ class UsuarioController extends Controller
     public function perfil(Request $request): View
     {
         return view_do_tema('identidade.perfil', ['titulo' => 'Meu perfil', 'usuario' => $request->user()]);
+    }
+
+    /**
+     * PAR-RES-E-04 - superficie dedicada de Anotacoes do TEMA V2 (Legacy
+     * `15.8.1/page/anotacoes.php`: "QUADRO DE ANOTACOES", textarea propria). O V1
+     * mantem o Quadro de Anotacoes da pagina inicial; o Tema V3 nao recebe esta
+     * organizacao. Rota registrada apenas em `routes/tema-v2.php`.
+     */
+    public function anotacoes(Request $request): View|RedirectResponse
+    {
+        // V1 nao recebe esta organizacao (mantem o Quadro de Anotacoes da pagina
+        // inicial); a superficie dedicada e exclusiva do TEMA V2 (PAR-RES-E-04).
+        if (($request->attributes->get('temaAtivo') ?? TemaPreferido::V2) !== TemaPreferido::V2) {
+            return redirect()->route('identidade.perfil.show');
+        }
+
+        return view('temas.v2.identidade.anotacoes', ['titulo' => 'Quadro de anotacoes', 'usuario' => $request->user()]);
+    }
+
+    /**
+     * PAR-RES-E-04 - "Alterar senha" como superficie separada do TEMA V2 (Legacy
+     * `15.8.1/subp/senha.php`, subpagina de Controle). Mantem a exigencia moderna de
+     * senha atual + confirmacao (`TrocarPropriaSenha`), que o legado nao tinha.
+     */
+    public function alterarSenha(Request $request): View|RedirectResponse
+    {
+        // Mesmo criterio da anotacao: "Alterar senha" separado e do TEMA V2.
+        if (($request->attributes->get('temaAtivo') ?? TemaPreferido::V2) !== TemaPreferido::V2) {
+            return redirect()->route('identidade.perfil.show');
+        }
+
+        return view('temas.v2.identidade.senha', ['titulo' => 'Alterar senha']);
     }
 
     /**

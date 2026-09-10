@@ -54,6 +54,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/perfil/senha', [UsuarioController::class, 'atualizarSenha'])->name('identidade.perfil.senha.update');
     Route::put('/perfil/anotacao', [AnotacaoPessoalController::class, 'update'])->name('identidade.perfil.anotacao.update');
 
+    // PAR-RES-E-04 - superficies historicas do TEMA V2 (Anotacoes propria e Alterar
+    // senha separado) tambem no fluxo canonico; o controller redireciona para /perfil
+    // quando o tema ativo for V1 (V1 nao recebe esta organizacao).
+    Route::get('/anotacoes', [UsuarioController::class, 'anotacoes'])->name('identidade.anotacoes.index');
+    Route::get('/perfil/senha', [UsuarioController::class, 'alterarSenha'])->name('identidade.perfil.senha');
+
     // Parceiros (LEG-RMA-030 a 033) - cadastro de cliente/fabricante/fornecedor/
     // assistência técnica. Autorização checada dentro de cada controller via Policy.
     Route::resource('parceiros/clientes', ClienteController::class)

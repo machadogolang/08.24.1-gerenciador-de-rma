@@ -172,15 +172,46 @@ class RenderizaTemaV2Test extends TestCase
         $response->assertSeeText('Cliente tema V2');
     }
 
-    public function test_perfil_v2_renderiza(): void
+    public function test_perfil_v2_renderiza_sem_misturar_senha_e_anotacao(): void
     {
+        // PAR-RES-E-04 - o `/perfil` do TEMA V2 nao concentra mais perfil+senha+
+        // anotacao: a anotacao saiu daqui e virou pagina propria (`/v2/anotacoes`).
         $usuario = User::factory()->create(['papel' => Papel::Operador, 'anotacao' => 'Nota V2']);
 
         $response = $this->actingAs($usuario)->get('/v2/perfil');
 
         $response->assertOk();
         $response->assertViewIs('temas.v2.identidade.perfil');
+        $response->assertSeeText('Quadro de Anotacoes');
+        $response->assertSeeText('Alterar senha');
+        $response->assertDontSee('name="anotacao"', false);
+        $response->assertDontSee('name="senha_atual"', false);
+    }
+
+    public function test_anotacoes_v2_renderiza_como_pagina_propria(): void
+    {
+        // PAR-RES-E-04 - superficie historica `15.8.1/page/anotacoes.php`.
+        $usuario = User::factory()->create(['papel' => Papel::Operador, 'anotacao' => 'Nota V2']);
+
+        $response = $this->actingAs($usuario)->get('/v2/anotacoes');
+
+        $response->assertOk();
+        $response->assertViewIs('temas.v2.identidade.anotacoes');
+        $response->assertSeeText('QUADRO DE ANOTACOES');
         $response->assertSeeText('Nota V2');
+    }
+
+    public function test_alterar_senha_v2_renderiza_como_superficie_separada(): void
+    {
+        // PAR-RES-E-04 - superficie historica `15.8.1/subp/senha.php`.
+        $usuario = User::factory()->create(['papel' => Papel::Operador]);
+
+        $response = $this->actingAs($usuario)->get('/v2/perfil/senha');
+
+        $response->assertOk();
+        $response->assertViewIs('temas.v2.identidade.senha');
+        $response->assertSeeText('Alterar senha');
+        $response->assertSee('name="senha_atual"', false);
     }
 
     public function test_alerta_nao_vai_dar_garantia_renderiza_a_tabela_historica(): void

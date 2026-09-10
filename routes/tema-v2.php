@@ -35,4 +35,12 @@ Route::prefix('v2')
 
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('identidade.usuarios.index');
         Route::get('/perfil', [UsuarioController::class, 'perfil'])->name('identidade.perfil.show');
+
+        // PAR-RES-E-04 - superficies historicas do TEMA V2 separadas (fonte
+        // `15.8.1/page/anotacoes.php` e `15.8.1/subp/senha.php`). O /perfil
+        // continua existindo como rota moderna/compatibilidade, mas nao e mais
+        // a unica tela que mistura perfil+senha+anotacao no V2. O Tema V3 nao
+        // recebe esta organizacao.
+        Route::get('/anotacoes', [UsuarioController::class, 'anotacoes'])->name('identidade.anotacoes.index');
+        Route::get('/perfil/senha', [UsuarioController::class, 'alterarSenha'])->name('identidade.perfil.senha');
     });

@@ -36,7 +36,7 @@ mesmo sem screenshot apontado nesta nova sessao.
 | PAR-RES-004 | V2 | Concluido | Zebra binaria `TrSemGarantia1/2`/`TrZebrada1/2` sem alertas | Mesma estrutura no partial proprio | Sem diferenca confirmada | - | SEM-PROBLEMA | [R] | ampliar prova com fixture SemGarantia |
 | PAR-RES-005 | V2 | listagens | Linhas de uma linha medem 26px; linhas com quebra medem ~32px | Linhas com quebra medem ~32px; base depende do conteudo | Sem diferenca sistematica confirmada alem de dados de QA mais longos | Conteudo de QA diferente do banco Legacy | SEM-PROBLEMA | [R] | fixture curto em Playwright |
 | PAR-RES-006 | V2 | Centro de Avisos e relatorios | Cada grupo tem tabela propria | Lista generica compartilhada | Composicao por grupo ainda nao reproduzida | gap documentado desde CP22/CMP-V2-004 | PARIDADE-LEGACY | [R] | auditado em onda E |
-| PAR-RES-007 | V2 | Anotacoes | Pagina propria em `15.8.1/page/anotacoes.php` | Menu aponta para perfil | Pagina dedicada ausente | gap documentado desde CP17 | PARIDADE-LEGACY | [R] | task P8 |
+| PAR-RES-007 | V2 | Anotacoes | Pagina propria em `15.8.1/page/anotacoes.php` | Menu aponta para perfil | Pagina dedicada ausente | gap documentado desde CP17 | PARIDADE-LEGACY | [x] | PAR-RES-E-04 |
 | PAR-RES-008 | V1/V2 | Novo RMA | Autocomplete historico (datalist) | Selects modernos com mesmos valores | Implementacao moderna segura, visual funcional equivalente | decisao arquitetural registrada (NOVO-01.4/PAR-V2-NOVO-01) | FIDELIDADE-INTENCIONAL | [x] | coberto por Playwright |
 | PAR-RES-009 | V1/V2 | diversos | Layout historico | Layout moderno | Nao e espaco de redesign | regra do projeto | MELHORIA-V3 | - | nao corrigir em V1/V2 |
 
@@ -198,3 +198,28 @@ Residuo encontrado na reconciliacao (V2, nao coberto por teste anterior):
 
 Teste novo: `tests/Browser/ParidadeShellV2.spec.ts` (3/3) prova a sequencia exata,
 o titulo preservado, o Logout POST e o rodape historico. ONDA A fechada `[x]`.
+
+## Resultado - PAR-RES-E-04 (anotacoes e senha V2 dedicadas, 2026-09-10)
+
+Decisao do dono aplicada: o TEMA V2 volta a organizacao historica. `/perfil` deixa
+de ser a unica tela que mistura perfil+senha+anotacao.
+
+- Superficies restauradas:
+  - `/v2/anotacoes` (`temas/v2/identidade/anotacoes.blade.php`) - "QUADRO DE
+    ANOTACOES", textarea propria; fonte `15.8.1/page/anotacoes.php`.
+  - `/v2/perfil/senha` (`temas/v2/identidade/senha.blade.php`) - "Alterar senha"
+    separada, com icone `senha2.png` vendorizado; fonte `15.8.1/subp/senha.php`.
+- Seguranca moderna preservada: POST + CSRF + `_method=PUT`, validacao
+  (`min:8`, `confirmed`) e `TrocarPropriaSenha` exigindo senha atual (o legado nao
+  exigia). Nenhum JS legado copiado; a anotacao usa o endpoint
+  `identidade.perfil.anotacao.update` por botao, sem o autosave sem CSRF do legado.
+- `/perfil` do V2 continua existindo como rota moderna/compatibilidade (identidade
+  + troca de tema), agora com atalhos para as duas superficies dedicadas.
+- Rotas canonicas (`/anotacoes`, `/perfil/senha`) adicionadas em `routes/web.php`
+  alem das prefixadas `/v2/...`; com tema ativo V1 o controller redireciona para
+  `/perfil` (V1 nao recebe esta organizacao). Tema V3 nao foi tocado.
+- Testes: PHPUnit dirigido 41/41 (`RenderizaTemaV2Test` + `AnotacaoPessoalTest` +
+  `TrocarPropriaSenhaTest` + `RenderizaTemaV1Test`); Playwright
+  `ParidadeAnotacoesSenhaV2` 4/4 (pagina propria, persistencia, /perfil sem
+  mistura, senha separada com POST/CSRF/validacao, V1 sem regressao).
+- `DECISAO-PENDENTE` do PAR-RES-E-04 removida: decisao do dono implementada.

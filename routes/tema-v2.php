@@ -57,6 +57,9 @@ Route::prefix('v2')
 
         // PAR15-AUD-001/005 - hub Controle do TEMA V2 (prefixo) + superficies do menu historico.
         Route::get('/controle', [\App\Http\Controllers\Identidade\ControleController::class, 'index'])->name('identidade.controle.index');
+
+        // PAR15-REL-001..007 - hub Relatorios do TEMA V2 (item unico do menu historico).
+        Route::get('/relatorios', [\App\Http\Controllers\Rma\PainelDeRelatoriosController::class, 'index'])->name('rmas.relatorios.index');
         Route::get('/historico-de-acesso', [HistoricoDeAcessoController::class, 'index'])->name('identidade.historico-de-acesso.index');
         Route::get('/rmas-historico', [HistoricoDeModificacaoController::class, 'index'])->name('rmas.historico.index');
     });

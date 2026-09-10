@@ -35,6 +35,18 @@ class DescobribilidadeRelatoriosTest extends TestCase
         $response = $this->actingAs($usuario)->get('/parceiros/fornecedores');
 
         $response->assertOk();
+
+        if ($tema === TemaPreferido::V2) {
+            // PAR15-REL-001/008/009 - o Legacy V2 tem UM unico item Relatorios.
+            $response->assertSee(route('rmas.relatorios.index'), false);
+            $response->assertDontSee(route('rmas.relatorios.rcd'), false);
+            $response->assertDontSee(route('rmas.relatorios.rpec'), false);
+            $response->assertDontSee(route('rmas.relatorios.rmpe'), false);
+
+            return;
+        }
+
+        // V1 mantem a organizacao propria (Relatorios + RPEC/RMPE).
         $response->assertSee(route('rmas.relatorios.rcd'), false);
         $response->assertSee(route('rmas.relatorios.rpec'), false);
         $response->assertSee(route('rmas.relatorios.rmpe'), false);

@@ -56,9 +56,10 @@
                         <li class="lidropdown menuz"><a href="{{ rota_tema('parceiros.fabricantes.index') }}">Fabricantes</a></li>
                         <li class="lidropdown"><a href="{{ rota_tema('parceiros.fornecedores.index') }}">Fornecedores</a></li>
                         <li class="lidropdown menuz"><a href="{{ rota_tema('parceiros.clientes.index') }}">Clientes</a></li>
-                        <li class="lidropdown"><a href="{{ route('rmas.relatorios.rcd') }}">Relatorio RCD</a></li>
-                        <li class="lidropdown menuz"><a href="{{ route('rmas.relatorios.rpec') }}">Relatorio RPEC</a></li>
-                        <li class="lidropdown"><a href="{{ route('rmas.relatorios.rmpe') }}">Relatorio RMPE</a></li>
+                        {{-- PAR15-REL-008/009 - o Legacy V2 (`15.8.1/inc/menu.php`) tem UM unico
+                        item Relatorios, que abre o painel estatistico. RCD/RPEC/RMPE continuam
+                        existindo como compatibilidade (V1 e testes), fora do menu historico. --}}
+                        <li class="lidropdown"><a href="{{ rota_tema('rmas.relatorios.index') }}">Relatorios</a></li>
                         {{-- PAR-RES-E-04 - "Anotacoes" volta a ser pagina propria no TEMA V2
                         (`15.8.1/page/anotacoes.php`), dedicada e fora do /perfil. --}}
                         <li class="lidropdown menuz"><a href="{{ rota_tema('identidade.anotacoes.index') }}">Anotacoes</a></li>

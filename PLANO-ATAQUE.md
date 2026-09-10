@@ -47,7 +47,8 @@ Fila de correcao apos o checkpoint documental (secao 6 da matriz):
    estado_apos/user_agent, acao Ver e SO/APP preservados (AUD-005 geometria em PF-14).
 5. [ ] PAR14-REL-RPEC-001..005 - RPEC V1.
 6. [ ] PAR14-REL-RCD-001..003 - RCD V1.
-7. [ ] PAR15-REL-001..010 - Relatorios V2.
+7. [x] PAR15-REL-001..010 - hub estatistico V2 + menu historico com item unico
+   Relatorios (REL-010, markup compartilhado de RPEC/RCD/RMPE, fica com as ondas V1).
 8. [ ] demais gaps da matriz.
 
 Sequencia executavel refinada (segunda passagem, decisao do dono 2026-09-10):

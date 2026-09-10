@@ -117,6 +117,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/rmas-credito/marcar', [CreditoController::class, 'marcar'])->name('rmas.credito.marcar');
 
     // Relatórios fiscais/contábeis (LEG-RMA-037/038/039, Fase 6) - RCD/RPEC/RMPE.
+    // PAR15-REL-001..007 - painel estatistico de Relatorios do TEMA V2.
+    Route::get('/relatorios', [\App\Http\Controllers\Rma\PainelDeRelatoriosController::class, 'index'])->name('rmas.relatorios.index');
+
     Route::get('/rmas-relatorios/rcd', [RelatorioController::class, 'creditosDisponiveis'])->name('rmas.relatorios.rcd');
     Route::get('/rmas-relatorios/rpec', [RelatorioController::class, 'produtosEmEstoqueParaContagem'])->name('rmas.relatorios.rpec');
     Route::get('/rmas-relatorios/rmpe', [RelatorioController::class, 'produtosEncaminhados'])->name('rmas.relatorios.rmpe');

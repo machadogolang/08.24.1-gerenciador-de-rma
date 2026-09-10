@@ -179,10 +179,13 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 - [ ] P10 - Parcial 2026-09-10: matriz de temas (Encaminhar/Concluir) e checklist-master
   (H-026/H-034/H-035/H-036) reconciliados; PLAN.md nao referenciava os itens. Faltam
   `paridade-v2-v3.md`, `checklist-paridade-temas.md` e o roteiro final.
-- [ ] P11 - Regressao funcional por fluxo.
-- [ ] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/`.
-- [ ] P13 - PHPUnit completo + build final (baseline real atual 536/1619;
-  execucao completa ja verde, pendente apenas da rodada final apos P7-P12).
+- [x] P11 - Regressao funcional por fluxo: `SmokesParidadeFuncional` M-01/M-02/M-04/M-06
+  4/4 verdes em 2026-09-10 (specs reconciliados com o detalhe V1 de edicao inline e a
+  folha de relatorio).
+- [x] P13 - PHPUnit completo + build final: 550 testes / 1699 assertions verdes +
+  `npm run build` verde (2026-09-10).
+- [ ] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/`: hoje so
+  `Fluxos/Tema.spec.ts`; os demais quadrantes nao foram escritos nesta sessao.
 - [ ] P14 - Fechamento/handoff da paridade.
 - [ ] EVO-SAAS-001 - S10.4/S11.4/S13.2/S14.
 

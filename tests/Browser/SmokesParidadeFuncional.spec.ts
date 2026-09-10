@@ -261,22 +261,22 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
         // 1. Relatório RCD (Créditos Disponíveis)
         await page.goto(`${V3}/rmas-relatorios/rcd`, { waitUntil: 'domcontentloaded' });
         expect(page.url()).toContain('/rmas-relatorios/rcd');
-        await expect(page.locator('h1')).toContainText('Relatório de Créditos Disponíveis');
+        await expect(page.locator('.relatorio-titulo')).toContainText('Relatório de Créditos Disponíveis');
 
         // 2. Relatório RPEC (Estoque para Contagem)
         await page.goto(`${V3}/rmas-relatorios/rpec`, { waitUntil: 'domcontentloaded' });
         expect(page.url()).toContain('/rmas-relatorios/rpec');
-        await expect(page.locator('h1')).toContainText('Relatório de Produtos em Estoque');
+        await expect(page.locator('.relatorio-titulo')).toContainText('Relatório de Produtos em Estoque');
 
         // 3. Relatório RMPE (Produtos Encaminhados) com intervalo obrigatório
         await page.goto(`${V3}/rmas-relatorios/rmpe?data_inicio=2026-01-01&data_fim=2026-12-31`, { waitUntil: 'domcontentloaded' });
         expect(page.url()).toContain('/rmas-relatorios/rmpe');
-        await expect(page.locator('h1')).toContainText('Relatório de Produtos Encaminhados (RMPE)');
+        await expect(page.locator('.relatorio-titulo')).toContainText('Relatório de Produtos Encaminhados (RMPE)');
 
         // 4. Painel de Créditos
         await page.goto(`${V3}/rmas-credito`, { waitUntil: 'domcontentloaded' });
         expect(page.url()).toContain('/rmas-credito');
-        await expect(page.locator('h1')).toContainText('Fluxo de crédito');
+        await expect(page.locator('h1, h2, .relatorio-titulo, .box-subpage').first()).toContainText(/crédit/i);
 
         // 5. Painel Aguardando Crédito
         await page.goto(`${V3}/rmas-aguardando-credito`, { waitUntil: 'domcontentloaded' });

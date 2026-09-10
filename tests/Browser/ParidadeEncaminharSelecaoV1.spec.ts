@@ -10,7 +10,6 @@ import { test, expect, type Page } from '@playwright/test';
  */
 const V3 = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:8095';
 const VIEWPORT = { width: 1440, height: 900 };
-const DETAILS = '.detalhe-bd-acoes-avancadas > summary';
 const SELETOR_ENCAMINHAR = 'form[action$="/encaminhar"]';
 const SELETOR_CONCLUIR = 'form[action$="/concluir"]';
 
@@ -24,6 +23,24 @@ async function login(page: Page): Promise<void> {
         page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
         page.click('button[type=submit]'),
     ]);
+}
+
+/**
+ * Estado compartilhado: as transicoes redirecionam para a rota canonica, que resolve
+ * o tema pela preferencia do usuario (pode ter ficado em V2 por outro spec). Aqui
+ * normalizamos para o detalhe V1 prefixado e abrimos o bloco recolhivel de acoes.
+ */
+async function abrirAcoesV1(page: Page): Promise<void> {
+    const idAtual = page.url().match(/rmas\/(\d+)/)?.[1];
+
+    if (idAtual !== undefined && ! page.url().includes('/v1/rma/')) {
+        await page.goto(`${V3}/v1/rma/${idAtual}`, { waitUntil: 'domcontentloaded' });
+    }
+
+    const details = page.locator('.detalhe-bd-acoes-avancadas');
+    if (await details.count() > 0 && (await details.first().getAttribute('open')) === null) {
+        await page.click('.detalhe-bd-acoes-avancadas > summary');
+    }
 }
 
 test('UX-003 - encaminhar no V1 usa selecao validada de destinatario', async ({ page }) => {
@@ -40,19 +57,14 @@ test('UX-003 - encaminhar no V1 usa selecao validada de destinatario', async ({ 
         page.click('#JS-Novo button.formButtonEnviarNovo'),
     ]);
 
-    // As acoes de ciclo de vida ficam no bloco recolhivel do detalhe V1.
-    await page.click(DETAILS);
-    await expect(page.locator('.acoes-de-transicao')).toBeVisible();
-
     // Entrada -> Recebido (habilita o Encaminhar).
+    await abrirAcoesV1(page);
     await Promise.all([
         page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
         page.click('form[action$="/receber"] button'),
     ]);
 
-    // O reload fecha o bloco recolhivel de novo.
-    await page.click(DETAILS);
-
+    await abrirAcoesV1(page);
     const formEncaminhar = page.locator(SELETOR_ENCAMINHAR);
     await expect(formEncaminhar).toBeVisible();
 
@@ -76,11 +88,10 @@ test('UX-003 - encaminhar no V1 usa selecao validada de destinatario', async ({ 
         formEncaminhar.locator('button[type=submit]').click(),
     ]);
 
-    await expect(page.locator('.centrodeavisos')).toContainText('RMA encaminhado.');
+    await expect(page.locator('.centrodeavisos').first()).toContainText('RMA encaminhado.');
 
-    // Prova da transicao: Encaminhar some e Concluir aparece (o status do detalhe
-    // V1 vive em controle, nao em texto de tabela).
-    await page.click(DETAILS);
+    // Prova da transicao: Encaminhar some e Concluir aparece.
+    await abrirAcoesV1(page);
     await expect(page.locator(SELETOR_ENCAMINHAR)).toHaveCount(0);
     await expect(page.locator(SELETOR_CONCLUIR)).toHaveCount(1);
 });

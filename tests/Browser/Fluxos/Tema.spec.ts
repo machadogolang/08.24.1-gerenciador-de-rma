@@ -19,17 +19,26 @@ async function login(browser: Browser): Promise<Page> {
 }
 
 async function garantirTema(page: Page, tema: 'v1' | 'v2'): Promise<void> {
-    await page.goto(`${V3}/perfil`, { waitUntil: 'load' });
-    const botao = page.locator('button:has-text("Alternar tema"), button:has-text("Trocar p/")').first();
-    const texto = await botao.textContent();
-    const atual = texto?.includes('atual: v1') ? 'v1' : texto?.includes('atual: v2') ? 'v2' : null;
-    if (atual === null) return;
-    if (atual !== tema) {
+    // Estado compartilhado entre specs: alterna ate a preferencia desejada valer
+    // (um clique pode nao refletir se a gravacao/sessao estiverem em transicao).
+    for (let tentativa = 0; tentativa < 4; tentativa++) {
+        await page.goto(`${V3}/perfil`, { waitUntil: 'load' });
+        const botao = page.locator('button:has-text("Alternar tema")').first();
+        const texto = await botao.textContent();
+        const atual = texto?.includes('atual: v1') ? 'v1' : texto?.includes('atual: v2') ? 'v2' : null;
+
+        if (atual === tema) {
+            return;
+        }
+
+        if (atual === null) {
+            return;
+        }
+
         await Promise.all([
             page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             botao.click(),
         ]);
-        await page.goto(`${V3}/perfil`, { waitUntil: 'load' });
     }
 }
 

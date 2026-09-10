@@ -32,7 +32,7 @@ Classificacoes padrao adotadas:
 | Quebradas em V2 mas funcionais em V1 | 1 |
 | Codigo morto comprovado (nao promover) | 6 |
 | Decisao pendente de produto/seguranca | 3 |
-| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V1 NOVO** | **9** (2 resolvidos) |
+| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V1 NOVO** | **5** (6 resolvidos) |
 | **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V2 NOVO** | **2** (3 resolvidos) |
 
 ---
@@ -42,11 +42,11 @@ Classificacoes padrao adotadas:
 ### Gaps do Tema V1 Novo (precisam ser introduzidos na linguagem visual V1)
 1. `GAP-V1-01` (CAP-RMA-004): [x] CONVERGIDO - Fila dedicada de Recebidos (rota `/rmas-recebidos`, view V1 `temas.v1.rma.recebidos` e link no `#TOPO`).
 2. `GAP-V1-02` (CAP-ID-005): Criacao de usuario por operador/admin no padrao V1 (existia em V2 `subp/novo_usuario.php`).
-3. `GAP-V1-03` (CAP-AUD-002): Historico e logs de autenticacao com visualizacao na linguagem V1.
-4. `GAP-V1-04` (CAP-AUD-003): Historico e logs de modificacao de RMA na linguagem V1.
-5. `GAP-V1-05` (CAP-AUD-004): Detalhe do log / acao Ver (`info/{numero}`) acessivel via navegacao V1.
+3. `GAP-V1-03` (CAP-AUD-002): [x] CONVERGIDO - Historico e logs de autenticacao com visualizacao na linguagem V1 e painel no Controle.
+4. `GAP-V1-04` (CAP-AUD-003): [x] CONVERGIDO - Historico e logs de modificacao de RMA na linguagem V1 e painel no Controle.
+5. `GAP-V1-05` (CAP-AUD-004): [x] CONVERGIDO - Detalhe do log / acao Ver (#id e ver.png) acessivel nos logs V1.
 6. `GAP-V1-06` (CAP-REL-004): [x] CONVERGIDO - Hub estatistico de relatorios adaptado ao Tema V1 (`temas.v1.rma.relatorios.index` e link no menu de sessao).
-7. `GAP-V1-07` (CAP-CRD-001): Visualizacao tabular rica de Creditos Disponiveis na linguagem V1.
+7. `GAP-V1-07` (CAP-CRD-001): [x] CONVERGIDO - Visualizacao tabular rica de Creditos Disponiveis e acao de marcar na linguagem V1.
 8. `GAP-V1-08` (CAP-ALT-004): Sinalizacao de Urgencia e Alerta com threshold de R$ 75 no padrao V1.
 9. `GAP-V1-09` (CAP-ALT-003): Campo e indicador de Prioridade (Baixa, Normal, Alta) no form e listagens V1.
 10. `GAP-V1-10` (CAP-PAR-006): Listagem de RMAs associados ao visualizar parceiros (clientes/fornecedores/fabricantes).
@@ -122,7 +122,7 @@ Classificacoes padrao adotadas:
 
 | ID | Capacidade | Dominio | Legacy 14.6.1 | Legacy 15.8.1 | Fonte Escolhida | Promover? | V1 Novo (Back/UI/Desc/Test/Status) | V2 Novo (Back/UI/Desc/Test/Status) | V3 (Status/T3) | OpenSpec | Pendencia | Status Geral |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| CAP-CRD-001 | Listagem tabular rica de Creditos | Credito | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / N / N / N / [ ] | S / S / S / S / [x] | [x] / T3-06 | unificacao-funcional | Tabela rica no V1 (GAP-V1-07) | [ ] Aberto V1 |
+| CAP-CRD-001 | Listagem tabular rica de Creditos | Credito | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-06 | unificacao-funcional | Nenhuma | [x] Convergido |
 | CAP-CRD-002 | Submenus de Creditos (orfao) | Credito | AUSENTE | CODIGO-MORTO | N/A | NAO-PROMOVER | N / N / N / N / [x] | N / N / N / N / [x] | N/A | rma-creditos | Nao reproduzir sub-rotas mortas | [x] Codigo Morto |
 
 ### 3.5 Dominio: Relatorios
@@ -153,9 +153,9 @@ Classificacoes padrao adotadas:
 | ID | Capacidade | Dominio | Legacy 14.6.1 | Legacy 15.8.1 | Fonte Escolhida | Promover? | V1 Novo (Back/UI/Desc/Test/Status) | V2 Novo (Back/UI/Desc/Test/Status) | V3 (Status/T3) | OpenSpec | Pendencia | Status Geral |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | CAP-AUD-001 | Hub de Controle Operacional | Controle | PRESENTE-FUNCIONAL | PRESENTE-FUNCIONAL | Compartilhada | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | Planejado / T3-14 | front-003 | Nenhuma | [x] Convergido |
-| CAP-AUD-002 | Logs de Autenticacao (acesso) | Controle | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / N / N / N / [ ] | S / S / S / S / [x] | [x] / T3-01 | unificacao-funcional | Acesso na UI V1 (GAP-V1-03) | [ ] Aberto V1 (P0) |
-| CAP-AUD-003 | Logs de Modificacao de RMA | Controle | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / N / N / N / [ ] | S / S / S / S / [x] | [x] / T3-04 | unificacao-funcional | Acesso na UI V1 (GAP-V1-04) | [ ] Aberto V1 (P0) |
-| CAP-AUD-004 | Acao Ver / Detalhe do log | Controle | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / N / N / N / [ ] | S / S / S / S / [x] | [x] / T3-04 | unificacao-funcional | Acessivel via V1 (GAP-V1-05) | [ ] Aberto V1 (P0) |
+| CAP-AUD-002 | Logs de Autenticacao (acesso) | Controle | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-01 | unificacao-funcional | Nenhuma | [x] Convergido |
+| CAP-AUD-003 | Logs de Modificacao de RMA | Controle | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-04 | unificacao-funcional | Nenhuma | [x] Convergido |
+| CAP-AUD-004 | Acao Ver / Detalhe do log | Controle | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-04 | unificacao-funcional | Nenhuma | [x] Convergido |
 
 ### 3.8 Dominio: Logistica
 

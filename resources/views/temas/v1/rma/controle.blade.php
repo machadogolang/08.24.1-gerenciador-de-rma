@@ -189,4 +189,32 @@ nenhum caso de uso novo foi criado para esta tela. --}}
         </form>
         <div style="height:10px;clear:both;"></div>
     </details>
+
+    {{-- UF-10 (GAP-V1-03) - LOGS DE AUTENTICACAO: uniao funcional com Tema V2 no padrao de Controle V1. --}}
+    <details>
+        <summary class="formTitlePanel">LOGS DE AUTENTICAÇÃO</summary>
+        <div style="font-size:12px;padding:10px 0;">
+            <p>Histórico completo de tentativas de login, acessos bem-sucedidos e falhas de autenticação.</p>
+            <p style="margin-top:10px;">
+                <a href="{{ rota_tema('identidade.historico-de-acesso.index') }}" class="formButtonEnviarPanel" style="display:inline-block;text-decoration:none;padding:5px 12px;color:#fff;">
+                    ABRIR LOGS DE AUTENTICAÇÃO
+                </a>
+            </p>
+        </div>
+        <div style="height:10px;clear:both;"></div>
+    </details>
+
+    {{-- UF-10 (GAP-V1-04/05) - LOGS DE MODIFICACAO DE RMA: uniao funcional com Tema V2 no padrao de Controle V1. --}}
+    <details>
+        <summary class="formTitlePanel">LOGS DE MODIFICAÇÃO DE RMA</summary>
+        <div style="font-size:12px;padding:10px 0;">
+            <p>Histórico detalhado de alterações nos RMAs, incluindo usuário responsável, ação e atalho para visualização do produto.</p>
+            <p style="margin-top:10px;">
+                <a href="{{ rota_tema('rmas.historico.index') }}" class="formButtonEnviarPanel" style="display:inline-block;text-decoration:none;padding:5px 12px;color:#fff;">
+                    ABRIR LOGS DE MODIFICAÇÃO
+                </a>
+            </p>
+        </div>
+        <div style="height:10px;clear:both;"></div>
+    </details>
 @endsection

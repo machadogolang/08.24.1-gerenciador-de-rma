@@ -32,14 +32,14 @@ Marcadores canonicos: `[ ]` (Pendente), `[R]` (Revisado), `[x]` (Concluido).
 
 ## Fase 4 - Auditoria e Creditos Cruzados (P1)
 
-- [ ] UF-10 - Logs de Autenticacao e Modificacao no Tema V1 (`GAP-V1-03..05` / CAP-AUD-002..004):
-  - [ ] Criar visualizacoes dos logs de acesso e modificacao no padrao de tabela e densidade do Tema V1.
-  - [ ] Adicionar links de acesso no painel Controle V1 (`/rmas-controle`).
-  - [ ] Assegurar link `Ver` funcional para inspecionar o RMA.
-  - [ ] Testes Feature de acesso aos logs sob o Tema V1.
-- [ ] UF-11 - Visualizacao Tabular Rica de Creditos no Tema V1 (`GAP-V1-07` / CAP-CRD-001):
-  - [ ] Implementar visualizacao da tabela completa de creditos (11 colunas) formatada no CSS do 14.6.1.
-  - [ ] Teste Feature de exibicao de creditos sob Tema V1.
+- [x] UF-10 - Logs de Autenticacao e Modificacao no Tema V1 (`GAP-V1-03..05` / CAP-AUD-002..004):
+  - [x] Criar visualizacoes dos logs de acesso e modificacao no padrao de tabela e densidade do Tema V1.
+  - [x] Adicionar links de acesso no painel Controle V1 (`/rmas-controle`).
+  - [x] Assegurar link `Ver` funcional para inspecionar o RMA.
+  - [x] Testes Feature de acesso aos logs sob o Tema V1.
+- [x] UF-11 - Visualizacao Tabular Rica de Creditos no Tema V1 (`GAP-V1-07` / CAP-CRD-001):
+  - [x] Implementar visualizacao da tabela completa de creditos (11 colunas) formatada no CSS do 14.6.1.
+  - [x] Teste Feature de exibicao de creditos sob Tema V1.
 
 ## Fase 5 - Alertas, Prioridade e Identidade (P2)
 

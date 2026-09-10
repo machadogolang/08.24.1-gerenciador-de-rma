@@ -106,8 +106,8 @@ Decisao canonica do dono:
 - [x] UF-09 - Hub Estatistico de Relatorios no Tema V1 (`GAP-V1-06` / CAP-REL-004): painel V1 adaptado.
 
 ### Fase 4 - Auditoria e Creditos Cruzados (P1)
-- [ ] UF-10 - Logs de Autenticacao e Modificacao no Tema V1 (`GAP-V1-03..05` / CAP-AUD-002..004): tabelas V1 e link Ver.
-- [ ] UF-11 - Visualizacao Tabular Rica de Creditos no Tema V1 (`GAP-V1-07` / CAP-CRD-001): 11 colunas no CSS V1.
+- [x] UF-10 - Logs de Autenticacao e Modificacao no Tema V1 (`GAP-V1-03..05` / CAP-AUD-002..004): tabelas V1 e link Ver.
+- [x] UF-11 - Visualizacao Tabular Rica de Creditos no Tema V1 (`GAP-V1-07` / CAP-CRD-001): 11 colunas no CSS V1.
 
 ### Fase 5 - Alertas, Prioridade e Identidade (P2)
 - [ ] UF-12 - Urgencia e Alerta de Prazo com Threshold R$ 75 no Tema V1 (`GAP-V1-08` / CAP-ALT-004).
@@ -134,8 +134,8 @@ Decisao canonica do dono:
    opcoes igual + tolerancia de gap coerente, 2-4px).
 5. [x] Novo Usuario V2 (PAR15-USR-007 funcional [x]; paridade visual reaberta em [R] no PAR15-USR-009).
 6. [x] Unificacao Funcional - Fase 1 (UF-01..04 documental) e Fase 2 (UF-05/06 verificados).
-7. [ ] Unificacao Funcional - Fase 3 (P0): Recebidos no V1 (UF-07), Relatorios RCD/RPEC/RMPE no V2 (UF-08), Hub Estatistico no V1 (UF-09).
-8. [ ] Unificacao Funcional - Fase 4 (P1): Auditoria/logs no V1 (UF-10), Creditos tabulares no V1 (UF-11).
+7. [x] Unificacao Funcional - Fase 3 (P0): Recebidos no V1 (UF-07), Relatorios RCD/RPEC/RMPE no V2 (UF-08), Hub Estatistico no V1 (UF-09).
+8. [x] Unificacao Funcional - Fase 4 (P1): Auditoria/logs no V1 (UF-10), Creditos tabulares no V1 (UF-11).
 9. [ ] Fila visual forense pendente: Alterar senha V2 (PAR15-SEC-001), Anotacoes V2 (PAR15-NOTE-001), RG/IE (PAR15-PART-DATA-001).
 10. [ ] Edit Parceiros V2 (PART-002..005) e RMAs associados (PART-001/006 / UF-15).
 11. [ ] Unificacao Funcional - Fases 5 e 6: Urgencia/Threshold (UF-12), Prioridade (UF-13), Novo Usuario V1 (UF-14), Logistica/Porto Alegre (UF-16/17), Ajuda (UF-18).

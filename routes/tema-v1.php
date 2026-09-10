@@ -58,6 +58,15 @@ Route::prefix('v1')
             ->name('rmas.relatorios.rpec');
         Route::get('/relatorios/rmpe', [RelatorioController::class, 'produtosEncaminhados'])
             ->name('rmas.relatorios.rmpe');
+        Route::get('/controle', [\App\Http\Controllers\Rma\ControlePainelController::class, 'index'])
+            ->name('rmas.controle.index');
+        Route::get('/creditos', [\App\Http\Controllers\Rma\CreditoController::class, 'index'])
+            ->name('rmas.credito.index');
+        Route::get('/historico-de-acesso', [\App\Http\Controllers\Identidade\HistoricoDeAcessoController::class, 'index'])
+            ->name('identidade.historico-de-acesso.index');
+        Route::get('/rmas-historico', [\App\Http\Controllers\Rma\HistoricoDeModificacaoController::class, 'index'])
+            ->name('rmas.historico.index');
+
         Route::put('/relatorios/{codigo}/informacao-adicional', [RelatorioController::class, 'salvarInformacaoAdicional'])
             ->name('rmas.relatorios.informacao-adicional.update');
     });

@@ -647,3 +647,81 @@ e executar so o que restar), P9..P14, e depois T3-13 em diante.
 - Working tree limpa apos este commit. Nenhum push executado por mim.
 
 PUSH NAO REALIZADO.
+
+---
+
+# Handoff da segunda continuação 2026-09-10 (P7-P13)
+
+## Baseline
+
+- Ponto de partida: `cd66ec6` (handoff anterior). `origin/main` continua em `d5c9463`.
+- Nenhum push executado por mim.
+
+## Commits desta continuação
+
+- `4769d8b` `#FRONT-RMA` - Encaminhamento por seleção validada (P7/UX-003).
+- `1274ebc` `#FRONT-RMA` - UX-001/UX-002/UX-004 parcial em parceiros (P8).
+- `4896677` `#DOC-RMA` - Inventário de rotas e plugins residuais (P9).
+- `c32a190` `#DOC-RMA` - Reconcilia matriz de temas e checklist (P10 parcial).
+- `2fee764` `#QA-RMA` - Reconcilia smokes funcionais e normaliza estado de tema (P11/P13).
+- Este handoff é o último commit da sessão.
+
+## O que foi entregue
+
+- **P7 (UX-003)** `[x]`: `App\Rma\Aplicacao\Destinatarios\OpcoesDeDestinatario` centraliza
+  whitelist de tipos, opções do tenant e `resolver()` (tipo + existência + tenant).
+  O detalhe V1 trocou `tipo + id cru` por um `<select name="destinatario">` com
+  `value="tipo:id"`; as transições V1 (`CicloDeVidaController`) e o detalhe V2
+  (`RmaController::executarAcaoDoDetalhe`) usam o mesmo resolvedor; `EditarRma`
+  revalida no salvamento geral (antes gravava o id cru e um slug virava FQCN
+  inexistente). Provas: `EncaminharRmaTest` 5/5 (inclui tenant estrangeiro e id
+  inexistente), `ParidadeEncaminharSelecaoV1`, `ContratoVisualAcoes` 2/2, M-04.
+- **PAR-RMA-008** `[x]`: `concluir()` grava apenas status + data em 14.6.1 e 15.8.1.
+- **P8 (parcial)**: Anotações V2 reconciliada (já feita em PAR-RES-E-04); UX-001
+  (`@can` nas listagens de parceiros, `modelo` passado pelos 4 controllers); UX-002
+  (`data-confirmar-remocao` + JS do tema); UX-004 na parte de duplo envio (JS do
+  tema). Provas: `AcoesPorPolicyTest` 2/2, `ConfirmacaoRemocaoParceiro`.
+- **P9** `[x]`: inventário em `docs/produto/2026-09-10-inventario-rotas-e-plugins-residuais.md`
+  (150 rotas, sem órfãs, V3 oculto).
+- **P10 (parcial)**: matriz de temas (Encaminhar/Concluir) e `checklist-master-v3.md`
+  (H-026/H-034/H-035/H-036) reconciliados.
+- **P11** `[x]`: `SmokesParidadeFuncional` M-01/M-02/M-04/M-06 4/4 verdes.
+- **P13** `[x]`: PHPUnit **550 testes / 1699 assertions** verdes + `npm run build` verde.
+
+## Pendências desta sessão
+
+- **P12**: os outros três quadrantes de `tests/Browser/Fluxos/` não foram escritos
+  (hoje só `Fluxos/Tema.spec.ts`).
+- **P10 restante**: `paridade-v2-v3.md`, `checklist-paridade-temas.md` e o roteiro.
+- **P14**: fechamento/handoff da paridade.
+- **UX-004 completo**: contrato transversal de flash/validação/estado vazio/403/404/500.
+- **AuditoriaNavegacionalTemaV1**: 8 asserções obsoletas (título de crédito no V1 e
+  valores em `input` após a edição inline) - não é regressão desta rodada.
+- **Tema V3**: T3-13..T3-GATE não iniciados; segue oculto e não selecionável.
+
+## Operação (importante)
+
+- Sandbox do ambiente quebrado (`bwrap: loopback`): usar `sandbox_permissions:
+  require_escalated` em todo comando; `apply_patch` também falha (edições via
+  `tee`/`sed`/`perl` escalados).
+- Playwright roda do HOST, com `PLAYWRIGHT_BASE_URL=http://localhost:8095` para os
+  specs antigos (alguns defaultam para a porta 80) e `--output=/tmp/pw-results`
+  (o `test-results/` do repo é `root:root`).
+- A preferência de tema é **estado compartilhado** entre specs: os fluxos novos
+  normalizam para `/v1/...` ou `/v2/...` antes de medir; `garantirTema` em
+  `Fluxos/Tema.spec.ts` agora alterna em loop.
+- Frontend: `npm run build` (Vite) no host após mudar JS/SCSS.
+
+## Próximo item exato
+
+1. **P12** - escrever os quatro quadrantes de `tests/Browser/Fluxos/` (reaproveitando
+   `Fluxos/Tema.spec.ts`) e rodar em série.
+2. **P10 restante** - reconciliar `paridade-v2-v3.md`/`checklist-paridade-temas.md`.
+3. **P14** - fechamento/handoff da paridade.
+4. Depois: T3-13 → T3-20 → T3-GATE (Tema V3 continua oculto).
+
+## Git final da rodada
+
+- Working tree limpa após este commit. Nenhum push executado por mim.
+
+PUSH NAO REALIZADO.

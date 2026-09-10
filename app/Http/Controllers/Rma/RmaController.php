@@ -8,12 +8,13 @@ use App\Models\Cliente;
 use App\Models\Fabricante;
 use App\Models\Fornecedor;
 use App\Models\Rma as RmaEloquent;
-use App\Rma\Infraestrutura\CamposDeExibicaoDoRmaEmBanco;
+use App\Models\User;
 use App\Rma\Aplicacao\Alertas\ListarGruposDeAlertas;
-use App\Rma\Aplicacao\BuscarRmas;
-use App\Rma\Aplicacao\CriarRma;
 use App\Rma\Aplicacao\ArquivarRma;
+use App\Rma\Aplicacao\BuscarRmas;
 use App\Rma\Aplicacao\ConcluirRma;
+use App\Rma\Aplicacao\CriarRma;
+use App\Rma\Aplicacao\Destinatarios\OpcoesDeDestinatario;
 use App\Rma\Aplicacao\EditarRma;
 use App\Rma\Aplicacao\EncaminharRma;
 use App\Rma\Aplicacao\ReceberRma;
@@ -26,6 +27,7 @@ use App\Rma\Dominio\RepositorioDeRmas;
 use App\Rma\Dominio\Rma;
 use App\Rma\Dominio\Solucao;
 use App\Rma\Dominio\Status;
+use App\Rma\Infraestrutura\CamposDeExibicaoDoRmaEmBanco;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -135,7 +137,7 @@ class RmaController extends Controller
     }
 
     /**
-     * @param  \App\Rma\Dominio\Rma[]  $registros
+     * @param  Rma[]  $registros
      * @return array<int, string>
      */
     private function mapaDeFabricantes(array $registros): array
@@ -268,7 +270,7 @@ class RmaController extends Controller
         $cliente = $registro->clienteId ? Cliente::find($registro->clienteId) : null;
 
         return view_do_tema('rma.show', [
-            'titulo' => 'RMA #' . $registro->id,
+            'titulo' => 'RMA #'.$registro->id,
             'registro' => $registro,
             'fabricante' => $fabricante,
             'fornecedor' => $fornecedor,
@@ -368,7 +370,7 @@ class RmaController extends Controller
         abort_if($registro === null, Response::HTTP_NOT_FOUND);
 
         return view_do_tema('rma.edit', [
-            'titulo' => 'Editar RMA #' . $registro->id,
+            'titulo' => 'Editar RMA #'.$registro->id,
             'numeroExibicao' => $registro->id,
             'registro' => $registro,
             'fabricantes' => Fabricante::query()->orderBy('nome')->get(),
@@ -430,9 +432,9 @@ class RmaController extends Controller
             ->with('status', $mensagens[(string) $request->input('acao', 'salvar')] ?? 'RMA atualizado.');
     }
 
-    private function usuario(): \App\Models\User
+    private function usuario(): User
     {
-        /** @var \App\Models\User $usuario */
+        /** @var User $usuario */
         $usuario = auth()->user();
 
         return $usuario;
@@ -441,7 +443,7 @@ class RmaController extends Controller
     private function executarAcaoDoDetalhe(
         string $acao,
         Request $request,
-        \App\Rma\Dominio\Rma $registro,
+        Rma $registro,
         ReceberRma $receberRma,
         EncaminharRma $encaminharRma,
         ConcluirRma $concluirRma,
@@ -460,16 +462,12 @@ class RmaController extends Controller
         };
 
         if ($acao === 'encaminhar') {
-            $valorDestinatario = (string) $request->input('destinatario_tipo', '');
-            $partes = explode(':', $valorDestinatario, 2);
-            abort_if(count($partes) !== 2 || ! is_numeric($partes[1]), 422);
+            // UX-003/P7 - mesmo resolvedor validado do V1 (tipo permitido, existencia e
+            // tenant) em vez de `explode` cru; a relacao polimorfica guarda o FQCN.
+            [$destinatarioType, $destinatarioId] = app(OpcoesDeDestinatario::class)
+                ->resolver((string) $request->input('destinatario_tipo'));
 
-            $encaminharRma->encaminhar(
-                $this->usuario(),
-                $registro,
-                $partes[0],
-                (int) $partes[1],
-            );
+            $encaminharRma->encaminhar($this->usuario(), $registro, $destinatarioType, $destinatarioId);
 
             return;
         }
@@ -528,7 +526,7 @@ class RmaController extends Controller
             'credito_disponivel' => ['sometimes', 'boolean'],
             'prioridade' => ['nullable', 'string', 'in:baixa,media,alta,Baixa,Media,Alta,Normal,normal'],
             'lancadoretorno' => ['nullable', 'string', 'in:pendente,nf_devolucao,sem_movimentacao,nao,sim'],
-            'solucao' => ['nullable', 'string', 'in:' . implode(',', array_column(Solucao::cases(), 'value'))],
+            'solucao' => ['nullable', 'string', 'in:'.implode(',', array_column(Solucao::cases(), 'value'))],
             'nfcompra' => ['nullable', 'string', 'max:255'],
             'nfcompra_emissao' => ['nullable', 'date'],
             'nfcompra_chave' => ['nullable', 'string', 'max:500'],

@@ -111,12 +111,20 @@ test.describe('FRONT-003/UI-02D - contrato visual de ações (browser)', () => {
             expect(idDetalhe).toMatch(/^\d+$/);
             await page.goto(`${V3}/${tema}/rma/${idDetalhe}`, { waitUntil: 'load' });
 
-            const editar = page.locator('a.acao--primaria:has-text("Editar")').first();
-            await expect(editar).toBeVisible();
-            await expect(editar).toHaveCSS('cursor', 'pointer');
-            await expect(page.locator('.acoes-de-transicao')).toBeVisible();
-            const salvarSolucao = page.locator('.acoes-de-transicao button.acao--primaria:has-text("Salvar solução")');
-            await expect(salvarSolucao).toHaveCSS('cursor', 'pointer');
+            if (tema === 'v1') {
+                // PAR-RES-C-01 - no V1 o Editar e acao secundaria e as acoes de ciclo
+                // de vida vivem num bloco recolhivel; abrir antes de medir o contrato.
+                await expect(page.locator('#CONTEUDO a:has-text("Editar")').first()).toBeVisible();
+                await page.click('.detalhe-bd-acoes-avancadas > summary');
+                await expect(page.locator('.acoes-de-transicao')).toBeVisible();
+                const salvarSolucao = page.locator('.acoes-de-transicao button.acao--primaria:has-text("Salvar solução")');
+                await expect(salvarSolucao).toHaveCSS('cursor', 'pointer');
+            } else {
+                // PAR-V2-DETAIL-02 - o detalhe V2 e o proprio formulario operacional
+                // (sem link Editar e sem o partial de acoes).
+                await expect(page.locator('form:has(select[name="acao"])').first()).toBeVisible();
+                await expect(page.locator('.acoes-de-transicao')).toHaveCount(0);
+            }
 
             await page.goto(`${V3}/rmas-credito`, { waitUntil: 'load' });
             const marcarCredito = page.locator('button.acao--primaria:has-text("Marcar crédito disponível")');

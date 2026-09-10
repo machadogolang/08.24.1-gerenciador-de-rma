@@ -7,10 +7,10 @@ use App\Models\Fornecedor;
 use App\Parceiros\Aplicacao\EncontrarOuCriarCliente;
 use App\Rma\Dominio\Eventos\RmaEditado;
 use App\Rma\Dominio\Prioridade;
-use App\Rma\Dominio\StatusDeLancamento;
 use App\Rma\Dominio\RepositorioDeRmas;
-use DateTimeImmutable;
 use App\Rma\Dominio\Rma;
+use App\Rma\Dominio\StatusDeLancamento;
+use DateTimeImmutable;
 use Illuminate\Support\Facades\Auth;
 use RuntimeException;
 
@@ -155,9 +155,18 @@ final class EditarRma
         }
 
         if (array_key_exists('destinatario_tipo', $dados)) {
-            $destinatario = $this->destinatarioDoValor((string) $dados['destinatario_tipo']);
-            $alteracoes['destinatarioType'] = $destinatario['tipo'] ?? null;
-            $alteracoes['destinatarioId'] = $destinatario['id'] ?? null;
+            $valorDestinatario = (string) $dados['destinatario_tipo'];
+
+            if ($valorDestinatario === '') {
+                $alteracoes['destinatarioType'] = null;
+                $alteracoes['destinatarioId'] = null;
+            } else {
+                // UX-003/P7 - revalida tipo, existencia e tenant (antes o id era gravado
+                // cru e o slug virava uma classe inexistente).
+                [$tipoDestinatario, $idDestinatario] = $this->opcoesDeDestinatario->resolver($valorDestinatario);
+                $alteracoes['destinatarioType'] = $tipoDestinatario;
+                $alteracoes['destinatarioId'] = $idDestinatario;
+            }
         }
 
         $rma = $existente->comAlteracoes($alteracoes);
@@ -196,34 +205,5 @@ final class EditarRma
         }
 
         return null;
-    }
-
-    /**
-     * PAR-DET-V1-EDIT-01 - valor do select de destinatario do detalhe V1 no formato
-     * tipoSlug:id (ex.: assistencia_tecnica:12). Nao expoe FQCN no HTML.
-     *
-     * @return array{tipo?: class-string, id?: int}|null
-     */
-    private function destinatarioDoValor(string $valor): ?array
-    {
-        if ($valor === '') {
-            return [];
-        }
-
-        $mapa = [
-            'assistencia_tecnica' => AssistenciaTecnica::class,
-            'fabricante' => Fabricante::class,
-            'fornecedor' => Fornecedor::class,
-        ];
-
-        $partes = explode(':', $valor, 2);
-        $tipo = $mapa[$partes[0] ?? ''] ?? null;
-        $id = isset($partes[1]) ? (int) $partes[1] : 0;
-
-        if ($tipo === null || $id < 1) {
-            return null;
-        }
-
-        return ['tipo' => $tipo, 'id' => $id];
     }
 }

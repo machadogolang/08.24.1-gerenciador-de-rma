@@ -176,6 +176,15 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
         const falhas: Falha[] = [];
         const page = await loginV3ComCredenciais(browser, 'superadministrador@rma.local', 'password', falhas);
 
+        // PAR-RES-C-01 - as acoes de ciclo de vida vivem no bloco recolhivel do
+        // detalhe V1 e o status e exibido em controle, nao em texto de tabela.
+        const abrirAcoes = async () => {
+            const details = page.locator('.detalhe-bd-acoes-avancadas');
+            if (await details.count() > 0 && (await details.first().getAttribute('open')) === null) {
+                await page.click('.detalhe-bd-acoes-avancadas > summary');
+            }
+        };
+
         // Cria um RMA novo para o teste de ciclo pelo painel inline
         await page.goto(`${V3}/v1/rma`, { waitUntil: 'domcontentloaded' });
         await page.click('#menu-novo');
@@ -189,28 +198,29 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
         ]);
 
         expect(page.url()).toMatch(/\/rmas\/\d+$/);
-        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Entrada');
 
         // 1. Receber RMA
+        await abrirAcoes();
         const btnReceber = page.locator('form[action$="/receber"] button');
         await expect(btnReceber).toBeVisible();
         await Promise.all([
             page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             btnReceber.click(),
         ]);
-        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Recebido');
 
-        // 2. Encaminhar RMA (com destinatário id=1)
+        // 2. Encaminhar RMA (selecao validada UX-003)
+        await abrirAcoes();
         const formEncaminhar = page.locator('form[action$="/encaminhar"]');
         await expect(formEncaminhar).toBeVisible();
-        await formEncaminhar.locator('input[name="destinatario_id"]').fill('1');
+        await formEncaminhar.locator('select[name="destinatario"]').selectOption({ index: 1 });
         await Promise.all([
             page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             formEncaminhar.locator('button[type=submit]').click(),
         ]);
-        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Encaminhado');
+        await expect(page.locator('.centrodeavisos')).toContainText('RMA encaminhado.');
 
         // 3. Concluir RMA com Solução
+        await abrirAcoes();
         const formConcluir = page.locator('form[action$="/concluir"]');
         await expect(formConcluir).toBeVisible();
         await formConcluir.locator('select[name="solucao"]').selectOption('REPARO');
@@ -218,7 +228,7 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
             page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             formConcluir.locator('button[type=submit]').click(),
         ]);
-        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Concluido');
+        await expect(page.locator('.centrodeavisos')).toContainText('RMA conclu');
 
         expect(falhas).toEqual([]);
         await page.context().close();

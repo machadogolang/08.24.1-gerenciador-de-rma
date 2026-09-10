@@ -166,9 +166,10 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   - [x] UI-07.1 - Inventario de candidatas (UI-AUD-016).
   - [x] UI-07.2 - Remocao com prova de zero consumidor e teste (15 views removidas em
     2026-09-10; guarda `ViewsOrfasRemovidasTest`; PHPUnit 546/1676 verde).
-- [ ] P7 - UX-003: Encaminhar por selecao validada, seguido de PAR-RMA-008.
-  Contrato documentado em 2026-09-10 (`docs/produto/2026-09-10-contrato-p7-encaminhar-selecao-e-par-rma-008.md`);
-  implementacao/teste ainda pendentes.
+- [x] P7 - UX-003: Encaminhar por selecao validada + PAR-RMA-008 (fechado 2026-09-10).
+  Selecao `destinatario` (`tipo:id`) validada no servidor por `OpcoesDeDestinatario`
+  (tipo, existencia e tenant); Feature 548/1691 e Playwright dirigido verdes.
+
 - [ ] P8 - Anotacoes V2 dedicada, confirmacao de remocao, UX-001/UX-004.
 - [ ] P9 - Inventario de rotas/plugins residuais.
 - [ ] P10 - Reconciliacao documental (checklist, paridade, matriz temas, roteiro).

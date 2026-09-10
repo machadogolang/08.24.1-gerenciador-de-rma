@@ -632,7 +632,7 @@ test.describe('Auditoria Navegacional Tema V1 - Lote NAV-04 (Ciclo de Vida e Lin
         const formEncaminhar = page.locator('form[action$="/encaminhar"]');
         await expect(formEncaminhar).toBeVisible();
 
-        await formEncaminhar.locator('input[name="destinatario_id"]').fill('1');
+        await formEncaminhar.locator('select[name="destinatario"]').selectOption({ index: 1 });
         await Promise.all([
             page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             formEncaminhar.locator('button[type="submit"]').click(),
@@ -665,7 +665,7 @@ test.describe('Auditoria Navegacional Tema V1 - Lote NAV-04 (Ciclo de Vida e Lin
         ]);
 
         const formEncaminhar = page.locator('form[action$="/encaminhar"]');
-        await formEncaminhar.locator('input[name="destinatario_id"]').fill('1');
+        await formEncaminhar.locator('select[name="destinatario"]').selectOption({ index: 1 });
         await Promise.all([
             page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             formEncaminhar.locator('button[type="submit"]').click(),

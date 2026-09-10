@@ -1,7 +1,11 @@
 {{-- Ações de ciclo de vida (Fase 4) - FRONT-003/UI-02B: partial compartilhado por
 V1/V2. Carrega só semântica de papel (`.acao--primaria`/`.acao--operacional`); cada
 tema estiliza em seu SCSS. Rotas, CSRF, Gates, regras de status e inputs preservados.
---}}
+
+UX-003/P7 - o encaminhamento deixou de pedir "tipo + id cru" no navegador: agora é
+UMA seleção `destinatario` com `value="tipo:id"`, populada apenas com entidades do
+tenant ativo (listas filtradas por `PertenceATenant`). O servidor revalida tudo em
+`OpcoesDeDestinatario::resolver()` antes de encaminhar. --}}
 
 <div class="acoes-de-transicao">
     @if ($registro->status->podeReceber())
@@ -12,17 +16,40 @@ tema estiliza em seu SCSS. Rotas, CSRF, Gates, regras de status e inputs preserv
     @endif
 
     @if ($registro->status->podeEncaminhar())
+        @php
+            $gruposDeDestino = [
+                'Assistencias tecnicas' => collect($assistenciasTecnicasLista ?? [])
+                    ->map(fn ($registroDestino) => ['valor' => 'assistencia_tecnica:' . $registroDestino->id, 'nome' => $registroDestino->nome]),
+                'Fabricantes' => collect($fabricantesLista ?? [])
+                    ->map(fn ($registroDestino) => ['valor' => 'fabricante:' . $registroDestino->id, 'nome' => $registroDestino->nome]),
+                'Fornecedores' => collect($fornecedoresLista ?? [])
+                    ->map(fn ($registroDestino) => ['valor' => 'fornecedor:' . $registroDestino->id, 'nome' => $registroDestino->nome]),
+            ];
+            $slugDestinoAtual = match (true) {
+                str_ends_with((string) $registro->destinatarioType, 'AssistenciaTecnica') => 'assistencia_tecnica',
+                str_ends_with((string) $registro->destinatarioType, 'Fabricante') => 'fabricante',
+                str_ends_with((string) $registro->destinatarioType, 'Fornecedor') => 'fornecedor',
+                default => '',
+            };
+            $destinoSelecionado = $slugDestinoAtual !== '' && $registro->destinatarioId !== null
+                ? $slugDestinoAtual . ':' . $registro->destinatarioId
+                : '';
+        @endphp
         <form method="POST" action="{{ route('rmas.encaminhar', $registro->id) }}">
             @csrf
-            <label>Tipo
-                <select name="destinatario_tipo" class="formSelect acao-controle-select">
-                    <option value="assistencia_tecnica">Assistência técnica</option>
-                    <option value="fornecedor">Fornecedor</option>
-                    <option value="fabricante">Fabricante</option>
+            <label>Destinatario
+                <select name="destinatario" class="formSelect acao-controle-select" required>
+                    <option value="">-</option>
+                    @foreach ($gruposDeDestino as $rotuloGrupo => $opcoesGrupo)
+                        @if ($opcoesGrupo->isNotEmpty())
+                            <optgroup label="{{ $rotuloGrupo }}">
+                                @foreach ($opcoesGrupo as $opcaoDestino)
+                                    <option value="{{ $opcaoDestino['valor'] }}" @selected($destinoSelecionado === $opcaoDestino['valor'])>{{ $opcaoDestino['nome'] }}</option>
+                                @endforeach
+                            </optgroup>
+                        @endif
+                    @endforeach
                 </select>
-            </label>
-            <label>Destinatário (id)
-                <input type="number" name="destinatario_id" class="acao-controle-input">
             </label>
             <button type="submit" class="acao acao--operacional">Encaminhar</button>
         </form>

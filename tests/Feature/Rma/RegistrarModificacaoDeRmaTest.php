@@ -79,8 +79,7 @@ class RegistrarModificacaoDeRmaTest extends TestCase
         $assistencia = \App\Models\AssistenciaTecnica::factory()->create();
 
         $this->actingAs($operador)->post("/rmas/{$rma->id}/encaminhar", [
-            'destinatario_tipo' => 'assistencia_tecnica',
-            'destinatario_id' => $assistencia->id,
+            'destinatario' => "assistencia_tecnica:{$assistencia->id}",
         ]);
 
         $modificacao = ModificacaoDeRma::query()->where('rma_id', $rma->id)->firstOrFail();

@@ -62,3 +62,20 @@ Data: 2026-09-10. Baseline: `origin/main` = `66f904f`. Fonte histórica: backup 
 - Conclusão: a paridade correta do V3 é manter `concluir` = status + data (como já
   está). Não acoplar estoque/crédito à transição. `DEC-03` deixa de ser
   "diagnóstico insuficiente".
+
+## 5. Implementação (2026-09-10)
+
+- `App\Rma\Aplicacao\Destinatarios\OpcoesDeDestinatario` - whitelist de tipos,
+  `agrupadas()` (opções do tenant ativo) e `resolver()` (revalida tipo, existência e
+  tenant; inválido/estrangeiro = `ValidationException`, sem escrita).
+- `rma/_acoes_de_transicao.blade.php` (V1) - `<select name="destinatario">` com
+  `<optgroup>` por tipo e `value="tipo:id"`; o `<input name="destinatario_id">` sumiu.
+- `CicloDeVidaController::encaminhar` (V1) e `RmaController::executarAcaoDoDetalhe`
+  (detalhe V2) usam o mesmo `resolver()`.
+- `EditarRma` passou a revalidar o destinatário no salvamento geral (antes gravava o
+  id cru e o slug virava uma classe inexistente - `App\Rma\Aplicacao\AssistenciaTecnica`).
+  Com isso a relação polimórfica guarda sempre o FQCN correto.
+- Provas: `EncaminharRmaTest` 5/5 (inclui tenant estrangeiro e id inexistente),
+  `ContratoVisualAcoesCicloDeVidaTest`, `ParidadeEncaminharSelecaoV1` (browser),
+  `ContratoVisualAcoes` 2/2, `SmokesParidadeFuncional -g M-04`; suíte completa
+  548 testes / 1691 assertions verde.

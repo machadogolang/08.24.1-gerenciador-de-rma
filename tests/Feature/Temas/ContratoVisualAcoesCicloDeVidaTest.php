@@ -77,6 +77,12 @@ class ContratoVisualAcoesCicloDeVidaTest extends TestCase
                 $response->assertDontSee('Reverter para Entrada', false);
             }
             $response->assertSee('action="' . route('rmas.solucao', $rma->id) . '"', false);
+            // UX-003/P7 - encaminhamento por selecao validada (sem id cru).
+            $response->assertDontSee('name="destinatario_id"', false);
+
+            if ($acaoPrincipal === 'Encaminhar') {
+                $response->assertSee('select name="destinatario"', false);
+            }
         } else {
             $response->assertDontSee('detalhe-bd-acoes-avancadas', false);
             $response->assertDontSee('Salvar solução</button>', false);

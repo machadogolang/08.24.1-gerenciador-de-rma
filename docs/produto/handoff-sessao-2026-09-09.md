@@ -558,3 +558,92 @@ TEMA V3 CONTINUA OCULTO E NAO SELECIONAVEL.
 - Working tree limpa apos este commit. Nenhum push executado por mim.
 
 PUSH NAO REALIZADO.
+
+---
+
+# Handoff da continuacao 2026-09-10 (auditoria residual fechada + P7 contratado)
+
+## Baseline e comandos do dono
+
+- Baseline confirmado: `HEAD` = `origin/main` = `d5c9463` (push do dono).
+- Nenhum push executado por mim nesta continuacao.
+
+## Commits desta continuacao
+
+- `2179104` `#FRONT-RMA` - Reconciliacao ONDA A (PAR-RES-A-01/A-02).
+- `a32e1ea` `#FRONT-RMA` - Anotacoes + Alterar senha como superficies V2 (PAR-RES-E-04).
+- `6c40e4b` `#FRONT-RMA` - Espacamento do Centro de Avisos V2 (PAR-RES-006).
+- `2490fcb` `#FRONT-RMA` - Fecha ONDA F (viewport/print) + PAR-RES-F-01.
+- `66f904f` `#FRONT-RMA` - Remove 15 views orfas (UI-07.2).
+- `c885e6c` `#DOC-RMA` - Contrato do P7 + PAR-RMA-008 fechado.
+- Este handoff e o ultimo commit da sessao.
+
+## Estado das ondas/frentes
+
+- ONDA A `[x]` - shell V1/V2 reconciliado. Residuos reais achados e corrigidos:
+  PAR-RES-A-01 (sequencia `LRTOP1/LRTOP2` do painel lateral V2 nao era alternancia
+  simples; linhas comecam em `LiRight1`) e PAR-RES-A-02 (o handler `[data-pmo-alvo]`
+  trocava o titulo do cabecalho da sidebar por "Ocultar").
+- ONDA B `[x]`, ONDA C `[x]`, ONDA D `[x]` - reconfirmadas com testes dirigidos
+  (35/35) + Playwright dos blocos.
+- ONDA E `[x]` - PAR-RES-E-04 (Anotacoes `/v2/anotacoes` e Alterar senha
+  `/v2/perfil/senha` dedicadas, com POST/CSRF/validacao; `/perfil` do V2 virou hub) e
+  PAR-RES-006 (Centro de Avisos: passo 96->90px e linha 26->31px, igual ao 15.8.1).
+- ONDA F `[x]` - `OndaFRegressaoViewport` (3/3): desktop sem overflow, V2 em
+  568/768/800/992/1080/1280 com shell fixo estavel, impressao limpa. PAR-RES-F-01:
+  a regra de impressao escondia `.shell-v2` inteiro (o relatorio vive dentro dele) e
+  saia em branco - corrigido.
+- UI-09.10/C7, UI-08, UI-05.4 `[x]`; UI-07/UI-07.2 `[x]` (15 views orfas removidas
+  com prova de zero consumidor + guarda `ViewsOrfasRemovidasTest`).
+
+## Evidencia de teste desta continuacao
+
+- PHPUnit completo: **546 testes / 1676 assertions verdes**.
+- Playwright (host, `--output=/tmp/pw-results`): `ParidadeShellV2` 3/3,
+  `ParidadeAnotacoesSenhaV2` 4/4, `ParidadeCentroDeAvisosV2` 3/3,
+  `OndaFRegressaoViewport` 3/3, `ParidadeVisualTemaV1` 12/12,
+  `ParidadeNavbarDropdownV2` 4/4, `ParidadeTrocaTemaPrefixada` 1/1,
+  `ConsistenciaVisualControles` integral verde (B2 reconciliado com PAR-RES-D).
+- Docs atualizados: auditoria residual (secoes por onda), `PLANO-ATAQUE.md`,
+  contrato P7.
+
+## Pendencias conhecidas (nao bloqueiam)
+
+- `AuditoriaNavegacionalTemaV1`: 8 assercoes obsoletas (NAV-02-06 espera `h1`
+  "Fluxo de credito" no V1, que mostra "Creditos"; NAV-04-02..08 esperam texto onde o
+  detalhe V1 agora usa inputs de edicao inline - A5). Nao e regressao desta rodada.
+- Tema V3 segue oculto; T3-13..T3-GATE nao iniciados.
+
+## Ambiente / operacao (importante para a proxima sessao)
+
+- O sandbox do ambiente esta quebrado: qualquer comando local simples falha com
+  `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`. Solucao: rodar com
+  `sandbox_permissions: require_escalated` (prefixos ja aprovados: `ls`, `cat`,
+  `find`, `rg`, `git`, `php`, `node`, `npx`, `docker`).
+- `apply_patch` tambem falha pelo mesmo motivo; edicoes foram feitas com `tee`/`sed`/
+  `perl` escalados.
+- Playwright roda do HOST (portas 8095/8094 mapeadas) e o diretorio `test-results/`
+  do repo e `root:root` -> usar `--output=/tmp/pw-results`.
+- Frontend: `npm run build` (Vite) no host apos mudar JS/SCSS; `public/build` e
+  ignorado pelo git.
+- Containers de pe: `rma-v3-laravel.test-1` (:8095), `rma-legacy-php-legacy-1`
+  (:8094), MySQL/Mailpit.
+
+## Proximo item exato
+
+**P7 - implementar UX-003** conforme
+`docs/produto/2026-09-10-contrato-p7-encaminhar-selecao-e-par-rma-008.md`:
+trocar `destinatario_tipo` + `destinatario_id` cru por UMA selecao validada de
+destinatario (value `tipo:id`), populada so com entidades do tenant ativo, revalidada
+no servidor (formato, tipo, existencia, tenant) antes de `EncaminharRma`. Preservar
+polymorphic, POST/CSRF/Gate. Cobertura Feature + Playwright + `npm run build` se
+mexer em SCSS. PAR-RMA-008 ja esta fechado (conclusao = status+data nas duas versoes).
+
+Depois: P8 (a parte "Anotacoes V2 dedicada" ja foi feita em PAR-RES-E-04; reconciliar
+e executar so o que restar), P9..P14, e depois T3-13 em diante.
+
+## Git final da rodada
+
+- Working tree limpa apos este commit. Nenhum push executado por mim.
+
+PUSH NAO REALIZADO.

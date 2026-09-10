@@ -47,6 +47,9 @@ const painelSessao = document.querySelector('#JS-Sessao');
 
 if (botaoSessao && painelSessao) {
     botaoSessao.addEventListener('click', () => {
+        if (painelSessao.dataset.painelPagina === 'true') {
+            return;
+        }
         const aberto = painelSessao.style.display !== 'none';
         painelSessao.style.display = aberto ? 'none' : 'block';
         botaoSessao.setAttribute('aria-expanded', aberto ? 'false' : 'true');

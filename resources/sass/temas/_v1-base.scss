@@ -580,12 +580,16 @@ li {
     width: 130px;
     height: 25px;
     margin: 0 0 2px -3px;
-    padding: 5px 0 0 5px;
+    padding: 5px 4px 0 5px;
     background-color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
-    font-size: 12px;
-    letter-spacing: 1px;
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:hover,
     &.active {

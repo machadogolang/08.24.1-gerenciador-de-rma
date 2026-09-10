@@ -106,32 +106,29 @@
 
     <div id="BASE">
         <div id="MEIO">
-            <div class="menuDivSession" id="JS-Sessao" @style(['display:block' => $painelSessao, 'display:none' => ! $painelSessao])>
+            <div class="menuDivSession" id="JS-Sessao" data-painel-pagina="{{ $painelSessao ? 'true' : 'false' }}" @style(['display:block' => $painelSessao, 'display:none' => ! $painelSessao])>
                 <nav class="JS-SessaoRIGHT" aria-label="Cadastros e administração">
-                    <a class="lisessao" href="{{ rota_tema('parceiros.fornecedores.index') }}">Fornecedores</a>
-                    <a class="lisessao" href="{{ rota_tema('parceiros.fabricantes.index') }}">Fabricantes</a>
-                    <a class="lisessao" href="{{ rota_tema('parceiros.assistencias-tecnicas.index') }}">Assistências</a>
-                    <a class="lisessao" href="{{ rota_tema('parceiros.clientes.index') }}">Clientes</a>
+                    <a class="lisessao {{ request()->routeIs('parceiros.fornecedores.*', 'v1.parceiros.fornecedores.*') ? 'active' : '' }}" href="{{ rota_tema('parceiros.fornecedores.index') }}">Fornecedores</a>
+                    <a class="lisessao {{ request()->routeIs('parceiros.fabricantes.*', 'v1.parceiros.fabricantes.*') ? 'active' : '' }}" href="{{ rota_tema('parceiros.fabricantes.index') }}">Fabricantes</a>
+                    <a class="lisessao {{ request()->routeIs('parceiros.assistencias-tecnicas.*', 'v1.parceiros.assistencias-tecnicas.*') ? 'active' : '' }}" href="{{ rota_tema('parceiros.assistencias-tecnicas.index') }}">Assistências</a>
+                    <a class="lisessao {{ request()->routeIs('parceiros.clientes.*', 'v1.parceiros.clientes.*') ? 'active' : '' }}" href="{{ rota_tema('parceiros.clientes.index') }}">Clientes</a>
                     @can('gerenciar', \App\Models\User::class)
-                        <a class="lisessao" href="{{ route('rmas.controle.index') }}">Controle</a>
+                        <a class="lisessao {{ request()->routeIs('rmas.controle.*', 'v1.rmas.controle.*') ? 'active' : '' }}" href="{{ rota_tema('rmas.controle.index') }}">Controle</a>
                     @endcan
-                    <a class="lisessao" href="{{ route('rmas.credito.index') }}">Créditos</a>
-                    <a class="lisessao" href="{{ route('rmas.relatorios.rcd') }}">Relatórios (RCD)</a>
-                    <a class="lisessao" href="{{ route('rmas.relatorios.rpec') }}">Relatório RPEC</a>
-                    <a class="lisessao" href="{{ route('rmas.relatorios.rmpe') }}">Relatório RMPE</a>
-                    <a class="lisessao" href="{{ route('rmas.relatorios.index') }}">Estatísticas Gerais</a>
-                    <a class="lisessao" href="{{ rota_tema('rmas.logistica.frete-porto-alegre') }}">Transp. Porto Alegre</a>
-                    <a class="lisessao" href="{{ rota_tema('rmas.ajuda') }}">Ajuda</a>
+                    <a class="lisessao {{ request()->routeIs('rmas.credito.*', 'v1.rmas.credito.*') ? 'active' : '' }}" href="{{ rota_tema('rmas.credito.index') }}">Créditos</a>
+                    <a class="lisessao {{ request()->routeIs('rmas.relatorios.rcd', 'v1.rmas.relatorios.rcd') ? 'active' : '' }}" href="{{ rota_tema('rmas.relatorios.rcd') }}">Relatórios (RCD)</a>
+                    <a class="lisessao {{ request()->routeIs('rmas.relatorios.rpec', 'v1.rmas.relatorios.rpec') ? 'active' : '' }}" href="{{ rota_tema('rmas.relatorios.rpec') }}">Relatório RPEC</a>
+                    <a class="lisessao {{ request()->routeIs('rmas.relatorios.rmpe', 'v1.rmas.relatorios.rmpe') ? 'active' : '' }}" href="{{ rota_tema('rmas.relatorios.rmpe') }}">Relatório RMPE</a>
+                    <a class="lisessao {{ request()->routeIs('rmas.relatorios.index', 'v1.rmas.relatorios.index') ? 'active' : '' }}" href="{{ rota_tema('rmas.relatorios.index') }}">Estatísticas Gerais</a>
+                    <a class="lisessao {{ request()->routeIs('rmas.logistica.*', 'v1.rmas.logistica.*') ? 'active' : '' }}" href="{{ rota_tema('rmas.logistica.frete-porto-alegre') }}">Transp. Porto Alegre</a>
+                    <a class="lisessao {{ request()->routeIs('rmas.ajuda', 'v1.rmas.ajuda') ? 'active' : '' }}" href="{{ rota_tema('rmas.ajuda') }}">Ajuda</a>
                     @can('gerenciar', \App\Models\User::class)
-                        <a class="lisessao" href="{{ rota_tema('identidade.usuarios.index') }}">Usuários</a>
+                        <a class="lisessao {{ request()->routeIs('identidade.usuarios.*', 'v1.identidade.usuarios.*') ? 'active' : '' }}" href="{{ rota_tema('identidade.usuarios.index') }}">Usuários</a>
                     @endcan
                     @if (config('temas.v3_preview_enabled'))
-                        {{-- AD-21 - entrada discreta de QA para a previa do Tema V3.
-                        NAO grava `tema_preferido`: a preferencia V1/V2 continua
-                        valendo quando o usuario clica "Voltar ao sistema". --}}
                         <a class="lisessao menu-previa-v3" href="{{ route('v3.dashboard') }}">Previa V3</a>
                     @endif
-                                    <form method="POST" action="{{ route('tema.alternar') }}" class="lisessao-form">
+                    <form method="POST" action="{{ route('tema.alternar') }}" class="lisessao-form">
                         @csrf
                         <button type="submit" class="lisessao menu-trocar-tema">Trocar p/ 15.8.1</button>
                     </form>

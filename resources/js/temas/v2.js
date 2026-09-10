@@ -63,4 +63,28 @@ document.addEventListener('DOMContentLoaded', () => {
             $(aba).tab('show');
         }
     }
+
+    // UX-002 (P8) - confirmacao de remocao de parceiro sem inline JS.
+    document.addEventListener('submit', (evento) => {
+        const formulario = evento.target instanceof Element
+            ? evento.target.closest('[data-confirmar-remocao]')
+            : null;
+
+        if (formulario && ! window.confirm(formulario.dataset.confirmarRemocao)) {
+            evento.preventDefault();
+        }
+    });
+
+    // UX-004 (P8) - prevencao de duplo envio (ver comentario em v1.js).
+    document.addEventListener('submit', (evento) => {
+        const formulario = evento.target;
+
+        if (! (formulario instanceof HTMLFormElement) || evento.defaultPrevented) {
+            return;
+        }
+
+        formulario.querySelectorAll('button[type="submit"], input[type="submit"]').forEach((botao) => {
+            botao.disabled = true;
+        });
+    });
 });

@@ -18,6 +18,7 @@ class ClienteController extends Controller
         Gate::authorize('viewAny', Cliente::class);
 
         return view_do_tema('parceiros.index', [
+            'modelo' => Cliente::class,
             'tipo' => 'clientes',
             'titulo' => 'Clientes',
             'registros' => Cliente::query()->orderBy('nome')->get(),

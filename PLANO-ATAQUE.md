@@ -169,8 +169,11 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 - [x] P7 - UX-003: Encaminhar por selecao validada + PAR-RMA-008 (fechado 2026-09-10).
   Selecao `destinatario` (`tipo:id`) validada no servidor por `OpcoesDeDestinatario`
   (tipo, existencia e tenant); Feature 548/1691 e Playwright dirigido verdes.
+- [ ] P8 - Parcial 2026-09-10: Anotacoes V2 dedicada reconciliada (PAR-RES-E-04),
+  confirmacao de remocao (UX-002), UX-001 e duplo envio de UX-004 implementados com
+  testes. Falta o contrato transversal completo de flash/validacao/estado vazio/403/
+  404/500.
 
-- [ ] P8 - Anotacoes V2 dedicada, confirmacao de remocao, UX-001/UX-004.
 - [ ] P9 - Inventario de rotas/plugins residuais.
 - [ ] P10 - Reconciliacao documental (checklist, paridade, matriz temas, roteiro).
 - [ ] P11 - Regressao funcional por fluxo.

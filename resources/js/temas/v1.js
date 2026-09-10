@@ -117,3 +117,30 @@ if (campoAnotacao) {
         }, 800);
     });
 }
+
+// UX-002 (P8) - confirmacao de remocao de parceiro sem inline JS. Delegado no
+// documento para valer em qualquer tabela/parcial que use o atributo.
+document.addEventListener('submit', (evento) => {
+    const formulario = evento.target instanceof Element
+        ? evento.target.closest('[data-confirmar-remocao]')
+        : null;
+
+    if (formulario && ! window.confirm(formulario.dataset.confirmarRemocao)) {
+        evento.preventDefault();
+    }
+});
+
+// UX-004 (P8) - prevencao de duplo envio: ao submeter de fato, desabilita os botoes
+// de submit. Roda depois do handler de confirmacao (se o usuario cancelar, o evento
+// ja vem com defaultPrevented e nada e desabilitado).
+document.addEventListener('submit', (evento) => {
+    const formulario = evento.target;
+
+    if (! (formulario instanceof HTMLFormElement) || evento.defaultPrevented) {
+        return;
+    }
+
+    formulario.querySelectorAll('button[type="submit"], input[type="submit"]').forEach((botao) => {
+        botao.disabled = true;
+    });
+});

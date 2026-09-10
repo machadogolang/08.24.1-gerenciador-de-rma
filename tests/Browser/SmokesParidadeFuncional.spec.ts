@@ -147,8 +147,14 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
         ]);
 
         // Redireciona para o detalhe do RMA criado
-        expect(page.url()).toMatch(/\/rmas\/\d+$/);
-        await expect(page.locator('#CONTEUDO')).toContainText(serialUnico);
+        expect(page.url()).toMatch(/\/rmas\/\d+/);
+
+        // Estado compartilhado: normaliza para o detalhe V1 prefixado (a preferencia
+        // de tema pode ter ficado em V2 por outro spec) e o detalhe V1 guarda os
+        // valores em inputs de edicao inline, nao em texto de tabela.
+        const idCriadoM02 = page.url().match(/rmas\/(\d+)/)![1];
+        await page.goto(`${V3}/v1/rma/${idCriadoM02}`, { waitUntil: 'domcontentloaded' });
+        await expect(page.locator('#CONTEUDO input[name="sn"]')).toHaveValue(serialUnico);
 
         // Clica em Editar
         await Promise.all([
@@ -165,8 +171,8 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
         ]);
 
         // Verifica que voltou ao detalhe e que o modelo atualizado persiste
-        expect(page.url()).toMatch(/\/rmas\/\d+$/);
-        await expect(page.locator('#CONTEUDO table.Tabelinha-Table')).toContainText('Modelo Atualizado Smoke');
+        expect(page.url()).toMatch(/rma\/\d+$/);
+        await expect(page.locator('#CONTEUDO input[name="modelo"]')).toHaveValue('Modelo Atualizado Smoke');
 
         expect(falhas).toEqual([]);
         await page.context().close();
@@ -176,9 +182,17 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
         const falhas: Falha[] = [];
         const page = await loginV3ComCredenciais(browser, 'superadministrador@rma.local', 'password', falhas);
 
-        // PAR-RES-C-01 - as acoes de ciclo de vida vivem no bloco recolhivel do
-        // detalhe V1 e o status e exibido em controle, nao em texto de tabela.
+        // PAR-RES-C-01/U-04 - as acoes de ciclo de vida vivem no bloco recolhivel do
+        // detalhe V1. As transicoes redirecionam para a rota canonica (que resolve o
+        // tema pela preferencia do usuario, estado compartilhado entre specs), entao
+        // normalizamos para a rota V1 prefixada antes de cada passo.
         const abrirAcoes = async () => {
+            const idAtual = page.url().match(/rmas\/(\d+)/)?.[1];
+
+            if (idAtual !== undefined && ! page.url().includes('/v1/rma/')) {
+                await page.goto(`${V3}/v1/rma/${idAtual}`, { waitUntil: 'domcontentloaded' });
+            }
+
             const details = page.locator('.detalhe-bd-acoes-avancadas');
             if (await details.count() > 0 && (await details.first().getAttribute('open')) === null) {
                 await page.click('.detalhe-bd-acoes-avancadas > summary');
@@ -199,6 +213,12 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
 
         expect(page.url()).toMatch(/\/rmas\/\d+$/);
 
+        // Estado compartilhado: a preferencia de tema pode ter ficado em V2 por
+        // outro spec; forcar o detalhe V1 pela rota prefixada deixa o smoke
+        // deterministico (mesmo criterio ja usado em outros specs da casa).
+        const idCriadoM04 = page.url().match(/rmas\/(\d+)$/)![1];
+        await page.goto(`${V3}/v1/rma/${idCriadoM04}`, { waitUntil: 'domcontentloaded' });
+
         // 1. Receber RMA
         await abrirAcoes();
         const btnReceber = page.locator('form[action$="/receber"] button');
@@ -217,7 +237,7 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
             page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             formEncaminhar.locator('button[type=submit]').click(),
         ]);
-        await expect(page.locator('.centrodeavisos')).toContainText('RMA encaminhado.');
+        await expect(page.locator('.centrodeavisos').first()).toContainText('RMA encaminhado.');
 
         // 3. Concluir RMA com Solução
         await abrirAcoes();
@@ -228,7 +248,7 @@ test.describe('Smokes de Paridade Funcional (M-01 a M-06) - Fase 10', () => {
             page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             formConcluir.locator('button[type=submit]').click(),
         ]);
-        await expect(page.locator('.centrodeavisos')).toContainText('RMA conclu');
+        await expect(page.locator('.centrodeavisos').first()).toContainText('RMA conclu');
 
         expect(falhas).toEqual([]);
         await page.context().close();

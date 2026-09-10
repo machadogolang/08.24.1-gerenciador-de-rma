@@ -304,3 +304,23 @@ Removidas (15): `parceiros/_form`, `parceiros/index`, `rma/index`, `rma/show`,
 Guarda: `tests/Feature/Temas/ViewsOrfasRemovidasTest` (2 testes) garante que as views
 removidas nao voltem e que as versoes por tema seguem existindo. Suite completa:
 546 testes / 1676 assertions verdes. UI-07 fechado `[x]`.
+
+## Resultado - P8 parcial (UX-001/UX-002/UX-004, 2026-09-10)
+
+- **Anotacoes V2 dedicada**: reconciliado - ja concluido em PAR-RES-E-04; nada
+  reimplementado.
+- **UX-001 (apresentacao consciente de Policy)**: as listagens de parceiros (V1 e V2)
+  passaram a usar `@can('create', $modelo)` / `@can('update', $registro)` /
+  `@can('delete', $registro)`; perfil `Leitura` ve o registro e "Ver", mas nenhum
+  botao que resultaria em 403. A autorizacao real continua no controller.
+  Provas: `AcoesPorPolicyTest` (2/2).
+- **UX-002 (confirmacao de remocao)**: `data-confirmar-remocao` no formulario de
+  remocao + handler delegado em `v1.js`/`v2.js` (sem inline JS). Prova browser:
+  `ConfirmacaoRemocaoParceiro` - cancelar mantem o registro e o botao habilitado;
+  confirmar remove.
+- **UX-004 (parcial)**: prevencao de duplo envio implementada de forma transversal no
+  JS do tema (desabilita botoes de submit; nao desabilita quando a confirmacao
+  abortou o envio). Falta o restante do contrato transversal de flash/validacao/
+  estado vazio/403/404/500 - registrado como pendencia de P8.
+
+Suite completa: 550 testes / 1699 assertions verdes.

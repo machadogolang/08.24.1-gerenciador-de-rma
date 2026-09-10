@@ -18,6 +18,7 @@ class AssistenciaTecnicaController extends Controller
         Gate::authorize('viewAny', AssistenciaTecnica::class);
 
         return view_do_tema('parceiros.index', [
+            'modelo' => AssistenciaTecnica::class,
             'tipo' => 'assistencias-tecnicas',
             'titulo' => 'Assistências técnicas',
             'registros' => AssistenciaTecnica::query()->orderBy('nome')->get(),

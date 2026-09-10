@@ -18,6 +18,7 @@ class FornecedorController extends Controller
         Gate::authorize('viewAny', Fornecedor::class);
 
         return view_do_tema('parceiros.index', [
+            'modelo' => Fornecedor::class,
             'tipo' => 'fornecedores',
             'titulo' => 'Fornecedores',
             'registros' => Fornecedor::query()->orderBy('nome')->get(),

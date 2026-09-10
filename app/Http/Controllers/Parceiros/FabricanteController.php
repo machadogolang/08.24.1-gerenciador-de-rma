@@ -18,6 +18,7 @@ class FabricanteController extends Controller
         Gate::authorize('viewAny', Fabricante::class);
 
         return view_do_tema('parceiros.index', [
+            'modelo' => Fabricante::class,
             'tipo' => 'fabricantes',
             'titulo' => 'Fabricantes',
             'registros' => Fabricante::query()->orderBy('nome')->get(),

@@ -120,10 +120,19 @@ Decisao canonica do dono:
 - [x] UF-17 - Destinatarios com Frete e CFOP no Tema V2 (`GAP-V2-04` / CAP-LOG-002).
 - [x] UF-18 - Procedimento Operacional / Ajuda no Tema V2 (`GAP-V2-05` / CAP-AUX-001).
 
-### Fase 7 - Blindagem com Testes e Reconciliacao (P4)
-- [x] UF-19 - `CapabilityContractTest`: contrato automatizado de todas as capacidades em V1 e V2.
-- [x] UF-20 - `DescobribilidadeTemasTest`: teste de presenca de rotas e links no shell/menu de cada tema.
-- [x] UF-21 - Reconciliacao final da matriz de uniao funcional antes dos gates.
+### Fase 7 - Blindagem Inicial com Testes e Reconciliacao (P4)
+- [R] UF-19 - `CapabilityContractTest`: reaberto para [R] (provider atual cobre apenas ~15 rotas e um caso especial de Recebidos; precisa cobrir 65 capacidades).
+- [R] UF-20 - `DescobribilidadeTemasTest`: reaberto para [R] (assertSee apenas valida href no HTML, nao valida click-through real no browser nem carregamento da view certa).
+- [R] UF-21 - Reconciliacao final da matriz: reaberto para [R] (incorporar segregacao STATUS_FUNCIONAL vs STATUS_APRESENTACAO e resultados executaveis).
+
+### Fase 8 - Validacao Executavel Capability-by-Capability (P0/P1)
+- [ ] UF-22 - Catalogo executavel das 65 capabilities (`tests/Support/CapabilityCatalog.php`).
+- [ ] UF-23 - Cobertura machine-readable e anti-drift (`tests/Feature/Rma/CapabilityCatalogCoverageTest.php`).
+- [ ] UF-24 - Jornadas de navegacao e click-through V1/V2 (Playwright por dominio, iniciando por Identidade/Usuarios).
+- [ ] UF-25 - Auditoria comportamental por acao (C1..C10 alem de GET 200).
+- [ ] UF-26 - Registro e correcao de bugs encontrados (P0: BUG-CAP-ID-USERS-V1-001 - clique quebrado em Usuarios via menu V1).
+- [ ] UF-27 - Fechamento dos gaps visuais V2 conhecidos (PAR15-USR-007/009, SEC-001, NOTE-001, PART-001..006, PART-DATA-001).
+- [ ] UF-28 - Reconciliacao final da matriz e suite completa de testes.
 
 ## ORDEM DE EXECUCAO (consolidada)
 
@@ -136,14 +145,17 @@ Decisao canonica do dono:
 6. [x] Unificacao Funcional - Fase 1 (UF-01..04 documental) e Fase 2 (UF-05/06 verificados).
 7. [x] Unificacao Funcional - Fase 3 (P0): Recebidos no V1 (UF-07), Relatorios RCD/RPEC/RMPE no V2 (UF-08), Hub Estatistico no V1 (UF-09).
 8. [x] Unificacao Funcional - Fase 4 (P1): Auditoria/logs no V1 (UF-10), Creditos tabulares no V1 (UF-11).
-9. [ ] Fila visual forense pendente: Alterar senha V2 (PAR15-SEC-001), Anotacoes V2 (PAR15-NOTE-001), RG/IE (PAR15-PART-DATA-001).
-10. [ ] Edit Parceiros V2 (PART-002..005) e RMAs associados (PART-001/006 / UF-15).
-11. [x] Unificacao Funcional - Fases 5 e 6: Urgencia/Threshold (UF-12), Prioridade (UF-13), Novo Usuario V1 (UF-14), Logistica/Porto Alegre (UF-16/17), Ajuda (UF-18).
-12. [ ] Sweep de `[R]`/`[ ]`: PAR14-NAV-002, PAR15-RMA-LIST-001, PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001, PAR15-RMA-MARCAR-001.
-13. [x] Unificacao Funcional - Fase 7: CapabilityContractTest (UF-19) e DescobribilidadeTemasTest (UF-20).
-14. [ ] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense).
-15. [ ] P11 revalidacao, P12, P13 final, P14.
-16. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
+9. [x] Unificacao Funcional - Fases 5 e 6: Urgencia/Threshold (UF-12), Prioridade (UF-13), Novo Usuario V1 (UF-14), Logistica/Porto Alegre (UF-16/17), Ajuda (UF-18).
+10. [R] Reabertura documental de UF-19..21 + publicacao da especificacao executavel das 65 capabilities (`capabilities.md`).
+11. [ ] P0 AGORA: Reproduzir e corrigir o bug do clique em Usuarios no menu V1 (BUG-CAP-ID-USERS-V1-001) + teste Playwright de click-through real.
+12. [ ] Construir Catalogo Executavel machine-readable (`CapabilityCatalog.php`) e teste de cobertura (`CapabilityCatalogCoverageTest.php`).
+13. [ ] Expandir `CapabilityContractTest` e `DescobribilidadeTemasTest` para as 65 capabilities canônicas.
+14. [ ] Jornadas de click-through E2E por dominio e auditoria comportamental de acoes C1..C10.
+15. [ ] Fechar gaps visuais forenses pendentes no Tema V2: PAR15-SEC-001 (senha), PAR15-NOTE-001 (anotacoes), PAR15-USR-007/009 (novo usuario), PAR15-PART-DATA-001 (RG/IE), PAR15-PART-001..006 (Parceiros create/edit/show e RMAs associados).
+16. [ ] Sweep de `[R]`/`[ ]` residuais: PAR14-NAV-002, PAR15-RMA-LIST-001, PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001, PAR15-RMA-MARCAR-001.
+17. [ ] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense).
+18. [ ] P11 revalidacao, P12, P13 final, P14.
+19. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
 
 ## REGRA DE STATUS PAI/FILHO (2026-09-10)
 

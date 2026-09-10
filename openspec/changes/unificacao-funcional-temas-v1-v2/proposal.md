@@ -44,7 +44,8 @@ A abordagem inicial buscou paridade visual e funcional estritamente espelhada po
 - **Urgencia e Prioridade no Tema V1 (`GAP-V1-08/09`):** Alerta operacional de prazo com threshold de R$ 75 e campo/indicador de prioridade no Tema V1.
 - **Logistica e Destinatarios Cruzados (`GAP-V1-11` e `GAP-V2-04`):** Transporte Porto Alegre no V1; consulta com frete e CFOP no V2.
 - **RMAs Associados e Ajuda (`GAP-V1-10` e `GAP-V2-05`):** RMAs associados ao parceiro no V1; procedimento operacional no V2.
-- **Suite de Contrato Funcional e Descobribilidade:** Testes automatizados garantindo que toda capacidade promovida esta ativa e alcancavel em ambos os temas.
+- **Suite de Contrato Funcional e Descobribilidade Executavel:** Testes automatizados garantindo que toda capacidade promovida esta ativa e alcancavel em ambos os temas, com validacao de click-through real e separacao entre `STATUS_FUNCIONAL` e `STATUS_APRESENTACAO`.
+- **Catalogo Canônico de 65 Capabilities (`capabilities.md`):** Especificacao detalhada de cada capability cobrindo criterios C1..C10 (Backend, Autorizacao, Rota, Descobribilidade, Click-through, Comportamento, Persistencia, Feedback, Apresentacao e Regressao).
 
 ## 4. O que nao entra
 
@@ -52,3 +53,4 @@ A abordagem inicial buscou paridade visual e funcional estritamente espelhada po
 - **Nao reproduzir vulnerabilidades ou comportamentos inseguros:** autocadastro com segredo hardcoded (`signup.php` do 14.6.1) fica deferido; hard delete sem auditoria e rejeitado.
 - **Nao copiar HTML/CSS entre temas:** cada tema deve construir suas proprias views Blade e estilos locais respeitando sua identidade historica.
 - **Nao quebrar a matriz forense:** a matriz forense (`docs/produto/2026-09-10-matriz-forense-paridade-legacy-v1-v2.md`) continua existindo para auditar o espelhamento historico; a matriz de uniao (`docs/produto/2026-09-10-matriz-uniao-funcional-temas.md`) governa a equivalencia cruzada de produto.
+- **Nao declarar capacidade concluida apenas com HTTP 200 ou assertSee:** exige click-through real via interface (shell/menu -> clique -> requisicao -> autorizacao -> view correta -> acao funcional).

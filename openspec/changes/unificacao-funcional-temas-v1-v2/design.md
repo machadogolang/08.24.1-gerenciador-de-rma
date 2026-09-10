@@ -30,16 +30,23 @@ A unificacao funcional desacopla formalmente a regra de negocio da sua apresenta
 
 ---
 
-## 2. Criterios Canonicos para Existencia de uma Capacidade
+## 2. Criterios Canonicos para Existencia e Convergencia de uma Capacidade (C1..C10)
 
-Para que uma funcionalidade seja considerada presente e convergida em um tema, ela deve satisfazer obrigatoriamente quatro condicoes:
+Para que uma funcionalidade seja considerada presente e convergida em um tema, ela deve satisfazer obrigatoriamente dez condicoes aplicaveis:
 
-1. **CAPACIDADE:** O caso de uso, backend e persistencia operam de forma correta e estavel.
-2. **AUTORIZACAO:** Policy e guardas de tenant/papel aplicados adequadamente.
-3. **DESCOBRIBILIDADE:** O operador consegue encontrar e alcancar a tela atraves dos menus, paineis ou links nativos daquele tema.
-4. **APRESENTAÇÃO:** A interface respeita a identidade visual, paleta, tipografia e densidade daquele tema.
+1. **C1 BACKEND:** Caso de uso, servico, query ou DTO existe e opera corretamente.
+2. **C2 AUTORIZACAO:** Policy, gate, tenant e papeis adequados aplicados.
+3. **C3 ROTA:** Endpoint resolve via roteamento canonico e sob tema ativo/forcado.
+4. **C4 DESCOBRIBILIDADE:** Existe caminho explicito na interface (menus, barras, links).
+5. **C5 CLICK-THROUGH:** O operador consegue clicar do shell/menu ate o destino com sucesso real no browser (sem quebra de JS, overlay ou redirect indevido).
+6. **C6 COMPORTAMENTO:** A acao executa o resultado esperado de negocio.
+7. **C7 PERSISTENCIA:** Se altera estado: salvar -> recarregar -> permanece.
+8. **C8 FEEDBACK/ERRO:** Falha previsivel e validacao nao explodem silenciosamente.
+9. **C9 APRESENTACAO:** V1 parece 14.6.1; V2 parece 15.8.1; V3 direcao console dark.
+10. **C10 REGRESSAO:** Testes automatizados adequados (unit, feature, contract e e2e).
 
-Se um endpoint responde HTTP 200 mas nao ha link na interface do tema para acessa-lo, o status documental e `GAP DE NAVEGACAO / DESCOBRIBILIDADE` e a capacidade nao esta concluida naquele tema.
+Se um endpoint responde HTTP 200 e possui href no HTML, mas o clique do menu falha ao carregar a tela real, a capacidade **NAO esta convergida** (bug de click-through/fluxo).
+
 
 ---
 
@@ -91,19 +98,18 @@ Se um endpoint responde HTTP 200 mas nao ha link na interface do tema para acess
 
 ---
 
-## 4. Estrategia de Testes de Contrato
+## 4. Estrategia de Testes de Contrato e Jornadas Reais
 
-Para blindar o sistema contra regressoes e assimetrias de produto, sao instituidos dois tipos de testes automatizados:
+Para blindar o sistema contra regressoes e assimetrias de produto, sao instituidos quatro niveis de testes automatizados:
 
-1. **`CapabilityContractTest`:**
-   Testa a presenca da capacidade e resposta HTTP valida (200) sob ambos os temas forcados:
-   - Recebidos: V1 = 200, V2 = 200.
-   - Hub Estatistico: V1 = 200, V2 = 200.
-   - RCD / RPEC / RMPE: V1 = 200, V2 = 200.
-   - Logs de Autenticacao: V1 = 200, V2 = 200.
-   - Logs de Modificacao: V1 = 200, V2 = 200.
-   - Creditos: V1 = 200, V2 = 200.
-   - Novo Usuario: V1 = 200, V2 = 200.
+1. **`CapabilityCatalog` e `CapabilityCatalogCoverageTest`:**
+   Manifesto machine-readable (`tests/Support/CapabilityCatalog.php`) contendo as 65 capacidades com metadata de QA (id, nome, dominio, papel minimo, tipo, rotas V1/V2, requires_navigation, requires_persistence, requires_browser, status). O teste de cobertura garante paridade estrita com o catalogo canônico e impede drift.
 
-2. **`DescobribilidadeTemasTest`:**
-   Testa se o HTML do shell/menus do Tema V1 e do Tema V2 contem links e rotas validas para alcancar todas as capacidades do catalogo canonico. Proibe endpoints orfaos de navegacao.
+2. **`CapabilityContractTest`:**
+   Testa o contrato de backend/rota de todas as capacidades sob ambos os temas forcados, cobrindo autorizacao e renderizacao da view especializada correspondente.
+
+3. **`DescobribilidadeTemasTest`:**
+   Testa se o HTML do shell/menus do Tema V1 e do Tema V2 contem links e rotas validas para alcancar todas as capacidades do catalogo.
+
+4. **Playwright Click-Through e Journey Suites:**
+   Navegacao E2E simulando o caminho real do usuario (login -> abrir menu -> clicar item -> validar URL final, status HTTP e view carregada) para V1 e V2. Nao aceita `page.goto()` direto como unica prova de descoberta.

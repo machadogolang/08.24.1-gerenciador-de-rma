@@ -62,10 +62,21 @@ Marcadores canonicos: `[ ]` (Pendente), `[R]` (Revisado), `[x]` (Concluido).
 - [x] UF-18 - Procedimento Operacional / Ajuda no Tema V2 (`GAP-V2-05` / CAP-AUX-001):
   - [x] Integrar link e tela de ajuda/procedimentos na interface V2.
 
-## Fase 7 - Blindagem com Testes Automatizados e Reconciliacao (P4)
+## Fase 7 - Blindagem Inicial com Testes e Reconciliacao (P4)
 
-- [x] UF-19 - Criar `CapabilityContractTest`:
-  - [x] Provedor de dados com todas as capacidades canonicas testando presenca e status HTTP 200 sob Tema V1 e Tema V2.
-- [x] UF-20 - Criar `DescobribilidadeTemasTest`:
-  - [x] Validar que todo endpoint de funcionalidade possui rota e link alcancavel no shell/menu do tema respectivo.
-- [x] UF-21 - Reconciliacao final da matriz de uniao funcional e preparacao para gates subsequentes.
+- [R] UF-19 - Criar `CapabilityContractTest`:
+  - Reaberto para [R]: O provider atual cobre apenas ~15 rotas e um caso especial de Recebidos, nao sendo suficiente para validar as 65 capabilities. Requer expansao completa via catalogo canonico.
+- [R] UF-20 - Criar `DescobribilidadeTemasTest`:
+  - Reaberto para [R]: Faz apenas `assertSee(URL)` no HTML, provando presenca de href mas nao o fluxo real (menu -> clique -> request -> autorizacao -> view -> capacidade), conforme comprovado pela falha de clique em "Usuarios" no Tema V1.
+- [R] UF-21 - Reconciliacao da matriz de uniao funcional:
+  - Reaberto para [R]: Pendente de incorporar a segregacao `STATUS_FUNCIONAL` vs `STATUS_APRESENTACAO` e os resultados das jornadas executaveis.
+
+## Fase 8 - Validacao Executavel Capability-by-Capability
+
+- [ ] UF-22 - Catalogo executavel das 65 capabilities (`tests/Support/CapabilityCatalog.php`) com metadata de QA completa (id, nome, dominio, papel minimo, tipo, rotas V1/V2, requires_navigation, requires_persistence, requires_browser, status).
+- [ ] UF-23 - Teste de cobertura machine-readable (`tests/Feature/Rma/CapabilityCatalogCoverageTest.php`) garantindo paridade com a OpenSpec e impedindo drift.
+- [ ] UF-24 - Jornadas de navegacao e click-through V1/V2 (Playwright por dominio, iniciando por Identidade/Usuarios reproduzindo caminho de tela).
+- [ ] UF-25 - Auditoria comportamental por acao (C1..C10 alem de GET 200, testando transicoes, criacoes, updates e persistencia).
+- [ ] UF-26 - Registro e correcao de bugs encontrados (P0: BUG-CAP-ID-USERS-V1-001 - clique quebrado em Usuarios via menu V1).
+- [ ] UF-27 - Fechamento dos gaps visuais V2 conhecidos (PAR15-USR-007/009, SEC-001, NOTE-001, PART-001..006, PART-DATA-001).
+- [ ] UF-28 - Reconciliacao final da matriz e suite completa de testes.

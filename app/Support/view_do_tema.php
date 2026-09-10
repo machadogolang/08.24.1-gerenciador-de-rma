@@ -192,6 +192,29 @@ if (! function_exists('classe_css_linha_v2')) {
             return $zebra();
         }
 
+        if ($tela === 'credito') {
+            // 15.8.1/page/credito.php: sem garantia -> Inconformidade; prioridade
+            // alta (ou "urgente") -> Urgente; cliente fora do estoque com prazo
+            // estourado -> Urgente; fora do estoque de Cliente/Licitacao ->
+            // Inconformidade; demais zebra.
+            if ($semGarantia) {
+                $zebra();
+                return 'TrInconformidade';
+            }
+            if ($alta) {
+                return 'TrUrgente';
+            }
+            if ($origemCliente && ! $registro->marcarestoque && $prazoEstourado) {
+                return 'TrUrgente';
+            }
+            if ($foraEstoqueOrigem) {
+                $zebra();
+                return 'TrInconformidade';
+            }
+
+            return $zebra();
+        }
+
         if ($tela === 'pesquisa') {
             // 15.8.1/subp/pesquisar_rma.php: TrSemGarantia apenas quando status
             // concluido + SEM GARANTIA; todos os demais destaques sao

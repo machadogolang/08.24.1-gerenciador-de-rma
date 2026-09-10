@@ -126,7 +126,12 @@ class MarcarCreditoDisponivelTest extends TestCase
 
     public function test_pagina_de_aguardando_credito_lista_rma_com_solucao_pendente_credito(): void
     {
-        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        // PAR15-CREDIT-001 - a pagina de creditos do V2 lista os aguardando credito no
+        // bloco recolhido (o V1 mantem o painel de relatorios do 14.6.1).
+        $usuario = User::factory()->create([
+            'papel' => Papel::Leitura,
+            'tema_preferido' => \App\Identidade\Dominio\TemaPreferido::V2,
+        ]);
         RmaEloquent::factory()->create([
             'descricao' => 'RMA aguardando credito',
             'solucao' => Solucao::PendenteCredito,

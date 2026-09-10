@@ -20,4 +20,13 @@ interface RepositorioDeRmas
 
     /** @return Rma[] */
     public function listarPorPainel(PainelDeStatus $painel): array;
+
+    /**
+     * PAR15-CREDIT-001 - lista da tela de Creditos do Legacy V2
+     * (`15.8.1/banco.php::listar_creditos()`: `creditodisponivel = 1 ORDER BY
+     * encaminhado DESC`).
+     *
+     * @return Rma[]
+     */
+    public function listarCreditosDisponiveis(): array;
 }

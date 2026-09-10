@@ -167,6 +167,22 @@ final class RmasEmBanco implements RepositorioDeRmas
     }
 
     /**
+     * PAR15-CREDIT-001 - regra REAL do Legacy (`listar_creditos()`): apenas
+     * `creditodisponivel = 1`, ordenado por `encaminhado` desc.
+     *
+     * @return Rma[]
+     */
+    public function listarCreditosDisponiveis(): array
+    {
+        return RmaEloquent::query()
+            ->where('credito_disponivel', true)
+            ->orderByDesc('encaminhado_em')
+            ->get()
+            ->map(fn (RmaEloquent $model) => $this->paraDominio($model))
+            ->all();
+    }
+
+    /**
      * @return array<string, mixed>
      */
     private function paraArray(Rma $rma): array

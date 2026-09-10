@@ -15,8 +15,10 @@ class TelasSecundariasShellTest extends TestCase
     public static function creditoShellProvider(): array
     {
         return [
-            'v1' => [TemaPreferido::V1, 'formButtonMENU', 'Marcar crédito disponível'],
-            'v2' => [TemaPreferido::V2, 'header-v2', 'Marcar crédito disponível'],
+            // PAR15-CREDIT-001/003 - V2 reproduz a tabela do 15.8.1/page/credito.php;
+            // PAR14-CREDIT-001 - V1 mantem o painel de relatorios do 14.6.1.
+            'v1' => [TemaPreferido::V1, 'formButtonMENU', 'RELATORIO DE CREDITOS DISPONIVEIS'],
+            'v2' => [TemaPreferido::V2, 'header-v2', 'PROTOCOLO'],
         ];
     }
 

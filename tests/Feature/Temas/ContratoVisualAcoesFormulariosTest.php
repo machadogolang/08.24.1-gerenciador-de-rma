@@ -80,7 +80,15 @@ class ContratoVisualAcoesFormulariosTest extends TestCase
 
         $response = $this->actingAs($usuario)->get('/rmas-credito')->assertOk();
 
-        $response->assertSee('class="acao acao--primaria">Marcar crédito disponível</button>', false);
+        if ($tema === TemaPreferido::V1) {
+            // PAR14-CREDIT-001 - o credito do V1 e o painel de relatorios com o RCD.
+            $response->assertSee(route('rmas.relatorios.rcd'), false);
+
+            return;
+        }
+
+        // PAR15-CREDIT-001 - acao moderna preservada em bloco recolhido no V2.
+        $response->assertSee('class="acao acao--primaria">Marcar credito disponivel</button>', false);
     }
 
     public function test_aba_novo_rma_do_tema_v2_exibe_formulario_operacional(): void

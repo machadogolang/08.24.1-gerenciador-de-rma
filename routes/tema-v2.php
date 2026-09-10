@@ -62,6 +62,9 @@ Route::prefix('v2')
         // PAR15-AUD-001/005 - hub Controle do TEMA V2 (prefixo) + superficies do menu historico.
         Route::get('/controle', [\App\Http\Controllers\Identidade\ControleController::class, 'index'])->name('identidade.controle.index');
 
+        // PAR15-CREDIT-001 - URL historico do Legacy (`/creditos`) com tema forcado.
+        Route::get('/creditos', [\App\Http\Controllers\Rma\CreditoController::class, 'index'])->name('rmas.credito.index');
+
         // PAR15-REL-001..007 - hub Relatorios do TEMA V2 (item unico do menu historico).
         Route::get('/relatorios', [\App\Http\Controllers\Rma\PainelDeRelatoriosController::class, 'index'])->name('rmas.relatorios.index');
         Route::get('/historico-de-acesso', [HistoricoDeAcessoController::class, 'index'])->name('identidade.historico-de-acesso.index');

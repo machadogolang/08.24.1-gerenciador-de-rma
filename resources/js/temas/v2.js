@@ -23,7 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (alvo) {
                 const abrir = alvo.style.display === 'none';
                 alvo.style.display = abrir ? 'block' : 'none';
-                gatilho.textContent = abrir ? 'Ocultar' : 'Mostrar';
+                // PAR-RES-A-02 - so reescreve o rotulo quando o proprio gatilho e um `.pmo`
+                // (itens "Mostrar/Ocultar"). O cabecalho do painel lateral V2 usa
+                // `data-pmo-alvo` para expandir, mas no legado o TITULO permanece fixo.
+                if (gatilho.classList.contains('pmo')) {
+                    gatilho.textContent = abrir ? 'Ocultar' : 'Mostrar';
+                }
                 gatilho.setAttribute('aria-expanded', abrir ? 'true' : 'false');
             }
         });

@@ -42,11 +42,11 @@ mesmo sem screenshot apontado nesta nova sessao.
 
 ## Plano de ondas
 
-- [ ] ONDA A - Shell/navbar/menu/dropdown/footer (V1/V2).
+- [x] ONDA A - Shell/navbar/menu/dropdown/footer (V1/V2). Reconciliada nesta continuacao (PAR-RES-A-01/A-02 corrigidos em codigo+JS, provados por `ParidadeShellV2.spec.ts` 3/3).
 - [x] ONDA B - Listagens/pesquisa/tabelas/zebra/sidebar (77ec2ce; PAR-RES-001..003
   corrigidos e testados; PAR-RES-004/005 seguem como prova residual).
-- [ ] ONDA C - Create/show/edit RMA e ciclo (V1/V2).
-- [ ] ONDA D - Parceiros/admin/Controle/usuarios.
+- [x] ONDA C - Create/show/edit RMA e ciclo (V1/V2). PAR-RES-C-01 corrigido (1007ad0); PHPUnit dirigido 35/35 + `ParidadeDetalheRmaV2Funcional` 1/1 verdes.
+- [x] ONDA D - Parceiros/admin/Controle/usuarios. PAR-RES-D-01..04 corrigidos (24c7c3a); PHPUnit dirigido 35/35 + `ParidadeParceirosV2` 1/1 verdes.
 - [ ] ONDA E - Relatorios/Avisos/Anotacoes/secundarias (PAR-RES-006/007).
 - [ ] ONDA F - Viewport/print/regressao residual.
 
@@ -158,3 +158,43 @@ recebido e confirmado.
   (`subp/senha.php`); juntar tudo em /perfil e decisao de produto. Classificacao:
   DECISAO-PENDENTE, registro mantido; tarefas independentes continuam.
 
+
+## Resultado - reconciliacao C/D (2026-09-10, continuacao)
+
+- Working tree limpa e `git diff --check` limpo no baseline `d5c9463`
+  (= `origin/main`).
+- PHPUnit dirigido dos blocos C/D/E (`ParidadeDetalheRmaV2Test`,
+  `ParidadeNovoRmaV2Test`, `ContratoVisualAcoesParceirosTest`, `RelatoriosShellTest`,
+  `DescobribilidadeRelatoriosTest`, `RelatorioControllerTest`, `DetalheDoParceiroTest`):
+  35 testes / 250 assertions, OK.
+- `tests/Feature/Temas` (shell/temas): 112 testes / 640 assertions, OK.
+- Playwright dirigido: `ParidadeDetalheRmaV2Funcional`, `ParidadeNovoRmaV2`,
+  `ParidadeParceirosV2`, `ParidadeRelatoriosV2` - 4/4 verdes.
+- ONDA C e ONDA D fechadas como `[x]` (criterios satisfeitos e provados). ONDA E
+  segue `[R]` ate PAR-RES-E-04 (Anotacoes/senha dedicadas) e PAR-RES-006
+  (Centro de Avisos).
+
+## Resultado - ONDA A (reconciliacao do shell, 2026-09-10)
+
+Evidencia ja existente (nao reimplementada): `ParidadeNavbarDropdownV2` 4/4,
+`ParidadeTrocaTemaPrefixada` 1/1, `ParidadeVisualTemaV1` 12/12, `tests/Feature/Temas`
+112/112. Isso cobre navbar, Menu, Logout, troca V1<->V2, shell V1 e rodape V1.
+
+Residuo encontrado na reconciliacao (V2, nao coberto por teste anterior):
+
+- PAR-RES-A-01 - sequencia de `LRTOP1`/`LRTOP2` do painel lateral V2
+  (`temas/v2/rma/_painel_lateral.blade.php`) era alternancia simples com paridade
+  invertida; o Legacy (`inc/rightmenu.php`) tem `LRTOP1, LRTOP2, LRTOP1, LRTOP2,
+  LRTOP1, LRTOP1, LRTOP1, LRTOP2, LRTOP1, LRTOP2, LRTOP1, LRTOP2, LRTOP1, LRTOP2`
+  (tres `LRTOP1` seguidos em DESTINATARIOS/PORTO A/URGENTE). As linhas tambem
+  comecavam em `LiRight2` no V3 e em `LiRight1` no Legacy. Classificacao:
+  BUG-CONFIRMADO/PARIDADE-LEGACY. Correcao: mapa explicito por chave + inicio em
+  `LiRight1`.
+- PAR-RES-A-02 - o handler generico `[data-pmo-alvo]` (`temas/v2.js`) reescrevia
+  `textContent` do cabecalho do painel lateral, trocando o titulo da secao por
+  "Ocultar"/"Mostrar" ao expandir; no Legacy o titulo permanece. Classificacao:
+  BUG-CONFIRMADO. Correcao: so reescreve o rotulo quando o gatilho tem a classe
+  `.pmo` (V2 e V1).
+
+Teste novo: `tests/Browser/ParidadeShellV2.spec.ts` (3/3) prova a sequencia exata,
+o titulo preservado, o Logout POST e o rodape historico. ONDA A fechada `[x]`.

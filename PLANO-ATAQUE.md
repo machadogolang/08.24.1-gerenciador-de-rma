@@ -14,13 +14,13 @@ Baseline real: origin/main `93fd4e4`; local `b49bda0` (contem T3-12 local, sem
 push). Suíte completa atual: 536 testes / 1619 assertions.
 
 Ondas da auditoria (cada uma atomica):
-- [ ] ONDA A - Shell/navbar/menu/dropdown/footer.
+- [x] ONDA A - Shell/navbar/menu/dropdown/footer (reconciliada 2026-09-10; PAR-RES-A-01/A-02 corrigidos; ver auditoria residual).
 - [x] ONDA B - Listagens/pesquisa/tabelas/zebra/sidebar (77ec2ce; PAR-RES-001..003
   corrigidos e testados; PAR-RES-004/005 continuam como prova residual).
-- [R] ONDA C - Create/show/edit RMA e ciclo (PAR-RES-C-01 em investigacao; rodape
-  do detalhe V2 registrado no addendum).
-- [R] ONDA D - Parceiros/admin/Controle/usuarios (PAR-RES-D-01..04: formulario
-  generico em coluna unica x grade historica V2).
+- [x] ONDA C - Create/show/edit RMA e ciclo (PAR-RES-C-01 corrigido em 1007ad0;
+  PHPUnit dirigido 35/35 + Playwright 4/4 verdes em 2026-09-10).
+- [x] ONDA D - Parceiros/admin/Controle/usuarios (PAR-RES-D-01..04 corrigidos em
+  24c7c3a; PHPUnit dirigido 35/35 + Playwright 4/4 verdes em 2026-09-10).
 - [R] ONDA E - Relatorios/Avisos/Anotacoes/secundarias (PAR-RES-E-01..03
   corrigidos em bbea068; PAR-RES-E-04 Perfil/Anotacoes com DECISAO-PENDENTE
   de produto - continuar itens independentes).

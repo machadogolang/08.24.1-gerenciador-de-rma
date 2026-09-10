@@ -409,11 +409,13 @@ th {
         background-color: #fff !important;
     }
 
+    // PAR-RES-F-01 - NAO esconder `.shell-v2` inteiro: o conteudo do relatorio
+    // (`.relatorio`) vive dentro de `.shell-v2 > .container`; escondia a folha
+    // inteira na impressao. Esconde so a moldura (header/sidebar/rodape).
     body.relatorio-print #FIXADO,
     body.relatorio-print #TOPO,
     body.relatorio-print #RODAPE,
     body.relatorio-print .header-v2,
-    body.relatorio-print .shell-v2,
     body.relatorio-print .shell-v2__sidebar,
     body.relatorio-print .designedby,
     body.relatorio-print .JS-Novo,

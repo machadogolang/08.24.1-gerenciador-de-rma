@@ -49,7 +49,8 @@ mesmo sem screenshot apontado nesta nova sessao.
 - [x] ONDA D - Parceiros/admin/Controle/usuarios. PAR-RES-D-01..04 corrigidos (24c7c3a); PHPUnit dirigido 35/35 + `ParidadeParceirosV2` 1/1 verdes.
 - [x] ONDA E - Relatorios/Avisos/Anotacoes/secundarias. PAR-RES-006 (Centro de Avisos) e
   PAR-RES-007 (Anotacoes/senha V2) fechados; RCD/RPEC/RMPE em bbea068.
-- [ ] ONDA F - Viewport/print/regressao residual.
+- [x] ONDA F - Viewport/print/regressao residual. PAR-RES-F-01 (impressao em branco)
+  corrigido; OndaFRegressaoViewport 3/3.
 
 Cada onda: investigar -> corrigir -> PHPUnit dirigido -> Playwright/browser ->
 atualizar matriz/plano -> `git diff --check` -> commit atomico -> proxima onda.
@@ -250,3 +251,37 @@ estado vazio. O que faltava era espacamento do TEMA V2:
 Teste novo: `tests/Browser/ParidadeCentroDeAvisosV2.spec.ts` (3/3) compara titulos,
 tabela por grupo, passo recolhido e altura de linha contra o Legacy 15.8.1.
 `ParidadeVisualTemaV1` segue 12/12 (nenhuma regressao no V1). ONDA E fechada `[x]`.
+
+## Resultado - ONDA F (viewport/print/regressao, 2026-09-10)
+
+Teste novo `tests/Browser/OndaFRegressaoViewport.spec.ts` (3/3):
+
+- Desktop 1366/1440/1600/1920: V1 (`/v1/rma`, parceiros, usuarios, perfil), V2
+  (`/v2/rma`, parceiros, usuarios, perfil, anotacoes, senha) e 11 telas comuns sem
+  overflow horizontal (`scrollWidth - innerWidth <= 2`).
+- V2 nas larguras 568/768/800/992/1080/1280: header/rodape/sidebar presentes,
+  shell estavel e navegavel; o excedente horizontal e exatamente o do shell fixo de
+  1190px (o Legacy 15.8.1 tambem rola abaixo da largura dele - base 1004px).
+- Impressao RCD/RPEC/RMPE: folha do relatorio visivel e moldura (header/sidebar/
+  rodape) oculta.
+
+PAR-RES-F-01 (BUG-CONFIRMADO) - a regra de impressao escondia `.shell-v2` inteiro,
+mas o conteudo do relatorio vive dentro de `.shell-v2 > .container`: a impressao
+saia em branco. Corrigido em `_compartilhado.scss` (esconde so a moldura). Prova:
+`node`/Playwright com `emulateMedia('print')` antes x depois.
+
+Reconciliacao UI-09.10/C7 + UI-08 + UI-05.4:
+
+- `ConsistenciaVisualControles.spec.ts` integral verde (inclui o B2 de Parceiros
+  V2, reconciliado com PAR-RES-D: a grade historica de `col-md-4` tem larguras
+  diferentes por coluna; a asserção antiga exigia tres controles iguais).
+- `ParidadeNavbarDropdownV2` 4/4, `ParidadeTrocaTemaPrefixada` 1/1,
+  `ParidadeVisualTemaV1` 12/12, `ParidadeShellV2` 3/3, `ParidadeCentroDeAvisosV2` 3/3,
+  `OndaFRegressaoViewport` 3/3 -> UI-09.10/C7, UI-08 e UI-05.4 fechados.
+
+Pendencia registrada (nao e regressao desta rodada): `AuditoriaNavegacionalTemaV1`
+tem 8 assercoes obsoletas - NAV-02-06 espera `h1` "Fluxo de credito" no V1 (o V1
+mostra "Creditos"; o titulo novo e do V2) e NAV-04-02..08 esperam o valor do campo
+em `toContainText` quando o detalhe V1 virou edicao inline (A5/PAR-DET-V1), onde o
+valor vive em `input.value`, nao em texto. Fica como item de manutencao da auditoria
+navegacional, fora do escopo de paridade residual.

@@ -24,7 +24,8 @@ Ondas da auditoria (cada uma atomica):
 - [x] ONDA E - Relatorios/Avisos/Anotacoes/secundarias. PAR-RES-E-01..03 (bbea068),
   PAR-RES-E-04 (anotacoes/senha V2 dedicadas) e PAR-RES-006 (Centro de Avisos)
   fechados em 2026-09-10.
-- [ ] ONDA F - Viewport/print/regressao residual.
+- [x] ONDA F - Viewport/print/regressao residual (2026-09-10; OndaFRegressaoViewport
+  3/3; PAR-RES-F-01 de impressao corrigido).
 
 Apos fechar a paridade residual e as regressoes bloqueantes, o plano segue para
 P7/P8/P9/P10/P11/P12/P13/P14 e depois T3-13 em diante (T3-12 ja implementado
@@ -75,14 +76,15 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   - [x] UI-09.8 - Dropdown V2 + ciclo de vida (onda C6).
   - [R] UI-09.9 - Regressao dirigida 9/9 e PHPUnit 536/1619 (baseline real
     2026-09-09); regressao ampla depende de Legacy de pe e execucao serial.
-  - [ ] UI-09.10 - C7: varredura residual e viewports (1366/1440/1600; 390/768 V2)
-    + regressao UI-08/print.
+  - [x] UI-09.10 - C7: varredura residual e viewports (fechado 2026-09-10:
+    ConsistenciaVisualControles integral + OndaFRegressaoViewport 3/3, inclui UI-08/print).
 
 - [R] UI-05 - Controle V1.
   - [x] UI-05.1 - Causa confirmada e documentada.
   - [x] UI-05.2 - Alinhamento corrigido.
   - [x] UI-05.3 - Overflow local validado.
-  - [ ] UI-05.4 - Regressao viewport/Playwright ampla.
+  - [x] UI-05.4 - Regressao viewport/Playwright ampla (OndaFRegressaoViewport: shell
+    V1/V2 sem overflow no desktop).
 
 ## AGORA - Frente de investigacao do Tema V3 (sem implementacao)
 
@@ -158,7 +160,8 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 
 ## DEPOIS
 
-- [ ] UI-09.10/C7 + UI-08 - Varredura residual e regressao browser/print final.
+- [x] UI-09.10/C7 + UI-08 - Varredura residual e regressao browser/print final
+  (fechado 2026-09-10).
 - [R] UI-07 - Remover views orfas com zero consumidor.
   - [x] UI-07.1 - Inventario de candidatas (UI-AUD-016).
   - [ ] UI-07.2 - Remocao com prova de zero consumidor e teste.

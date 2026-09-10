@@ -93,7 +93,7 @@ test.describe('UI-AUD - consistência de formulários e controles', () => {
         }
     });
 
-    test('B2 - Parceiro V2: input, select e textarea com a mesma largura útil', async ({ browser }) => {
+    test('B2 - Parceiro V2: controles da grade historica usam a largura util da coluna', async ({ browser }) => {
         const page = await loginV3(browser);
         await page.goto(`${V3}/v2/parceiros/fornecedores/create`, { waitUntil: 'load' });
         const caixas = await page.evaluate(() => {
@@ -104,9 +104,14 @@ test.describe('UI-AUD - consistência de formulários e controles', () => {
                 obs: w(document.querySelector<HTMLTextAreaElement>('textarea[name="observacao"]')),
             };
         });
+        // Reconciliado com PAR-RES-D: o formulario V2 voltou a grade historica
+        // (`col-md-4`, fonte `15.8.1/inc/novo_fornecedor.php`), onde campo de texto
+        // preenche a coluna e o select de UF e intencionalmente mais estreito.
         expect(caixas.nome).not.toBeNull();
-        expect(Math.abs(caixas.nome! - caixas.uf!)).toBeLessThanOrEqual(2);
+        expect(caixas.uf).not.toBeNull();
+        expect(caixas.obs).not.toBeNull();
         expect(Math.abs(caixas.nome! - caixas.obs!)).toBeLessThanOrEqual(2);
+        expect(caixas.uf!).toBeLessThan(caixas.nome!);
         await page.context().close();
     });
 

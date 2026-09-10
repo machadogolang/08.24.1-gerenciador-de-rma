@@ -32,7 +32,9 @@ Subtarefas:
 - [R] PF-11 - parceiros (PAR14/PAR15-PART-001).
 - [R] PF-12 - navegacao/shell (PAR14-SHELL/NAV, PAR15-SHELL/NAV).
 - [R] PF-13 - sweep de capacidades nao mapeadas (secoes 4 e 7).
-- [ ] PF-14 - browser comparison Legacy x novo (boundingBox/computedStyle/screenshot).
+- [R] PF-14 - browser comparison Legacy x novo (1a fatia: /v2/usuarios x 15.8.1/usuarios,
+  `tests/Browser/ParidadeUsuariosV2.spec.ts` verde em 1440px - mesmas colunas e linha
+  ~30px; demais superficies ainda pendentes).
 - [ ] PF-15 - reconciliacao final e fechamento da frente.
 
 Fila de correcao apos o checkpoint documental (secao 6 da matriz):

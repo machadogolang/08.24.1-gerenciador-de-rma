@@ -188,7 +188,7 @@ Legenda de Tipo/Status igual as secoes 0. Rotas novas entre crase.
 | ID | Tema | Superficie | Legacy | Novo | Legacy possui | Novo possui | Diferenca | Tipo | Impacto | Status | Teste | Decisao |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | PAR15-SHELL-001 | V2 | Menu principal | `inc/menu.php` | `temas.v2.layout` `header-v2` | Abas Inicio..Concluido + dropdown Menu + Logout | Mesmas abas + dropdown + Logout | Equivalente (PAR-RES-A) | E | Baixo | [x] | RenderizaTemaV2 + Browser | Manter |
-| PAR15-NAV-001 | V2 | Dropdown Menu | `inc/menu.php` | `temas.v2.layout` dropdown | Creditos, Assistencias, Fabricantes, Fornecedores, Clientes, Relatorios, Anotacoes, Controle, Trocar p/ 14.6.1 | Creditos, Assistencias, Fabricantes, Fornecedores, Clientes, Relatorio RCD/RPEC/RMPE, Anotacoes, Controle, Usuarios, Trocar | Relatorios virou 3 links; Usuarios adicionado | D/G | Medio | [R] | Browser | Ver PAR15-REL-001/008 |
+| PAR15-NAV-001 | V2 | Dropdown Menu | `inc/menu.php` | `temas.v2.layout` dropdown | Creditos, Assistencias, Fabricantes, Fornecedores, Clientes, Relatorios, Anotacoes, Controle, Trocar p/ 14.6.1 | Creditos, Assistencias, Fabricantes, Fornecedores, Clientes, Relatorio RCD/RPEC/RMPE, Anotacoes, Controle, Usuarios, Trocar | Divergencia: novo expoe 3 links RCD/RPEC/RMPE; Legacy V2 tem UM item Relatorios | D/G | Medio | [R] | Browser | CORRIGIR menu V2: item unico Relatorios apontando para o hub (decisao do dono) |
 | PAR15-NAV-002 | V2 | Sidebar | `inc/rightmenu.php` | `temas.v2.rma._painel_lateral` | DEU ENTRADA HOJE, RECEBIDOS, ENCAMINHADOS, LAST 10 CONCLUIDOS, DESTINATARIOS, TRANSPORTE P/ PORTO A, URGENTE, PENDENTE CREDITO, CREDITO DISPONIVEL, + | Mesmos blocos + contadores | Equivalente (EVO/CP19) | E | Baixo | [x] | Browser | Manter |
 | PAR15-NAV-003 | V2 | Rodape | `inc/footer.php` | `temas.v2.layout` | Designed by + licenca | Mesmos textos | Equivalente | E | Baixo | [x] | Browser | Manter |
 
@@ -197,13 +197,13 @@ Legenda de Tipo/Status igual as secoes 0. Rotas novas entre crase.
 | ID | Tema | Superficie | Legacy | Novo | Legacy possui | Novo possui | Diferenca | Tipo | Impacto | Status | Teste | Decisao |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | PAR15-USR-001 | V2 | Tela Usuarios | `subp/usuarios.php` | `temas.v2.identidade.usuarios` | Tabela Nome, E-mail, QT Login, Ultimo login, Permissao, Acao; linhas ~30px | Tabela Nome, E-mail, Papel, Acoes; select+Salvar papel e 2 inputs de senha + Resetar dentro da linha | Densidade, colunas, informacao e organizacao diferem fortemente; QT Login/Ultimo login sumiram | A/C/B | Alto | [x] | Feature (UsuariosV2ParidadeTest) + Browser (ParidadeUsuariosV2.spec.ts) | CORRIGIDO: colunas historicas, 3 acoes compactas, superficies V2 dedicadas |
-| PAR15-USR-002 | V2 | QT Login / Ultimo login | `subp/usuarios.php` (bind `quantidade_login`,`ultimo_login`) | ausente | Contagem de logins + data do ultimo login | Ausente da tela | Informacao operacional perdida visualmente | B | Medio | [R] | Feature | Projetar de `tentativas_de_acesso` (ver 3.6) |
-| PAR15-USR-003 | V2 | Acoes compactas | `subp/usuarios.php` (3 icones) | ausente | `resetar_senha`, `mudar_permissao`, `apagar_usuario` por icone | Formularios inline | Falta acao compacta; fluxo diferente | A/C | Alto | [R] | Browser | Superficies V2 dedicadas |
-| PAR15-USR-004 | V2 | Apagar usuario | `subp/apagar_usuario.php` + `pp/apagar_usuario.php` | ausente | Hard delete com confirmacao (`pms>1` e `pms>alvo`) | Nenhuma | Sem equivalente; hard delete cascatearia auditoria (`modificacoes_de_rma.user_id` cascadeOnDelete) | H/F | Alto | [R] | Feature | Decisao de produto; nao reproduzir cascata cega |
-| PAR15-USR-005 | V2 | Resetar senha | `pp/resetar_senha.php` | `identidade.usuarios.resetar-senha` | Gera senha aleatoria `@dddd` e envia por e-mail | Operador digita nova senha (min 8 + confirmacao) | Sem envio de e-mail no V3 | E | Medio | [R] | Feature | Superficie V2 dedicada |
-| PAR15-USR-006 | V2 | Mudar permissao | `pp/mudar_permissao.php` | `identidade.usuarios.update` | Select -1/1/2 (Bloqueado/Leitura/Leitura e modificacao) | Select com 5 papeis (`Papel`) | Nomenclatura/estrutura de papel mudou | E | Medio | [R] | Feature | Rotulo legado + papeis modernos |
-| PAR15-USR-007 | V2 | Novo usuario | `subp/novo_usuario.php` + `pp/novo_usuario.php` | nao existe rota de criacao | Form nome/email/senha/permissao | Ausente | Falta criacao de usuario | A | Medio | [R] | Feature | Registrar; decidir implementacao |
-| PAR15-USR-008 | V2 | Permissao como rotulo | `subp/usuarios.php` | `Papel` cru | `Leitura` / `Leitura e modificacao` / `Bloqueado` | Nome tecnico do papel | Rotulo diferente do historico | C | Baixo | [R] | Feature | Mapear rotulo legado |
+| PAR15-USR-002 | V2 | QT Login / Ultimo login | `subp/usuarios.php` (bind `quantidade_login`,`ultimo_login`) | ausente | Contagem de logins + data do ultimo login | Ausente da tela | Equivalente: QT Login/Ultimo login projetados de `tentativas_de_acesso` (PAR15-DATA-001/002) | B | Medio | [x] | Feature (UsuariosV2ParidadeTest) + Browser (ParidadeUsuariosV2) | RESOLVIDO 2026-09-10 (c556d15); sem coluna duplicada |
+| PAR15-USR-003 | V2 | Acoes compactas | `subp/usuarios.php` (3 icones) | ausente | `resetar_senha`, `mudar_permissao`, `apagar_usuario` por icone | Formularios inline | Equivalente: 3 acoes compactas por icone, ligadas a superficies V2 dedicadas | A/C | Alto | [x] | Feature + Browser (ParidadeUsuariosV2) | RESOLVIDO 2026-09-10 (c556d15) |
+| PAR15-USR-004 | V2 | Apagar usuario | `subp/apagar_usuario.php` + `pp/apagar_usuario.php` | ausente | Hard delete com confirmacao (`pms>1` e `pms>alvo`) | Nenhuma | Sem equivalente; hard delete cascatearia auditoria (`modificacoes_de_rma.user_id` cascadeOnDelete) | H/F | Alto | [DECISAO-PENDENTE] | Feature (guardas/Policy) | Nao reproduzir hard delete (cascatearia auditoria); avaliar desativacao tenant-safe do vinculo |
+| PAR15-USR-005 | V2 | Resetar senha | `pp/resetar_senha.php` | `identidade.usuarios.resetar-senha` | Gera senha aleatoria `@dddd` e envia por e-mail | Operador digita nova senha (min 8 + confirmacao) | Equivalente moderno: operador define a nova senha (sem SHA1/envio inseguro) | E | Medio | [x] | Feature + Browser | RESOLVIDO 2026-09-10 (c556d15): superficie V2 dedicada + POST seguro |
+| PAR15-USR-006 | V2 | Mudar permissao | `pp/mudar_permissao.php` | `identidade.usuarios.update` | Select -1/1/2 (Bloqueado/Leitura/Leitura e modificacao) | Select com 5 papeis (`Papel`) | Equivalente moderno: select de papel com rotulo historico + PUT seguro | E | Medio | [x] | Feature (GerenciarUsuariosTest) + Browser | RESOLVIDO 2026-09-10 (c556d15) |
+| PAR15-USR-007 | V2 | Novo usuario | `subp/novo_usuario.php` + `pp/novo_usuario.php` | nao existe rota de criacao | Form nome/email/senha/permissao | Ausente | Falta criacao de usuario | A | Medio | [R] | Feature (papeis/tenant/duplicidade) + Browser | EXECUTAR: equivalente moderno de Novo Usuario (nome/email/senha/permissao, Policy, tenant) |
+| PAR15-USR-008 | V2 | Permissao como rotulo | `subp/usuarios.php` | `Papel` cru | `Leitura` / `Leitura e modificacao` / `Bloqueado` | Nome tecnico do papel | Equivalente: rotulo historico via `rotuloDePermissaoLegado()` | C | Baixo | [x] | Feature (UsuariosV2ParidadeTest) | RESOLVIDO 2026-09-10 (c556d15) |
 
 ### 3.3 Detalhe RMA V2 (credito, estoque, acoes)
 
@@ -222,10 +222,10 @@ Legenda de Tipo/Status igual as secoes 0. Rotas novas entre crase.
 
 | ID | Tema | Superficie | Legacy | Novo | Legacy possui | Novo possui | Diferenca | Tipo | Impacto | Status | Teste | Decisao |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| PAR15-AUD-001 | V2 | Organizacao Controle | `page/controle.php` + `inc/menu_controle.php` (5 subpaginas: logs_de_autenticacao, logs_de_modificacao, senha, novo_usuario, usuarios) | `/rmas-historico`, `/historico-de-acesso`, `/perfil/senha`, `/usuarios` | Controle como hub com breadcrumb de 5 itens | Superficies separadas, sem hub Controle V2 | Organizacao/breadcrumb divergem | D/C | Medio | [R] | Browser | Avaliar hub V2 |
-| PAR15-AUD-002 | V2 | Logs de modificacao | `subp/logs_de_modificacao.php` | `rma.historico._conteudo` | DATA, BD NUMERO, FABRICANTE, DESCRICAO, MODELO, NAVEGADOR, acao Ver | Data, RMA, Usuario, Acao, IP | Contrato de tela/dados diferente | A/B/C | Alto | [R] | Browser + Feature | View tematica V2 preservando colunas do Legacy |
+| PAR15-AUD-001 | V2 | Organizacao Controle | `page/controle.php` + `inc/menu_controle.php` (5 subpaginas: logs_de_autenticacao, logs_de_modificacao, senha, novo_usuario, usuarios) | `/rmas-historico`, `/historico-de-acesso`, `/perfil/senha`, `/usuarios` | Controle como hub com breadcrumb de 5 itens | Superficies separadas, sem hub Controle V2 | Organizacao/breadcrumb divergem | D/C | Medio | [R] | Browser | EXECUTAR: hub Controle V2 com breadcrumb/menu historico reutilizando endpoints modernos |
+| PAR15-AUD-002 | V2 | Logs de modificacao | `subp/logs_de_modificacao.php` | `rma.historico._conteudo` | DATA, BD NUMERO, FABRICANTE, DESCRICAO, MODELO, NAVEGADOR, acao Ver | Data, RMA, Usuario, Acao, IP | Contrato de tela/dados diferente | A/B/C | Alto | [R] | Browser + Feature | EXECUTAR: view V2 deriva BD/FABRICANTE/DESCRICAO/MODELO/NAVEGADOR de estado_apos+user_agent |
 | PAR15-AUD-003 | V2 | Acao Ver do log | `subp/logs_de_modificacao.php` (`info/{numero}`) | link `rmas.show` | Icone Ver abre info do RMA | Link `#id` para o detalhe | Forma da acao difere | C | Baixo | [R] | Browser | Reavaliar |
-| PAR15-AUD-004 | V2 | Logs de autenticacao | `subp/logs_de_autenticacao.php` | `identidade.historico-de-acesso._conteudo` | DATA, USUARIO, SISTEMA OPERACIONAL, NAVEGADOR, IP, APP, RETORNO + `Quantidade retornada` | Data, E-mail informado, Usuario, IP, Resultado | Faltam SO, navegador, app e total | A/B | Medio | [R] | Feature | Ver 3.6 (derivabilidade) |
+| PAR15-AUD-004 | V2 | Logs de autenticacao | `subp/logs_de_autenticacao.php` | `identidade.historico-de-acesso._conteudo` | DATA, USUARIO, SISTEMA OPERACIONAL, NAVEGADOR, IP, APP, RETORNO + `Quantidade retornada` | Data, E-mail informado, Usuario, IP, Resultado | Faltam SO, navegador, app e total | A/B | Medio | [R] | Feature | EXECUTAR: preservar sistema_operacional/app do Legacy (campos historicos nullable + importer) |
 | PAR15-AUD-005 | V2 | Geometria Controle | `page/controle.php` | hub de historico | Breadcrumb + menu Controle | Sem menu Controle | Falta geometria/breadcrumb | C | Baixo | [R] | Browser | Apos PAR15-AUD-001 |
 | PAR15-AUD-006 | V2 | Alterar senha | `subp/senha.php` | `/perfil/senha` (V2) | Troca senha sem senha atual | Exige senha atual + confirmacao | Equivalente moderno mais seguro | E | Baixo | [x] | PAR-RES-E-04 | Manter |
 | PAR15-AUD-007 | V2 | Anotacoes | `page/anotacoes.php` | `/anotacoes` (V2) | Quadro de anotacoes | Quadro dedicado | Equivalente | E | Baixo | [x] | PAR-RES-E-04 | Manter |
@@ -241,8 +241,8 @@ Legenda de Tipo/Status igual as secoes 0. Rotas novas entre crase.
 | PAR15-REL-005 | V2 | NF | idem | ausente | Sem NF Compra, Sem NF Venda, Sem nenhuma nota | ausente | Falta bloco NF | A | Medio | [R] | Feature | Reabrir |
 | PAR15-REL-006 | V2 | Dados do sistema | idem | ausente | Quantidade RMA/Clientes/Fornecedores/Fabricantes/Assistencias | ausente | Falta bloco Dados do sistema | A | Medio | [R] | Feature | Reabrir |
 | PAR15-REL-007 | V2 | Series mensais/anuais | idem | ausente | Entrada/Encaminhado/Concluido por mes/ano + totais + taxas | ausente | Falta serie historica | A | Alto | [R] | Feature | Reabrir |
-| PAR15-REL-008 | V2 | RPEC no V2 | 15.8.1 NAO possui RPEC/RCD/RMPE (confirmado por varredura) | `/rmas-relatorios/rpec` (V2) | Superficie inexistente no Legacy V2 | Rota RPEC servida tambem no V2 | Capacidade moderna sem equivalente Legacy V2 | G | Medio | [R] | Browser | Decidir apresentacao V2 de Relatorios |
-| PAR15-REL-009 | V2 | RCD/RMPE no V2 | 15.8.1 NAO possui | `/rmas-relatorios/rcd` `/rmpe` (V2) | inexistente | rotas servidas tambem no V2 | Capacidade moderna sem equivalente Legacy V2 | G | Medio | [R] | Browser | Igual PAR15-REL-008 |
+| PAR15-REL-008 | V2 | RPEC no V2 | 15.8.1 NAO possui RPEC/RCD/RMPE (confirmado por varredura) | `/rmas-relatorios/rpec` (V2) | Superficie inexistente no Legacy V2 | Rota RPEC servida tambem no V2 | Capacidade moderna sem equivalente Legacy V2 | G | Medio | [R] | Browser | DECIDIDO: manter rotas como compatibilidade interna; menu V2 expoe somente Relatorios (hub) |
+| PAR15-REL-009 | V2 | RCD/RMPE no V2 | 15.8.1 NAO possui | `/rmas-relatorios/rcd` `/rmpe` (V2) | inexistente | rotas servidas tambem no V2 | Capacidade moderna sem equivalente Legacy V2 | G | Medio | [R] | Browser | DECIDIDO: idem PAR15-REL-008 |
 | PAR15-REL-010 | V2 | Reuso de markup | V1 e V2 organizavam relatorios de forma distinta | `temas.v1.rma.relatorios.rpec` e `temas.v2.rma.relatorios.rpec` incluem `rma.relatorios._conteudo_rpec` | Estruturas diferentes | Mesmo conteudo compartilhado | Reuso de markup mascara contratos diferentes | C/A | Medio | [R] | Feature | Separar views por tema se necessario |
 
 ### 3.6 Derivabilidade de dados (sem inventar)
@@ -379,9 +379,9 @@ plano atualizado, `git diff --check`, commit e continuacao.
 
 | ID | Assunto | Por que esta pendente |
 |---|---|---|
-| PAR15-USR-004 | Exclusao definitiva de usuario | Hard delete do Legacy cascatearia `modificacoes_de_rma` (auditoria); precisa decisao de produto/seguranca |
-| PAR15-USR-007 | Criacao de usuario | Sem rota no V3; precisa decidir contrato e Policy |
-| PAR15-REL-008/009 | RPEC/RCD/RMPE no V2 | Superficie sem equivalente no Legacy V2; decidir como o V2 apresenta Relatorios |
+| PAR15-USR-004 | Exclusao definitiva de usuario | [DECISAO-PENDENTE]: nao reproduzir hard delete (cascatearia a auditoria); avaliar desativacao tenant-safe do vinculo `company_user` |
+| PAR15-USR-007 | Criacao de usuario | EXECUTAR: o Legacy tem Novo Usuario; equivalente moderno V2 e obrigatorio (nome/email/senha/permissao, Policy, tenant) |
+| PAR15-REL-008/009 | RPEC/RCD/RMPE no V2 | RESOLVIDO: o Legacy V2 tem UM item Relatorios; RCD/RPEC/RMPE ficam como compatibilidade interna, fora do menu historico |
 | PAR15-EMAIL-001 | Avisar alguem / enviar e-mail | DEC-02 ja registrada; sem implementacao |
 | PAR14-REL-001 | Hub de Relatorios V1 | Legacy tinha hub vazio; avaliar se reproduz |
 
@@ -390,3 +390,35 @@ plano atualizado, `git diff --check`, commit e continuacao.
 Comecar a fila pela prioridade 1 (PAR15-USR-001), em ciclo:
 investigar -> codigo -> teste dirigido -> browser Legacy x novo -> atualizar
 matriz -> atualizar plano -> `git diff --check` -> commit -> continuar.
+
+## 9. Refinamentos desta continuacao (2026-09-10, segunda passagem)
+
+Achados e decisoes comprovados nesta sessao, antes de qualquer novo codigo:
+
+1. Reconciliacao de usuarios V2 (commit `c556d15`): PAR15-USR-002/003/005/006/008
+   sao equivalentes e passam a `[x]` (QT Login/Ultimo login projetados de
+   `tentativas_de_acesso`; 3 acoes compactas; superficies V2 dedicadas; rotulo
+   historico). PAR15-USR-004 fica `[DECISAO-PENDENTE]` (hard delete nao reproduzido).
+   PAR15-USR-007 (Novo Usuario) permanece `[R]` e entra na fila executavel.
+2. Navegacao de Relatorios V2 (decisao do dono): o `15.8.1/inc/menu.php` possui UM
+   unico item `Relatorios` apontando para `page/relatorios.php`; o menu V2 novo hoje
+   expoe `Relatorio RCD/RPEC/RMPE`. O V2 deve reproduzir o item unico e apontar para
+   o novo hub; as rotas RCD/RPEC/RMPE continuam existindo (V1 e compatibilidade).
+3. Auditoria V2: as colunas do Legacy (BD NUMERO, FABRICANTE, DESCRICAO, MODELO,
+   NAVEGADOR) sao derivaveis de `modificacoes_de_rma.estado_apos` (snapshot) e
+   `user_agent`; o importador grava `descricao/fabricante/modelo` no snapshot. A acao
+   `Ver` do Legacy e `info/{numero}` (detalhe do RMA), a reproduzir com rota moderna.
+4. Logs de autenticacao: `ImportarLogsDeAcesso` ainda tem `$linha->sistema_operacional`
+   e `$linha->app` na fonte Legacy. Estrategia: campos historicos nullable
+   (`sistema_operacional_legado`, `app_legado`) + importacao real + exibicao do
+   contrato V2; eventos novos preenchem somente o que for deterministico.
+5. Sequencia executavel desta frente (ordem do dono): estoque/credito runtime (3),
+   auditoria/Controle V2 (4), RPEC V1 (5), RCD V1 (6), RMPE V1 (7), hub+menu de
+   Relatorios V2 (8/9/10), Usuarios V1 (11), Novo Usuario V2 (2), sweep (12),
+   PF-01..PF-13 (13), PF-14 (14), PF-15 (15); P12/P14 so depois de PF-15.
+
+## 10. Proximo passo
+
+Executar a fila acima em ciclos pequenos (codigo -> PHPUnit dirigido -> browser ->
+matriz/plano -> `git diff --check` -> commit), na ordem do dono. Nao abrir nova
+frente, nao recomputar inventario e nao criar handoff antes do fim da sessao.

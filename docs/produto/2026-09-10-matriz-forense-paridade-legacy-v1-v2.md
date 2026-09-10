@@ -26,6 +26,9 @@ Baseline confirmada nesta sessao:
 - HEAD local: `e9f2629` (`#DOC-RMA - Handoff da segunda continuacao 2026-09-10`).
 - Ultimo main observado pelo dono: `e9f2629`.
 
+> Leitura HISTORICA de baseline (preservada). A baseline corrente desta auditoria
+> e o commit do plano consolidado de 2026-09-10; ver secao 12.
+
 Metodo (capability-first, comeca no Legacy):
 
 1. Ler `.htaccess`, `index.php`, `page/`, `subp/`, `pp/`, `post/`, `inc/`,
@@ -214,7 +217,7 @@ Legenda de Tipo/Status igual as secoes 0. Rotas novas entre crase.
 | PAR15-RMA-STOCK-001 | V2 | Estoque | `page/rma.php` select `marcarestoque` (Nao/Sim), 3a coluna | `_form_detalhe` select `marcarestoque` | Select Nao/Sim, label `E um produto do estoque ?` | Select Nao/Sim, mesmo label | Equivalente | E | Medio | [x] | Feature (DetalheCreditoEstoqueTest) + Browser (ParidadeCreditoEstoqueRuntime) | FECHADO 2026-09-10: select Nao/Sim, label igual, altura 30px nos dois, persistencia e Policy provadas |
 | PAR15-RMA-CREDIT-001 | V2 | Credito | `page/rma.php` select `creditodisponivel` (Nao/Sim) | `_form_detalhe` select `credito_disponivel` | Select Nao/Sim, label `E credito disponivel ?` | Select Nao/Sim, mesmo label | Nome do campo diverge (`creditodisponivel` x `credito_disponivel`) | E | Baixo | [x] | Feature (DetalheCreditoEstoqueTest) + Browser (ParidadeCreditoEstoqueRuntime) | FECHADO 2026-09-10: select Nao/Sim e label iguais; nome do campo difere e esta ligado ao backend |
 | PAR15-RMA-DET-003 | V2 | Campos fiscais | `page/rma.php` | `_form_detalhe` | nfvenda/compra/remessa/retorno + emissao + chave, nfdevolucaodevenda, nfentrada_cli, nfretorno_cli, valor, cliente_email | Todos presentes | Equivalente | E | Medio | [x] | PAR-V2-DETAIL-02 | Manter |
-| PAR15-RMA-DET-004 | V2 | snretorno | `page/rma.php` input hidden `snretorno` | ausente | Campo oculto transportado | Ausente | Campo oculto sem efeito visual | E | Baixo | [ ] | Feature | Conferir se ha uso real |
+| PAR15-RMA-DET-004 | V2 | snretorno | `page/rma.php` input hidden `snretorno` | ausente no formulario V2 | Campo oculto transportado (sem efeito visual) | Ausente no V2 | Era transporte para o `pp/salvar_rma.php`, nao capacidade | E | Baixo | [x] | Feature (RegistrarSolucaoTest, ConcluirRmaTest) | IMPLEMENTACAO MODERNA EQUIVALENTE: regra RN-15 (solucao implica mesmo aparelho -> `snretorno = sn`) vive no dominio `Rma`; o campo persiste/importa e nao precisa de input oculto |
 | PAR15-RMA-DET-005 | V2 | Rastreio | `page/rma.php` rastreio_ida/retorno | `_form_detalhe` | Codigo de rastreio ida e retorno | Ambos | Equivalente | E | Baixo | [x] | PAR-V2-DETAIL-02 | Manter |
 | PAR15-RMA-DET-006 | V2 | Politica de garantia | `page/rma.php` | `_form_detalhe` | Textarea politica (somente leitura) | Bloco politica (somente leitura) | Equivalente | E | Baixo | [x] | PAR-V2-DETAIL-02 | Manter |
 
@@ -227,8 +230,8 @@ Legenda de Tipo/Status igual as secoes 0. Rotas novas entre crase.
 | PAR15-AUD-003 | V2 | Acao Ver do log | `subp/logs_de_modificacao.php` (`info/{numero}`) | link `rmas.show` | Icone Ver abre info do RMA | Link `#id` para o detalhe | Equivalente: acao Ver abre o detalhe do RMA (equivalente moderno de info/{numero}) | C | Baixo | [x] | Feature (ControleV2ParidadeTest) | FECHADO 2026-09-10 |
 | PAR15-AUD-004 | V2 | Logs de autenticacao | `subp/logs_de_autenticacao.php` | `identidade.historico-de-acesso._conteudo` | DATA, USUARIO, SISTEMA OPERACIONAL, NAVEGADOR, IP, APP, RETORNO + `Quantidade retornada` | Data, E-mail informado, Usuario, IP, Resultado | Equivalente: SO/APP preservados em campos historicos + backfill seguro | A/B | Medio | [x] | Feature (HistoricoAcessoV2Test) + Browser (PF-14) | FECHADO 2026-09-10: migration + importer + view V2 |
 | PAR15-AUD-005 | V2 | Geometria Controle | `page/controle.php` | hub de historico | Breadcrumb + menu Controle | Sem menu Controle | Falta geometria/breadcrumb | C | Baixo | [R] | Browser (PF-14) | Falta medir geometria/breadcrumb do menu Controle V2 contra o Legacy |
-| PAR15-AUD-006 | V2 | Alterar senha | `subp/senha.php` | `/perfil/senha` (V2) | Troca senha sem senha atual | Exige senha atual + confirmacao | Equivalente moderno mais seguro | E | Baixo | [x] | PAR-RES-E-04 | Manter |
-| PAR15-AUD-007 | V2 | Anotacoes | `page/anotacoes.php` | `/anotacoes` (V2) | Quadro de anotacoes | Quadro dedicado | Equivalente | E | Baixo | [x] | PAR-RES-E-04 | Manter |
+| PAR15-AUD-006 | V2 | Alterar senha (capacidade funcional) | `subp/senha.php` | `/perfil/senha` (V2) | Troca senha sem senha atual | Exige senha atual + confirmacao | Equivalente moderno mais seguro | E | Baixo | [x] | PAR-RES-E-04 | CAPACIDADE FUNCIONAL = [x]; PARIDADE VISUAL/INTERACIONAL = PAR15-SEC-001 (reaberta, ver secao 11) |
+| PAR15-AUD-007 | V2 | Anotacoes (capacidade funcional) | `page/anotacoes.php` | `/anotacoes` (V2) | Quadro de anotacoes (rows=150 + autosave, sem botao) | Quadro dedicado | Equivalente funcional; geometria/interacao ainda divergentes | E | Baixo | [x] | PAR-RES-E-04 | CAPACIDADE FUNCIONAL = [x]; PARIDADE VISUAL/INTERACIONAL = PAR15-NOTE-001 (reaberta, ver secao 11) |
 
 ### 3.5 Relatorios V2
 
@@ -257,8 +260,8 @@ Base: `database/migrations/2026_08_25_000001_create_tentativas_de_acesso_table.p
 | PAR15-DATA-002 | Ultimo login | `usuario.ultimo_login` | nao migrado | Sim | `MAX(created_at)` de `tentativas_de_acesso` permitidas | Projection/query |
 | PAR15-DATA-003 | Log: FABRICANTE/DESCRICAO/MODELO | `modificacao` (snapshot) | `modificacoes_de_rma.estado_apos` (json) | Sim (migrado) | `estado_apos.fabricante/descricao/modelo` no historico migrado; RMA atual em registros novos | View V2 pode projetar |
 | PAR15-DATA-004 | Log: NAVEGADOR | `modificacao.navegador` | `modificacoes_de_rma.user_agent` | Sim (migrado) | `user_agent` | Projetar |
-| PAR15-DATA-005 | Log auth: SISTEMA OPERACIONAL | `log.sistema_operacional` | nao migrado (decisao) | Nao (historico exato) | perdido nao migrado | Registrar PAR15-DATA-005 (diferenca de dado) |
-| PAR15-DATA-006 | Log auth: APP | `log.app` | nao migrado (decisao) | Nao (historico exato) | perdido nao migrado | Registrar PAR15-DATA-006 |
+| PAR15-DATA-005 | Log auth: SISTEMA OPERACIONAL | `log.sistema_operacional` | `tentativas_de_acesso.sistema_operacional_legado` | Sim (migrado) | `ImportarLogsDeAcesso` copia `sistema_operacional` da origem; coluna nullable + exibicao na superficie V2 | Equivalente: campo historico preservado (ver PAR15-AUD-004) |
+| PAR15-DATA-006 | Log auth: APP | `log.app` | `tentativas_de_acesso.app_legado` | Sim (migrado) | `ImportarLogsDeAcesso` copia `app` da origem; coluna nullable + exibicao na superficie V2 | Equivalente: campo historico preservado (ver PAR15-AUD-004) |
 
 ## 4. Casos de ciclo de vida e listagens
 
@@ -311,8 +314,8 @@ Base: `database/migrations/2026_08_25_000001_create_tentativas_de_acesso_table.p
 | defeito | input | sim | - | - | grade | input | sim | [x] |
 | observacao | textarea | sim | - | - | grade | textarea | sim | [x] |
 | status | disabled | nao | - | - | grade | derivado | - | [x] |
-| marcarestoque | checkbox | sim | - | - | rodape | checkbox | sim | [R] |
-| creditodisponivel | checkbox | sim | - | - | rodape | checkbox | sim | [R] |
+| marcarestoque | checkbox | sim | - | - | rodape | checkbox | sim | [x] |
+| creditodisponivel | checkbox | sim | - | - | rodape | checkbox | sim | [x] |
 | politica de garantia | textarea disabled | nao | - | - | rodape | textarea disabled | - | [x] |
 | acao do ciclo | select + OK | sim | - | SALVAR/RETORNAR/RECEBER/ENCAMINHAR/CONCLUIR | rodape | select + OK | - | [x] |
 
@@ -323,8 +326,8 @@ Base: `database/migrations/2026_08_25_000001_create_tentativas_de_acesso_table.p
 | numero | hidden | nao | - | - | hidden | breadcrumb | - | [x] |
 | urlbd | hidden | nao | - | - | hidden | nao existe | - | [x] |
 | usuario | hidden | nao | - | - | hidden | sessao | - | [x] |
-| snretorno | hidden | nao | - | - | hidden | ausente | - | [ ] |
-| selectacaoup | select + OK | sim | - | SALVAR/RETORNAR/RECEBER/ENCAMINHAR/CONCLUIR | TOPO | ausente (so botao SALVAR) | - | [R] |
+| snretorno | hidden | nao | - | - | hidden | ausente no formulario V2 (regra RN-15 vive no dominio) | - | [x] |
+| selectacaoup | select + OK | sim | - | SALVAR/RETORNAR/RECEBER/ENCAMINHAR/CONCLUIR | TOPO | select `acoes_do_ciclo` + OK no topo | - | [x] |
 | descricao | input + datalist | sim | sim | datalist | 1a col | input | sim | [x] |
 | modelo | input + datalist | sim | - | datalist | 1a col | input | sim | [x] |
 | fabricante | input + datalist | sim | - | datalist | 1a col | select | sim | [x] |
@@ -336,9 +339,9 @@ Base: `database/migrations/2026_08_25_000001_create_tentativas_de_acesso_table.p
 | prioridade | select | sim | sim | Baixa, Normal, Alta | 2a col | select | sim | [x] |
 | protocolo | input | sim | - | - | 2a col | input | sim | [x] |
 | defeito | textarea | sim | - | - | 2a col | textarea | sim | [x] |
-| marcarestoque | select | sim | sim | Nao, Sim | 3a col | select | sim | [R] |
+| marcarestoque | select | sim | sim | Nao, Sim | 3a col | select | sim | [x] |
 | empresa | input | sim | - | - | 3a col | input | sim | [x] |
-| creditodisponivel | select | sim | sim | Nao, Sim | 3a col | select `credito_disponivel` | sim | [R] |
+| creditodisponivel | select | sim | sim | Nao, Sim | 3a col | select `credito_disponivel` | sim | [x] |
 | entrada/recebido/encaminhado/concluido | input disabled | nao | - | - | 4a col | valores | - | [x] |
 | tempo | input disabled | nao | - | - | 4a col | calculado | - | [x] |
 | nfvenda/_emissao/_chave | input | sim | - | - | 2a linha | input | sim | [x] |
@@ -370,10 +373,10 @@ plano atualizado, `git diff --check`, commit e continuacao.
 | 2 | PAR15-RMA-DET-001 | Restaurar select operacional + OK no topo do detalhe RMA V2 | [x] |
 | 3 | PAR14-RMA-STOCK-001 / PAR14-RMA-CREDIT-001 / PAR15-RMA-STOCK-001 / PAR15-RMA-CREDIT-001 | Credito/estoque no runtime: V2 altura 30px + V1 check custom 475x40; persistencia e Policy provadas | [x] |
 | 4 | PAR15-AUD-001..005 | Auditoria/Controle V2: hub, colunas do Legacy, Ver e SO/APP preservados | [x] (AUD-005 geometria em PF-14) |
-| 5 | PAR14-REL-RPEC-001..005 | RPEC V1 (colunas, selecao, totais, info adicional, rotulos) | [ ] |
-| 6 | PAR14-REL-RCD-001..003 | RCD V1 (colunas, regra, totais, info adicional) | [ ] |
+| 5 | PAR14-REL-RPEC-001..005 | RPEC V1 (colunas, selecao, totais, info adicional, rotulos) | [x] |
+| 6 | PAR14-REL-RCD-001..003 + RMPE | RCD V1 (colunas, regra, totais, info adicional) e RMPE (PAR14-REL-RMPE-001/002) | [x] |
 | 7 | PAR15-REL-001..010 | Relatorios V2: hub estatistico + menu historico corrigido | [x] (REL-010 markup V1/V2 em RPEC/RCD/RMPE) |
-| 8 | demais | Gaps restantes da matriz (parceiros, busca, credito, usuarios V1) | [ ] |
+| 8 | demais | Fila executavel corrente (secao 12): USR-007/009, SEC-001, NOTE-001, PART-001..006, PART-DATA-001 e sweep de `[R]`/`[ ]` | [ ] |
 
 ## 7. Decisoes pendentes abertas
 
@@ -385,7 +388,9 @@ plano atualizado, `git diff --check`, commit e continuacao.
 | PAR15-EMAIL-001 | Avisar alguem / enviar e-mail | DEC-02 ja registrada; sem implementacao |
 | PAR14-REL-001 | Hub de Relatorios V1 | Legacy tinha hub vazio; avaliar se reproduz |
 
-## 8. Proximo passo
+## 8. Proximo passo (ESTADO HISTORICO - primeira passagem, 2026-09-10)
+
+> Historico. O estado executavel corrente desta matriz esta na secao 12.
 
 Comecar a fila pela prioridade 1 (PAR15-USR-001), em ciclo:
 investigar -> codigo -> teste dirigido -> browser Legacy x novo -> atualizar
@@ -417,7 +422,9 @@ Achados e decisoes comprovados nesta sessao, antes de qualquer novo codigo:
    Relatorios V2 (8/9/10), Usuarios V1 (11), Novo Usuario V2 (2), sweep (12),
    PF-01..PF-13 (13), PF-14 (14), PF-15 (15); P12/P14 so depois de PF-15.
 
-## 10. Proximo passo
+## 10. Proximo passo (ESTADO HISTORICO - segunda passagem, 2026-09-10)
+
+> Historico. O estado executavel corrente desta matriz esta na secao 12.
 
 Executar a fila acima em ciclos pequenos (codigo -> PHPUnit dirigido -> browser ->
 matriz/plano -> `git diff --check` -> commit), na ordem do dono. Nao abrir nova
@@ -455,3 +462,57 @@ boundingBox/computedStyle nos pontos criticos + fluxo funcional quando aplicavel
 
 Nota: `ParidadeParceirosV2.spec.ts` cobria somente `/create` - nao serve como
 evidencia de edit/show (ponto cego registrado).
+## 12. Estado corrente e proximo passo (2026-09-10, quarta passagem)
+
+Reconciliacao documental obrigatoria, executada depois do push do dono. Esta e a
+UNICA fonte executavel de "proximo passo" da matriz; as secoes 8, 9 e 10 ficam
+como HISTORICO.
+
+Baseline desta passagem (arvore limpa no inicio do ciclo):
+
+- `git status --short --branch` -> `## main...origin/main`;
+- HEAD local e `origin/main`: `d085bc4` (`#DOC-RMA - Reconcilia a linha de Creditos
+  na matriz`);
+- a sequencia nova ja esta no remoto (4afcc65, 0a0f21b, d5e349c, eae441f, d085bc4).
+
+Ciclos do adendo P0 executados nesta passagem (commits reais):
+
+- [x] `203d8e4` `#FIX-RMA` - RMPE com intervalo opcional; URL de QA 200.
+- [x] `8aa9647` `#QA-RMA` - `/v1/relatorios/{rcd,rpec,rmpe}` + Feature + Playwright.
+- [x] `c7eb900` `#DOC-RMA` - incidente `RMA-BUG-REL-SCHEMA-001` + runbook + matriz de URLs.
+- [x] `2b304af` `#FRONT-RMA` - previa segura do Tema V3 + direcao visual Console Dark.
+
+Reconciliacoes feitas:
+
+- 5.1/5.2: `marcarestoque` e `creditodisponivel` (V1 e V2) = `[x]` (tipo, label,
+  persistencia, Policy e geometria 475x40 / 30px provados na sessao anterior).
+- 5.2: `selectacaoup` = `[x]` (select + OK no topo; opcoes do Legacy; 130x25;
+  `buttonSalvar` 50x25; sem ARQUIVAR; evidencia Playwright).
+- 5.2/3.3: `snretorno` (`PAR15-RMA-DET-004`) = `[x]` como IMPLEMENTACAO MODERNA
+  EQUIVALENTE: no 15.8.1 era input oculto (transporte, sem efeito visual); a regra
+  (solucao que implica o mesmo aparelho -> `snretorno = sn`) vive no dominio
+  (`Rma`, RN-15), com testes (`RegistrarSolucaoTest`, `ConcluirRmaTest`),
+  persistencia e importacao.
+- 3.4: `PAR15-AUD-006/007` renomeados para "(capacidade funcional)" = `[x]`, com a
+  paridade visual/interacional explicitamente em `PAR15-SEC-001` e
+  `PAR15-NOTE-001` (`[R]`, secao 11). Nao ha mais pai afirmando "paridade
+  concluida".
+- 3.6: `PAR15-DATA-005/006` = migrados de fato (`sistema_operacional_legado` e
+  `app_legado` em `tentativas_de_acesso`, importados por `ImportarLogsDeAcesso` e
+  exibidos na superficie V2; ver PAR15-AUD-004).
+- Secao 6: RPEC/RCD/RMPE = `[x]`.
+
+Fila executavel corrente (ordem do dono; nada aqui e "so parecer"):
+
+1. [ ] Reforco QA do detalhe RMA V2 (conjunto de opcoes igual ao Legacy +
+   tolerancia de gap coerente, 2-4px).
+2. [ ] `PAR15-USR-007/009` - Novo Usuario V2 (icones, label e geometria).
+3. [ ] `PAR15-SEC-001` - Alterar senha V2 mantendo a seguranca moderna.
+4. [ ] `PAR15-NOTE-001` - Anotacoes V2 (autosave + debounce + geometria).
+5. [ ] `PAR15-PART-DATA-001` - RG/IE nullable + importacao + teste de edicao.
+6. [ ] `PAR15-PART-002..005` - Edit Cliente/Fornecedor/Fabricante/Assistencia
+   (create != edit).
+7. [ ] `PAR15-PART-001/006` - RMAs associados dos 4 parceiros + testes separados.
+8. [ ] Sweep de `[R]`/`[ ]`: `PAR14-NAV-002`, `PAR15-RMA-LIST-001`,
+   `PAR15-SEARCH-001`, `PAR15-AUD-005`, `PAR15-EMAIL-001`, `PAR15-RMA-MARCAR-001`.
+9. [ ] PF-14 completo, PF-15, revalidacao P11, P12, P13 final, P14.

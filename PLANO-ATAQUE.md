@@ -74,18 +74,18 @@ Fonte canonica de estado: `docs/produto/2026-09-10-matriz-forense-paridade-legac
 
 ### Bloco 5 - Reconciliacao documental da matriz (instrucao 1)
 
-- [ ] AD-40 - Passagem de consistencia na matriz: tabelas 5.1/5.2, secao 6
+- [x] AD-40 - Passagem de consistencia na matriz: tabelas 5.1/5.2, secao 6
   (fila), derivabilidade SO/APP, senha/anotacoes, secoes "proximo passo".
-- [ ] AD-41 - Investigar `snretorno` (PAR15-RMA-DET-004) sem trocar `[ ]` por `[x]`.
-- [ ] AD-42 - Protecao simples contra inconsistencia (mesmo ID simultaneamente
+- [x] AD-41 - Investigar `snretorno` (PAR15-RMA-DET-004) sem trocar `[ ]` por `[x]`.
+- [x] AD-42 - Protecao simples contra inconsistencia (mesmo ID simultaneamente
   `[x]` e `[R]`/`[ ]` em estado corrente).
-- [ ] AD-43 - Commit documental isolado.
+- [x] AD-43 - Commit documental isolado.
 
 ## ORDEM DE EXECUCAO (consolidada)
 
 1. [x] Consolidar as duas instrucoes neste plano + commit documental.
 2. [ ] ADENDO P0 (blocos 1 a 4): runtime, URLs de QA, previa V3, doc visual V3.
-3. [ ] Reconciliacao da matriz (bloco 5) + commit documental isolado.
+3. [x] Reconciliacao da matriz (bloco 5) + commit documental isolado.
 4. [ ] Reforco QA do detalhe V2 (`ParidadeDetalheRmaV2Geometria`: conjunto de
    opcoes igual + tolerancia de gap coerente, 2-4px).
 5. [ ] Novo Usuario V2 (PAR15-USR-007/009).

@@ -31,6 +31,11 @@ class ListagensPorStatusController extends Controller
         return $this->render(PainelDeStatus::Entrada, 'Entrada');
     }
 
+    public function recebidos(): View
+    {
+        return $this->render(PainelDeStatus::RecebidoSomente, 'Recebido');
+    }
+
     public function encaminhados(): View
     {
         return $this->render(PainelDeStatus::Encaminhados, 'Encaminhado');
@@ -95,6 +100,7 @@ class ListagensPorStatusController extends Controller
     {
         return match ($painel) {
             PainelDeStatus::Entrada => 'entrada',
+            PainelDeStatus::RecebidoSomente => 'recebidos',
             PainelDeStatus::Encaminhados => 'encaminhados',
             PainelDeStatus::AguardandoCredito => 'aguardando-credito',
             PainelDeStatus::Concluidos => 'concluidos',

@@ -101,7 +101,7 @@ Decisao canonica do dono:
 - [x] UF-06 - Alterar propria senha (CAP-ID-003): convergido nos dois temas no padrao funcional do 14.6.1.
 
 ### Fase 3 - Gaps Prioritarios de Ciclo e Relatorios (P0)
-- [ ] UF-07 - Fila de Recebidos no Tema V1 (`GAP-V1-01` / CAP-RMA-004): rota, listagem 14.6.1 e link `#TOPO`.
+- [x] UF-07 - Fila de Recebidos no Tema V1 (`GAP-V1-01` / CAP-RMA-004): rota, listagem 14.6.1 e link `#TOPO`.
 - [ ] UF-08 - Acesso e navegacao aos relatorios RCD, RPEC e RMPE no Tema V2 (`GAP-V2-01..03` / CAP-REL-001..003).
 - [ ] UF-09 - Hub Estatistico de Relatorios no Tema V1 (`GAP-V1-06` / CAP-REL-004): painel V1 adaptado.
 

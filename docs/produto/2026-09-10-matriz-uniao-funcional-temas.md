@@ -32,7 +32,7 @@ Classificacoes padrao adotadas:
 | Quebradas em V2 mas funcionais em V1 | 1 |
 | Codigo morto comprovado (nao promover) | 6 |
 | Decisao pendente de produto/seguranca | 3 |
-| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V1 NOVO** | **11** |
+| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V1 NOVO** | **10** (1 resolvido) |
 | **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V2 NOVO** | **5** |
 
 ---
@@ -40,7 +40,7 @@ Classificacoes padrao adotadas:
 ## 2. Resumo Executivo de Gaps por Tema
 
 ### Gaps do Tema V1 Novo (precisam ser introduzidos na linguagem visual V1)
-1. `GAP-V1-01` (CAP-RMA-004): Fila dedicada de Recebidos (`#recebido` no V2; no V1 requer listagem/menu no padrao 14.6.1).
+1. `GAP-V1-01` (CAP-RMA-004): [x] CONVERGIDO - Fila dedicada de Recebidos (rota `/rmas-recebidos`, view V1 `temas.v1.rma.recebidos` e link no `#TOPO`).
 2. `GAP-V1-02` (CAP-ID-005): Criacao de usuario por operador/admin no padrao V1 (existia em V2 `subp/novo_usuario.php`).
 3. `GAP-V1-03` (CAP-AUD-002): Historico e logs de autenticacao com visualizacao na linguagem V1.
 4. `GAP-V1-04` (CAP-AUD-003): Historico e logs de modificacao de RMA na linguagem V1.
@@ -86,7 +86,7 @@ Classificacoes padrao adotadas:
 | CAP-RMA-001 | Criar novo RMA | RMA | PRESENTE-FUNCIONAL | PRESENTE-FUNCIONAL | Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-03 | rma-cadastro | Nenhuma | [x] Convergido |
 | CAP-RMA-002 | Buscar / Localizar RMAs | RMA | PRESENTE-FUNCIONAL | PRESENTE-FUNCIONAL | Compartilhada | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-03 | rma-cadastro | Nenhuma | [x] Convergido |
 | CAP-RMA-003 | Fila de Entrada | RMA | PRESENTE-FUNCIONAL | PRESENTE-FUNCIONAL | Compartilhada | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-04 | rma-ciclo-de-vida | Nenhuma | [x] Convergido |
-| CAP-RMA-004 | Fila dedicada de Recebidos | RMA | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / N / N / N / [ ] | S / S / S / S / [x] | [x] / T3-04 | unificacao-funcional | Criar listagem/menu V1 (GAP-V1-01) | [ ] Aberto V1 (P0) |
+| CAP-RMA-004 | Fila dedicada de Recebidos | RMA | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-04 | unificacao-funcional | Nenhuma | [x] Convergido |
 | CAP-RMA-005 | Fila de Encaminhados | RMA | PRESENTE-FUNCIONAL | PRESENTE-FUNCIONAL | Compartilhada | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-04 | rma-ciclo-de-vida | Nenhuma | [x] Convergido |
 | CAP-RMA-006 | Fila de Concluidos | RMA | PRESENTE-FUNCIONAL | PRESENTE-FUNCIONAL | Compartilhada | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-04 | rma-ciclo-de-vida | Nenhuma | [x] Convergido |
 | CAP-RMA-007 | Fila de Aguardando Credito | RMA | PRESENTE-FUNCIONAL | PRESENTE-FUNCIONAL | Compartilhada | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-04 | rma-ciclo-de-vida | Nenhuma | [x] Convergido |
@@ -179,7 +179,7 @@ Classificacoes padrao adotadas:
 
 | ID | Capacidade | Origem Legacy | V1 Novo | V2 Novo | Acao Necessaria |
 |---|---|---|---|---|---|
-| CAP-RMA-004 | Fila dedicada de Recebidos | So V2 Legacy | AUSENTE na UI | PRESENTE | Implementar listagem e link de Recebidos no padrao visual 14.6.1 |
+| CAP-RMA-004 | Fila dedicada de Recebidos | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: rota /rmas-recebidos, listagem V1 e link #TOPO |
 | CAP-REL-001 | Relatorio RCD (Creditos) | So V1 Legacy | PRESENTE | NAO DESCOBRIVEL | Integrar link/acesso ao RCD dentro da experiencia de Relatorios V2 |
 | CAP-REL-002 | Relatorio RPEC (Estoque) | So V1 Legacy | PRESENTE | NAO DESCOBRIVEL | Integrar link/acesso ao RPEC dentro da experiencia de Relatorios V2 |
 | CAP-REL-003 | Relatorio RMPE (Movimentacao) | So V1 Legacy | PRESENTE | NAO DESCOBRIVEL | Integrar link/acesso ao RMPE dentro da experiencia de Relatorios V2 |

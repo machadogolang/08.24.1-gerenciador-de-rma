@@ -27,6 +27,9 @@ Route::prefix('v1')
             ->parameters(['rma' => 'rma'])
             ->names('rmas');
 
+        Route::get('/rmas-recebidos', [\App\Http\Controllers\Rma\ListagensPorStatusController::class, 'recebidos'])
+            ->name('rmas.recebidos');
+
         Route::resource('parceiros/clientes', ClienteController::class)
             ->names('parceiros.clientes');
         Route::resource('parceiros/fabricantes', FabricanteController::class)

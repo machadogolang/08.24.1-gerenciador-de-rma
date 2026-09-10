@@ -34,7 +34,8 @@ enum PainelDeStatus
             self::Encaminhados => 'Os produtos abaixo ja estao encaminhados ao responsavel pela garantia',
             self::AguardandoCredito => 'Os produtos abaixo estao aguardando processo p/ gerar o credito',
             self::Concluidos => 'Os produtos abaixo ja retornaram e estao com o processo de encaminhamento de rma concluido',
-            self::EntradaSomente, self::RecebidoSomente => '',
+            self::EntradaSomente => '',
+            self::RecebidoSomente => 'Os bds recebidos abaixo estao em analise para encaminhamento',
         };
     }
 }

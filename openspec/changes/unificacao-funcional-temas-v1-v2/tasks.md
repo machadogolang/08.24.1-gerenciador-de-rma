@@ -17,10 +17,10 @@ Marcadores canonicos: `[ ]` (Pendente), `[R]` (Revisado), `[x]` (Concluido).
 
 ## Fase 3 - Gaps Prioritarios de Ciclo e Relatorios (P0)
 
-- [ ] UF-07 - Fila de Recebidos no Tema V1 (`GAP-V1-01` / CAP-RMA-004):
-  - [ ] Implementar rota/listagem de Recebidos sob o Tema V1 com o padrao de tabela do 14.6.1 (`page/entrada.php`).
-  - [ ] Inserir o link "Recebidos" no menu de navegacao superior V1 (`#TOPO`).
-  - [ ] Escrever teste Feature garantindo HTTP 200 e presenca dos registros recebidos na view V1.
+- [x] UF-07 - Fila de Recebidos no Tema V1 (`GAP-V1-01` / CAP-RMA-004):
+  - [x] Implementar rota/listagem de Recebidos sob o Tema V1 com o padrao de tabela do 14.6.1 (`page/entrada.php`).
+  - [x] Inserir o link "Recebidos" no menu de navegacao superior V1 (`#TOPO`).
+  - [x] Escrever teste Feature garantindo HTTP 200 e presenca dos registros recebidos na view V1.
 - [ ] UF-08 - Descoberta e Acesso aos Relatorios RCD, RPEC e RMPE no Tema V2 (`GAP-V2-01..03` / CAP-REL-001..003):
   - [ ] Criar pontos de entrada e navegacao descobrivel dentro de `/v2/relatorios` para RCD, RPEC e RMPE.
   - [ ] Garantir que os relatorios respondam sob o Tema V2 mantendo seu contrato de dados.

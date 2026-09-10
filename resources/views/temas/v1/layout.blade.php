@@ -76,6 +76,9 @@
                 <li class="menu-up {{ request()->routeIs('rmas.entrada') ? 'active' : '' }}">
                     <a href="{{ route('rmas.entrada') }}">Entrada</a>
                 </li>
+                <li class="menu-up {{ request()->routeIs('rmas.recebidos', 'v1.rmas.recebidos') ? 'active' : '' }}">
+                    <a href="{{ route('rmas.recebidos') }}">Recebido</a>
+                </li>
                 <li class="menu-up {{ request()->routeIs('rmas.encaminhados') ? 'active' : '' }}">
                     <a href="{{ route('rmas.encaminhados') }}">Encaminhado</a>
                 </li>

@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
     // Encaminhado/Aguardando credito/Concluido), fonte real `14.6.1/page/*.php`.
     // Outro segmento inicial, sem conflito com `rmas/{rma}`.
     Route::get('/rmas-entrada', [ListagensPorStatusController::class, 'entrada'])->name('rmas.entrada');
+    Route::get('/rmas-recebidos', [ListagensPorStatusController::class, 'recebidos'])->name('rmas.recebidos');
     Route::get('/rmas-encaminhados', [ListagensPorStatusController::class, 'encaminhados'])->name('rmas.encaminhados');
     Route::get('/rmas-aguardando-credito', [ListagensPorStatusController::class, 'aguardandoCredito'])->name('rmas.aguardando-credito');
     Route::get('/rmas-concluidos', [ListagensPorStatusController::class, 'concluidos'])->name('rmas.concluidos');

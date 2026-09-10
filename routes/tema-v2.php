@@ -37,6 +37,10 @@ Route::prefix('v2')
 
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('identidade.usuarios.index');
 
+        // PAR15-USR-007 - Novo usuario do TEMA V2 (prefixo).
+        Route::get('/usuarios/novo', [UsuarioController::class, 'create'])->name('identidade.usuarios.create');
+        Route::post('/usuarios', [UsuarioController::class, 'store'])->name('identidade.usuarios.store');
+
         // PAR15-USR-001 - superficies dedicadas do TEMA V2 espelhadas no prefixo /v2
         // (mesmos Controllers; o POST/PUT continuam canonicos).
         Route::get('/usuarios/{usuario}/permissoes', [UsuarioController::class, 'permissoes'])

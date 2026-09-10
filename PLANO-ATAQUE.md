@@ -54,9 +54,9 @@ Fila de correcao apos o checkpoint documental (secao 6 da matriz):
 Sequencia executavel refinada (segunda passagem, decisao do dono 2026-09-10):
 estoque/credito runtime (3) -> auditoria/Controle V2 (4) -> RPEC V1 (5) -> RCD V1 (6)
 -> RMPE V1 (7) -> hub+menu Relatorios V2 (8/9/10) -> Usuarios V1 (11) -> Novo Usuario
-V2 -> sweep de [R]/[ ] -> PF-01..PF-13 -> PF-14 -> PF-15; P12/P14 so depois de PF-15.
+V2 (Novo Usuario) -> sweep de [R]/[ ] -> PF-01..PF-13 -> PF-14 -> PF-15; P12/P14 so depois de PF-15.
 Reconciliacao ja feita na matriz: PAR15-USR-002/003/005/006/008 = [x];
-PAR15-USR-004 = [DECISAO-PENDENTE]; PAR15-USR-007 segue [R] (executar);
+PAR15-USR-004 = [DECISAO-PENDENTE]; PAR15-USR-007 = [x] (Novo Usuario V2 implementado);
 PAR15-REL-008/009 = decisao resolvida (menu V2 com item unico Relatorios).
 
 P12 permanece pendente enquanto esta auditoria esta aberta; P14 nao fecha antes

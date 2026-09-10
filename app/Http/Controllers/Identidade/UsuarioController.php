@@ -173,6 +173,62 @@ class UsuarioController extends Controller
         ]);
     }
 
+    /**
+     * PAR15-USR-007 - superficie dedicada 'Novo usuario' do TEMA V2, fonte
+     * `15.8.1/subp/novo_usuario.php` (nome/e-mail/senha/permissao). O V1 mantem a
+     * organizacao propria (criacao nao era parte da gestao de usuarios do 14.6.1).
+     */
+    public function create(Request $request): View|RedirectResponse
+    {
+        Gate::authorize('gerenciar', User::class);
+
+        if (! $this->temaEhV2($request)) {
+            return redirect()->route('identidade.usuarios.index');
+        }
+
+        return view('temas.v2.identidade.usuarios-novo', ['titulo' => 'Novo usuario']);
+    }
+
+    /**
+     * PAR15-USR-007 - cria o usuario no tenant corrente. Nunca reproduz o SHA1 do
+     * Legacy: usa o cast `hashed` do model, CSRF, validacao, Policy e o vinculo
+     * `company_user` da empresa ativa (mesma regra do update de papel).
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        Gate::authorize('gerenciar', User::class);
+
+        if (! $this->temaEhV2($request)) {
+            return redirect()->route('identidade.usuarios.index');
+        }
+
+        $dados = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8'],
+            'papel' => ['required', Rule::in(array_column(Papel::cases(), 'name'))],
+        ]);
+
+        $papelNovo = collect(Papel::cases())->firstWhere('name', $dados['papel']);
+
+        // ARQ-003: Supervisor nao cria SuperAdministrador (nem promove ninguem a isso).
+        abort_unless($request->user()->papelAtivo()->podeOperarSobrePapel($papelNovo), 403);
+
+        $usuario = User::query()->create([
+            'name' => $dados['name'],
+            'email' => $dados['email'],
+            'password' => $dados['password'],
+            'papel' => $papelNovo,
+        ]);
+
+        $empresaId = app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId();
+        if ($empresaId !== null) {
+            $usuario->empresas()->attach($empresaId, ['papel' => $papelNovo, 'ativo' => true]);
+        }
+
+        return redirect()->route('identidade.usuarios.index')->with('status', 'Usuario cadastrado.');
+    }
+
     private function temaEhV2(Request $request): bool
     {
         return ($request->attributes->get('temaAtivo') ?? TemaPreferido::V2) === TemaPreferido::V2;

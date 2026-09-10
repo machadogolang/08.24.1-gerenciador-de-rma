@@ -202,7 +202,7 @@ Legenda de Tipo/Status igual as secoes 0. Rotas novas entre crase.
 | PAR15-USR-004 | V2 | Apagar usuario | `subp/apagar_usuario.php` + `pp/apagar_usuario.php` | ausente | Hard delete com confirmacao (`pms>1` e `pms>alvo`) | Nenhuma | Sem equivalente; hard delete cascatearia auditoria (`modificacoes_de_rma.user_id` cascadeOnDelete) | H/F | Alto | [DECISAO-PENDENTE] | Feature (guardas/Policy) | Nao reproduzir hard delete (cascatearia auditoria); avaliar desativacao tenant-safe do vinculo |
 | PAR15-USR-005 | V2 | Resetar senha | `pp/resetar_senha.php` | `identidade.usuarios.resetar-senha` | Gera senha aleatoria `@dddd` e envia por e-mail | Operador digita nova senha (min 8 + confirmacao) | Equivalente moderno: operador define a nova senha (sem SHA1/envio inseguro) | E | Medio | [x] | Feature + Browser | RESOLVIDO 2026-09-10 (c556d15): superficie V2 dedicada + POST seguro |
 | PAR15-USR-006 | V2 | Mudar permissao | `pp/mudar_permissao.php` | `identidade.usuarios.update` | Select -1/1/2 (Bloqueado/Leitura/Leitura e modificacao) | Select com 5 papeis (`Papel`) | Equivalente moderno: select de papel com rotulo historico + PUT seguro | E | Medio | [x] | Feature (GerenciarUsuariosTest) + Browser | RESOLVIDO 2026-09-10 (c556d15) |
-| PAR15-USR-007 | V2 | Novo usuario | `subp/novo_usuario.php` + `pp/novo_usuario.php` | nao existe rota de criacao | Form nome/email/senha/permissao | Ausente | Falta criacao de usuario | A | Medio | [R] | Feature (papeis/tenant/duplicidade) + Browser | EXECUTAR: equivalente moderno de Novo Usuario (nome/email/senha/permissao, Policy, tenant) |
+| PAR15-USR-007 | V2 | Novo usuario | `subp/novo_usuario.php` + `pp/novo_usuario.php` | nao existe rota de criacao | Form nome/email/senha/permissao | Ausente | Falta criacao de usuario | A | Medio | [x] | Feature (NovoUsuarioV2Test) + Browser (PF-14) | FECHADO 2026-09-10: create/store V2 com Policy, tenant, duplicidade e cast hashed |
 | PAR15-USR-008 | V2 | Permissao como rotulo | `subp/usuarios.php` | `Papel` cru | `Leitura` / `Leitura e modificacao` / `Bloqueado` | Nome tecnico do papel | Equivalente: rotulo historico via `rotuloDePermissaoLegado()` | C | Baixo | [x] | Feature (UsuariosV2ParidadeTest) | RESOLVIDO 2026-09-10 (c556d15) |
 
 ### 3.3 Detalhe RMA V2 (credito, estoque, acoes)
@@ -380,7 +380,7 @@ plano atualizado, `git diff --check`, commit e continuacao.
 | ID | Assunto | Por que esta pendente |
 |---|---|---|
 | PAR15-USR-004 | Exclusao definitiva de usuario | [DECISAO-PENDENTE]: nao reproduzir hard delete (cascatearia a auditoria); avaliar desativacao tenant-safe do vinculo `company_user` |
-| PAR15-USR-007 | Criacao de usuario | EXECUTAR: o Legacy tem Novo Usuario; equivalente moderno V2 e obrigatorio (nome/email/senha/permissao, Policy, tenant) |
+| PAR15-USR-007 | Criacao de usuario | RESOLVIDO 2026-09-10: create/store V2 (nome/email/senha/permissao, Policy, tenant, sem SHA1) |
 | PAR15-REL-008/009 | RPEC/RCD/RMPE no V2 | RESOLVIDO: o Legacy V2 tem UM item Relatorios; RCD/RPEC/RMPE ficam como compatibilidade interna, fora do menu historico |
 | PAR15-EMAIL-001 | Avisar alguem / enviar e-mail | DEC-02 ja registrada; sem implementacao |
 | PAR14-REL-001 | Hub de Relatorios V1 | Legacy tinha hub vazio; avaliar se reproduz |

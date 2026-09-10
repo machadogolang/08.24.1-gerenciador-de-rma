@@ -46,6 +46,10 @@ Route::middleware('auth')->group(function () {
     // Gestão de usuários (LEG-RMA-003/005) - autorização checada dentro do controller.
     Route::get('/usuarios', [UsuarioController::class, 'index'])->name('identidade.usuarios.index');
     Route::put('/usuarios/{usuario}', [UsuarioController::class, 'update'])->name('identidade.usuarios.update');
+
+    // PAR15-USR-007 - Novo usuario do TEMA V2 (fonte `15.8.1/subp/novo_usuario.php`).
+    Route::get('/usuarios/novo', [UsuarioController::class, 'create'])->name('identidade.usuarios.create');
+    Route::post('/usuarios', [UsuarioController::class, 'store'])->name('identidade.usuarios.store');
     Route::post('/usuarios/{usuario}/resetar-senha', [UsuarioController::class, 'resetarSenha'])
         ->name('identidade.usuarios.resetar-senha');
 

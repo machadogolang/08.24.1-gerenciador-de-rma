@@ -102,3 +102,44 @@ precisar derrubar um para subir o outro.
   repos) selecionam PHP 8.5 por padrão em vez de 8.3 - corrigido manualmente apontando
   `context:`/`image:` do serviço `laravel.test` para `runtimes/8.3` em ambos os casos
   (achado já registrado também no repo da Scripting, mesma causa).
+
+## Checklist pós-pull / pós-deploy (evita o incidente RMA-BUG-REL-SCHEMA-001)
+
+Atualizar o código NÃO atualiza o banco persistente do Sail. Depois de qualquer
+`git pull`/troca de branch com migration nova:
+
+```bash
+./vendor/bin/sail artisan migrate:status   # confirme que não há "Pending"
+./vendor/bin/sail artisan migrate          # aplique só o que falta
+./scripts/qa-smoke-relatorios.sh           # smoke HTTP real dos relatórios
+```
+
+Regra: em erro "Table ... doesn't exist", confirmar `artisan migrate:status`
+ANTES de mexer em controller/model. Nunca usar `Schema::hasTable(...)` para
+esconder o problema. Nunca rodar `migrate:fresh` no banco do dono só para
+"consertar" migration pendente.
+
+Detalhe do incidente: `docs/operacao/incidentes/2026-09-10-relatorios-schema-migration-pendente.md`.
+
+## Matriz de URLs de QA (comparação Legacy x novo)
+
+| Superfície | Legacy (somente leitura) | Novo forçado | V3 QA |
+|---|---|---|---|
+| Base | `http://localhost:8094/14.6.1/` e `.../15.8.1/` | `http://localhost:8095/v1/` e `/v2/` | `http://localhost:8095/v3/` |
+| V1 RCD | `:8094/14.6.1/index.php?page=relatorios&id=RCRD` | `:8095/v1/relatorios/rcd` | - |
+| V1 RPEC | `:8094/14.6.1/index.php?page=relatorios&id=RPEC` | `:8095/v1/relatorios/rpec` | - |
+| V1 RMPE | `:8094/14.6.1/index.php?page=relatorios&id=RMPE` | `:8095/v1/relatorios/rmpe` | - |
+| V2 Relatórios | `:8094/15.8.1/index.php?p=relatorios` | `:8095/v2/relatorios` | - |
+| V2 Créditos | `:8094/15.8.1/creditos` | `:8095/v2/creditos` | - |
+| V3 dashboard | - | - | `:8095/v3` |
+| V3 RMAs | - | - | `:8095/v3/rmas` |
+| V3 detalhe RMA | - | - | `:8095/v3/rma/{id}` |
+| V3 novo RMA | - | - | `:8095/v3/rmas/novo` |
+
+Notas:
+
+- As rotas `/v1/relatorios/*` foram criadas no adendo P0 (AD-10): usam o MESMO
+  `RelatorioController` das rotas canônicas; só o prefixo força o tema.
+- O V2 histórico do 15.8.1 tem UM item `Relatorios` (painel estatístico). RCD/
+  RPEC/RMPE NÃO entram no menu V2; existem como compatibilidade.
+- `/v3` é QA oculto: nunca é gravado em `tema_preferido` (ver T3-17/T3-GATE).

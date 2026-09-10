@@ -40,20 +40,20 @@ Fonte canonica de estado: `docs/produto/2026-09-10-matriz-forense-paridade-legac
 - [x] AD-05 - Nao mascarar o bug: proibido `Schema::hasTable(...)` como fachada.
   A tabela faz parte do schema atual; o que foi corrigido e o PROCESSO
   (`artisan migrate` no banco persistente).
-- [ ] AD-06 - Registrar o incidente `RMA-BUG-REL-SCHEMA-001` e atualizar o
+- [x] AD-06 - Registrar o incidente `RMA-BUG-REL-SCHEMA-001` e atualizar o
   runbook `docs/desenvolvimento/ambiente-v2-v3.md` (sem duplicar documentacao).
-- [ ] AD-07 - Aprendizado operacional duravel: Feature test verde com
+- [x] AD-07 - Aprendizado operacional duravel: Feature test verde com
   `RefreshDatabase` NAO prova o banco persistente; em "table not found",
   confirmar `artisan migrate:status` antes de mexer em controller/model.
 
 ### Bloco 2 - URLs de QA deterministicas para os relatorios
 
-- [ ] AD-10 - Rotas V1 explicitas `/v1/relatorios/{rcd,rpec,rmpe}`, nomes
+- [x] AD-10 - Rotas V1 explicitas `/v1/relatorios/{rcd,rpec,rmpe}`, nomes
   `v1.rmas.relatorios.*`, MESMO `RelatorioController` (sem duplicar regra/query).
-- [ ] AD-11 - Feature test das tres rotas V1 (200 + tema V1 forcado).
-- [ ] AD-12 - Provar `/v2/relatorios` (painel estatistico 15.8.1) e `/v2/creditos`.
-- [ ] AD-13 - Tabela "matriz de URLs de QA" no runbook.
-- [ ] AD-14 - Playwright minimo de navegacao dos relatorios V1.
+- [x] AD-11 - Feature test das tres rotas V1 (200 + tema V1 forcado).
+- [x] AD-12 - Provar `/v2/relatorios` (painel estatistico 15.8.1) e `/v2/creditos`.
+- [x] AD-13 - Tabela "matriz de URLs de QA" no runbook.
+- [x] AD-14 - Playwright minimo de navegacao dos relatorios V1.
 
 ### Bloco 3 - Entrada segura para o Tema V3 (previa)
 

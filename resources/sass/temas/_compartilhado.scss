@@ -252,6 +252,15 @@ $cor-titulo-regra-de-alerta: #efe6c0; // fonte: inline style real `color:#EFE6C0
     // `14.6.1/inc/startpage.php` intercala cada include com um `separador.png`
     // de 40px. Com o cabeçalho + `.pmo` históricos, o bloco precisa medir 50px:
     // 8px de padding em cada lado mantém o passo total em 90px, igual ao runtime.
+    // PAR-RES-006 - o `line-height:20px` global do TEMA V2 inflava a linha do
+    // `.pmo` (que é inline) e empurrava o passo para 96px. O legado (15.8.1/14.6.1)
+    // tem `line-height: normal` no corpo; normalizar aqui mantém os DOIS temas em
+    // 90px sem tocar no V1 (que já herdava normal).
+    line-height: normal;
+    // Base tipografica do legado e 12px; o `14px` global do TEMA V2 aumentava o
+    // strut da linha do `.pmo` em 2px. Descendentes que precisam de outro tamanho o
+    // declaram explicitamente.
+    font-size: 12px;
     padding: 8px 0;
 
     .regra-de-alerta-cabecalho {
@@ -296,6 +305,20 @@ table {
 .Tabelinha-TDD {
     height: 18px;
     text-align: center;
+}
+
+// PAR-RES-006 - o reset `td,th{padding:0}` do TEMA V2 zerava o padding das celulas
+// do Centro de Avisos e derrubava a linha para 26px (legado 15.8.1: 30px).
+// Restaura o padding real do legado; no V1 o valor computado ja era este.
+.regra-de-alerta-dados table td {
+    padding: 1px 1px 1px 0;
+}
+
+// PAR-RES-006 - no TEMA V2 o reset do Bootstrap aplica `img{vertical-align:middle}`;
+// o legado alinha pela baseline (o descender adiciona ~2px). Sem isso a linha da
+// tabela de avisos ficava em 28px x 30px do 15.8.1.
+.regra-de-alerta-dados table td img {
+    vertical-align: baseline;
 }
 
 .SuperTr {

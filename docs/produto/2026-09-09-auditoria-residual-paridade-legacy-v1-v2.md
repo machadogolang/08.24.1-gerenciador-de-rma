@@ -35,7 +35,7 @@ mesmo sem screenshot apontado nesta nova sessao.
 | PAR-RES-003 | V2 | Encaminhado | Sem garantia usa `TrInconformidade`; prioridade alta e prazo de 30 dias usam `TrUrgente` | Sem garantia vira `TrSemGarantia1/2` | Classes incorretas no destaque sem garantia | Mesma regra generica | BUG-CONFIRMADO | [x] | Playwright de classes/cores por linha |
 | PAR-RES-004 | V2 | Concluido | Zebra binaria `TrSemGarantia1/2`/`TrZebrada1/2` sem alertas | Mesma estrutura no partial proprio | Sem diferenca confirmada | - | SEM-PROBLEMA | [R] | ampliar prova com fixture SemGarantia |
 | PAR-RES-005 | V2 | listagens | Linhas de uma linha medem 26px; linhas com quebra medem ~32px | Linhas com quebra medem ~32px; base depende do conteudo | Sem diferenca sistematica confirmada alem de dados de QA mais longos | Conteudo de QA diferente do banco Legacy | SEM-PROBLEMA | [R] | fixture curto em Playwright |
-| PAR-RES-006 | V2 | Centro de Avisos e relatorios | Cada grupo tem tabela propria | Lista generica compartilhada | Composicao por grupo ainda nao reproduzida | gap documentado desde CP22/CMP-V2-004 | PARIDADE-LEGACY | [R] | auditado em onda E |
+| PAR-RES-006 | V2 | Centro de Avisos e relatorios | Cada grupo tem tabela propria | Lista generica compartilhada | Composicao por grupo ainda nao reproduzida | gap documentado desde CP22/CMP-V2-004 | PARIDADE-LEGACY | [x] | PAR-RES-006 (ParidadeCentroDeAvisosV2) |
 | PAR-RES-007 | V2 | Anotacoes | Pagina propria em `15.8.1/page/anotacoes.php` | Menu aponta para perfil | Pagina dedicada ausente | gap documentado desde CP17 | PARIDADE-LEGACY | [x] | PAR-RES-E-04 |
 | PAR-RES-008 | V1/V2 | Novo RMA | Autocomplete historico (datalist) | Selects modernos com mesmos valores | Implementacao moderna segura, visual funcional equivalente | decisao arquitetural registrada (NOVO-01.4/PAR-V2-NOVO-01) | FIDELIDADE-INTENCIONAL | [x] | coberto por Playwright |
 | PAR-RES-009 | V1/V2 | diversos | Layout historico | Layout moderno | Nao e espaco de redesign | regra do projeto | MELHORIA-V3 | - | nao corrigir em V1/V2 |
@@ -47,7 +47,8 @@ mesmo sem screenshot apontado nesta nova sessao.
   corrigidos e testados; PAR-RES-004/005 seguem como prova residual).
 - [x] ONDA C - Create/show/edit RMA e ciclo (V1/V2). PAR-RES-C-01 corrigido (1007ad0); PHPUnit dirigido 35/35 + `ParidadeDetalheRmaV2Funcional` 1/1 verdes.
 - [x] ONDA D - Parceiros/admin/Controle/usuarios. PAR-RES-D-01..04 corrigidos (24c7c3a); PHPUnit dirigido 35/35 + `ParidadeParceirosV2` 1/1 verdes.
-- [ ] ONDA E - Relatorios/Avisos/Anotacoes/secundarias (PAR-RES-006/007).
+- [x] ONDA E - Relatorios/Avisos/Anotacoes/secundarias. PAR-RES-006 (Centro de Avisos) e
+  PAR-RES-007 (Anotacoes/senha V2) fechados; RCD/RPEC/RMPE em bbea068.
 - [ ] ONDA F - Viewport/print/regressao residual.
 
 Cada onda: investigar -> corrigir -> PHPUnit dirigido -> Playwright/browser ->
@@ -223,3 +224,29 @@ de ser a unica tela que mistura perfil+senha+anotacao.
   `ParidadeAnotacoesSenhaV2` 4/4 (pagina propria, persistencia, /perfil sem
   mistura, senha separada com POST/CSRF/validacao, V1 sem regressao).
 - `DECISAO-PENDENTE` do PAR-RES-E-04 removida: decisao do dono implementada.
+
+## Resultado - PAR-RES-006 (Centro de Avisos V2, 2026-09-10)
+
+A classificacao "lista generica compartilhada" estava desatualizada: o partial
+`rma/_centro_de_avisos.blade.php` ja mapeia os 10 grupos para partials proprios
+(`_abertos_nao_encaminhados`, `_sem_nota`, `_prazo_destinatario`,
+`_nao_vai_dar_garantia`, `_nf_retorno_pendente`, `_garantia_fornecedor_expirada`,
+`_garantia_fornecedor_expirando`) e reproduz titulos, "Mostrar/Ocultar", tabelas e
+estado vazio. O que faltava era espacamento do TEMA V2:
+
+- Passo recolhido entre grupos: 96px no V2 x 90px no Legacy 15.8.1 - o
+  `line-height:20px` global do tema inflava a linha do `.pmo` (inline). Corrigido
+  normalizando `line-height: normal` + base `font-size: 12px` no `.regra-de-alerta`
+  (`_compartilhado.scss`); V1 ja herdava normal e nao mudou.
+- Linha expandida da tabela: 26px no V2 x 30px no Legacy - o reset `td,th{padding:0}`
+  do tema zerava o padding e o `img{vertical-align:middle}` do Bootstrap elevava a
+  ancora `Ver`. Corrigido com `padding: 1px 1px 1px 0` e `vertical-align: baseline`
+  escopados a `.regra-de-alerta-dados`.
+- Ordem dos grupos confirmada identica ao `page/inicio.php` (prioridadealta,
+  pabertonaoencaminhado, semsn, semnota, prazodestinatario,
+  naoencaminhadoprazoestourado, pgarantiafornecedorexpirado, pmenosde30,
+  naovaidargarantia, nfpendentelancar).
+
+Teste novo: `tests/Browser/ParidadeCentroDeAvisosV2.spec.ts` (3/3) compara titulos,
+tabela por grupo, passo recolhido e altura de linha contra o Legacy 15.8.1.
+`ParidadeVisualTemaV1` segue 12/12 (nenhuma regressao no V1). ONDA E fechada `[x]`.

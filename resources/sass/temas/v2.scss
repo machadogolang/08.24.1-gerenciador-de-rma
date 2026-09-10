@@ -539,6 +539,15 @@ select:disabled {
     clear: both;
   }
 
+  // PAR15-RMA-STOCK-001/PAR15-RMA-CREDIT-001 - medido no runtime: o `select` do
+  // detalhe V2 ficava com 34px contra 30px do Legacy `15.8.1/page/rma.php`
+  // (`formSelect`). Fixa a altura do select nessa classe.
+  select.form-control.detalhe-rma-v2__controle {
+    height: 30px;
+    padding: 0 5px;
+    line-height: 20px;
+  }
+
   .form-control.detalhe-rma-v2__controle {
     display: block;
     box-sizing: border-box;

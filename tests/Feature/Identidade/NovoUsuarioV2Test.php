@@ -136,13 +136,17 @@ class NovoUsuarioV2Test extends TestCase
     }
 
     #[Test]
-    public function tema_v1_nao_recebe_a_superficie_de_novo_usuario(): void
+    public function tema_v1_recebe_superficie_de_novo_usuario_na_estetica_v1(): void
     {
         $adminV1 = User::factory()->create([
             'papel' => Papel::SuperAdministrador,
             'tema_preferido' => TemaPreferido::V1,
         ]);
 
-        $this->actingAs($adminV1)->get('/usuarios/novo')->assertRedirect(route('identidade.usuarios.index'));
+        $response = $this->actingAs($adminV1)->get('/v1/usuarios/novo');
+        $response->assertOk();
+        $response->assertViewIs('temas.v1.identidade.usuarios-novo');
+        $response->assertSee('Novo usuario');
+        $response->assertSee('CADASTRAR USUÁRIO');
     }
 }

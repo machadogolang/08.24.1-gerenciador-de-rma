@@ -199,6 +199,31 @@
             </td>
         </tr>
 
+        {{-- UF-12/UF-13 (CAP-ALT-003/004) - Prioridade e Alerta de Urgência no Tema V1 --}}
+        <tr class="TRD">
+            <th style="width:25%;" class="C2">PRIORIDADE</th>
+            <th style="width:25%;">STATUS OPERACIONAL</th>
+            <th style="width:25%;">PRAZO LEGAL (30 DIAS)</th>
+            <th style="width:25%;">ALERTA / URGÊNCIA</th>
+        </tr>
+        <tr class="formTRDetailD">
+            <td>
+                <select name="prioridade" class="formSelectView">
+                    <option value="baixa" @selected($registro->prioridade === \App\Rma\Dominio\Prioridade::Baixa)>Baixa</option>
+                    <option value="media" @selected($registro->prioridade === \App\Rma\Dominio\Prioridade::Media || $registro->prioridade === null)>Normal</option>
+                    <option value="alta" @selected($registro->prioridade === \App\Rma\Dominio\Prioridade::Alta)>Alta</option>
+                </select>
+            </td>
+            <td><input class="TDDX" value="{{ $registro->status?->value ?? '-' }}" disabled></td>
+            <td><input class="TDDX" value="{{ $registro->prazoLegal()?->format('d/m/Y') ?? '-' }}" disabled></td>
+            <td>
+                @php $alerta = $registro->classeDeAlerta(); @endphp
+                <span class="{{ classe_css_de_alerta($alerta, \App\Identidade\Dominio\TemaPreferido::V1, 0) }}" style="display:inline-block;padding:2px 8px;font-size:11px;">
+                    {{ $alerta->name }}
+                </span>
+            </td>
+        </tr>
+
         <tr class="TRD">
             <td class="TRD" colspan="4">DEFEITO RECLAMADO</td>
         </tr>

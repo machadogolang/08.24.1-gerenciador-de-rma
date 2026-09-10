@@ -177,18 +177,14 @@ class UsuarioController extends Controller
 
     /**
      * PAR15-USR-007 - superficie dedicada 'Novo usuario' do TEMA V2, fonte
-     * `15.8.1/subp/novo_usuario.php` (nome/e-mail/senha/permissao). O V1 mantem a
-     * organizacao propria (criacao nao era parte da gestao de usuarios do 14.6.1).
+     * `15.8.1/subp/novo_usuario.php` (nome/e-mail/senha/permissao).
+     * UF-14 (GAP-V1-02) - Unificacao funcional: disponivel nos Temas V1 e V2.
      */
-    public function create(Request $request): View|RedirectResponse
+    public function create(Request $request): View
     {
         Gate::authorize('gerenciar', User::class);
 
-        if (! $this->temaEhV2($request)) {
-            return redirect()->route('identidade.usuarios.index');
-        }
-
-        // PAR15-USR-007/009 - opcoes do select de permissao: os tres rotulos
+        // PAR15-USR-007/009 / UF-14 - opcoes do select de permissao: os tres rotulos
         // historicos do 15.8.1 (`Bloqueado`, `Leitura`, `Leitura e modificacao`,
         // este ultimo = `Operador`) mais a extensao moderna permitida ao ator.
         // `podeOperarSobrePapel()` e aplicado aqui E no `store()` (defesa em
@@ -198,7 +194,7 @@ class UsuarioController extends Controller
             ->filter(fn (Papel $papel): bool => $ator->podeOperarSobrePapel($papel))
             ->values();
 
-        return view('temas.v2.identidade.usuarios-novo', [
+        return view_do_tema('identidade.usuarios-novo', [
             'titulo' => 'Novo usuario',
             'papeisHistoricos' => $permitidos
                 ->filter(fn (Papel $papel): bool => in_array($papel, [
@@ -225,10 +221,6 @@ class UsuarioController extends Controller
     public function store(Request $request): RedirectResponse
     {
         Gate::authorize('gerenciar', User::class);
-
-        if (! $this->temaEhV2($request)) {
-            return redirect()->route('identidade.usuarios.index');
-        }
 
         $dados = $request->validate([
             'name' => ['required', 'string', 'max:255'],

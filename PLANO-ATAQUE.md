@@ -110,9 +110,9 @@ Decisao canonica do dono:
 - [x] UF-11 - Visualizacao Tabular Rica de Creditos no Tema V1 (`GAP-V1-07` / CAP-CRD-001): 11 colunas no CSS V1.
 
 ### Fase 5 - Alertas, Prioridade e Identidade (P2)
-- [ ] UF-12 - Urgencia e Alerta de Prazo com Threshold R$ 75 no Tema V1 (`GAP-V1-08` / CAP-ALT-004).
-- [ ] UF-13 - Nivel de Prioridade no Tema V1 (`GAP-V1-09` / CAP-ALT-003).
-- [ ] UF-14 - Criacao de Novo Usuario pelo Operador no Tema V1 (`GAP-V1-02` / CAP-ID-005).
+- [x] UF-12 - Urgencia e Alerta de Prazo com Threshold R$ 75 no Tema V1 (`GAP-V1-08` / CAP-ALT-004).
+- [x] UF-13 - Nivel de Prioridade no Tema V1 (`GAP-V1-09` / CAP-ALT-003).
+- [x] UF-14 - Criacao de Novo Usuario pelo Operador no Tema V1 (`GAP-V1-02` / CAP-ID-005).
 
 ### Fase 6 - Parceiros, Logistica e Procedimentos (P3)
 - [ ] UF-15 - RMAs Associados ao Parceiro no Tema V1 (`GAP-V1-10` / CAP-PAR-006).

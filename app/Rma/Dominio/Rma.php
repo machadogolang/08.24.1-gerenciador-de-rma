@@ -223,11 +223,29 @@ final class Rma
             $this->solucao === Solucao::SemGarantia => ClasseDeAlerta::SemGarantia,
             $this->prioridade === Prioridade::Alta => ClasseDeAlerta::Urgente,
             $this->origemEhTerceiroForaDoPrazo() => ClasseDeAlerta::Urgente,
+            $this->ehUrgentePorThreshold() => ClasseDeAlerta::Urgente,
             $this->marcarestoque === false
                 && in_array($this->origem, [Origem::Cliente->value, Origem::Licitacao->value], true)
                 => ClasseDeAlerta::Inconformidade,
             default => ClasseDeAlerta::Neutro,
         };
+    }
+
+    /**
+     * RN-12 (`LEG-RMA-029` / UF-12) - regra de urgência por threshold R$ 75 de `15.8.1/banco.php:777`
+     * unificada aos dois temas: cliente/licitação fora de estoque, valor > 75 e dentro do prazo legal.
+     */
+    public function ehUrgentePorThreshold(): bool
+    {
+        if ($this->status !== null && ! in_array($this->status, [Status::Entrada, Status::Recebido, Status::Encaminhado], true)) {
+            return false;
+        }
+
+        return in_array($this->origem, [Origem::Cliente->value, Origem::Licitacao->value], true)
+            && $this->marcarestoque === false
+            && (float) $this->valor > 75.00
+            && $this->createdAt !== null
+            && ! $this->prazoLegal()->isPast();
     }
 
     /**

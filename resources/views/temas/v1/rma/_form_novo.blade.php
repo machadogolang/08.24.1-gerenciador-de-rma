@@ -87,8 +87,20 @@ Campos do legado não reproduzidos aqui, por classificação explícita (VIS-V1-
         <tr>
             <td>Cliente:</td>
             <td><input class="novo_formInput" type="text" name="cliente_nome" value="{{ old('cliente_nome') }}" maxlength="255"></td>
-            <td style="font-family:Arial;"><div style="margin-left:10px;">OBS:</div></td>
-            <td colspan="5"><input class="formInputObservacao" type="text" name="observacao" value="{{ old('observacao') }}" maxlength="255"></td>
+            <td><div style="margin-left:10px;">Prioridade:</div></td>
+            <td>
+                <select class="novo_formInput" name="prioridade">
+                    <option value="baixa" @selected(old('prioridade') === 'baixa')>Baixa</option>
+                    <option value="media" @selected(old('prioridade', 'media') === 'media')>Normal</option>
+                    <option value="alta" @selected(old('prioridade') === 'alta')>Alta</option>
+                </select>
+            </td>
+            <td><div style="margin-left:10px;">Valor:</div></td>
+            <td colspan="3"><input class="novo_formInputSmall" type="text" name="valor" value="{{ old('valor') }}" placeholder="0.00" maxlength="20"></td>
+        </tr>
+        <tr>
+            <td style="font-family:Arial;">OBS:</td>
+            <td colspan="7"><input class="formInputObservacao" type="text" name="observacao" value="{{ old('observacao') }}" maxlength="255"></td>
         </tr>
     </table>
 

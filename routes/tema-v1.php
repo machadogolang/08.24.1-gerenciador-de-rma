@@ -42,6 +42,8 @@ Route::prefix('v1')
             ->names('parceiros.assistencias-tecnicas');
 
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('identidade.usuarios.index');
+        Route::get('/usuarios/novo', [UsuarioController::class, 'create'])->name('identidade.usuarios.create');
+        Route::post('/usuarios', [UsuarioController::class, 'store'])->name('identidade.usuarios.store');
         Route::get('/perfil', [UsuarioController::class, 'perfil'])->name('identidade.perfil.show');
 
         // ADENDO P0/AD-10 - relatorios fiscais do TEMA V1 por URL deterministica

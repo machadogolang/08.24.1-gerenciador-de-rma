@@ -54,6 +54,7 @@ class ClasseDeAlertaTest extends TestCase
             solucao: $dados['solucao'],
             prioridade: $dados['prioridade'],
             marcarestoque: $dados['marcarestoque'],
+            valor: $dados['valor'] ?? null,
             createdAt: $dados['createdAt'],
         );
     }
@@ -141,5 +142,45 @@ class ClasseDeAlertaTest extends TestCase
         ]);
 
         $this->assertSame(ClasseDeAlerta::SemGarantia, $rma->classeDeAlerta());
+    }
+
+    public function test_criterio_threshold_75_fora_de_estoque_dentro_do_prazo_gera_urgente(): void
+    {
+        $rma = $this->rma([
+            'origem' => Origem::Cliente->value,
+            'marcarestoque' => false,
+            'valor' => 75.01,
+            'createdAt' => now()->subDays(5),
+        ]);
+
+        $this->assertSame(ClasseDeAlerta::Urgente, $rma->classeDeAlerta());
+        $this->assertTrue($rma->ehUrgentePorThreshold());
+    }
+
+    public function test_criterio_threshold_75_exato_nao_dispara_urgente(): void
+    {
+        // 75.00 exato não é estritamente > 75.00; cai no critério 4 (Inconformidade)
+        $rma = $this->rma([
+            'origem' => Origem::Cliente->value,
+            'marcarestoque' => false,
+            'valor' => 75.00,
+            'createdAt' => now()->subDays(5),
+        ]);
+
+        $this->assertFalse($rma->ehUrgentePorThreshold());
+        $this->assertSame(ClasseDeAlerta::Inconformidade, $rma->classeDeAlerta());
+    }
+
+    public function test_criterio_threshold_em_estoque_nao_dispara_urgente(): void
+    {
+        $rma = $this->rma([
+            'origem' => Origem::Cliente->value,
+            'marcarestoque' => true,
+            'valor' => 150.00,
+            'createdAt' => now()->subDays(5),
+        ]);
+
+        $this->assertFalse($rma->ehUrgentePorThreshold());
+        $this->assertSame(ClasseDeAlerta::Neutro, $rma->classeDeAlerta());
     }
 }

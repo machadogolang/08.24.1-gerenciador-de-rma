@@ -43,13 +43,13 @@ Marcadores canonicos: `[ ]` (Pendente), `[R]` (Revisado), `[x]` (Concluido).
 
 ## Fase 5 - Alertas, Prioridade e Identidade (P2)
 
-- [ ] UF-12 - Urgencia e Alerta de Prazo com Threshold R$ 75 no Tema V1 (`GAP-V1-08` / CAP-ALT-004):
-  - [ ] Portar a condicao de dominio `right_urgente` para as listagens e paineis do Tema V1.
-  - [ ] Sinalizar visualmente itens com prazo vencido e threshold na tabela V1.
-- [ ] UF-13 - Nivel de Prioridade no Tema V1 (`GAP-V1-09` / CAP-ALT-003):
-  - [ ] Expor campo e indicador de Prioridade (Baixa, Normal, Alta) no detalhe e listagens V1.
-- [ ] UF-14 - Criacao de Novo Usuario pelo Operador no Tema V1 (`GAP-V1-02` / CAP-ID-005):
-  - [ ] Criar superficie de novo usuario na estetica do Tema V1 acessivel via Controle/Usuarios.
+- [x] UF-12 - Urgencia e Alerta de Prazo com Threshold R$ 75 no Tema V1 (`GAP-V1-08` / CAP-ALT-004):
+  - [x] Portar a condicao de dominio `right_urgente` para as listagens e paineis do Tema V1 (`Rma::ehUrgentePorThreshold`).
+  - [x] Sinalizar visualmente itens com prazo vencido e threshold na tabela V1 (`TrUrgente`).
+- [x] UF-13 - Nivel de Prioridade no Tema V1 (`GAP-V1-09` / CAP-ALT-003):
+  - [x] Expor campo e indicador de Prioridade (Baixa, Normal, Alta) no detalhe e formulario de criacao V1.
+- [x] UF-14 - Criacao de Novo Usuario pelo Operador no Tema V1 (`GAP-V1-02` / CAP-ID-005):
+  - [x] Criar superficie de novo usuario na estetica do Tema V1 acessivel via Controle/Usuarios (`usuarios-novo.blade.php`).
 
 ## Fase 6 - Parceiros, Logistica e Procedimentos (P3)
 

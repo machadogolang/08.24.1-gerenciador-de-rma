@@ -217,4 +217,18 @@ nenhum caso de uso novo foi criado para esta tela. --}}
         </div>
         <div style="height:10px;clear:both;"></div>
     </details>
+
+    {{-- UF-14 (GAP-V1-02) - CADASTRAR NOVO USUARIO: uniao funcional com Tema V2 no padrao de Controle V1. --}}
+    <details>
+        <summary class="formTitlePanel">CADASTRAR NOVO USUÁRIO</summary>
+        <div style="font-size:12px;padding:10px 0;">
+            <p>Cadastrar um novo usuário no sistema com atribuição de permissão de acesso.</p>
+            <p style="margin-top:10px;">
+                <a href="{{ rota_tema('identidade.usuarios.create') }}" class="formButtonEnviarPanel" style="display:inline-block;text-decoration:none;padding:5px 12px;color:#fff;">
+                    ABRIR FORMULÁRIO DE NOVO USUÁRIO
+                </a>
+            </p>
+        </div>
+        <div style="height:10px;clear:both;"></div>
+    </details>
 @endsection

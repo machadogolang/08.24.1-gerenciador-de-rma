@@ -150,4 +150,88 @@ class UniaoFuncionalV1V2Test extends TestCase
         $this->actingAs($supervisor)->get('/v1/historico-de-acesso')->assertOk();
         $this->actingAs($supervisor)->get('/v1/rmas-historico')->assertOk();
     }
+
+    public function test_tema_v1_sinaliza_urgencia_por_threshold_75_com_classe_tr_urgente(): void
+    {
+        $supervisor = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V1,
+        ]);
+
+        $fabricante = Fabricante::factory()->create();
+        $rmaUrgente = Rma::factory()->create([
+            'status' => Status::Recebido,
+            'origem' => \App\Rma\Dominio\Origem::Cliente,
+            'marcarestoque' => false,
+            'valor' => 120.00,
+            'recebido_em' => now(),
+            'fabricante_id' => $fabricante->id,
+            'descricao' => 'Item Caro Urgente',
+        ]);
+
+        $response = $this->actingAs($supervisor)->get(route('rmas.recebidos'));
+
+        $response->assertOk();
+        $response->assertSee('TrUrgente', false);
+        $response->assertSee('Item Caro Urgente');
+    }
+
+    public function test_tema_v1_permite_definir_e_atualizar_prioridade(): void
+    {
+        $supervisor = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V1,
+        ]);
+
+        $fabricante = Fabricante::factory()->create();
+        $rma = Rma::factory()->create([
+            'status' => Status::Entrada,
+            'prioridade' => \App\Rma\Dominio\Prioridade::Baixa,
+            'fabricante_id' => $fabricante->id,
+            'descricao' => 'Produto Teste Prioridade',
+        ]);
+
+        // Verificacao na tela de detalhe V1
+        $responseShow = $this->actingAs($supervisor)->get(route('rmas.show', $rma->id));
+        $responseShow->assertOk();
+        $responseShow->assertSee('PRIORIDADE');
+        $responseShow->assertSee('name="prioridade"', false);
+
+        // Atualizacao para Alta via PUT
+        $responseUpdate = $this->actingAs($supervisor)->put(route('rmas.update', $rma->id), [
+            'prioridade' => 'alta',
+            'descricao' => 'Produto Teste Prioridade',
+            'defeito' => 'Defeito qualquer',
+            'fabricante_id' => $fabricante->id,
+        ]);
+
+        $responseUpdate->assertRedirect(route('rmas.show', $rma->id));
+        $this->assertSame(\App\Rma\Dominio\Prioridade::Alta, $rma->fresh()->prioridade);
+    }
+
+    public function test_tema_v1_permite_criar_usuario_com_sucesso(): void
+    {
+        $supervisor = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V1,
+        ]);
+
+        $responseGet = $this->actingAs($supervisor)->get('/v1/usuarios/novo');
+        $responseGet->assertOk();
+        $responseGet->assertViewIs('temas.v1.identidade.usuarios-novo');
+        $responseGet->assertSee('CADASTRAR USUÁRIO');
+
+        $responsePost = $this->actingAs($supervisor)->post('/v1/usuarios', [
+            'name' => 'Operador V1',
+            'email' => 'operador.v1@cellsystem.local',
+            'password' => 'senha-segura-123',
+            'papel' => Papel::Operador->name,
+        ]);
+
+        $responsePost->assertRedirect(route('identidade.usuarios.index'));
+        $this->assertDatabaseHas('users', [
+            'email' => 'operador.v1@cellsystem.local',
+            'name' => 'Operador V1',
+        ]);
+    }
 }

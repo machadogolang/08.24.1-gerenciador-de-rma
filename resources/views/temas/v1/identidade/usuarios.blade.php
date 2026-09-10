@@ -10,6 +10,12 @@ duplicada. Nao copia a organizacao do V2. --}}
         <p class="centrodeavisos">{{ session('status') }}</p>
     @endif
 
+    <div style="margin-bottom:12px;text-align:right;">
+        <a href="{{ rota_tema('identidade.usuarios.create') }}" class="formButtonEnviarPanel" style="display:inline-block;text-decoration:none;padding:5px 12px;color:#fff;">
+            + NOVO USUÁRIO
+        </a>
+    </div>
+
     <div style="display:block;clear:both;">
         <table width="100%" class="Tabelinha-Table tabela-usuarios-v1" style="margin-bottom:0px;">
             <thead>

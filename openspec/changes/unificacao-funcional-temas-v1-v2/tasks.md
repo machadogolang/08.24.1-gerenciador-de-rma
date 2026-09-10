@@ -1,0 +1,71 @@
+# Tasks - Unificacao Funcional dos Temas V1 e V2
+
+Frente canonica: `F-UNION-01` (Uniao de Capacidades Vivas V1 + V2).
+Marcadores canonicos: `[ ]` (Pendente), `[R]` (Revisado), `[x]` (Concluido).
+
+## Fase 1 - Inventario e Governanca Documental
+
+- [x] UF-01 - Conduzir a auditoria cruzada de 65 capacidades canonicas e publicar a matriz `docs/produto/2026-09-10-matriz-uniao-funcional-temas.md` com contagens, status de maturidade e mapeamento de gaps.
+- [x] UF-02 - Publicar a OpenSpec `openspec/changes/unificacao-funcional-temas-v1-v2/` (`proposal.md`, `design.md`, `tasks.md`).
+- [x] UF-03 - Atualizar o `PLANO-ATAQUE.md` reconciliando pendencias anteriores do Adendo P0 e posicionando a frente funcional com precedencia.
+- [x] UF-04 - Adicionar nota de precedencia da decisao de uniao funcional de 2026-09-10 nos documentos de paridade historicos.
+
+## Fase 2 - Provas de Conceito Convergidas (Verificacao)
+
+- [x] UF-05 - Verificar convergencia de Arquivamento de RMA (CAP-RMA-015 / FUN-UNION-002): prova de que a implementacao correta e segura do 15.8.1 esta disponivel e funcional nos dois temas sem reproduzir o Fatal Error do 14.6.1.
+- [x] UF-06 - Verificar convergencia de Alteracao de Propria Senha (CAP-ID-003 / FUN-UNION-003): prova de que o fluxo correto do 14.6.1 foi adotado como especificacao e funciona nos dois temas sem o bug SQL do 15.8.1.
+
+## Fase 3 - Gaps Prioritarios de Ciclo e Relatorios (P0)
+
+- [ ] UF-07 - Fila de Recebidos no Tema V1 (`GAP-V1-01` / CAP-RMA-004):
+  - [ ] Implementar rota/listagem de Recebidos sob o Tema V1 com o padrao de tabela do 14.6.1 (`page/entrada.php`).
+  - [ ] Inserir o link "Recebidos" no menu de navegacao superior V1 (`#TOPO`).
+  - [ ] Escrever teste Feature garantindo HTTP 200 e presenca dos registros recebidos na view V1.
+- [ ] UF-08 - Descoberta e Acesso aos Relatorios RCD, RPEC e RMPE no Tema V2 (`GAP-V2-01..03` / CAP-REL-001..003):
+  - [ ] Criar pontos de entrada e navegacao descobrivel dentro de `/v2/relatorios` para RCD, RPEC e RMPE.
+  - [ ] Garantir que os relatorios respondam sob o Tema V2 mantendo seu contrato de dados.
+  - [ ] Teste Feature de navegacao e resposta 200 sob Tema V2.
+- [ ] UF-09 - Hub Estatistico de Relatorios no Tema V1 (`GAP-V1-06` / CAP-REL-004):
+  - [ ] Criar adaptacao visual das estatisticas (Situacao, Resolucao, Origem, NFs, Dados do Sistema, Series) no painel de Relatorios V1.
+  - [ ] Adicionar opcao no menu de relatorios do Tema V1.
+  - [ ] Teste Feature provando resposta 200 e dados consistentes no V1.
+
+## Fase 4 - Auditoria e Creditos Cruzados (P1)
+
+- [ ] UF-10 - Logs de Autenticacao e Modificacao no Tema V1 (`GAP-V1-03..05` / CAP-AUD-002..004):
+  - [ ] Criar visualizacoes dos logs de acesso e modificacao no padrao de tabela e densidade do Tema V1.
+  - [ ] Adicionar links de acesso no painel Controle V1 (`/rmas-controle`).
+  - [ ] Assegurar link `Ver` funcional para inspecionar o RMA.
+  - [ ] Testes Feature de acesso aos logs sob o Tema V1.
+- [ ] UF-11 - Visualizacao Tabular Rica de Creditos no Tema V1 (`GAP-V1-07` / CAP-CRD-001):
+  - [ ] Implementar visualizacao da tabela completa de creditos (11 colunas) formatada no CSS do 14.6.1.
+  - [ ] Teste Feature de exibicao de creditos sob Tema V1.
+
+## Fase 5 - Alertas, Prioridade e Identidade (P2)
+
+- [ ] UF-12 - Urgencia e Alerta de Prazo com Threshold R$ 75 no Tema V1 (`GAP-V1-08` / CAP-ALT-004):
+  - [ ] Portar a condicao de dominio `right_urgente` para as listagens e paineis do Tema V1.
+  - [ ] Sinalizar visualmente itens com prazo vencido e threshold na tabela V1.
+- [ ] UF-13 - Nivel de Prioridade no Tema V1 (`GAP-V1-09` / CAP-ALT-003):
+  - [ ] Expor campo e indicador de Prioridade (Baixa, Normal, Alta) no detalhe e listagens V1.
+- [ ] UF-14 - Criacao de Novo Usuario pelo Operador no Tema V1 (`GAP-V1-02` / CAP-ID-005):
+  - [ ] Criar superficie de novo usuario na estetica do Tema V1 acessivel via Controle/Usuarios.
+
+## Fase 6 - Parceiros, Logistica e Procedimentos (P3)
+
+- [ ] UF-15 - RMAs Associados na Visualizacao de Parceiros no Tema V1 (`GAP-V1-10` / CAP-PAR-006):
+  - [ ] Renderizar historico de RMAs vinculados ao cliente/fornecedor/fabricante no V1.
+- [ ] UF-16 - Consulta de Transporte Porto Alegre no Tema V1 (`GAP-V1-11` / CAP-LOG-001):
+  - [ ] Disponibilizar bloco/consulta de transporte regional na linguagem visual do 14.6.1.
+- [ ] UF-17 - Consulta de Destinatarios com Frete e CFOP no Tema V2 (`GAP-V2-04` / CAP-LOG-002):
+  - [ ] Disponibilizar visualizacao de dados logisticos de destinatarios na interface V2.
+- [ ] UF-18 - Procedimento Operacional / Ajuda no Tema V2 (`GAP-V2-05` / CAP-AUX-001):
+  - [ ] Integrar link e tela de ajuda/procedimentos na interface V2.
+
+## Fase 7 - Blindagem com Testes Automatizados e Reconciliacao (P4)
+
+- [ ] UF-19 - Criar `CapabilityContractTest`:
+  - [ ] Provedor de dados com todas as capacidades canonicas testando presenca e status HTTP 200 sob Tema V1 e Tema V2.
+- [ ] UF-20 - Criar `DescobribilidadeTemasTest`:
+  - [ ] Validar que todo endpoint de funcionalidade possui rota e link alcancavel no shell/menu do tema respectivo.
+- [ ] UF-21 - Reconciliacao final da matriz de uniao funcional e preparacao para gates subsequentes.

@@ -1,7 +1,15 @@
-# Matriz de paridade V2 → V3
+# Matriz de paridade V2 -> V3
 
-Data: 2026-08-25 (atualizado 2026-08-25 - Fases 1-9 concluídas e testadas; `sail test`
-308/308; comparação viva V3×Legado registrada em
+> NOTA DE PRECEDENCIA (DECISAO DO DONO, 2026-09-10):
+> Este documento reflete o momento historico da transicao inicial V2 -> V3.
+> A decisao de produto de 2026-09-10 estabelece que:
+> 1. A paridade visual continua historica por tema (V1 = 14.6.1, V2 = 15.8.1, V3 = evolucao propria).
+> 2. A paridade funcional passa a ser a UNIAO funcional viva de 14.6.1 + 15.8.1 + modernas aprovadas.
+> 3. A fonte canonica cruzada de produto e a matriz `docs/produto/2026-09-10-matriz-uniao-funcional-temas.md`
+>    e a OpenSpec `openspec/changes/unificacao-funcional-temas-v1-v2/`.
+
+Data: 2026-08-25 (atualizado 2026-08-25 - Fases 1-9 concluidas e testadas; `sail test`
+308/308; comparacao viva V3xLegado registrada em
 `docs/produto/comparacao-v3-legado-final.md`).
 Índice de rastreamento: nenhuma funcionalidade relevante do RMA V2 pode "desaparecer"
 silenciosamente na V3. Atualizado a cada avanço de OpenSpec/implementação. **Fase 1

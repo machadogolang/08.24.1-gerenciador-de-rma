@@ -81,25 +81,69 @@ Fonte canonica de estado: `docs/produto/2026-09-10-matriz-forense-paridade-legac
   `[x]` e `[R]`/`[ ]` em estado corrente).
 - [x] AD-43 - Commit documental isolado.
 
+## NOVA FRENTE: UNIFICACAO FUNCIONAL DOS TEMAS V1 E V2 (2026-09-10)
+
+Decisao canonica do dono:
+- Visual: Tema V1 preserva identidade 14.6.1; Tema V2 preserva identidade 15.8.1; Tema V3 evolucao propria.
+- Funcional: CATALOGO_FUNCIONAL = uniao viva 14.6.1 + 15.8.1 + modernas aprovadas (V1 = V2 = Catalogo).
+- Desacoplamento: regras/dominio compartilhados; apresentacao adaptada na estetica do tema de destino.
+- OpenSpec: `openspec/changes/unificacao-funcional-temas-v1-v2/`.
+- Matriz canonica: `docs/produto/2026-09-10-matriz-uniao-funcional-temas.md` (65 capacidades, 11 gaps V1, 5 gaps V2).
+
+### Fase 1 - Inventario e Governanca Documental
+- [x] UF-01 - Auditoria cruzada de 65 capacidades e matriz `docs/produto/2026-09-10-matriz-uniao-funcional-temas.md`.
+- [x] UF-02 - Publicacao da OpenSpec `openspec/changes/unificacao-funcional-temas-v1-v2/` (`proposal.md`, `design.md`, `tasks.md`).
+- [x] UF-03 - Reconciliacao do `PLANO-ATAQUE.md` com marcadores canonicos e ordem de execucao.
+- [x] UF-04 - Nota de precedencia funcional em `docs/produto/paridade-v2-v3.md`.
+
+### Fase 2 - Provas de Conceito Convergidas (Verificacao)
+- [x] UF-05 - Arquivar RMA (CAP-RMA-015): convergido nos dois temas no padrao seguro do 15.8.1.
+- [x] UF-06 - Alterar propria senha (CAP-ID-003): convergido nos dois temas no padrao funcional do 14.6.1.
+
+### Fase 3 - Gaps Prioritarios de Ciclo e Relatorios (P0)
+- [ ] UF-07 - Fila de Recebidos no Tema V1 (`GAP-V1-01` / CAP-RMA-004): rota, listagem 14.6.1 e link `#TOPO`.
+- [ ] UF-08 - Acesso e navegacao aos relatorios RCD, RPEC e RMPE no Tema V2 (`GAP-V2-01..03` / CAP-REL-001..003).
+- [ ] UF-09 - Hub Estatistico de Relatorios no Tema V1 (`GAP-V1-06` / CAP-REL-004): painel V1 adaptado.
+
+### Fase 4 - Auditoria e Creditos Cruzados (P1)
+- [ ] UF-10 - Logs de Autenticacao e Modificacao no Tema V1 (`GAP-V1-03..05` / CAP-AUD-002..004): tabelas V1 e link Ver.
+- [ ] UF-11 - Visualizacao Tabular Rica de Creditos no Tema V1 (`GAP-V1-07` / CAP-CRD-001): 11 colunas no CSS V1.
+
+### Fase 5 - Alertas, Prioridade e Identidade (P2)
+- [ ] UF-12 - Urgencia e Alerta de Prazo com Threshold R$ 75 no Tema V1 (`GAP-V1-08` / CAP-ALT-004).
+- [ ] UF-13 - Nivel de Prioridade no Tema V1 (`GAP-V1-09` / CAP-ALT-003).
+- [ ] UF-14 - Criacao de Novo Usuario pelo Operador no Tema V1 (`GAP-V1-02` / CAP-ID-005).
+
+### Fase 6 - Parceiros, Logistica e Procedimentos (P3)
+- [ ] UF-15 - RMAs Associados ao Parceiro no Tema V1 (`GAP-V1-10` / CAP-PAR-006).
+- [ ] UF-16 - Consulta de Transporte Porto Alegre no Tema V1 (`GAP-V1-11` / CAP-LOG-001).
+- [ ] UF-17 - Destinatarios com Frete e CFOP no Tema V2 (`GAP-V2-04` / CAP-LOG-002).
+- [ ] UF-18 - Procedimento Operacional / Ajuda no Tema V2 (`GAP-V2-05` / CAP-AUX-001).
+
+### Fase 7 - Blindagem com Testes e Reconciliacao (P4)
+- [ ] UF-19 - `CapabilityContractTest`: contrato automatizado de todas as capacidades em V1 e V2.
+- [ ] UF-20 - `DescobribilidadeTemasTest`: teste de presenca de rotas e links no shell/menu de cada tema.
+- [ ] UF-21 - Reconciliacao final da matriz de uniao funcional antes dos gates.
+
 ## ORDEM DE EXECUCAO (consolidada)
 
 1. [x] Consolidar as duas instrucoes neste plano + commit documental.
-2. [ ] ADENDO P0 (blocos 1 a 4): runtime, URLs de QA, previa V3, doc visual V3.
+2. [x] ADENDO P0 (blocos 1 a 4): runtime, URLs de QA, previa V3, doc visual V3.
 3. [x] Reconciliacao da matriz (bloco 5) + commit documental isolado.
-4. [ ] Reforco QA do detalhe V2 (`ParidadeDetalheRmaV2Geometria`: conjunto de
+4. [x] Reforco QA do detalhe V2 (`ParidadeDetalheRmaV2Geometria`: conjunto de
    opcoes igual + tolerancia de gap coerente, 2-4px).
-5. [ ] Novo Usuario V2 (PAR15-USR-007/009).
-6. [ ] Alterar senha V2 (PAR15-SEC-001).
-7. [ ] Anotacoes V2 (PAR15-NOTE-001).
-8. [ ] RG/IE (PAR15-PART-DATA-001) + importacao.
-9. [ ] Edit Cliente/Fornecedor/Fabricante/Assistencia (PART-002..005; create != edit).
-10. [ ] RMAs associados dos 4 parceiros (PART-001/PART-006) + testes separados.
-11. [ ] Sweep de `[R]`/`[ ]`: PAR14-NAV-002, PAR15-RMA-LIST-001,
-    PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001,
-    PAR15-RMA-MARCAR-001.
-12. [ ] PF-14 completo (auditoria visual ampla) e PF-15.
-13. [ ] P11 revalidacao, P12, P13 final, P14.
-14. [ ] Depois, V3 conforme dependencias reais (T3-13+).
+5. [x] Novo Usuario V2 (PAR15-USR-007 funcional [x]; paridade visual reaberta em [R] no PAR15-USR-009).
+6. [x] Unificacao Funcional - Fase 1 (UF-01..04 documental) e Fase 2 (UF-05/06 verificados).
+7. [ ] Unificacao Funcional - Fase 3 (P0): Recebidos no V1 (UF-07), Relatorios RCD/RPEC/RMPE no V2 (UF-08), Hub Estatistico no V1 (UF-09).
+8. [ ] Unificacao Funcional - Fase 4 (P1): Auditoria/logs no V1 (UF-10), Creditos tabulares no V1 (UF-11).
+9. [ ] Fila visual forense pendente: Alterar senha V2 (PAR15-SEC-001), Anotacoes V2 (PAR15-NOTE-001), RG/IE (PAR15-PART-DATA-001).
+10. [ ] Edit Parceiros V2 (PART-002..005) e RMAs associados (PART-001/006 / UF-15).
+11. [ ] Unificacao Funcional - Fases 5 e 6: Urgencia/Threshold (UF-12), Prioridade (UF-13), Novo Usuario V1 (UF-14), Logistica/Porto Alegre (UF-16/17), Ajuda (UF-18).
+12. [ ] Sweep de `[R]`/`[ ]`: PAR14-NAV-002, PAR15-RMA-LIST-001, PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001, PAR15-RMA-MARCAR-001.
+13. [ ] Unificacao Funcional - Fase 7: CapabilityContractTest (UF-19) e DescobribilidadeTemasTest (UF-20).
+14. [ ] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense).
+15. [ ] P11 revalidacao, P12, P13 final, P14.
+16. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
 
 ## REGRA DE STATUS PAI/FILHO (2026-09-10)
 

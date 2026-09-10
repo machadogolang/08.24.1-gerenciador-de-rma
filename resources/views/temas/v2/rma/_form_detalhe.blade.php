@@ -52,7 +52,7 @@ de negocio nova nesta view. --}}
 
     <div class="fr detalhe-rma-v2__acao-cabecalho">
         @if ($podeGravarDetalheV2)
-            <button type="submit" name="acao" value="salvar" class="btn btn-default formSubmit">SALVAR</button>
+            @include('temas.v2.rma._acoes_do_ciclo', ['sufixoAcao' => 'up', 'classeSelectAcao' => 'formSelect formSelect3'])
         @else
             <span class="detalhe-rma-v2__somente-leitura">Somente leitura</span>
         @endif
@@ -388,25 +388,7 @@ de negocio nova nesta view. --}}
     @if ($podeGravarDetalheV2)
         <div class="row detalhe-rma-v2__acoes-finais">
             <div class="fr">
-                <select name="acao" class="formSelect">
-                    <option value="salvar">SALVAR</option>
-                    @if ($registro->status->podeReceber())
-                        <option value="receber">RECEBER</option>
-                    @endif
-                    @if ($registro->status->podeEncaminhar())
-                        <option value="encaminhar">ENCAMINHAR</option>
-                    @endif
-                    @if ($registro->status->podeConcluir())
-                        <option value="concluir">CONCLUIR</option>
-                    @endif
-                    @if ($registro->status->podeArquivar())
-                        <option value="arquivar">ARQUIVAR</option>
-                    @endif
-                    @if ($registro->status->podeReverterParaEntrada())
-                        <option value="reverter">RETORNAR P/ ENTRADA</option>
-                    @endif
-                </select>
-                <button type="submit" class="btn btn-default formSubmit">OK</button>
+                @include('temas.v2.rma._acoes_do_ciclo', ['sufixoAcao' => 'down', 'classeSelectAcao' => 'formSelect formSelect2'])
             </div>
         </div>
     @endif

@@ -37,8 +37,8 @@ Subtarefas:
 
 Fila de correcao apos o checkpoint documental (secao 6 da matriz):
 
-1. [R] PAR15-USR-001 - organizacao historica de /v2/usuarios.
-2. [ ] PAR15-RMA-DET-001 - select operacional + OK no topo do detalhe V2.
+1. [x] PAR15-USR-001 - organizacao historica de /v2/usuarios (c556d15).
+2. [x] PAR15-RMA-DET-001 - select operacional + OK no topo (e rodape) do detalhe V2.
 3. [ ] PAR14/PAR15-RMA-STOCK/CREDIT - gaps medidos no runtime.
 4. [ ] PAR15-AUD-001..005 - auditoria/historico V2.
 5. [ ] PAR14-REL-RPEC-001..005 - RPEC V1.

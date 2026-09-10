@@ -196,7 +196,7 @@ Legenda de Tipo/Status igual as secoes 0. Rotas novas entre crase.
 
 | ID | Tema | Superficie | Legacy | Novo | Legacy possui | Novo possui | Diferenca | Tipo | Impacto | Status | Teste | Decisao |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| PAR15-USR-001 | V2 | Tela Usuarios | `subp/usuarios.php` | `temas.v2.identidade.usuarios` | Tabela Nome, E-mail, QT Login, Ultimo login, Permissao, Acao; linhas ~30px | Tabela Nome, E-mail, Papel, Acoes; select+Salvar papel e 2 inputs de senha + Resetar dentro da linha | Densidade, colunas, informacao e organizacao diferem fortemente; QT Login/Ultimo login sumiram | A/C/B | Alto | [R] | Browser + Feature | CORRIGIR (prioridade 1) |
+| PAR15-USR-001 | V2 | Tela Usuarios | `subp/usuarios.php` | `temas.v2.identidade.usuarios` | Tabela Nome, E-mail, QT Login, Ultimo login, Permissao, Acao; linhas ~30px | Tabela Nome, E-mail, Papel, Acoes; select+Salvar papel e 2 inputs de senha + Resetar dentro da linha | Densidade, colunas, informacao e organizacao diferem fortemente; QT Login/Ultimo login sumiram | A/C/B | Alto | [x] | Feature (UsuariosV2ParidadeTest) + Browser pendente (PF-14) | CORRIGIDO: colunas historicas, 3 acoes compactas, superficies V2 dedicadas |
 | PAR15-USR-002 | V2 | QT Login / Ultimo login | `subp/usuarios.php` (bind `quantidade_login`,`ultimo_login`) | ausente | Contagem de logins + data do ultimo login | Ausente da tela | Informacao operacional perdida visualmente | B | Medio | [R] | Feature | Projetar de `tentativas_de_acesso` (ver 3.6) |
 | PAR15-USR-003 | V2 | Acoes compactas | `subp/usuarios.php` (3 icones) | ausente | `resetar_senha`, `mudar_permissao`, `apagar_usuario` por icone | Formularios inline | Falta acao compacta; fluxo diferente | A/C | Alto | [R] | Browser | Superficies V2 dedicadas |
 | PAR15-USR-004 | V2 | Apagar usuario | `subp/apagar_usuario.php` + `pp/apagar_usuario.php` | ausente | Hard delete com confirmacao (`pms>1` e `pms>alvo`) | Nenhuma | Sem equivalente; hard delete cascatearia auditoria (`modificacoes_de_rma.user_id` cascadeOnDelete) | H/F | Alto | [R] | Feature | Decisao de produto; nao reproduzir cascata cega |
@@ -209,7 +209,7 @@ Legenda de Tipo/Status igual as secoes 0. Rotas novas entre crase.
 
 | ID | Tema | Superficie | Legacy | Novo | Legacy possui | Novo possui | Diferenca | Tipo | Impacto | Status | Teste | Decisao |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| PAR15-RMA-DET-001 | V2 | Acao superior | `page/rma.php` select `selectacaoup` + botao OK no TOPO (linhas 146-166) | `temas.v2.rma._form_detalhe` | Select SALVAR/RETORNAR P/ ENTRADA/RECEBER/ENCAMINHAR/CONCLUIR + OK no topo E select `selectacaodown` + OK no rodape | Topo tem apenas `<button name="acao" value="salvar">SALVAR</button>`; select + OK so no rodape | Faltou o select operacional + OK do topo | A/C | Alto | [R] | Browser + Feature | CORRIGIR (prioridade 2) |
+| PAR15-RMA-DET-001 | V2 | Acao superior | `page/rma.php` select `selectacaoup` + botao OK no TOPO (linhas 146-166) | `temas.v2.rma._form_detalhe` | Select SALVAR/RETORNAR P/ ENTRADA/RECEBER/ENCAMINHAR/CONCLUIR + OK no topo E select `selectacaodown` + OK no rodape | Topo tem apenas `<button name="acao" value="salvar">SALVAR</button>`; select + OK so no rodape | Faltou o select operacional + OK do topo | A/C | Alto | [x] | Feature (DetalheRmaV2AcaoSuperiorTest) + Browser pendente (PF-14) | CORRIGIDO: select+OK no topo e rodape; controller resolve por bloco |
 | PAR15-RMA-DET-002 | V2 | Acao inferior | `page/rma.php` select `selectacaodown` + OK | rodape `detalhe-rma-v2__acoes-finais` | Select + OK no rodape | Select + OK no rodape | Equivalente | E | Baixo | [x] | Feature | Manter |
 | PAR15-RMA-STOCK-001 | V2 | Estoque | `page/rma.php` select `marcarestoque` (Nao/Sim), 3a coluna | `_form_detalhe` select `marcarestoque` | Select Nao/Sim, label `E um produto do estoque ?` | Select Nao/Sim, mesmo label | Equivalente; medir grid/largura/cursor | E/C | Medio | [R] | Browser | Medir geometria |
 | PAR15-RMA-CREDIT-001 | V2 | Credito | `page/rma.php` select `creditodisponivel` (Nao/Sim) | `_form_detalhe` select `credito_disponivel` | Select Nao/Sim, label `E credito disponivel ?` | Select Nao/Sim, mesmo label | Nome do campo diverge (`creditodisponivel` x `credito_disponivel`) | E | Baixo | [R] | Feature | Conferir binding/persistencia |
@@ -366,8 +366,8 @@ plano atualizado, `git diff --check`, commit e continuacao.
 
 | Ordem | ID | Resumo da correcao | Status |
 |---|---|---|---|
-| 1 | PAR15-USR-001 | Restaurar organizacao historica de /v2/usuarios (colunas + 3 acoes compactas) preservando HTTP moderno | [R] |
-| 2 | PAR15-RMA-DET-001 | Restaurar select operacional + OK no topo do detalhe RMA V2 | [ ] |
+| 1 | PAR15-USR-001 | Restaurar organizacao historica de /v2/usuarios (colunas + 3 acoes compactas) preservando HTTP moderno | [x] |
+| 2 | PAR15-RMA-DET-001 | Restaurar select operacional + OK no topo do detalhe RMA V2 | [x] |
 | 3 | PAR14-RMA-STOCK-001 / PAR14-RMA-CREDIT-001 / PAR15-RMA-STOCK-001 / PAR15-RMA-CREDIT-001 | Gaps de credito/estoque medidos no runtime | [ ] |
 | 4 | PAR15-AUD-001..005 | Auditoria/historico V2 (colunas, acao Ver, logs de autenticacao, geometria) | [ ] |
 | 5 | PAR14-REL-RPEC-001..005 | RPEC V1 (colunas, selecao, totais, info adicional, rotulos) | [ ] |

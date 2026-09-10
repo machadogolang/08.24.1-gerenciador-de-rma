@@ -86,7 +86,13 @@ class ContratoVisualAcoesCicloDeVidaTest extends TestCase
         } else {
             $response->assertDontSee('detalhe-bd-acoes-avancadas', false);
             $response->assertDontSee('Salvar solução</button>', false);
-            $response->assertSee('<select name="acao"', false);
+            // PAR15-RMA-DET-001 - o detalhe V2 volta ao contrato do
+            // `15.8.1/page/rma.php`: select de ciclo no TOPO (`selectacaoup`) e no
+            // RODAPE (`selectacaodown`), cada um com o seu botao OK.
+            $response->assertSee('name="selectacaoup"', false);
+            $response->assertSee('name="selectacaodown"', false);
+            $response->assertSee('name="okup"', false);
+            $response->assertSee('name="okdown"', false);
             $response->assertSee('option value="salvar">SALVAR', false);
         }
     }

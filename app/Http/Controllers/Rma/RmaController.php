@@ -408,8 +408,14 @@ class RmaController extends Controller
             $registro = $registrarSolucao->registrar($this->usuario(), $registro, $solucao);
         }
 
+        // PAR15-RMA-DET-001 - o detalhe V2 tem o select de ciclo no TOPO e no
+        // RODAPE (fonte `15.8.1/page/rma.php`); cada botao OK envia o seu select
+        // (`selectacaoup`/`selectacaodown`), como no Legacy. A resolucao prefere o
+        // bloco clicado e cai para `acao` (demais formularios) quando nao houver.
+        $acaoDoDetalhe = $this->acaoSelecionadaNoDetalhe($request);
+
         $this->executarAcaoDoDetalhe(
-            (string) $request->input('acao', 'salvar'),
+            $acaoDoDetalhe,
             $request,
             $registro,
             $receberRma,
@@ -429,7 +435,26 @@ class RmaController extends Controller
         ];
 
         return redirect(rota_tema('rmas.show', ['rma' => $registro->id]))
-            ->with('status', $mensagens[(string) $request->input('acao', 'salvar')] ?? 'RMA atualizado.');
+            ->with('status', $mensagens[$acaoDoDetalhe] ?? 'RMA atualizado.');
+    }
+
+    /**
+     * PAR15-RMA-DET-001 - resolve a acao do detalhe a partir do bloco clicado:
+     * `okup`->`selectacaoup` (topo), `okdown`->`selectacaodown` (rodape), com
+     * fallback para `acao` (demais formularios). Sem duplicar regra de dominio -
+     * `executarAcaoDoDetalhe` continua o unico despachante.
+     */
+    private function acaoSelecionadaNoDetalhe(Request $request): string
+    {
+        if ($request->has('okup')) {
+            return (string) $request->input('selectacaoup', 'salvar');
+        }
+
+        if ($request->has('okdown')) {
+            return (string) $request->input('selectacaodown', 'salvar');
+        }
+
+        return (string) $request->input('acao', 'salvar');
     }
 
     private function usuario(): User

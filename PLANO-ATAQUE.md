@@ -1,9 +1,131 @@
 # Plano de ataque - CellSystem RMA
 
-Ultima atualizacao: 2026-09-09 (America/Sao_Paulo). Status no padrao canonico
+Ultima atualizacao: 2026-09-10 (America/Sao_Paulo). Status no padrao canonico
 `[ ]`/`[R]`/`[x]` (ver `docs/operacao/padrao-status-plano.md`). Regra de texto:
 nunca usar hifen longo, sempre hifen simples (ver `docs/operacao/regra-hifen.md`).
-Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
+
+Este plano **consolida as duas instrucoes do dono de 2026-09-10**: a frente
+forense de paridade Legacy -> V1/V2 e o adendo prioritario de runtime/QA/V3.
+Fonte canonica de estado: `docs/produto/2026-09-10-matriz-forense-paridade-legacy-v1-v2.md`.
+
+## Como ler este plano
+
+- O bloco `AGORA - ADENDO P0` tem precedencia sobre qualquer onda visual (regra
+  do dono: tratar o adendo antes da proxima onda visual).
+- Encerrado o adendo, a fila forense volta na ordem original.
+- Os blocos historicos aparecem depois, sob `ESTADO HISTORICO`, e nao devem ser
+  lidos como fila executavel atual.
+- Governanca: Legacy e SOMENTE LEITURA; nunca remover CSRF, Policy, tenant, hash
+  seguro ou validacao moderna; PUSH NAO AUTORIZADO; handoff apenas no
+  encerramento real da sessao e como ULTIMO commit.
+
+## AGORA - ADENDO P0 (2026-09-10): runtime, QA de URLs e direcao V3
+
+### Bloco 1 - RPEC/RCD/RMPE quebrados no runtime (P0)
+
+- [x] AD-01 - Investigar o 500 do RPEC e classificar a causa real.
+  Causa REAL confirmada: a migration
+  `2026_09_10_000002_create_relatorio_informacoes_adicionais_table` estava
+  **PENDENTE** no banco persistente do Sail, junto com
+  `2026_09_10_000001_add_campos_historicos_de_log_...`. Nao era schema drift e
+  nao faltava migration no codigo.
+- [x] AD-02 - Aplicar `./vendor/bin/sail artisan migrate` no ambiente LOCAL
+  (sem `migrate:fresh`, sem apagar dado) e provar `migrate:status` limpo.
+- [x] AD-03 - Smoke HTTP real no runtime persistente (login + GET) provando 200
+  em RCD e RPEC.
+- [x] AD-04 - RMPE deterministico: `GET` sem query devolvia 302 porque
+  `data_inicio`/`data_fim` eram obrigatorios, mas o Legacy RMPE nao filtra por
+  data. Intervalo agora e opcional e, quando ausente, a selecao roda sem filtro
+  de periodo (Legacy-fiel), provado por teste e smoke HTTP 200.
+- [x] AD-05 - Nao mascarar o bug: proibido `Schema::hasTable(...)` como fachada.
+  A tabela faz parte do schema atual; o que foi corrigido e o PROCESSO
+  (`artisan migrate` no banco persistente).
+- [ ] AD-06 - Registrar o incidente `RMA-BUG-REL-SCHEMA-001` e atualizar o
+  runbook `docs/desenvolvimento/ambiente-v2-v3.md` (sem duplicar documentacao).
+- [ ] AD-07 - Aprendizado operacional duravel: Feature test verde com
+  `RefreshDatabase` NAO prova o banco persistente; em "table not found",
+  confirmar `artisan migrate:status` antes de mexer em controller/model.
+
+### Bloco 2 - URLs de QA deterministicas para os relatorios
+
+- [ ] AD-10 - Rotas V1 explicitas `/v1/relatorios/{rcd,rpec,rmpe}`, nomes
+  `v1.rmas.relatorios.*`, MESMO `RelatorioController` (sem duplicar regra/query).
+- [ ] AD-11 - Feature test das tres rotas V1 (200 + tema V1 forcado).
+- [ ] AD-12 - Provar `/v2/relatorios` (painel estatistico 15.8.1) e `/v2/creditos`.
+- [ ] AD-13 - Tabela "matriz de URLs de QA" no runbook.
+- [ ] AD-14 - Playwright minimo de navegacao dos relatorios V1.
+
+### Bloco 3 - Entrada segura para o Tema V3 (previa)
+
+- [ ] AD-20 - Flag de config `tema_v3_preview_enabled` (sem `env()` na Blade).
+- [ ] AD-21 - Entrada discreta "Previa V3" no V1 e no V2 quando ligada; OFF nao
+  mostra nada.
+- [ ] AD-22 - Acao "Voltar ao sistema" no shell V3, saindo de `/v3`.
+- [ ] AD-23 - Testes: `tema_preferido` persistido NAO muda ao entrar/sair; flag
+  OFF esconde a entrada; V3 continua sem ser opcao persistente publica.
+
+### Bloco 4 - Nova direcao visual do Tema V3 (documental)
+
+- [ ] AD-30 - Documento de decisao "Console Operacional Dark" (referencia
+  conceitual Laravel/Ignition, sem copiar HTML/assets).
+- [ ] AD-31 - Registrar precedencia: direcao clara anterior SUPERADA; nova
+  direcao e NORTE VISUAL, implementacao ampla nas tasks T3-13+.
+- [ ] AD-32 - Nao redesenhar o V3 agora: apenas o necessario para a previa segura.
+
+### Bloco 5 - Reconciliacao documental da matriz (instrucao 1)
+
+- [ ] AD-40 - Passagem de consistencia na matriz: tabelas 5.1/5.2, secao 6
+  (fila), derivabilidade SO/APP, senha/anotacoes, secoes "proximo passo".
+- [ ] AD-41 - Investigar `snretorno` (PAR15-RMA-DET-004) sem trocar `[ ]` por `[x]`.
+- [ ] AD-42 - Protecao simples contra inconsistencia (mesmo ID simultaneamente
+  `[x]` e `[R]`/`[ ]` em estado corrente).
+- [ ] AD-43 - Commit documental isolado.
+
+## ORDEM DE EXECUCAO (consolidada)
+
+1. [x] Consolidar as duas instrucoes neste plano + commit documental.
+2. [ ] ADENDO P0 (blocos 1 a 4): runtime, URLs de QA, previa V3, doc visual V3.
+3. [ ] Reconciliacao da matriz (bloco 5) + commit documental isolado.
+4. [ ] Reforco QA do detalhe V2 (`ParidadeDetalheRmaV2Geometria`: conjunto de
+   opcoes igual + tolerancia de gap coerente, 2-4px).
+5. [ ] Novo Usuario V2 (PAR15-USR-007/009).
+6. [ ] Alterar senha V2 (PAR15-SEC-001).
+7. [ ] Anotacoes V2 (PAR15-NOTE-001).
+8. [ ] RG/IE (PAR15-PART-DATA-001) + importacao.
+9. [ ] Edit Cliente/Fornecedor/Fabricante/Assistencia (PART-002..005; create != edit).
+10. [ ] RMAs associados dos 4 parceiros (PART-001/PART-006) + testes separados.
+11. [ ] Sweep de `[R]`/`[ ]`: PAR14-NAV-002, PAR15-RMA-LIST-001,
+    PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001,
+    PAR15-RMA-MARCAR-001.
+12. [ ] PF-14 completo (auditoria visual ampla) e PF-15.
+13. [ ] P11 revalidacao, P12, P13 final, P14.
+14. [ ] Depois, V3 conforme dependencias reais (T3-13+).
+
+## REGRA DE STATUS PAI/FILHO (2026-09-10)
+
+Pai `[x]` so quando significa PARIDADE COMPLETA. Se o pai significa apenas
+CAPACIDADE FUNCIONAL, o criterio fica explicito no nome/decisao
+(`funcional = [x]`, `visual amplo = [R]`). Proibido pai `[x]` com filho visual
+obrigatorio `[R]` sem explicacao.
+
+## CRITERIO DE SAIDA
+
+Auditoria forense fechada: todos os IDs `PAR14-*`/`PAR15-*` com `[x]` provado por
+codigo/teste/runtime/documento, `[R]`/`[ ]` com proximo passo claro, PF-14
+completo, PF-15 reconciliado, P11/P12/P13/P14 verdes. V3 permanece oculto e nao
+persistivel fora do preview de QA.
+
+## NAO FAZER AINDA
+
+Editar o Legacy; reproduzir bug/rota morta; reproduzir SQL inseguro/GET
+destrutivo/SHA1/sem CSRF; relaxar Policy/tenant/validacao moderna; expor o Tema
+V3 no seletor antes do T3-GATE; push/PR/merge; marcar `[x]` sem evidencia real;
+usar hifen longo.
+
+---
+
+## ESTADO HISTORICO (blocos anteriores, preservados)
+
 
 ## AGORA - Auditoria forense de paridade Legacy -> Novo (2026-09-10)
 

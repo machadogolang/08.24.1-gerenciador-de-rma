@@ -55,15 +55,43 @@ Reconstrução do CellSystem RMA como produto moderno, em duas trilhas separadas
 Checkpoints curtos: o que foi documentado, achados principais (3-5 pontos), estado,
 commit local, próximo passo. Detalhe completo fica nos arquivos, não na resposta.
 
-## Nota operacional - falha de sandbox (2026-09-09)
+## Regra operacional permanente - assinatura de sandbox `bwrap: loopback` (regra do dono, 2026-09-10)
 
-Se um comando local simples falhar antes de executar com
-`bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`, o problema é do
-wrapper de sandbox do ambiente, não do repositório. Não repetir o mesmo comando.
-Após no máximo 2 variações equivalentes, trocar de mecanismo: usar prefixo de comando
-já aprovado (ex.: `cat`, `git log`, `git status`) ou escalar a leitura pontual com
-`sandbox_permissions: require_escalated` e prefixo estreito. Registro completo:
-`docs/operacao/incidentes/2026-09-09-sandbox-bwrap-loopback.md`.
+Assinatura conhecida (aparece antes de qualquer saida util, mesmo em `pwd`/`printf`):
+
+```
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+```
+
+Incidente ja registrado em
+`docs/operacao/incidentes/2026-09-09-sandbox-bwrap-loopback.md`. Aplicar esta regra
+desde o inicio de cada sessao, antes da primeira rodada de comandos.
+
+- Esse erro e CONHECIDO. Nao e evidencia de problema no projeto, no repositorio, na
+  rede, em namespace, em loopback, no Docker nem no ambiente.
+- Nao reinvestigar a causa. Nao iniciar diagnostico de sandbox, rede, namespace,
+  loopback, Docker ou ambiente.
+- Nao executar varias tentativas equivalentes. Confirmada a mesma assinatura, fazer no
+  maximo UMA tentativa equivalente adicional e mudar de mecanismo.
+- Nao ficar testando `find`, `ls`, `grep` etc. por mecanismos diferentes apenas para
+  redescobrir o problema.
+- Priorizar desde o inicio os comandos/prefixos ja permitidos pelo ambiente. Para
+  leitura, preferir o que ja funciona: comandos aprovados (`cat`, `git log`,
+  `git status --short --branch`), leitura direta de arquivos e prefixos estreitos.
+- Se um comando necessario cair exatamente nesse erro, mudar imediatamente para o
+  mecanismo estreito/escalado ja previsto no documento do incidente: leitura pontual
+  com `sandbox_permissions: require_escalated` e prefixo estreito.
+- Nunca usar escalada ampla quando uma escalada/prefixo estreito resolve.
+- Nao interromper a tarefa principal para diagnosticar o sandbox.
+- Nao criar novo incidente/documento para a mesma falha.
+- So mencionar o problema no retorno ao usuario se ele realmente impedir a execucao.
+- Havendo caminho alternativo, continuar o trabalho normalmente.
+- Comunicacao esperada: "Assinatura conhecida de bwrap detectada; aplicando
+  procedimento ja documentado." e seguir trabalhando. Nao narrar reinvestigacao nem
+  "vou descobrir qual mecanismo funciona".
+- Nota pratica deste harness: `apply_patch` tambem passa pelo wrapper e falha ao ler
+  arquivos existentes quando a assinatura esta ativa. Criar arquivos novos continua
+  funcionando; editar arquivos existentes deve usar edicao escalada pontual e estreita.
 
 ## Marcadores canônicos de status do plano (regra do dono, 2026-09-09)
 

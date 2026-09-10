@@ -52,12 +52,11 @@ de negocio nova nesta view. --}}
 
     <div class="fr detalhe-rma-v2__acao-cabecalho">
         @if ($podeGravarDetalheV2)
-            @include('temas.v2.rma._acoes_do_ciclo', ['sufixoAcao' => 'up', 'classeSelectAcao' => 'formSelect formSelect3'])
+            @include('temas.v2.rma._acoes_do_ciclo', ['sufixoAcao' => 'up', 'classeSelectAcao' => 'formSelect formSelect3', 'classeBotaoAcao' => 'btn btn-default buttonSalvar'])
         @else
             <span class="detalhe-rma-v2__somente-leitura">Somente leitura</span>
         @endif
     </div>
-    <div style="clear:both;"></div>
 
     <div class="row formgroupnf">
         <div class="col-md-3">
@@ -388,7 +387,7 @@ de negocio nova nesta view. --}}
     @if ($podeGravarDetalheV2)
         <div class="row detalhe-rma-v2__acoes-finais">
             <div class="fr">
-                @include('temas.v2.rma._acoes_do_ciclo', ['sufixoAcao' => 'down', 'classeSelectAcao' => 'formSelect formSelect2'])
+                @include('temas.v2.rma._acoes_do_ciclo', ['sufixoAcao' => 'down', 'classeSelectAcao' => 'formSelect formSelect2', 'classeBotaoAcao' => 'btn btn-default formSubmit'])
             </div>
         </div>
     @endif

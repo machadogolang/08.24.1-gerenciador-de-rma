@@ -412,14 +412,34 @@ select:disabled {
     // Mesmo ajuste do Legacy (`15.8.1/page/rma.php`): acao no cabecalho, ao lado
     // do breadcrumb, sem empilhar no topo.
     margin-top: -35px;
+
+    // PAR15-RMA-DET-011/013 - geometria do Legacy: `formSelect3` 130x25 (padding 5)
+    // e `buttonSalvar` 50x25 (padding 0), ambos #224A5D.
+    .formSelect3 {
+      width: 130px !important;
+      height: 25px !important;
+      padding: 5px !important;
+      background-color: #224a5d !important;
+    }
+
+    .buttonSalvar {
+      width: 50px !important;
+      height: 25px !important;
+      padding: 0 !important;
+      border-radius: 0;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background-color: #224a5d !important;
+      color: rgba(255, 255, 255, 0.8);
+    }
   }
 
   .formgroupnf {
     padding: 15px 0;
     background-color: #272822;
-    // No detalhe V2 o formgroup ja entra depois do cabecalho; o -20px do form
-    // historico era absorvido pela estrutura do formulario, aqui nao.
-    margin: 3px 0 0 0;
+    // PAR15-RMA-DET-014 - o Legacy declara -20px, mas o efeito medido no 15.8.1
+    // (bloco de acao flutuante + breadcrumb) equivale a margem 0 no nosso DOM: a
+    // primeira linha fica 10px abaixo do OK, igual ao runtime do Legacy.
+    margin: 0;
   }
 
   .Label1 {

@@ -747,16 +747,18 @@ li {
     font-size: 12px;
 }
 
+// PAR14-USR-001 - larguras do Legacy (`menujs-right/usuarios.php`):
+// NOME 25%, ENDERECO DE E-MAIL 35%, PERMISSAO 30%, N LOGIN 10%.
 .tabela-usuarios-v1 {
     th,
     td {
         padding: 5px;
     }
 
-    th:nth-child(1) { width: 20%; }
-    th:nth-child(2) { width: 28%; }
-    th:nth-child(3) { width: 20%; }
-    th:nth-child(4) { width: 32%; }
+    th:nth-child(1) { width: 25%; }
+    th:nth-child(2) { width: 35%; }
+    th:nth-child(3) { width: 30%; }
+    th:nth-child(4) { width: 10%; }
 }
 
 .form-usuario-v1 {
@@ -1029,27 +1031,13 @@ select:disabled {
     }
 }
 
-// UI-AUD-006 - Usuários V1: células sem espremer; ações da mesma classe com a
-// mesma largura; contrário do encolhimento por flex observado (RESETAR em 51px).
+// PAR14-USR-001 - a lista de usuarios do V1 nao tem controles inline (as acoes
+// administrativas ficam no Controle); mantem apenas a grade historica de 4 colunas.
 .tabela-usuarios-v1 {
-    th:nth-child(1) { width: 18%; }
-    th:nth-child(2) { width: 22%; }
-    th:nth-child(3) { width: 20%; }
-    th:nth-child(4) { width: 40%; }
-
-    .form-usuario-v1 {
-        flex-wrap: nowrap;
-
-        .formInputPanel {
-            flex: 0 0 110px;
-            width: 110px;
-        }
-
-        .formButtonEnviarPanel {
-            flex: 0 0 75px;
-            width: 75px;
-        }
-    }
+    th:nth-child(1) { width: 25%; }
+    th:nth-child(2) { width: 35%; }
+    th:nth-child(3) { width: 30%; }
+    th:nth-child(4) { width: 10%; }
 }
 
 // UI-AUD-011/UI-05 - Controle V1: coluna de rótulo com largura fixa para os três

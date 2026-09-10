@@ -1,46 +1,42 @@
 @extends('temas.v1.layout')
 
+{{-- PAR14-USR-001 - contrato real do TEMA V1 (`14.6.1/menujs-right/usuarios.php`):
+NOME, ENDERECO DE E-MAIL, PERMISSAO e N LOGIN, sem controles inline por linha. As
+acoes administrativas do V1 continuam na organizacao propria do Controle; o N LOGIN e
+projecao de `tentativas_de_acesso` (`ResumoDeAcessoDosUsuarios`), sem coluna
+duplicada. Nao copia a organizacao do V2. --}}
 @section('conteudo')
     @if (session('status'))
         <p class="centrodeavisos">{{ session('status') }}</p>
     @endif
 
-    <table class="Tabelinha-Table tabela-usuarios-v1">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Endereço de e-mail</th>
-                <th>Permissão</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($usuarios as $indice => $usuario)
-                <tr class="{{ $indice % 2 === 0 ? 'Tabelinha-TR1' : 'Tabelinha-TR2' }}">
-                    <td>{{ $usuario->name }}</td>
-                    <td class="usuariosemail">{{ $usuario->email }}</td>
-                    <td>
-                        <form class="form-usuario-v1" method="POST" action="{{ route('identidade.usuarios.update', $usuario) }}">
-                            @csrf
-                            @method('PUT')
-                            <select name="papel" class="formSelectPanel" aria-label="Permissão de {{ $usuario->name }}">
-                                @foreach (\App\Identidade\Dominio\Papel::cases() as $papel)
-                                    <option value="{{ $papel->name }}" @selected((($empresa_id ?? null) !== null ? ($usuario->papelNaEmpresa($empresa_id) ?? $usuario->papel) : $usuario->papel) === $papel)>{{ $papel->name }}</option>
-                                @endforeach
-                            </select>
-                            <button class="formButtonEnviarPanel" type="submit">SALVAR</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form class="form-usuario-v1" method="POST" action="{{ route('identidade.usuarios.resetar-senha', $usuario) }}">
-                            @csrf
-                            <input class="formInputPanel" type="password" name="nova_senha" placeholder="Nova senha" required>
-                            <input class="formInputPanel" type="password" name="nova_senha_confirmation" placeholder="Confirmar" required>
-                            <button class="formButtonEnviarPanel" type="submit">RESETAR</button>
-                        </form>
-                    </td>
+    <div style="display:block;clear:both;">
+        <table width="100%" class="Tabelinha-Table tabela-usuarios-v1" style="margin-bottom:0px;">
+            <thead>
+                <tr class="SuperTr">
+                    <th width="25%">NOME</th>
+                    <th width="35%">ENDERECO DE E-MAIL</th>
+                    <th width="30%">PERMISSAO</th>
+                    <th width="10%">N LOGIN</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($usuarios as $indice => $usuario)
+                    @php
+                        $papelDoUsuario = $empresa_id !== null
+                            ? ($usuario->papelNaEmpresa($empresa_id) ?? $usuario->papel)
+                            : $usuario->papel;
+                        $resumoDoUsuario = $resumoDeAcesso[$usuario->id] ?? [];
+                        $qtLoginDoUsuario = $resumoDoUsuario['quantidade'] ?? 0;
+                    @endphp
+                    <tr class="{{ $indice % 2 === 0 ? 'Tabelinha-TR1' : 'Tabelinha-TR2' }}" style="height:30px;">
+                        <td style="text-align:center;padding:5px;">{{ $usuario->name }}</td>
+                        <td class="usuariosemail" style="text-align:center;padding:5px;">{{ $usuario->email }}</td>
+                        <td style="text-align:center;padding:5px;">{{ $papelDoUsuario->rotuloDePermissaoLegado() }}</td>
+                        <td style="text-align:center;padding:5px;">{{ $qtLoginDoUsuario }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection

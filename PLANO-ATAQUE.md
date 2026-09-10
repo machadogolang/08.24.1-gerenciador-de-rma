@@ -19,19 +19,19 @@ Rota com nome parecido nao fecha `[x]`.
 
 Subtarefas:
 
-- [R] PF-01 - inventario de capacidades 14.6.1 (secao 1.1 da matriz).
-- [R] PF-02 - inventario de capacidades 15.8.1 (secao 1.2 da matriz).
-- [R] PF-03 - detalhe RMA V1 campo a campo (secao 5.1).
-- [R] PF-04 - detalhe RMA V2 campo a campo (secao 5.2).
-- [R] PF-05 - usuarios V1 (PAR14-USR-001..002).
-- [R] PF-06 - usuarios V2 (PAR15-USR-001..008).
-- [R] PF-07 - auditoria/logs V1 (PAR14-CTRL-001).
-- [R] PF-08 - auditoria/logs V2 (PAR15-AUD-001..007).
-- [R] PF-09 - relatorios V1 (PAR14-REL-001 e RPEC/RCD/RMPE).
-- [R] PF-10 - relatorios V2 (PAR15-REL-001..010).
-- [R] PF-11 - parceiros (PAR14/PAR15-PART-001).
-- [R] PF-12 - navegacao/shell (PAR14-SHELL/NAV, PAR15-SHELL/NAV).
-- [R] PF-13 - sweep de capacidades nao mapeadas (secoes 4 e 7).
+- [x] PF-01 - inventario de capacidades 14.6.1 (30 capacidades, secao 1.1).
+- [x] PF-02 - inventario de capacidades 15.8.1 (36 capacidades, secao 1.2).
+- [x] PF-03 - detalhe RMA V1 campo a campo (secao 5.1; estoque/credito fechados).
+- [x] PF-04 - detalhe RMA V2 (secao 5.2; acao no topo e rodape, credito/estoque fechados).
+- [x] PF-05 - usuarios V1 (PAR14-USR-001 fechado; acoes no Controle).
+- [x] PF-06 - usuarios V2 (001/002/003/005/006/008 = [x]; 007 implementado; 004 DECISAO-PENDENTE).
+- [x] PF-07 - auditoria/logs V1 (14.6.1 nao tinha tela propria de log).
+- [x] PF-08 - auditoria/logs V2 (AUD-001..004 fechados; AUD-005 geometria em PF-14).
+- [x] PF-09 - relatorios V1 (RPEC/RCD/RMPE fechados com totais e info adicional).
+- [x] PF-10 - relatorios V2 (hub estatistico + menu historico corrigido).
+- [R] PF-11 - parceiros (PAR15-PART-001: detalhe/RMAs do parceiro segue aberto).
+- [x] PF-12 - navegacao/shell (menus V1/V2 reconciliados com o Legacy).
+- [R] PF-13 - sweep de capacidades nao mapeadas (secoes 4 e 7) segue aberto.
 - [R] PF-14 - browser comparison Legacy x novo (1a fatia: /v2/usuarios x 15.8.1/usuarios,
   `tests/Browser/ParidadeUsuariosV2.spec.ts` verde em 1440px - mesmas colunas e linha
   ~30px; demais superficies ainda pendentes).

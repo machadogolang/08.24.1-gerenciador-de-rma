@@ -162,9 +162,10 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 
 - [x] UI-09.10/C7 + UI-08 - Varredura residual e regressao browser/print final
   (fechado 2026-09-10).
-- [R] UI-07 - Remover views orfas com zero consumidor.
+- [x] UI-07 - Remover views orfas com zero consumidor.
   - [x] UI-07.1 - Inventario de candidatas (UI-AUD-016).
-  - [ ] UI-07.2 - Remocao com prova de zero consumidor e teste.
+  - [x] UI-07.2 - Remocao com prova de zero consumidor e teste (15 views removidas em
+    2026-09-10; guarda `ViewsOrfasRemovidasTest`; PHPUnit 546/1676 verde).
 - [ ] P7 - UX-003: Encaminhar por selecao validada, seguido de PAR-RMA-008.
 - [ ] P8 - Anotacoes V2 dedicada, confirmacao de remocao, UX-001/UX-004.
 - [ ] P9 - Inventario de rotas/plugins residuais.

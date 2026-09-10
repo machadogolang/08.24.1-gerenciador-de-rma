@@ -285,3 +285,22 @@ mostra "Creditos"; o titulo novo e do V2) e NAV-04-02..08 esperam o valor do cam
 em `toContainText` quando o detalhe V1 virou edicao inline (A5/PAR-DET-V1), onde o
 valor vive em `input.value`, nao em texto. Fica como item de manutencao da auditoria
 navegacional, fora do escopo de paridade residual.
+
+## Resultado - UI-07.2 (views orfas, 2026-09-10)
+
+Prova de zero consumidor aplicada a cada candidata (UI-AUD-016): busca por
+`view()`/`view_do_tema()`, `@include`/`@extends`, referencia dinamica, teste
+consumidor e `rota_tema`. `view_do_tema()` sempre prefixa `temas.{v1,v2}.`, entao as
+views nao-tematicas so seriam alcancadas por `view()`/include diretos - nenhum existe.
+
+Removidas (15): `parceiros/_form`, `parceiros/index`, `rma/index`, `rma/show`,
+`rma/create`, `rma/edit`, `rma/_campos`, `rma/_painel_de_alertas`,
+`rma/credito/index`, `rma/relatorios/{rcd,rpec,rmpe}`, `identidade/usuarios/index`,
+`identidade/perfil/senha`, `identidade/historico-de-acesso/index`.
+(`rma/_campos` so era incluido pelos orfaos `rma/create`/`rma/edit`; os partials
+`_conteudo_*`, `_centro_de_avisos`, `_acoes_de_transicao`, `parceiros/_detalhe` e
+`identidade/login` continuam consumidos e foram mantidos.)
+
+Guarda: `tests/Feature/Temas/ViewsOrfasRemovidasTest` (2 testes) garante que as views
+removidas nao voltem e que as versoes por tema seguem existindo. Suite completa:
+546 testes / 1676 assertions verdes. UI-07 fechado `[x]`.

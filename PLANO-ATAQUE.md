@@ -174,7 +174,8 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   testes. Falta o contrato transversal completo de flash/validacao/estado vazio/403/
   404/500.
 
-- [ ] P9 - Inventario de rotas/plugins residuais.
+- [x] P9 - Inventario de rotas/plugins residuais (`docs/produto/2026-09-10-inventario-rotas-e-plugins-residuais.md`,
+  2026-09-10; 150 rotas, sem orfas, V3 segue oculto).
 - [ ] P10 - Reconciliacao documental (checklist, paridade, matriz temas, roteiro).
 - [ ] P11 - Regressao funcional por fluxo.
 - [ ] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/`.

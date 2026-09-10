@@ -15,7 +15,7 @@ class PainelDeRelatoriosController extends Controller
 {
     public function index(PainelEstatisticoV2 $painel): View
     {
-        return view('temas.v2.rma.relatorios.index', [
+        return view_do_tema('rma.relatorios.index', [
             'titulo' => 'Relatorios',
             'painel' => $painel->montar(),
         ]);

@@ -102,8 +102,8 @@ Decisao canonica do dono:
 
 ### Fase 3 - Gaps Prioritarios de Ciclo e Relatorios (P0)
 - [x] UF-07 - Fila de Recebidos no Tema V1 (`GAP-V1-01` / CAP-RMA-004): rota, listagem 14.6.1 e link `#TOPO`.
-- [ ] UF-08 - Acesso e navegacao aos relatorios RCD, RPEC e RMPE no Tema V2 (`GAP-V2-01..03` / CAP-REL-001..003).
-- [ ] UF-09 - Hub Estatistico de Relatorios no Tema V1 (`GAP-V1-06` / CAP-REL-004): painel V1 adaptado.
+- [x] UF-08 - Acesso e navegacao aos relatorios RCD, RPEC e RMPE no Tema V2 (`GAP-V2-01..03` / CAP-REL-001..003).
+- [x] UF-09 - Hub Estatistico de Relatorios no Tema V1 (`GAP-V1-06` / CAP-REL-004): painel V1 adaptado.
 
 ### Fase 4 - Auditoria e Creditos Cruzados (P1)
 - [ ] UF-10 - Logs de Autenticacao e Modificacao no Tema V1 (`GAP-V1-03..05` / CAP-AUD-002..004): tabelas V1 e link Ver.

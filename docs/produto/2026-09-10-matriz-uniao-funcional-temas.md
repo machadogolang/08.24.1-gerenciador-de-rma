@@ -32,8 +32,8 @@ Classificacoes padrao adotadas:
 | Quebradas em V2 mas funcionais em V1 | 1 |
 | Codigo morto comprovado (nao promover) | 6 |
 | Decisao pendente de produto/seguranca | 3 |
-| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V1 NOVO** | **10** (1 resolvido) |
-| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V2 NOVO** | **5** |
+| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V1 NOVO** | **9** (2 resolvidos) |
+| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V2 NOVO** | **2** (3 resolvidos) |
 
 ---
 
@@ -45,7 +45,7 @@ Classificacoes padrao adotadas:
 3. `GAP-V1-03` (CAP-AUD-002): Historico e logs de autenticacao com visualizacao na linguagem V1.
 4. `GAP-V1-04` (CAP-AUD-003): Historico e logs de modificacao de RMA na linguagem V1.
 5. `GAP-V1-05` (CAP-AUD-004): Detalhe do log / acao Ver (`info/{numero}`) acessivel via navegacao V1.
-6. `GAP-V1-06` (CAP-REL-004): Hub estatistico de relatorios integrado ao painel de Relatorios V1.
+6. `GAP-V1-06` (CAP-REL-004): [x] CONVERGIDO - Hub estatistico de relatorios adaptado ao Tema V1 (`temas.v1.rma.relatorios.index` e link no menu de sessao).
 7. `GAP-V1-07` (CAP-CRD-001): Visualizacao tabular rica de Creditos Disponiveis na linguagem V1.
 8. `GAP-V1-08` (CAP-ALT-004): Sinalizacao de Urgencia e Alerta com threshold de R$ 75 no padrao V1.
 9. `GAP-V1-09` (CAP-ALT-003): Campo e indicador de Prioridade (Baixa, Normal, Alta) no form e listagens V1.
@@ -53,9 +53,9 @@ Classificacoes padrao adotadas:
 11. `GAP-V1-11` (CAP-LOG-001): Painel/consulta de Logistica e Transporte para Porto Alegre no padrao V1.
 
 ### Gaps do Tema V2 Novo (precisam ser introduzidos na linguagem visual V2)
-1. `GAP-V2-01` (CAP-REL-001): Relatorio RCD (Creditos Disponiveis) descobrivel na experiencia de Relatorios V2.
-2. `GAP-V2-02` (CAP-REL-002): Relatorio RPEC (Estoque para Contagem) descobrivel na experiencia de Relatorios V2.
-3. `GAP-V2-03` (CAP-REL-003): Relatorio RMPE (Movimentacao de Estoque) descobrivel na experiencia de Relatorios V2.
+1. `GAP-V2-01` (CAP-REL-001): [x] CONVERGIDO - Relatorio RCD (Creditos) descobrivel no Tema V2 via `_menu_relatorios`.
+2. `GAP-V2-02` (CAP-REL-002): [x] CONVERGIDO - Relatorio RPEC (Estoque) descobrivel no Tema V2 via `_menu_relatorios`.
+3. `GAP-V2-03` (CAP-REL-003): [x] CONVERGIDO - Relatorio RMPE (Movimentacao) descobrivel no Tema V2 via `_menu_relatorios`.
 4. `GAP-V2-04` (CAP-LOG-002): Tabela e dados de Destinatarios com frete e CFOP descobriveis na navegacao V2.
 5. `GAP-V2-05` (CAP-AUX-001): Procedimento operacional / Ajuda de RMA acessivel na interface V2.
 
@@ -129,10 +129,10 @@ Classificacoes padrao adotadas:
 
 | ID | Capacidade | Dominio | Legacy 14.6.1 | Legacy 15.8.1 | Fonte Escolhida | Promover? | V1 Novo (Back/UI/Desc/Test/Status) | V2 Novo (Back/UI/Desc/Test/Status) | V3 (Status/T3) | OpenSpec | Pendencia | Status Geral |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| CAP-REL-001 | Relatorio RCD (Creditos) | Relatorios | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / N / N / S / [ ] | [x] / T3-06 | unificacao-funcional | Descobrivel em Relatorios V2 (GAP-V2-01) | [ ] Aberto V2 (P0) |
-| CAP-REL-002 | Relatorio RPEC (Estoque) | Relatorios | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / N / N / S / [ ] | [x] / T3-06 | unificacao-funcional | Descobrivel em Relatorios V2 (GAP-V2-02) | [ ] Aberto V2 (P0) |
-| CAP-REL-003 | Relatorio RMPE (Movimentacao) | Relatorios | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / N / N / S / [ ] | [x] / T3-06 | unificacao-funcional | Descobrivel em Relatorios V2 (GAP-V2-03) | [ ] Aberto V2 (P0) |
-| CAP-REL-004 | Hub Estatistico de Relatorios | Relatorios | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / N / N / N / [ ] | S / S / S / S / [x] | Planejado / T3-15 | unificacao-funcional | Opcao no painel V1 (GAP-V1-06) | [ ] Aberto V1 (P0) |
+| CAP-REL-001 | Relatorio RCD (Creditos) | Relatorios | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-06 | unificacao-funcional | Nenhuma | [x] Convergido |
+| CAP-REL-002 | Relatorio RPEC (Estoque) | Relatorios | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-06 | unificacao-funcional | Nenhuma | [x] Convergido |
+| CAP-REL-003 | Relatorio RMPE (Movimentacao) | Relatorios | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-06 | unificacao-funcional | Nenhuma | [x] Convergido |
+| CAP-REL-004 | Hub Estatistico de Relatorios | Relatorios | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | Planejado / T3-15 | unificacao-funcional | Nenhuma | [x] Convergido |
 | CAP-REL-005 | Impressao limpa de relatorios | Relatorios | PRESENTE-FUNCIONAL | PRESENTE-FUNCIONAL | Compartilhada | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-06 | rma-creditos | Nenhuma | [x] Convergido |
 | CAP-REL-006 | Informacao adicional persistida | Relatorios | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | Planejado / T3-15 | rma-creditos | Nenhuma | [x] Convergido |
 
@@ -180,10 +180,10 @@ Classificacoes padrao adotadas:
 | ID | Capacidade | Origem Legacy | V1 Novo | V2 Novo | Acao Necessaria |
 |---|---|---|---|---|---|
 | CAP-RMA-004 | Fila dedicada de Recebidos | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: rota /rmas-recebidos, listagem V1 e link #TOPO |
-| CAP-REL-001 | Relatorio RCD (Creditos) | So V1 Legacy | PRESENTE | NAO DESCOBRIVEL | Integrar link/acesso ao RCD dentro da experiencia de Relatorios V2 |
-| CAP-REL-002 | Relatorio RPEC (Estoque) | So V1 Legacy | PRESENTE | NAO DESCOBRIVEL | Integrar link/acesso ao RPEC dentro da experiencia de Relatorios V2 |
-| CAP-REL-003 | Relatorio RMPE (Movimentacao) | So V1 Legacy | PRESENTE | NAO DESCOBRIVEL | Integrar link/acesso ao RMPE dentro da experiencia de Relatorios V2 |
-| CAP-REL-004 | Hub Estatistico de Relatorios | So V2 Legacy | AUSENTE na UI | PRESENTE | Criar visualizacao das estatisticas adaptada ao padrao de Relatorios V1 |
+| CAP-REL-001 | Relatorio RCD (Creditos) | So V1 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: descobrivel via _menu_relatorios no V2 |
+| CAP-REL-002 | Relatorio RPEC (Estoque) | So V1 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: descobrivel via _menu_relatorios no V2 |
+| CAP-REL-003 | Relatorio RMPE (Movimentacao) | So V1 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: descobrivel via _menu_relatorios no V2 |
+| CAP-REL-004 | Hub Estatistico de Relatorios | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: adaptado em temas.v1.rma.relatorios.index |
 | CAP-AUD-002 | Logs de Autenticacao | So V2 Legacy | AUSENTE na UI | PRESENTE | Criar superficie de logs de acesso integrada ao Controle/menu V1 |
 | CAP-AUD-003 | Logs de Modificacao de RMA | So V2 Legacy | AUSENTE na UI | PRESENTE | Criar superficie de logs de modificacao integrada ao Controle/menu V1 |
 | CAP-AUD-004 | Acao Ver / Detalhe do Log | So V2 Legacy | AUSENTE na UI | PRESENTE | Conectar visualizacao de detalhe do log via navegacao V1 |

@@ -6,6 +6,8 @@ Origem, Fornecedores, Dados relacionados a NF, Dados do Sistema e series
 mensais/anuais), com as contagens vindas de `PainelEstatisticoV2` (SQL agregado,
 tenant-aware). --}}
 @section('conteudo')
+    @include('temas.v2.rma.relatorios._menu_relatorios', ['relatorioAtual' => 'painel'])
+
     <div class="boxtop-subpage">
         <h4 class="box-subpage fl">Relatorios</h4>
         <div style="clear:both;"></div>

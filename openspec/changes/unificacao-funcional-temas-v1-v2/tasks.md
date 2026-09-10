@@ -21,14 +21,14 @@ Marcadores canonicos: `[ ]` (Pendente), `[R]` (Revisado), `[x]` (Concluido).
   - [x] Implementar rota/listagem de Recebidos sob o Tema V1 com o padrao de tabela do 14.6.1 (`page/entrada.php`).
   - [x] Inserir o link "Recebidos" no menu de navegacao superior V1 (`#TOPO`).
   - [x] Escrever teste Feature garantindo HTTP 200 e presenca dos registros recebidos na view V1.
-- [ ] UF-08 - Descoberta e Acesso aos Relatorios RCD, RPEC e RMPE no Tema V2 (`GAP-V2-01..03` / CAP-REL-001..003):
-  - [ ] Criar pontos de entrada e navegacao descobrivel dentro de `/v2/relatorios` para RCD, RPEC e RMPE.
-  - [ ] Garantir que os relatorios respondam sob o Tema V2 mantendo seu contrato de dados.
-  - [ ] Teste Feature de navegacao e resposta 200 sob Tema V2.
-- [ ] UF-09 - Hub Estatistico de Relatorios no Tema V1 (`GAP-V1-06` / CAP-REL-004):
-  - [ ] Criar adaptacao visual das estatisticas (Situacao, Resolucao, Origem, NFs, Dados do Sistema, Series) no painel de Relatorios V1.
-  - [ ] Adicionar opcao no menu de relatorios do Tema V1.
-  - [ ] Teste Feature provando resposta 200 e dados consistentes no V1.
+- [x] UF-08 - Descoberta e Acesso aos Relatorios RCD, RPEC e RMPE no Tema V2 (`GAP-V2-01..03` / CAP-REL-001..003):
+  - [x] Criar pontos de entrada e navegacao descobrivel dentro de `/v2/relatorios` para RCD, RPEC e RMPE via `_menu_relatorios`.
+  - [x] Garantir que os relatorios respondam sob o Tema V2 mantendo seu contrato de dados.
+  - [x] Teste Feature de navegacao e resposta 200 sob Tema V2.
+- [x] UF-09 - Hub Estatistico de Relatorios no Tema V1 (`GAP-V1-06` / CAP-REL-004):
+  - [x] Criar adaptacao visual das estatisticas (Situacao, Resolucao, Origem, NFs, Dados do Sistema, Series) no painel de Relatorios V1 (`temas.v1.rma.relatorios.index`).
+  - [x] Adicionar opcao no menu de relatorios/sessao do Tema V1.
+  - [x] Teste Feature provando resposta 200 e dados consistentes no V1.
 
 ## Fase 4 - Auditoria e Creditos Cruzados (P1)
 

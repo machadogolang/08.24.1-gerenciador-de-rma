@@ -234,4 +234,114 @@ class UniaoFuncionalV1V2Test extends TestCase
             'name' => 'Operador V1',
         ]);
     }
+
+    public function test_tema_v1_parceiros_exibe_rmas_associados_e_dados_completos(): void
+    {
+        $supervisor = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V1,
+        ]);
+
+        $cliente = \App\Models\Cliente::factory()->create(['nome' => 'Cliente Corporativo']);
+        $rma = Rma::factory()->create([
+            'cliente_id' => $cliente->id,
+            'descricao' => 'Servidor Dell PowerEdge',
+            'status' => Status::Entrada,
+        ]);
+
+        $response = $this->actingAs($supervisor)->get(route('v1.parceiros.clientes.show', $cliente->id));
+
+        $response->assertOk();
+        $response->assertSee('RMAs associados');
+        $response->assertSee('Servidor Dell PowerEdge');
+        $response->assertSee(route('rmas.show', $rma->id), false);
+    }
+
+    public function test_transporte_porto_alegre_disponivel_nos_dois_temas(): void
+    {
+        $supervisorV1 = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V1,
+        ]);
+        $supervisorV2 = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V2,
+        ]);
+
+        // Tema V1
+        $responseV1 = $this->actingAs($supervisorV1)->get(route('rmas.logistica.frete-porto-alegre'));
+        $responseV1->assertOk();
+        $responseV1->assertViewIs('temas.v1.rma.logistica.frete-porto-alegre');
+        $responseV1->assertSee('Transporte para Porto Alegre');
+
+        // Tema V2
+        $responseV2 = $this->actingAs($supervisorV2)->get(route('rmas.logistica.frete-porto-alegre'));
+        $responseV2->assertOk();
+        $responseV2->assertViewIs('temas.v2.rma.logistica.frete-porto-alegre');
+        $responseV2->assertSee('Porto Alegre');
+
+        // Rotas determinísticas QA
+        $this->actingAs($supervisorV1)->get('/v1/logistica/porto-alegre')->assertOk();
+        $this->actingAs($supervisorV2)->get('/v2/logistica/porto-alegre')->assertOk();
+    }
+
+    public function test_destinatarios_com_frete_e_cfop_exibidos_nos_dois_temas(): void
+    {
+        $supervisorV1 = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V1,
+        ]);
+        $supervisorV2 = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V2,
+        ]);
+
+        $fornecedor = \App\Models\Fornecedor::factory()->create([
+            'nome' => 'Distribuidora Sul',
+            'cfop' => '5.102',
+            'frete' => 'FOB',
+        ]);
+
+        // V1
+        $resV1 = $this->actingAs($supervisorV1)->get(route('v1.parceiros.fornecedores.show', $fornecedor->id));
+        $resV1->assertOk();
+        $resV1->assertSee('5.102');
+        $resV1->assertSee('FOB');
+
+        // V2
+        $resV2 = $this->actingAs($supervisorV2)->get(route('v2.parceiros.fornecedores.show', $fornecedor->id));
+        $resV2->assertOk();
+        $resV2->assertSee('5.102');
+        $resV2->assertSee('FOB');
+    }
+
+    public function test_ajuda_e_procedimento_operacional_disponivel_e_estilizado_em_ambos_os_temas(): void
+    {
+        $supervisorV1 = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V1,
+        ]);
+        $supervisorV2 = User::factory()->create([
+            'papel' => Papel::Supervisor,
+            'tema_preferido' => TemaPreferido::V2,
+        ]);
+
+        // V1
+        $resV1 = $this->actingAs($supervisorV1)->get(route('rmas.ajuda'));
+        $resV1->assertOk();
+        $resV1->assertViewIs('temas.v1.rma.ajuda');
+        $resV1->assertSee('Central de Ajuda');
+        $resV1->assertSee('3 ETAPAS: Entrada, Processamento e Saída');
+
+        // V2
+        $resV2 = $this->actingAs($supervisorV2)->get(route('rmas.ajuda'));
+        $resV2->assertOk();
+        $resV2->assertViewIs('temas.v2.rma.ajuda');
+        $resV2->assertSee('Procedimento Operacional de RMA');
+        $resV2->assertSee('3 ETAPAS: Entrada, Processamento e Saída');
+
+        // Rotas determinísticas QA
+        $this->actingAs($supervisorV1)->get('/v1/ajuda')->assertOk();
+        $this->actingAs($supervisorV2)->get('/v2/ajuda')->assertOk();
+    }
 }

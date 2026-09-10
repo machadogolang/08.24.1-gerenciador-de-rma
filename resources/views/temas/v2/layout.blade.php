@@ -70,6 +70,8 @@
                             no TEMA V1 (achado VIS-V1-008). --}}
                             <li class="lidropdown menuz"><a href="{{ rota_tema('identidade.usuarios.index') }}">Usuários</a></li>
                         @endcan
+                        <li class="lidropdown"><a href="{{ rota_tema('rmas.logistica.frete-porto-alegre') }}">Transp. Porto Alegre</a></li>
+                        <li class="lidropdown menuz"><a href="{{ rota_tema('rmas.ajuda') }}">Ajuda</a></li>
                         @if (config('temas.v3_preview_enabled'))
                             {{-- AD-21 - mesma entrada discreta de QA dos dois temas;
                             nao persiste tema e nao aparece no menu historico do 15.8.1. --}}

@@ -32,8 +32,8 @@ Classificacoes padrao adotadas:
 | Quebradas em V2 mas funcionais em V1 | 1 |
 | Codigo morto comprovado (nao promover) | 6 |
 | Decisao pendente de produto/seguranca | 3 |
-| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V1 NOVO** | **2** (9 resolvidos) |
-| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V2 NOVO** | **2** (3 resolvidos) |
+| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V1 NOVO** | **0** (11 resolvidos) |
+| **GAPS FUNCIONAIS / DESCOBRIBILIDADE NO TEMA V2 NOVO** | **0** (5 resolvidos) |
 
 ---
 
@@ -49,15 +49,15 @@ Classificacoes padrao adotadas:
 7. `GAP-V1-07` (CAP-CRD-001): [x] CONVERGIDO - Visualizacao tabular rica de Creditos Disponiveis e acao de marcar na linguagem V1.
 8. `GAP-V1-08` (CAP-ALT-004): [x] CONVERGIDO - Sinalizacao de Urgencia e Alerta com threshold de R$ 75 no padrao V1 (`Rma::ehUrgentePorThreshold` e `TrUrgente`).
 9. `GAP-V1-09` (CAP-ALT-003): [x] CONVERGIDO - Campo e indicador de Prioridade (Baixa, Normal, Alta) no form e detalhe V1.
-10. `GAP-V1-10` (CAP-PAR-006): Listagem de RMAs associados ao visualizar parceiros (clientes/fornecedores/fabricantes).
-11. `GAP-V1-11` (CAP-LOG-001): Painel/consulta de Logistica e Transporte para Porto Alegre no padrao V1.
+10. `GAP-V1-10` (CAP-PAR-006): [x] CONVERGIDO - Listagem de RMAs associados ao visualizar parceiros (renderizada via `parceiros._detalhe` em `temas.v1.parceiros.show`).
+11. `GAP-V1-11` (CAP-LOG-001): [x] CONVERGIDO - Painel/consulta de Transporte Porto Alegre no padrao V1 (`temas.v1.rma.logistica.frete-porto-alegre`) e link no `#JS-Sessao`.
 
 ### Gaps do Tema V2 Novo (precisam ser introduzidos na linguagem visual V2)
 1. `GAP-V2-01` (CAP-REL-001): [x] CONVERGIDO - Relatorio RCD (Creditos) descobrivel no Tema V2 via `_menu_relatorios`.
 2. `GAP-V2-02` (CAP-REL-002): [x] CONVERGIDO - Relatorio RPEC (Estoque) descobrivel no Tema V2 via `_menu_relatorios`.
 3. `GAP-V2-03` (CAP-REL-003): [x] CONVERGIDO - Relatorio RMPE (Movimentacao) descobrivel no Tema V2 via `_menu_relatorios`.
-4. `GAP-V2-04` (CAP-LOG-002): Tabela e dados de Destinatarios com frete e CFOP descobriveis na navegacao V2.
-5. `GAP-V2-05` (CAP-AUX-001): Procedimento operacional / Ajuda de RMA acessivel na interface V2.
+4. `GAP-V2-04` (CAP-LOG-002): [x] CONVERGIDO - Tabela e dados de Destinatarios com frete e CFOP descobriveis em `parceiros._detalhe` e acessiveis no Tema V2.
+5. `GAP-V2-05` (CAP-AUX-001): [x] CONVERGIDO - Procedimento operacional / Ajuda de RMA acessivel na interface V2 (`temas.v2.rma.ajuda` e link no dropdown Menu).
 
 ---
 
@@ -161,14 +161,14 @@ Classificacoes padrao adotadas:
 
 | ID | Capacidade | Dominio | Legacy 14.6.1 | Legacy 15.8.1 | Fonte Escolhida | Promover? | V1 Novo (Back/UI/Desc/Test/Status) | V2 Novo (Back/UI/Desc/Test/Status) | V3 (Status/T3) | OpenSpec | Pendencia | Status Geral |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| CAP-LOG-001 | Transporte para Porto Alegre | Logistica | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / N / N / N / [ ] | S / S / S / S / [x] | Planejado / T3-14 | unificacao-funcional | Disponibilizar no V1 (GAP-V1-11) | [ ] Aberto V1 |
-| CAP-LOG-002 | Destinatarios com frete e CFOP | Logistica | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / N / N / N / [ ] | Planejado / T3-14 | unificacao-funcional | Descobrivel em V2 (GAP-V2-04) | [ ] Aberto V2 |
+| CAP-LOG-001 | Transporte para Porto Alegre | Logistica | AUSENTE | PRESENTE-FUNCIONAL | V2 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | Planejado / T3-14 | unificacao-funcional | Nenhuma (UF-16) | [x] Convergido |
+| CAP-LOG-002 | Destinatarios com frete e CFOP | Logistica | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | Planejado / T3-14 | unificacao-funcional | Nenhuma (UF-17) | [x] Convergido |
 
 ### 3.9 Dominio: Outros e Auxiliares
 
 | ID | Capacidade | Dominio | Legacy 14.6.1 | Legacy 15.8.1 | Fonte Escolhida | Promover? | V1 Novo (Back/UI/Desc/Test/Status) | V2 Novo (Back/UI/Desc/Test/Status) | V3 (Status/T3) | OpenSpec | Pendencia | Status Geral |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| CAP-AUX-001 | Ajuda / Procedimento de RMA | Auxiliar | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / N / N / N / [ ] | Planejado / T3-14 | unificacao-funcional | Acesso na UI V2 (GAP-V2-05) | [ ] Aberto V2 |
+| CAP-AUX-001 | Ajuda / Procedimento de RMA | Auxiliar | PRESENTE-FUNCIONAL | AUSENTE | V1 / Moderna | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | Planejado / T3-14 | unificacao-funcional | Nenhuma (UF-18) | [x] Convergido |
 | CAP-AUX-002 | Avisar alguem (stub) | Auxiliar | AUSENTE | CODIGO-MORTO | N/A | NAO-PROMOVER | N / N / N / N / [x] | N / N / N / N / [x] | N/A | front-003 | Stub 15 linhas (DEC-02) | [x] Codigo Morto |
 | CAP-AUX-003 | Enviar e-mail (stub) | Auxiliar | AUSENTE | CODIGO-MORTO | N/A | NAO-PROMOVER | N / N / N / N / [x] | N / N / N / N / [x] | N/A | front-003 | Stub 11 linhas (DEC-02) | [x] Codigo Morto |
 | CAP-AUX-004 | Paginas de Erro 403 / 404 | Auxiliar | PRESENTE-FUNCIONAL | PRESENTE-FUNCIONAL | Compartilhada | PROMOVER-AOS-DOIS-TEMAS | S / S / S / S / [x] | S / S / S / S / [x] | [x] / T3-01 | front-003 | Nenhuma | [x] Convergido |
@@ -184,14 +184,14 @@ Classificacoes padrao adotadas:
 | CAP-REL-002 | Relatorio RPEC (Estoque) | So V1 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: descobrivel via _menu_relatorios no V2 |
 | CAP-REL-003 | Relatorio RMPE (Movimentacao) | So V1 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: descobrivel via _menu_relatorios no V2 |
 | CAP-REL-004 | Hub Estatistico de Relatorios | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: adaptado em temas.v1.rma.relatorios.index |
-| CAP-AUD-002 | Logs de Autenticacao | So V2 Legacy | AUSENTE na UI | PRESENTE | Criar superficie de logs de acesso integrada ao Controle/menu V1 |
-| CAP-AUD-003 | Logs de Modificacao de RMA | So V2 Legacy | AUSENTE na UI | PRESENTE | Criar superficie de logs de modificacao integrada ao Controle/menu V1 |
-| CAP-AUD-004 | Acao Ver / Detalhe do Log | So V2 Legacy | AUSENTE na UI | PRESENTE | Conectar visualizacao de detalhe do log via navegacao V1 |
-| CAP-ID-005 | Criar Novo Usuario pelo Admin | So V2 Legacy | AUSENTE na UI | PRESENTE | Criar superficie de novo usuario na linguagem do Tema V1 |
-| CAP-CRD-001 | Listagem Tabular de Creditos | So V2 Legacy | AUSENTE na UI | PRESENTE | Exibir tabela rica de creditos no painel de Creditos do Tema V1 |
-| CAP-ALT-004 | Urgencia / Threshold R$ 75 | So V2 Legacy | AUSENTE na UI | PRESENTE | Adicionar sinalizacao operacional e filtro de urgencia no Tema V1 |
-| CAP-ALT-003 | Nivel de Prioridade (Baixa/Alta)| So V2 Legacy | AUSENTE na UI | PRESENTE | Incluir campo de prioridade no formulario e listagens do Tema V1 |
-| CAP-PAR-006 | RMAs Associados ao Parceiro | So V2 Legacy | AUSENTE na UI | [R] | Renderizar secao de RMAs associados ao detalhe de parceiro no V1 |
-| CAP-LOG-001 | Logistica / Transporte Porto A | So V2 Legacy | AUSENTE na UI | PRESENTE | Prover consulta/painel de transporte para Porto Alegre no Tema V1 |
-| CAP-LOG-002 | Destinatarios com frete e CFOP | So V1 Legacy | PRESENTE | NAO DESCOBRIVEL | Permitir consulta a dados logisticos de destinatarios no Tema V2 |
-| CAP-AUX-001 | Ajuda / Procedimento de RMA | So V1 Legacy | PRESENTE | NAO DESCOBRIVEL | Prover link/acesso ao procedimento operacional no Tema V2 |
+| CAP-AUD-002 | Logs de Autenticacao | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: superficie V1 e painel no Controle |
+| CAP-AUD-003 | Logs de Modificacao de RMA | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: superficie V1 e painel no Controle |
+| CAP-AUD-004 | Acao Ver / Detalhe do Log | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: detalhe e icone ver.png em ambos |
+| CAP-ID-005 | Criar Novo Usuario pelo Admin | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: view usuarios-novo e link no Controle V1 |
+| CAP-CRD-001 | Listagem Tabular de Creditos | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: tabela rica e acao marcar no Tema V1 |
+| CAP-ALT-004 | Urgencia / Threshold R$ 75 | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: regra e classe TrUrgente nos dois temas |
+| CAP-ALT-003 | Nivel de Prioridade (Baixa/Alta)| So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: campo prioridade exposto e editavel no V1 |
+| CAP-PAR-006 | RMAs Associados ao Parceiro | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: secao renderizada em parceiros._detalhe |
+| CAP-LOG-001 | Logistica / Transporte Porto A | So V2 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: consulta V1 e link no #JS-Sessao e V2 |
+| CAP-LOG-002 | Destinatarios com frete e CFOP | So V1 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: exibido em parceiros._detalhe em ambos |
+| CAP-AUX-001 | Ajuda / Procedimento de RMA | So V1 Legacy | PRESENTE | PRESENTE | [x] CONVERGIDO: central V1 e painel/link no menu V2 |

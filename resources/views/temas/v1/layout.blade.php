@@ -19,6 +19,10 @@
             'rmas.controle.*',
             'rmas.credito.*',
             'rmas.relatorios.*',
+            'rmas.logistica.*',
+            'v1.rmas.logistica.*',
+            'rmas.ajuda',
+            'v1.rmas.ajuda',
         );
         // VIS-V1-007 - `/rmas/create` (fallback funcional de VIS-V1-002) não tinha
         // heading `<h1>` no runtime original (`menujs-top/novo.php` começa pelo
@@ -116,6 +120,8 @@
                     <a class="lisessao" href="{{ route('rmas.relatorios.rpec') }}">Relatório RPEC</a>
                     <a class="lisessao" href="{{ route('rmas.relatorios.rmpe') }}">Relatório RMPE</a>
                     <a class="lisessao" href="{{ route('rmas.relatorios.index') }}">Estatísticas Gerais</a>
+                    <a class="lisessao" href="{{ rota_tema('rmas.logistica.frete-porto-alegre') }}">Transp. Porto Alegre</a>
+                    <a class="lisessao" href="{{ rota_tema('rmas.ajuda') }}">Ajuda</a>
                     @can('gerenciar', \App\Models\User::class)
                         <a class="lisessao" href="{{ rota_tema('identidade.usuarios.index') }}">Usuários</a>
                     @endcan

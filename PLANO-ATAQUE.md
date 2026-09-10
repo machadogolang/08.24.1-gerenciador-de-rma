@@ -115,10 +115,10 @@ Decisao canonica do dono:
 - [x] UF-14 - Criacao de Novo Usuario pelo Operador no Tema V1 (`GAP-V1-02` / CAP-ID-005).
 
 ### Fase 6 - Parceiros, Logistica e Procedimentos (P3)
-- [ ] UF-15 - RMAs Associados ao Parceiro no Tema V1 (`GAP-V1-10` / CAP-PAR-006).
-- [ ] UF-16 - Consulta de Transporte Porto Alegre no Tema V1 (`GAP-V1-11` / CAP-LOG-001).
-- [ ] UF-17 - Destinatarios com Frete e CFOP no Tema V2 (`GAP-V2-04` / CAP-LOG-002).
-- [ ] UF-18 - Procedimento Operacional / Ajuda no Tema V2 (`GAP-V2-05` / CAP-AUX-001).
+- [x] UF-15 - RMAs Associados ao Parceiro no Tema V1 (`GAP-V1-10` / CAP-PAR-006).
+- [x] UF-16 - Consulta de Transporte Porto Alegre no Tema V1 (`GAP-V1-11` / CAP-LOG-001).
+- [x] UF-17 - Destinatarios com Frete e CFOP no Tema V2 (`GAP-V2-04` / CAP-LOG-002).
+- [x] UF-18 - Procedimento Operacional / Ajuda no Tema V2 (`GAP-V2-05` / CAP-AUX-001).
 
 ### Fase 7 - Blindagem com Testes e Reconciliacao (P4)
 - [ ] UF-19 - `CapabilityContractTest`: contrato automatizado de todas as capacidades em V1 e V2.
@@ -138,7 +138,7 @@ Decisao canonica do dono:
 8. [x] Unificacao Funcional - Fase 4 (P1): Auditoria/logs no V1 (UF-10), Creditos tabulares no V1 (UF-11).
 9. [ ] Fila visual forense pendente: Alterar senha V2 (PAR15-SEC-001), Anotacoes V2 (PAR15-NOTE-001), RG/IE (PAR15-PART-DATA-001).
 10. [ ] Edit Parceiros V2 (PART-002..005) e RMAs associados (PART-001/006 / UF-15).
-11. [ ] Unificacao Funcional - Fases 5 e 6: Urgencia/Threshold (UF-12), Prioridade (UF-13), Novo Usuario V1 (UF-14), Logistica/Porto Alegre (UF-16/17), Ajuda (UF-18).
+11. [x] Unificacao Funcional - Fases 5 e 6: Urgencia/Threshold (UF-12), Prioridade (UF-13), Novo Usuario V1 (UF-14), Logistica/Porto Alegre (UF-16/17), Ajuda (UF-18).
 12. [ ] Sweep de `[R]`/`[ ]`: PAR14-NAV-002, PAR15-RMA-LIST-001, PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001, PAR15-RMA-MARCAR-001.
 13. [ ] Unificacao Funcional - Fase 7: CapabilityContractTest (UF-19) e DescobribilidadeTemasTest (UF-20).
 14. [ ] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense).

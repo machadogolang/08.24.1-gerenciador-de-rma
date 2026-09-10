@@ -53,14 +53,14 @@ Marcadores canonicos: `[ ]` (Pendente), `[R]` (Revisado), `[x]` (Concluido).
 
 ## Fase 6 - Parceiros, Logistica e Procedimentos (P3)
 
-- [ ] UF-15 - RMAs Associados na Visualizacao de Parceiros no Tema V1 (`GAP-V1-10` / CAP-PAR-006):
-  - [ ] Renderizar historico de RMAs vinculados ao cliente/fornecedor/fabricante no V1.
-- [ ] UF-16 - Consulta de Transporte Porto Alegre no Tema V1 (`GAP-V1-11` / CAP-LOG-001):
-  - [ ] Disponibilizar bloco/consulta de transporte regional na linguagem visual do 14.6.1.
-- [ ] UF-17 - Consulta de Destinatarios com Frete e CFOP no Tema V2 (`GAP-V2-04` / CAP-LOG-002):
-  - [ ] Disponibilizar visualizacao de dados logisticos de destinatarios na interface V2.
-- [ ] UF-18 - Procedimento Operacional / Ajuda no Tema V2 (`GAP-V2-05` / CAP-AUX-001):
-  - [ ] Integrar link e tela de ajuda/procedimentos na interface V2.
+- [x] UF-15 - RMAs Associados na Visualizacao de Parceiros no Tema V1 (`GAP-V1-10` / CAP-PAR-006):
+  - [x] Renderizar historico de RMAs vinculados ao cliente/fornecedor/fabricante no V1.
+- [x] UF-16 - Consulta de Transporte Porto Alegre no Tema V1 (`GAP-V1-11` / CAP-LOG-001):
+  - [x] Disponibilizar bloco/consulta de transporte regional na linguagem visual do 14.6.1.
+- [x] UF-17 - Consulta de Destinatarios com Frete e CFOP no Tema V2 (`GAP-V2-04` / CAP-LOG-002):
+  - [x] Disponibilizar visualizacao de dados logisticos de destinatarios na interface V2.
+- [x] UF-18 - Procedimento Operacional / Ajuda no Tema V2 (`GAP-V2-05` / CAP-AUX-001):
+  - [x] Integrar link e tela de ajuda/procedimentos na interface V2.
 
 ## Fase 7 - Blindagem com Testes Automatizados e Reconciliacao (P4)
 

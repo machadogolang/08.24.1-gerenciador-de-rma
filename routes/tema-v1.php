@@ -68,6 +68,10 @@ Route::prefix('v1')
             ->name('identidade.historico-de-acesso.index');
         Route::get('/rmas-historico', [\App\Http\Controllers\Rma\HistoricoDeModificacaoController::class, 'index'])
             ->name('rmas.historico.index');
+        Route::get('/logistica/porto-alegre', [\App\Http\Controllers\Rma\LogisticaController::class, 'fretePortoAlegre'])
+            ->name('rmas.logistica.frete-porto-alegre');
+        Route::get('/ajuda', [\App\Http\Controllers\Rma\AjudaController::class, 'index'])
+            ->name('rmas.ajuda');
 
         Route::put('/relatorios/{codigo}/informacao-adicional', [RelatorioController::class, 'salvarInformacaoAdicional'])
             ->name('rmas.relatorios.informacao-adicional.update');

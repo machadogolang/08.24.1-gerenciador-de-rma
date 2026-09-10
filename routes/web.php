@@ -149,4 +149,7 @@ Route::middleware('auth')->group(function () {
     // conflito com `rmas/{rma}`.
     Route::get('/rmas-logistica/frete-porto-alegre', [LogisticaController::class, 'fretePortoAlegre'])->name('rmas.logistica.frete-porto-alegre');
     Route::get('/rmas/{rma}/boletins-relacionados', [LogisticaController::class, 'boletinsRelacionados'])->name('rmas.logistica.boletins-relacionados');
+
+    // UF-18 (CAP-AUX-001) - Ajuda e procedimento operacional de RMA nos dois temas.
+    Route::get('/ajuda', [\App\Http\Controllers\Rma\AjudaController::class, 'index'])->name('rmas.ajuda');
 });

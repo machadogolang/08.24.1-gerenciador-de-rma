@@ -74,4 +74,6 @@ Route::prefix('v2')
 
         Route::get('/historico-de-acesso', [HistoricoDeAcessoController::class, 'index'])->name('identidade.historico-de-acesso.index');
         Route::get('/rmas-historico', [HistoricoDeModificacaoController::class, 'index'])->name('rmas.historico.index');
+        Route::get('/logistica/porto-alegre', [\App\Http\Controllers\Rma\LogisticaController::class, 'fretePortoAlegre'])->name('rmas.logistica.frete-porto-alegre');
+        Route::get('/ajuda', [\App\Http\Controllers\Rma\AjudaController::class, 'index'])->name('rmas.ajuda');
     });

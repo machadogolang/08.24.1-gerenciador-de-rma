@@ -7,6 +7,9 @@
     (nome, e-mail, senha, permissao). Implementacao moderna: POST + CSRF + validacao +
     Policy + vinculo `company_user` do tenant ativo; sem SHA1 nem validacao insegura. --}}
     <ol class="breadcrumb submenutitulo">
+        {{-- PAR15-USR-009 - icone do breadcrumb exatamente como em
+        `15.8.1/subp/novo_usuario.php` (novo_usuario.png 20x20). --}}
+        <li class="fl"><img alt="Controle" style="margin-top:-2px;" title="Logs" src="{{ asset('images/rma/novo_usuario.png') }}" width="20" height="20"/></li>
         <li class="fl" style="margin-top:0px;">Novo usuario</li>
         <li style="clear:both;"></li>
     </ol>
@@ -23,7 +26,8 @@
         <form action="{{ rota_tema('identidade.usuarios.store') }}" method="post">
             @csrf
             <div class="form-group">
-                <label style="float:left;color:#EEE;" for="name">Quem voce quer cadastrar?</label>
+                {{-- PAR15-USR-009 - `nome.png` associado ao label, igual ao Legacy. --}}
+                <label style="float:left;color:#EEE;" for="name"><img style="margin-top:-2px;" src="{{ asset('images/rma/nome.png') }}" width="18"/> Quem voce quer cadastrar?</label>
                 <input style="clear:both;" type="text" class="form-control Input1" name="name" id="name" placeholder="Nome completo" required>
             </div>
             <div class="form-group">
@@ -36,12 +40,28 @@
             </div>
             <div class="form-group">
                 <label style="float:left;color:#EEE;" for="papel">Permissao</label>
+                {{-- PAR15-USR-007/009 - composicao historica do 15.8.1 preservada
+                (`Bloqueado` / `Leitura` / `Leitura e modificacao`, com o mesmo
+                `Leitura` selecionado por padrao) e a capacidade moderna entra como
+                EXTENSAO controlada, em grupo proprio: os papeis adicionais do enum
+                ficam selecionaveis sem poluir o rotulo historico com nome tecnico.
+                `$papeisDisponiveis` ja vem filtrado por `podeOperarSobrePapel()`
+                (SUPERVISOR nunca cria SUPERADMINISTRADOR); o servidor valida de novo. --}}
                 <select style="clear:both;" class="form-control Input1" name="papel" id="papel" required>
-                    @foreach (\App\Identidade\Dominio\Papel::cases() as $papel)
-                        <option value="{{ $papel->name }}" @selected($papel === \App\Identidade\Dominio\Papel::Leitura)>
-                            {{ $papel->rotuloDePermissaoLegado() }} ({{ $papel->name }})
-                        </option>
-                    @endforeach
+                    <optgroup label="Permissoes do 15.8.1">
+                        @foreach ($papeisHistoricos as $papel)
+                            <option value="{{ $papel->name }}" @selected($papel === \App\Identidade\Dominio\Papel::Leitura)>
+                                {{ $papel->rotuloDePermissaoLegado() }}
+                            </option>
+                        @endforeach
+                    </optgroup>
+                    @if ($papeisModernos->isNotEmpty())
+                        <optgroup label="Papeis modernos">
+                            @foreach ($papeisModernos as $papel)
+                                <option value="{{ $papel->name }}">{{ $papel->name }}</option>
+                            @endforeach
+                        </optgroup>
+                    @endif
                 </select>
             </div>
             <button type="submit" class="btn btn-default" style="float:right;">Cadastrar</button>

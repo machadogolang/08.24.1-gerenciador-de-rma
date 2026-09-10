@@ -67,6 +67,54 @@ class NovoUsuarioV2Test extends TestCase
     }
 
     #[Test]
+    public function tela_preserva_o_contrato_visual_do_15_8_1(): void
+    {
+        // PAR15-USR-009 - icones do breadcrumb/label e os TRES rotulos historicos
+        // do 15.8.1, sem sufixo tecnico do enum, com `Leitura` selecionado.
+        $response = $this->actingAs($this->supervisor())->get('/v2/usuarios/novo');
+
+        $response->assertOk();
+        $response->assertSee('images/rma/novo_usuario.png', false);
+        $response->assertSee('images/rma/nome.png', false);
+        $response->assertSee('Quem voce quer cadastrar?', false);
+
+        foreach (['Bloqueado', 'Leitura', 'Leitura e modificacao'] as $rotulo) {
+            $response->assertSee($rotulo, false);
+        }
+
+        // Nenhum rotulo historico vem acompanhado do nome tecnico do enum.
+        $response->assertDontSee('Leitura e modificacao (Operador)', false);
+        $response->assertDontSee('Leitura e modificacao (Supervisor)', false);
+    }
+
+    #[Test]
+    public function supervisor_nao_recebe_a_opcao_superadministrador(): void
+    {
+        $response = $this->actingAs($this->supervisor())->get('/v2/usuarios/novo');
+
+        $response->assertOk();
+        $response->assertSee(Papel::Supervisor->name, false);
+        $response->assertDontSee('value="SuperAdministrador"', false);
+    }
+
+    #[Test]
+    public function superadministrador_recebe_todos_os_papeis(): void
+    {
+        $admin = User::factory()->create([
+            'papel' => Papel::SuperAdministrador,
+            'tema_preferido' => TemaPreferido::V2,
+        ]);
+
+        $response = $this->actingAs($admin)->get('/v2/usuarios/novo');
+
+        $response->assertOk();
+
+        foreach (['Bloqueado', 'Leitura', 'Operador', 'Supervisor', 'SuperAdministrador'] as $papel) {
+            $response->assertSee('value="'.$papel.'"', false);
+        }
+    }
+
+    #[Test]
     public function email_duplicado_e_rejeitado(): void
     {
         User::factory()->create(['email' => 'novo@teste.local']);

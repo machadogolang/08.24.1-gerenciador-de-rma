@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Identidade;
 
+use App\Compartilhado\Tenant\ContextoDeTenant;
 use App\Http\Controllers\Controller;
 use App\Identidade\Aplicacao\ResetarSenhaDeUsuario;
+use App\Identidade\Aplicacao\ResumoDeAcessoDosUsuarios;
 use App\Identidade\Aplicacao\SenhaAtualIncorretaException;
 use App\Identidade\Aplicacao\TrocarPropriaSenha;
 use App\Identidade\Dominio\Papel;
@@ -31,17 +33,17 @@ class UsuarioController extends Controller
         $usuarios = User::query()->orderBy('name')->get()
             ->when(
                 ! $ator->papelAtivo()->podeGerenciarUsuarios() || $ator->papelAtivo() !== Papel::SuperAdministrador,
-                fn ($usuarios) => $usuarios->reject(fn (User $u) => ($u->papelNaEmpresa(app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId()) ?? $u->papel)->ocultoDaListagemDeUsuarios())
+                fn ($usuarios) => $usuarios->reject(fn (User $u) => ($u->papelNaEmpresa(app(ContextoDeTenant::class)->empresaId()) ?? $u->papel)->ocultoDaListagemDeUsuarios())
             );
 
-        $empresaIdView = app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId();
+        $empresaIdView = app(ContextoDeTenant::class)->empresaId();
 
         return view_do_tema('identidade.usuarios', [
             'titulo' => 'Usuários',
             'usuarios' => $usuarios,
             'empresa_id' => $empresaIdView,
             // PAR15-USR-001 - QT Login / Ultimo login derivados de tentativas_de_acesso.
-            'resumoDeAcesso' => app(\App\Identidade\Aplicacao\ResumoDeAcessoDosUsuarios::class)->porUsuario(),
+            'resumoDeAcesso' => app(ResumoDeAcessoDosUsuarios::class)->porUsuario(),
         ]);
     }
 
@@ -70,7 +72,7 @@ class UsuarioController extends Controller
         // EVO-SAAS-001 (S9): Papel vive no vínculo company_user da empresa ativa. O
         // espelho em users.papel só ocorre quando o usuário tem um único vínculo ativo
         // (compatibilidade); multi-vínculo mantém papéis independentes por empresa.
-        $empresaId = app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId();
+        $empresaId = app(ContextoDeTenant::class)->empresaId();
         if ($empresaId !== null) {
             $vinculo = CompanyUser::query()
                 ->where('company_id', $empresaId)
@@ -186,7 +188,33 @@ class UsuarioController extends Controller
             return redirect()->route('identidade.usuarios.index');
         }
 
-        return view('temas.v2.identidade.usuarios-novo', ['titulo' => 'Novo usuario']);
+        // PAR15-USR-007/009 - opcoes do select de permissao: os tres rotulos
+        // historicos do 15.8.1 (`Bloqueado`, `Leitura`, `Leitura e modificacao`,
+        // este ultimo = `Operador`) mais a extensao moderna permitida ao ator.
+        // `podeOperarSobrePapel()` e aplicado aqui E no `store()` (defesa em
+        // profundidade): SUPERVISOR nunca cria SUPERADMINISTRADOR.
+        $ator = $request->user()->papelAtivo();
+        $permitidos = collect(Papel::cases())
+            ->filter(fn (Papel $papel): bool => $ator->podeOperarSobrePapel($papel))
+            ->values();
+
+        return view('temas.v2.identidade.usuarios-novo', [
+            'titulo' => 'Novo usuario',
+            'papeisHistoricos' => $permitidos
+                ->filter(fn (Papel $papel): bool => in_array($papel, [
+                    Papel::Bloqueado,
+                    Papel::Leitura,
+                    Papel::Operador,
+                ], true))
+                ->values(),
+            'papeisModernos' => $permitidos
+                ->reject(fn (Papel $papel): bool => in_array($papel, [
+                    Papel::Bloqueado,
+                    Papel::Leitura,
+                    Papel::Operador,
+                ], true))
+                ->values(),
+        ]);
     }
 
     /**
@@ -221,7 +249,7 @@ class UsuarioController extends Controller
             'papel' => $papelNovo,
         ]);
 
-        $empresaId = app(\App\Compartilhado\Tenant\ContextoDeTenant::class)->empresaId();
+        $empresaId = app(ContextoDeTenant::class)->empresaId();
         if ($empresaId !== null) {
             $usuario->empresas()->attach($empresaId, ['papel' => $papelNovo, 'ativo' => true]);
         }

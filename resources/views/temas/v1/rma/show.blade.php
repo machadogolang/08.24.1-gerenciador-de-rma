@@ -247,15 +247,11 @@
     <div class="detalhe-bd-rodape">
         <div class="detalhe-bd-rodape__esquerda fl">
             <input type="hidden" name="marcarestoque" value="0">
-            <label class="checkbox-v1-detalhe">
-                <input type="checkbox" name="marcarestoque" value="1" @checked($registro->marcarestoque)>
-                <span data-texto-true="O ITEM E DO ESTOQUE" data-texto-falso="ITEM NAO E DO ESTOQUE">{{ $registro->marcarestoque ? 'O ITEM E DO ESTOQUE' : 'ITEM NAO E DO ESTOQUE' }}</span>
-            </label>
+            <input type="checkbox" id="checkboxEstoqueDetalheV1" name="marcarestoque" value="1" @checked($registro->marcarestoque)>
+            <label for="checkboxEstoqueDetalheV1" class="checkbox-v1-detalhe" data-text-true="O ITEM E DO ESTOQUE" data-text-false="ITEM NAO E DO ESTOQUE"><i></i></label>
             <input type="hidden" name="credito_disponivel" value="0">
-            <label class="checkbox-v1-detalhe">
-                <input type="checkbox" name="credito_disponivel" value="1" @checked($registro->creditoDisponivel)>
-                <span data-texto-true="CREDITO DISPONIVEL" data-texto-falso="MARQUE P/ VALIDAR CREDITO">{{ $registro->creditoDisponivel ? 'CREDITO DISPONIVEL' : 'MARQUE P/ VALIDAR CREDITO' }}</span>
-            </label>
+            <input type="checkbox" id="checkboxCreditoDetalheV1" name="credito_disponivel" value="1" @checked($registro->creditoDisponivel)>
+            <label for="checkboxCreditoDetalheV1" class="checkbox-v1-detalhe" data-text-true="CREDITO DISPONIVEL" data-text-false="MARQUE P/ VALIDAR CREDITO"><i></i></label>
         </div>
 
         <div class="detalhe-bd-rodape__direita fr">

@@ -41,9 +41,8 @@ Fila de correcao apos o checkpoint documental (secao 6 da matriz):
 
 1. [x] PAR15-USR-001 - organizacao historica de /v2/usuarios (c556d15).
 2. [x] PAR15-RMA-DET-001 - select operacional + OK no topo (e rodape) do detalhe V2.
-3. [R] PAR14/PAR15-RMA-STOCK/CREDIT - medidos no runtime (V2: altura do select
-   corrigida de 34 para 30px; V1: tipo/label equivalentes, mas o Legacy esconde o
-   input e desenha check custom, pendente de reproduzir).
+3. [x] PAR14/PAR15-RMA-STOCK/CREDIT - fechados: V2 select 30px, V1 check custom
+   475x40 identico ao Legacy, persistencia (salvar/reload) e Policy provadas.
 4. [ ] PAR15-AUD-001..005 - auditoria/historico V2.
 5. [ ] PAR14-REL-RPEC-001..005 - RPEC V1.
 6. [ ] PAR14-REL-RCD-001..003 - RCD V1.

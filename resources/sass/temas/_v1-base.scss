@@ -299,6 +299,58 @@ hr {
     }
 }
 
+// PAR14-RMA-STOCK-001/PAR14-RMA-CREDIT-001 - no Legacy a regra do toggle
+// (`15.9.7.css`) e global; o detalhe do BD usa o MESMO check custom do painel Novo.
+// Replica escopado no rodape historico do detalhe (input oculto + label[data-text-*]).
+.detalhe-bd-rodape__esquerda {
+    input[type="checkbox"] {
+        display: none;
+
+        + label {
+            display: inline-block;
+            position: relative;
+            width: 475px;
+            height: 30px;
+            padding-top: 10px;
+            background-color: #db574d;
+            color: #fff;
+            font-size: 12px;
+            font-weight: normal;
+            line-height: 20px;
+            text-transform: uppercase;
+            transition: all 200ms ease;
+
+            &::before,
+            &::after {
+                display: inline-block;
+                width: 50%;
+                height: 100%;
+                text-align: center;
+            }
+
+            &::before { content: attr(data-text-true); }
+            &::after { content: attr(data-text-false); }
+
+            i {
+                position: absolute;
+                top: 10%;
+                left: 5%;
+                width: 45%;
+                height: 80%;
+                background-color: #fff;
+                transition: all 200ms ease;
+            }
+        }
+
+        &:checked + label {
+            background-color: #67b04f;
+
+            i { left: 50%; }
+        }
+    }
+}
+
+
 .formButtonEnviarNovo {
     height: 30px;
     width: 75px;

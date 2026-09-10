@@ -98,10 +98,31 @@ test('V1 - estoque/credito sao checkboxes reais com os rotulos do 14.6.1', async
     // Rotulos historicos do estoque e do credito.
     await expect(formLegacy.locator('label[for=checkbox1]')).toHaveAttribute('data-text-true', 'O ITEM E DO ESTOQUE');
     await expect(formLegacy.locator('label[for=checkbox1]')).toHaveAttribute('data-text-false', 'ITEM NAO E DO ESTOQUE');
-    await expect(formV3.locator('[data-texto-true="O ITEM E DO ESTOQUE"][data-texto-falso="ITEM NAO E DO ESTOQUE"]')).toHaveCount(1);
+    await expect(formV3.locator('label[data-text-true="O ITEM E DO ESTOQUE"][data-text-false="ITEM NAO E DO ESTOQUE"]')).toHaveCount(1);
     await expect(formLegacy.locator('label[for=checkbox2]')).toHaveAttribute('data-text-true', 'CREDITO DISPONIVEL');
     await expect(formLegacy.locator('label[for=checkbox2]')).toHaveAttribute('data-text-false', 'MARQUE P/ VALIDAR CREDITO');
-    await expect(formV3.locator('[data-texto-true="CREDITO DISPONIVEL"][data-texto-falso="MARQUE P/ VALIDAR CREDITO"]')).toHaveCount(1);
+    await expect(formV3.locator('label[data-text-true="CREDITO DISPONIVEL"][data-text-false="MARQUE P/ VALIDAR CREDITO"]')).toHaveCount(1);
+
+    // Interacao: o clique alterna o estado do controle real nos dois lados.
+    const checkLegacy = formLegacy.locator('input[type=checkbox][name=marcarestoque]');
+    const antesLegacy = await checkLegacy.isChecked();
+    // O input do Legacy e `display:none` (check custom via label); o clique real do
+    // usuario e no label, mas aqui basta provar que o controle responde.
+    await checkLegacy.evaluate((el: HTMLInputElement) => el.click());
+    expect(await checkLegacy.isChecked()).toBe(!antesLegacy);
+
+    const checkV3 = formV3.locator('input[type=checkbox][name=marcarestoque]');
+    const antesV3 = await checkV3.isChecked();
+    // Novo V1 agora replica o check custom do Legacy (input oculto + label).
+    await checkV3.evaluate((el: HTMLInputElement) => el.click());
+    expect(await checkV3.isChecked()).toBe(!antesV3);
+
+    // Geometria do controle VISIVEL (o check custom e o label).
+    const labelLegacy = await formLegacy.locator('label[data-text-true]').first().boundingBox();
+    const labelV3 = await formV3.locator('label[data-text-true]').first().boundingBox();
+    console.log('V1 label toggle legacy=', labelLegacy, ' novo=', labelV3);
+    expect(labelLegacy && labelV3 ? Math.abs(labelLegacy.width - labelV3.width) : 99).toBeLessThanOrEqual(2);
+    expect(labelLegacy && labelV3 ? Math.abs(labelLegacy.height - labelV3.height) : 99).toBeLessThanOrEqual(2);
 
     const caixaLegacy = await formLegacy.locator('input[type=checkbox][name=marcarestoque]').boundingBox();
     const caixaV3 = await formV3.locator('input[type=checkbox][name=marcarestoque]').boundingBox();
@@ -135,6 +156,13 @@ test('V2 - estoque/credito sao selects Nao/Sim com os rotulos do 15.8.1', async 
     await expect(v3.locator('label:has-text("E um produto do estoque")')).toHaveCount(1);
     await expect(legacy.locator('label:has-text("E credito disponivel")')).toHaveCount(1);
     await expect(v3.locator('label:has-text("E credito disponivel")')).toHaveCount(1);
+
+    // Interacao: trocar a opcao do select muda o valor selecionado (Nao <-> Sim).
+    const selectV3 = v3.locator('select[name=marcarestoque]');
+    await selectV3.selectOption('1');
+    expect(await selectV3.inputValue()).toBe('1');
+    await selectV3.selectOption('0');
+    expect(await selectV3.inputValue()).toBe('0');
 
     const caixaLegacy = await legacy.locator('select[name=marcarestoque]').boundingBox();
     const caixaV3 = await v3.locator('select[name=marcarestoque]').boundingBox();

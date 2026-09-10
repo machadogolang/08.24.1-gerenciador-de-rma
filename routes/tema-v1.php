@@ -5,6 +5,7 @@ use App\Http\Controllers\Parceiros\AssistenciaTecnicaController;
 use App\Http\Controllers\Parceiros\ClienteController;
 use App\Http\Controllers\Parceiros\FabricanteController;
 use App\Http\Controllers\Parceiros\FornecedorController;
+use App\Http\Controllers\Rma\RelatorioController;
 use App\Http\Controllers\Rma\RmaController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,4 +40,17 @@ Route::prefix('v1')
 
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('identidade.usuarios.index');
         Route::get('/perfil', [UsuarioController::class, 'perfil'])->name('identidade.perfil.show');
+
+        // ADENDO P0/AD-10 - relatorios fiscais do TEMA V1 por URL deterministica
+        // (`/v1/relatorios/{rcd,rpec,rmpe}`). Mesmo `RelatorioController` das rotas
+        // canonicas: nenhum controller, regra ou query duplicados; o prefixo so
+        // forca `ResolverTemaAtivo` a resolver a folha historica do V1.
+        Route::get('/relatorios/rcd', [RelatorioController::class, 'creditosDisponiveis'])
+            ->name('rmas.relatorios.rcd');
+        Route::get('/relatorios/rpec', [RelatorioController::class, 'produtosEmEstoqueParaContagem'])
+            ->name('rmas.relatorios.rpec');
+        Route::get('/relatorios/rmpe', [RelatorioController::class, 'produtosEncaminhados'])
+            ->name('rmas.relatorios.rmpe');
+        Route::put('/relatorios/{codigo}/informacao-adicional', [RelatorioController::class, 'salvarInformacaoAdicional'])
+            ->name('rmas.relatorios.informacao-adicional.update');
     });

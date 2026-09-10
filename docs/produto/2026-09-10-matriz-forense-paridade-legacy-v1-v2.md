@@ -459,6 +459,7 @@ boundingBox/computedStyle nos pontos criticos + fluxo funcional quando aplicavel
 | PAR15-PART-005 | V2 | Edit Assistencia | `subp/ver_assistencia_tecnica.php` | `_form.blade.php` | Auditar igual | C | [R] | Executar |
 | PAR15-PART-DATA-001 | V2 | RG/IE | `rgie` visivel nos formularios Legacy | nao migrado (decisao antiga) | Dado de tela nao migrado | B | [R] | Preservar nullable/tenant-aware + importar |
 | PAR15-PART-006 | V2 | RMAs associados | `subp/ver_*.php` | `_detalhe.blade.php` | Colunas/queries por tipo | A | [R] | Executar |
+| PAR15-RMA-DET-015 | V2 | Opcoes do select de ciclo em ENTRADA | `15.8.1/page/rma.php` (condicao `$status != " entrada"` + `pms == 4`) | `_acoes_do_ciclo.blade.php` (`Status::podeReverterParaEntrada()`) | Legacy expoe RETORNAR P/ ENTRADA em RMA de ENTRADA para usuario com `pms == 4`; o novo nao | F | Baixo | [x] | Classificado como quirk do Legacy (comparacao com string de espaco a esquerda + privilegio), NAO reproduzido; a comparacao de paridade do conjunto de opcoes passa a usar o estado ENCAMINHADO (`ParidadeDetalheRmaV2Geometria`) |
 
 Nota: `ParidadeParceirosV2.spec.ts` cobria somente `/create` - nao serve como
 evidencia de edit/show (ponto cego registrado).
@@ -504,8 +505,8 @@ Reconciliacoes feitas:
 
 Fila executavel corrente (ordem do dono; nada aqui e "so parecer"):
 
-1. [ ] Reforco QA do detalhe RMA V2 (conjunto de opcoes igual ao Legacy +
-   tolerancia de gap coerente, 2-4px).
+1. [x] Reforco QA do detalhe RMA V2 (conjunto de opcoes igual ao Legacy +
+   tolerancia de gap coerente, 2-4px): `ParidadeDetalheRmaV2Geometria` 2/2 verde.
 2. [ ] `PAR15-USR-007/009` - Novo Usuario V2 (icones, label e geometria).
 3. [ ] `PAR15-SEC-001` - Alterar senha V2 mantendo a seguranca moderna.
 4. [ ] `PAR15-NOTE-001` - Anotacoes V2 (autosave + debounce + geometria).

@@ -49,13 +49,34 @@ class RelatorioControllerTest extends TestCase
         $response->assertDontSee('RMA encaminhado para contagem');
     }
 
-    public function test_rmpe_exige_intervalo_de_datas(): void
+    public function test_rmpe_sem_intervalo_lista_todos_os_encaminhados(): void
     {
+        // PAR14-REL-RMPE-002 - o Legacy nao filtrava por periodo (a query ignora
+        // data). Sem query string o relatorio deve responder 200 e listar tudo.
         $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+        Rma::factory()->create([
+            'descricao' => 'RMA encaminhado fora de qualquer periodo informado',
+            'status' => Status::Encaminhado,
+            'marcarestoque' => true,
+            'nf_remessa' => '987',
+            'encaminhado_em' => '2026-01-05 10:00:00',
+        ]);
 
         $response = $this->actingAs($usuario)->get(route('rmas.relatorios.rmpe'));
 
-        $response->assertSessionHasErrors(['data_inicio', 'data_fim']);
+        $response->assertOk();
+        $response->assertSee('RMA encaminhado fora de qualquer periodo informado');
+    }
+
+    public function test_rmpe_exige_os_dois_campos_quando_apenas_um_e_informado(): void
+    {
+        $usuario = User::factory()->create(['papel' => Papel::Leitura]);
+
+        $response = $this->actingAs($usuario)->get(route('rmas.relatorios.rmpe', [
+            'data_inicio' => '2026-05-01',
+        ]));
+
+        $response->assertSessionHasErrors(['data_fim']);
     }
 
     public function test_rmpe_lista_encaminhados_no_intervalo_informado(): void

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Rma;
 
 use App\Http\Controllers\Controller;
-use App\Models\Rma as RmaEloquent;
 use App\Models\RelatorioInformacaoAdicional;
+use App\Models\Rma as RmaEloquent;
 use App\Rma\Aplicacao\Relatorios\RelatorioCreditosDisponiveis;
 use App\Rma\Aplicacao\Relatorios\RelatorioFiscalV1;
 use App\Rma\Aplicacao\Relatorios\RelatorioProdutosEmEstoqueParaContagem;
@@ -109,8 +109,10 @@ class RelatorioController extends Controller
     }
 
     /**
-     * RMPE - intervalo de datas real via validacao (substitui o intervalo hardcoded
-     * para "2014" do Legacy, bug de manutencao ja decidido) sobre a regra confirmada.
+     * RMPE - intervalo de datas OPCIONAL (filtro moderno) sobre a regra confirmada.
+     * O Legacy nao filtrava por periodo (a query ignora data); por isso, sem
+     * `data_inicio`/`data_fim` a selecao roda sem filtro de periodo, mantendo a
+     * resposta 200 e uma URL de QA deterministica (`/v1/relatorios/rmpe`).
      */
     public function produtosEncaminhados(
         Request $request,
@@ -120,21 +122,21 @@ class RelatorioController extends Controller
         Gate::authorize('viewAny', RmaEloquent::class);
 
         $dados = $request->validate([
-            'data_inicio' => ['required', 'date'],
-            'data_fim' => ['required', 'date', 'after_or_equal:data_inicio'],
+            'data_inicio' => ['nullable', 'date', 'required_with:data_fim'],
+            'data_fim' => ['nullable', 'date', 'required_with:data_inicio', 'after_or_equal:data_inicio'],
         ]);
 
         $registros = $relatorio->listar(
-            new \DateTimeImmutable($dados['data_inicio']),
-            new \DateTimeImmutable($dados['data_fim'].' 23:59:59'),
+            isset($dados['data_inicio']) ? new \DateTimeImmutable($dados['data_inicio']) : null,
+            isset($dados['data_fim']) ? new \DateTimeImmutable($dados['data_fim'].' 23:59:59') : null,
         );
         $montado = $projecao->montar($registros, 'RMPE');
 
         return view_do_tema('rma.relatorios.rmpe', [
             'titulo' => 'Relatorio de Produtos Encaminhados (RMPE)',
             'registros' => $registros,
-            'dataInicio' => $dados['data_inicio'],
-            'dataFim' => $dados['data_fim'],
+            'dataInicio' => $dados['data_inicio'] ?? '',
+            'dataFim' => $dados['data_fim'] ?? '',
             'relatorio' => $this->pacoteV1(
                 'RMPE',
                 'RMPE - RELACAO DOS PRODUTOS ENCAMINHADOS PELO RMA',

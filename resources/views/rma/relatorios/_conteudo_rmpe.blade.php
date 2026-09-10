@@ -4,11 +4,11 @@ contrato de ações; impressão limpa via `.relatorio-print`. --}}
     <h2 class="relatorio-titulo">Relatório de Produtos Encaminhados (RMPE)</h2>
 
     <form method="GET" action="{{ route('rmas.relatorios.rmpe') }}" class="relatorio-filtro">
-        <label class="acao-label">Data início
-            <input type="date" name="data_inicio" class="form-control" value="{{ $dataInicio ?? '' }}" required>
+        <label class="acao-label">Data início (opcional)
+            <input type="date" name="data_inicio" class="form-control" value="{{ $dataInicio ?? '' }}">
         </label>
-        <label class="acao-label">Data fim
-            <input type="date" name="data_fim" class="form-control" value="{{ $dataFim ?? '' }}" required>
+        <label class="acao-label">Data fim (opcional)
+            <input type="date" name="data_fim" class="form-control" value="{{ $dataFim ?? '' }}">
         </label>
         <button type="submit" class="acao acao--secundaria">Filtrar</button>
     </form>

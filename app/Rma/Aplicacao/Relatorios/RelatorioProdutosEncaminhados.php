@@ -14,17 +14,21 @@ use Illuminate\Database\Eloquent\Collection;
  */
 final class RelatorioProdutosEncaminhados
 {
-    public function listar(\DateTimeInterface $dataInicio, \DateTimeInterface $dataFim): Collection
+    public function listar(?\DateTimeInterface $dataInicio = null, ?\DateTimeInterface $dataFim = null): Collection
     {
         // PAR14-REL-RMPE-002 - regra do Legacy: status IN (ENCAMINHADO, RECEBIDO)
         // AND com NF de remessa AND marcarestoque = 1 ORDER BY encaminhado DESC. O
-        // intervalo de datas e a melhoria moderna ja decidida (o Legacy fixava 2014).
+        // Legacy NAO filtrava por periodo; o intervalo de datas e um filtro moderno
+        // OPCIONAL (sem ele, a selecao roda sem filtro de periodo).
         return Rma::query()
             ->whereIn('status', [Status::Encaminhado->name, Status::Recebido->name])
             ->whereNotNull('nf_remessa')
             ->whereNotIn('nf_remessa', ['', '0'])
             ->where('marcarestoque', true)
-            ->whereBetween('encaminhado_em', [$dataInicio, $dataFim])
+            ->when(
+                $dataInicio !== null && $dataFim !== null,
+                fn ($query) => $query->whereBetween('encaminhado_em', [$dataInicio, $dataFim]),
+            )
             ->orderByDesc('encaminhado_em')
             ->get();
     }

@@ -124,6 +124,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/rmas-relatorios/rpec', [RelatorioController::class, 'produtosEmEstoqueParaContagem'])->name('rmas.relatorios.rpec');
     Route::get('/rmas-relatorios/rmpe', [RelatorioController::class, 'produtosEncaminhados'])->name('rmas.relatorios.rmpe');
 
+    // PAR14-REL-RPEC-004/RCD-003/RMPE-002 - informacao adicional do relatorio.
+    Route::put('/rmas-relatorios/{codigo}/informacao-adicional', [RelatorioController::class, 'salvarInformacaoAdicional'])->name('rmas.relatorios.informacao-adicional.update');
+
     // Auditoria (LEG-RMA-043/044, Fase 7) - histórico de modificação de RMA e
     // histórico de acesso (dado já existe desde a Fase 1, só falta a tela). Mesma
     // Gate `'gerenciar'` de `UsuarioController` (tela administrativa).

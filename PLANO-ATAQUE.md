@@ -45,8 +45,8 @@ Fila de correcao apos o checkpoint documental (secao 6 da matriz):
    475x40 identico ao Legacy, persistencia (salvar/reload) e Policy provadas.
 4. [x] PAR15-AUD-001..005 - hub Controle V2, colunas do Legacy projetadas de
    estado_apos/user_agent, acao Ver e SO/APP preservados (AUD-005 geometria em PF-14).
-5. [ ] PAR14-REL-RPEC-001..005 - RPEC V1.
-6. [ ] PAR14-REL-RCD-001..003 - RCD V1.
+5. [x] PAR14-REL-RPEC-001..005 - RPEC V1 com colunas, totais e informacao adicional.
+6. [x] PAR14-REL-RCD-001..003 - RCD V1 com colunas/totais e regra do Legacy.
 7. [x] PAR15-REL-001..010 - hub estatistico V2 + menu historico com item unico
    Relatorios (REL-010, markup compartilhado de RPEC/RCD/RMPE, fica com as ondas V1).
 8. [ ] demais gaps da matriz.

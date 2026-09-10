@@ -1,8 +1,5 @@
 @extends('temas.v1.layout')
 
-@section('omitirTituloPadrao')
-@endsection
-
 @section('conteudo')
-    @include('rma.relatorios._conteudo_rmpe')
+    @include('temas.v1.rma.relatorios._conteudo_v1', ['relatorio' => $relatorio])
 @endsection

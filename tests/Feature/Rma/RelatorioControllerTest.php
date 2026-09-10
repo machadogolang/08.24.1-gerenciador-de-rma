@@ -16,7 +16,11 @@ class RelatorioControllerTest extends TestCase
     public function test_rcd_mostra_rma_com_credito_disponivel(): void
     {
         $usuario = User::factory()->create(['papel' => Papel::Leitura]);
-        Rma::factory()->create(['descricao' => 'RMA com credito', 'credito_disponivel' => true]);
+        Rma::factory()->create([
+            'descricao' => 'RMA com credito',
+            'status' => Status::Concluido,
+            'credito_disponivel' => true,
+        ]);
 
         $response = $this->actingAs($usuario)->get(route('rmas.relatorios.rcd'));
 
@@ -60,6 +64,8 @@ class RelatorioControllerTest extends TestCase
         Rma::factory()->create([
             'descricao' => 'RMA encaminhado no periodo',
             'status' => Status::Encaminhado,
+            'marcarestoque' => true,
+            'nf_remessa' => '123',
             'encaminhado_em' => '2026-05-10 10:00:00',
         ]);
 

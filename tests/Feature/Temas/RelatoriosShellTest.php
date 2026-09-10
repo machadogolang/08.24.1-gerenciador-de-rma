@@ -36,6 +36,7 @@ class RelatoriosShellTest extends TestCase
         ]);
         Rma::factory()->create([
             'descricao' => 'RMA relatorio RCD shell',
+            'status' => Status::Concluido,
             'credito_disponivel' => true,
         ]);
 
@@ -45,7 +46,13 @@ class RelatoriosShellTest extends TestCase
         $response->assertViewIs("temas.{$tema->value}.rma.relatorios.rcd");
         $response->assertSee('relatorio-print', false);
         $response->assertSeeText('RMA relatorio RCD shell');
-        $response->assertSee('relatorio-tabela', false);
+
+        if ($tema === TemaPreferido::V2) {
+            $response->assertSee('relatorio-tabela', false);
+        } else {
+            // PAR14-REL-RCD-001 - V1 renderiza as colunas do Legacy.
+            $response->assertSeeText('PROTOCOLO');
+        }
     }
 
     #[DataProvider('temasProvider')]
@@ -66,8 +73,15 @@ class RelatoriosShellTest extends TestCase
         $response->assertOk();
         $response->assertViewIs("temas.{$tema->value}.rma.relatorios.rpec");
         $response->assertSee('relatorio-print', false);
-        $response->assertSee('class="acao acao--secundaria">Filtrar</button>', false);
         $response->assertSeeText('RMA relatorio RPEC shell');
+
+        if ($tema === TemaPreferido::V2) {
+            $response->assertSee('class="acao acao--secundaria">Filtrar</button>', false);
+        } else {
+            // PAR14-REL-RPEC-001 - V1 renderiza as 10 colunas do Legacy.
+            $response->assertSeeText('ORIGEM');
+            $response->assertSeeText('DESTINATARIO');
+        }
     }
 
     #[DataProvider('temasProvider')]
@@ -80,6 +94,8 @@ class RelatoriosShellTest extends TestCase
         Rma::factory()->create([
             'descricao' => 'RMA relatorio RMPE shell',
             'status' => Status::Encaminhado,
+            'marcarestoque' => true,
+            'nf_remessa' => '123',
             'encaminhado_em' => '2026-05-10 10:00:00',
         ]);
 
@@ -91,7 +107,14 @@ class RelatoriosShellTest extends TestCase
         $response->assertOk();
         $response->assertViewIs("temas.{$tema->value}.rma.relatorios.rmpe");
         $response->assertSee('relatorio-print', false);
-        $response->assertSee('class="acao acao--secundaria">Filtrar</button>', false);
         $response->assertSeeText('RMA relatorio RMPE shell');
+
+        if ($tema === TemaPreferido::V2) {
+            $response->assertSee('class="acao acao--secundaria">Filtrar</button>', false);
+        } else {
+            // PAR14-REL-RMPE-001 - V1 renderiza as colunas do Legacy.
+            $response->assertSeeText('ENCAMINHADO');
+            $response->assertSeeText('VALOR');
+        }
     }
 }

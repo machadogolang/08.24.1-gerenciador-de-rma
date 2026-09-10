@@ -167,6 +167,8 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   - [x] UI-07.2 - Remocao com prova de zero consumidor e teste (15 views removidas em
     2026-09-10; guarda `ViewsOrfasRemovidasTest`; PHPUnit 546/1676 verde).
 - [ ] P7 - UX-003: Encaminhar por selecao validada, seguido de PAR-RMA-008.
+  Contrato documentado em 2026-09-10 (`docs/produto/2026-09-10-contrato-p7-encaminhar-selecao-e-par-rma-008.md`);
+  implementacao/teste ainda pendentes.
 - [ ] P8 - Anotacoes V2 dedicada, confirmacao de remocao, UX-001/UX-004.
 - [ ] P9 - Inventario de rotas/plugins residuais.
 - [ ] P10 - Reconciliacao documental (checklist, paridade, matriz temas, roteiro).
@@ -191,7 +193,8 @@ depende de P7-P12.
   pendente do dono.
 - [R] DEC-02 - FLOW-EXT-003/004/006 (avisar/enviar e-mail/representantes):
   decisao de produto registrada.
-- [ ] DEC-03 - PAR-RMA-008 (Concluir/legado): diagnostico insuficiente.
+- [x] DEC-03 - PAR-RMA-008 (Concluir/legado): fechado 2026-09-10 - `concluir()` grava
+  apenas status+data em 14.6.1 e 15.8.1 (evidencia no contrato P7).
 - [R] DEC-04 - UX-002/remocao definitiva e views orfas (UI-07).
 - [R] DEC-05 - Implementacao do Tema V3: liberada somente em gate futuro
   ([GATE-PENDENTE] nesta rodada).

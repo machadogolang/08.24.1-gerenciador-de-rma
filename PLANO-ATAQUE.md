@@ -22,15 +22,17 @@ Subtarefas:
 - [x] PF-01 - inventario de capacidades 14.6.1 (30 capacidades, secao 1.1).
 - [x] PF-02 - inventario de capacidades 15.8.1 (36 capacidades, secao 1.2).
 - [x] PF-03 - detalhe RMA V1 campo a campo (secao 5.1; estoque/credito fechados).
-- [x] PF-04 - detalhe RMA V2 (secao 5.2; acao no topo e rodape, credito/estoque fechados).
+- [R] PF-04 - detalhe RMA V2 REABERTO 2026-09-10 por validacao runtime do dono
+  (geometria/opcoes; DET-011..014 corrigidos, browser 2/2 verde).
 - [x] PF-05 - usuarios V1 (PAR14-USR-001 fechado; acoes no Controle).
-- [x] PF-06 - usuarios V2 (001/002/003/005/006/008 = [x]; 007 implementado; 004 DECISAO-PENDENTE).
+- [R] PF-06 - usuarios V2 REABERTO 2026-09-10: Novo Usuario implementado, paridade
+  visual reaberta (USR-007/USR-009).
 - [x] PF-07 - auditoria/logs V1 (14.6.1 nao tinha tela propria de log).
 - [x] PF-08 - auditoria/logs V2 (AUD-001..004 fechados; AUD-005 geometria em PF-14).
 - [x] PF-09 - relatorios V1 (RPEC/RCD/RMPE fechados com totais e info adicional).
 - [x] PF-10 - relatorios V2 (hub estatistico + menu historico corrigido).
 - [R] PF-11 - parceiros (PAR15-PART-001: detalhe/RMAs do parceiro segue aberto).
-- [x] PF-12 - navegacao/shell (menus V1/V2 reconciliados com o Legacy).
+- [R] PF-12 - navegacao/shell reconciliada, mas reaberta pelo sweep de credito/parceiros.
 - [R] PF-13 - sweep de capacidades nao mapeadas (secoes 4 e 7) segue aberto.
 - [R] PF-14 - browser comparison Legacy x novo (1a fatia: /v2/usuarios x 15.8.1/usuarios,
   `tests/Browser/ParidadeUsuariosV2.spec.ts` verde em 1440px - mesmas colunas e linha
@@ -280,3 +282,15 @@ suite e Playwright quatro quadrantes verdes.
 Editar Legacy; reproduzir bugs/rotas mortas; relaxar Policy/tenant; expor
 Tema V3 no seletor antes de T3-GATE; push/PR/merge; remover views orfas antes da onda UI-07; aplicar replace
 global de hifen longo; marcar `[x]` sem evidencia real.
+
+## REABERTURA 2026-09-10 (validacao runtime do dono, terceira passagem)
+
+O dono validou o runtime apos o push e refutou `[x]`. Nova fila, antes de N/PF-14:
+detalhe RMA V2 (DET-011..014, ja corrigido com browser), Credito V2
+(CREDIT-001..004) e Credito V1 (PAR14-CREDIT-001), Novo Usuario V2 (USR-007/009),
+Alterar senha V2 (SEC-001), Anotacoes V2 (NOTE-001), Edit Cliente/Fornecedor/
+Fabricante/Assistencia (PART-002..005), RG/IE (PART-DATA-001) e RMAs associados
+(PART-001/PART-006). Regra nova de `[x]`: paridade visual exige Legacy e novo
+abertos, mesmo viewport, boundingBox/computedStyle e fluxo funcional.
+
+PUSH NAO AUTORIZADO.

@@ -64,8 +64,8 @@ Marcadores canonicos: `[ ]` (Pendente), `[R]` (Revisado), `[x]` (Concluido).
 
 ## Fase 7 - Blindagem com Testes Automatizados e Reconciliacao (P4)
 
-- [ ] UF-19 - Criar `CapabilityContractTest`:
-  - [ ] Provedor de dados com todas as capacidades canonicas testando presenca e status HTTP 200 sob Tema V1 e Tema V2.
-- [ ] UF-20 - Criar `DescobribilidadeTemasTest`:
-  - [ ] Validar que todo endpoint de funcionalidade possui rota e link alcancavel no shell/menu do tema respectivo.
-- [ ] UF-21 - Reconciliacao final da matriz de uniao funcional e preparacao para gates subsequentes.
+- [x] UF-19 - Criar `CapabilityContractTest`:
+  - [x] Provedor de dados com todas as capacidades canonicas testando presenca e status HTTP 200 sob Tema V1 e Tema V2.
+- [x] UF-20 - Criar `DescobribilidadeTemasTest`:
+  - [x] Validar que todo endpoint de funcionalidade possui rota e link alcancavel no shell/menu do tema respectivo.
+- [x] UF-21 - Reconciliacao final da matriz de uniao funcional e preparacao para gates subsequentes.

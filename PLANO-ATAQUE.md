@@ -121,9 +121,9 @@ Decisao canonica do dono:
 - [x] UF-18 - Procedimento Operacional / Ajuda no Tema V2 (`GAP-V2-05` / CAP-AUX-001).
 
 ### Fase 7 - Blindagem com Testes e Reconciliacao (P4)
-- [ ] UF-19 - `CapabilityContractTest`: contrato automatizado de todas as capacidades em V1 e V2.
-- [ ] UF-20 - `DescobribilidadeTemasTest`: teste de presenca de rotas e links no shell/menu de cada tema.
-- [ ] UF-21 - Reconciliacao final da matriz de uniao funcional antes dos gates.
+- [x] UF-19 - `CapabilityContractTest`: contrato automatizado de todas as capacidades em V1 e V2.
+- [x] UF-20 - `DescobribilidadeTemasTest`: teste de presenca de rotas e links no shell/menu de cada tema.
+- [x] UF-21 - Reconciliacao final da matriz de uniao funcional antes dos gates.
 
 ## ORDEM DE EXECUCAO (consolidada)
 
@@ -140,7 +140,7 @@ Decisao canonica do dono:
 10. [ ] Edit Parceiros V2 (PART-002..005) e RMAs associados (PART-001/006 / UF-15).
 11. [x] Unificacao Funcional - Fases 5 e 6: Urgencia/Threshold (UF-12), Prioridade (UF-13), Novo Usuario V1 (UF-14), Logistica/Porto Alegre (UF-16/17), Ajuda (UF-18).
 12. [ ] Sweep de `[R]`/`[ ]`: PAR14-NAV-002, PAR15-RMA-LIST-001, PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001, PAR15-RMA-MARCAR-001.
-13. [ ] Unificacao Funcional - Fase 7: CapabilityContractTest (UF-19) e DescobribilidadeTemasTest (UF-20).
+13. [x] Unificacao Funcional - Fase 7: CapabilityContractTest (UF-19) e DescobribilidadeTemasTest (UF-20).
 14. [ ] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense).
 15. [ ] P11 revalidacao, P12, P13 final, P14.
 16. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).

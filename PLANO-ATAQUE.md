@@ -176,7 +176,9 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 
 - [x] P9 - Inventario de rotas/plugins residuais (`docs/produto/2026-09-10-inventario-rotas-e-plugins-residuais.md`,
   2026-09-10; 150 rotas, sem orfas, V3 segue oculto).
-- [ ] P10 - Reconciliacao documental (checklist, paridade, matriz temas, roteiro).
+- [ ] P10 - Parcial 2026-09-10: matriz de temas (Encaminhar/Concluir) e checklist-master
+  (H-026/H-034/H-035/H-036) reconciliados; PLAN.md nao referenciava os itens. Faltam
+  `paridade-v2-v3.md`, `checklist-paridade-temas.md` e o roteiro final.
 - [ ] P11 - Regressao funcional por fluxo.
 - [ ] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/`.
 - [ ] P13 - PHPUnit completo + build final (baseline real atual 536/1619;

@@ -34,8 +34,8 @@ atingir paridade integral.
 | Editar RMA | completo | 11 campos; risco de apagar estado | idem | planejado | ARQ-001; INV-LEGADO-RMA-001 |
 | Detalhe RMA | dados operacionais/históricos | parcial | parcial | planejado | PAR-RMA-004/005/006/009 |
 | Receber | sim | sim, visual mínimo | sim, visual mínimo | planejado | FRONT-003; contrato de ação comum |
-| Encaminhar | destino validado | tipo+ID cru | tipo+ID cru | planejado | ARQ-005; UX-003 |
-| Concluir | solução+lancamento/estoque | só solução | só solução | planejado | PAR-RMA-008; confirmar regra por versão |
+| Encaminhar | destino validado | seleção validada (`tipo:id`, tenant) | seleção validada (`tipo:id`, tenant) | planejado | ARQ-005/UX-003 fechado 2026-09-10 |
+| Concluir | status+data (ver PAR-RMA-008) | status+data | status+data | planejado | PAR-RMA-008 fechado 2026-09-10 |
 | Arquivar/reverter | sim, com diferenças históricas | sim | sim | planejado | preservar regra consolidada; ARQ-001 |
 | Registrar solução | sim | sim | sim | planejado | ARQ-001; FRONT-003 |
 | Alertas | regras e telas integradas | regras sim; tela isolada | regras sim; tela isolada | planejado | FRONT-001/003; PAR-VIS-SEC-001 |

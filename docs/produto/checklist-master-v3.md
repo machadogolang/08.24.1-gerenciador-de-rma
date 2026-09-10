@@ -403,8 +403,9 @@ Gate por linha definido na matriz. Código `PAR-*` de cada item está na coluna
   temas; aba do Tema 2 hoje só linka a página.
 - [ ] **PAR H-025 (`PAR-RMA-004`/`005`/`006`/`009`) - completar campos/detalhe do RMA**
   nos dois temas.
-- [ ] **PAR H-026 (`PAR-RMA-008`) - confirmar regra de conclusão por versão histórica**
-  (solução + lançamento/estoque) antes de decidir paridade.
+- [x] **PAR H-026 (`PAR-RMA-008`) - regra de conclusão por versão histórica**
+  (solução + lançamento/estoque): fechado em 2026-09-10 - `concluir()` grava apenas
+  `status` + data em 14.6.1 e 15.8.1; estoque/solução são campos de gravação geral.
 - [ ] **PAR H-027 (`PAR-RMA-010`) - tornar boletins relacionados descobríveis** no
   detalhe do RMA.
 - [ ] **PAR H-028 (`PAR-VIS-SEC-001`) - integrar alertas ao shell**, hoje tela isolada
@@ -423,13 +424,20 @@ Gate por linha definido na matriz. Código `PAR-*` de cada item está na coluna
 
 ### H.5 UX transversal
 
-- [ ] **DEV H-034 (`UX-001`) - apresentação consciente de policy.** Ocultar/desabilitar
-  ações que resultariam em 403, sem mover autorização para o browser.
-- [ ] **DEV H-035 (`UX-002`) - exigir confirmação para remoção de parceiro.**
-- [ ] **DEV H-036 (`UX-003`) - substituir tipo+ID cru do encaminhamento** por seleção
-  validada, sem mudar a regra de negócio (relacionado a `ARQ-005`).
+- [x] **DEV H-034 (`UX-001`) - apresentação consciente de policy.** Fechado em
+  2026-09-10 nas listagens de parceiros (`@can` por registro/modelo); autorização
+  continua no controller. Falta estender a apresentação às demais telas com ação
+  condicional, se aparecer caso real.
+- [x] **DEV H-035 (`UX-002`) - exigir confirmação para remoção de parceiro.**
+  Fechado em 2026-09-10 (`data-confirmar-remocao` + JS do tema; prova browser
+  `ConfirmacaoRemocaoParceiro`).
+- [x] **DEV H-036 (`UX-003`) - substituir tipo+ID cru do encaminhamento** por seleção
+  validada, sem mudar a regra de negócio (relacionado a `ARQ-005`). Fechado em
+  2026-09-10 (`destinatario` = `tipo:id` revalidado no servidor; contrato em
+  `2026-09-10-contrato-p7-encaminhar-selecao-e-par-rma-008.md`).
 - [ ] **DEV H-037 (`UX-004`) - contrato transversal de flash/validação/estado vazio/
-  403/404/500** e prevenção de duplo envio.
+  403/404/500** e prevenção de duplo envio. Parcial 2026-09-10: duplo envio
+  implementado (JS do tema); falta o contrato transversal completo.
 
 ### H.6 Tema 3 - Console Operacional Adaptativa
 

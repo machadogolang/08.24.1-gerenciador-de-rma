@@ -34,6 +34,15 @@ Route::prefix('v2')
             ->names('parceiros.assistencias-tecnicas');
 
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('identidade.usuarios.index');
+
+        // PAR15-USR-001 - superficies dedicadas do TEMA V2 espelhadas no prefixo /v2
+        // (mesmos Controllers; o POST/PUT continuam canonicos).
+        Route::get('/usuarios/{usuario}/permissoes', [UsuarioController::class, 'permissoes'])
+            ->name('identidade.usuarios.permissoes');
+        Route::get('/usuarios/{usuario}/resetar-senha', [UsuarioController::class, 'resetarSenhaForm'])
+            ->name('identidade.usuarios.resetar-senha.form');
+        Route::get('/usuarios/{usuario}/apagar', [UsuarioController::class, 'apagar'])
+            ->name('identidade.usuarios.apagar');
         Route::get('/perfil', [UsuarioController::class, 'perfil'])->name('identidade.perfil.show');
 
         // PAR-RES-E-04 - superficies historicas do TEMA V2 separadas (fonte

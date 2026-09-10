@@ -299,37 +299,37 @@ select:disabled {
     cursor: not-allowed;
 }
 
-// UI-AUD-007 - Usuários V2: células com ações em linha quando há espaço; flex
-// escopado à tabela (sem flex global nos forms) para remover o empilhamento e a
-// linha de 85px. Larguras mínimas preservam placeholders legíveis.
+// PAR15-USR-001 - organizacao historica da tabela de usuarios do TEMA V2 (fonte
+// `15.8.1/subp/usuarios.php`): 6 colunas (Nome/E-mail/QT Login/Ultimo login/
+// Permissao/Acao) com as larguras do Legacy (22/31/10/15/18/6), linha de 30px e as
+// 3 acoes compactas por icone. Substitui a composicao com select/senha inline.
 .tabela-usuarios-v2 {
     table-layout: fixed;
 
-    th:nth-child(1) { width: 15%; }
-    th:nth-child(2) { width: 18%; }
-    th:nth-child(3) { width: 32%; }
-    th:nth-child(4) { width: 35%; }
+    th:nth-child(1) { width: 22%; }
+    th:nth-child(2) { width: 31%; }
+    th:nth-child(3) { width: 10%; }
+    th:nth-child(4) { width: 15%; }
+    th:nth-child(5) { width: 18%; }
+    th:nth-child(6) { width: 6%; }
 
-    .form-inline {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 4px;
+    tbody tr {
+        height: 30px;
+    }
 
-        select.form-control {
-            flex: 0 0 170px;
-            width: 170px;
+    .usuarios-acao {
+        text-align: center;
+        padding: 0;
+
+        a {
+            display: inline-block;
+            padding: 2px;
         }
 
-        input.form-control {
-            flex: 0 0 120px;
-            width: 120px;
-        }
-
-        .formSubmit {
-            flex: 0 0 88px;
-            width: 88px;
+        img {
+            height: 22px;
+            width: auto;
+            display: block;
         }
     }
 }

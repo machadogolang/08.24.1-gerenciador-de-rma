@@ -60,4 +60,19 @@ enum Papel
 
         return $this === self::SuperAdministrador || $papel !== self::SuperAdministrador;
     }
+
+    /**
+     * PAR15-USR-001/PAR15-USR-008 - rotulo historico da tela de usuarios do Legacy
+     * `15.8.1/subp/usuarios.php`: `permissao` -1 = "Bloqueado", 1 = "Leitura",
+     * 2/3/4 = "Leitura e modificacao". O enum moderno tem niveis a mais, mas o rotulo
+     * de tela preserva a nomenclatura historica, sem reintroduzir ordinal/inteiro.
+     */
+    public function rotuloDePermissaoLegado(): string
+    {
+        return match ($this) {
+            self::Bloqueado => "Bloqueado",
+            self::Leitura => "Leitura",
+            default => "Leitura e modificacao",
+        };
+    }
 }

@@ -49,6 +49,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/usuarios/{usuario}/resetar-senha', [UsuarioController::class, 'resetarSenha'])
         ->name('identidade.usuarios.resetar-senha');
 
+    // PAR15-USR-001 - superficies dedicadas do TEMA V2 (icones da tabela de usuarios,
+    // fonte `15.8.1/subp/{resetar_senha,mudar_permissao,apagar_usuario}.php`). O
+    // controller redireciona para /usuarios quando o tema ativo nao for V2 - o V1
+    // mantem a acao inline.
+    Route::get('/usuarios/{usuario}/permissoes', [UsuarioController::class, 'permissoes'])
+        ->name('identidade.usuarios.permissoes');
+    Route::get('/usuarios/{usuario}/resetar-senha', [UsuarioController::class, 'resetarSenhaForm'])
+        ->name('identidade.usuarios.resetar-senha.form');
+    Route::get('/usuarios/{usuario}/apagar', [UsuarioController::class, 'apagar'])
+        ->name('identidade.usuarios.apagar');
+
     // Perfil do próprio usuário (troca de senha, LEG-RMA-004; anotação pessoal, LEG-RMA-042).
     Route::get('/perfil', [UsuarioController::class, 'perfil'])->name('identidade.perfil.show');
     Route::put('/perfil/senha', [UsuarioController::class, 'atualizarSenha'])->name('identidade.perfil.senha.update');

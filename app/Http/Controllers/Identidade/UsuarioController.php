@@ -40,6 +40,8 @@ class UsuarioController extends Controller
             'titulo' => 'Usuários',
             'usuarios' => $usuarios,
             'empresa_id' => $empresaIdView,
+            // PAR15-USR-001 - QT Login / Ultimo login derivados de tentativas_de_acesso.
+            'resumoDeAcesso' => app(\App\Identidade\Aplicacao\ResumoDeAcessoDosUsuarios::class)->porUsuario(),
         ]);
     }
 
@@ -108,6 +110,72 @@ class UsuarioController extends Controller
         $resetarSenhaDeUsuario->resetar($request->user(), $usuario, $dados['nova_senha']);
 
         return back()->with('status', 'Senha do usuário redefinida.');
+    }
+
+    /**
+     * PAR15-USR-001 - superficie dedicada 'Mudar permissao' do TEMA V2 (icone da
+     * tabela de usuarios; fonte `15.8.1/subp/mudar_permissao.php`). O V1 mantem a
+     * acao inline - esta organizacao e exclusiva do TEMA V2.
+     */
+    public function permissoes(Request $request, User $usuario): View|RedirectResponse
+    {
+        Gate::authorize('gerenciar', User::class);
+        Gate::authorize('gerenciarUsuario', $usuario);
+
+        if (! $this->temaEhV2($request)) {
+            return redirect()->route('identidade.usuarios.index');
+        }
+
+        return view('temas.v2.identidade.usuarios-permissoes', [
+            'titulo' => 'Mudar permissao',
+            'usuario' => $usuario,
+        ]);
+    }
+
+    /**
+     * PAR15-USR-001/PAR15-USR-005 - superficie dedicada 'Resetar senha' do TEMA V2
+     * (icone da tabela; fonte `15.8.1/subp/resetar_senha.php`). O POST seguro ja
+     * existe (`identidade.usuarios.resetar-senha`, min 8 + confirmacao).
+     */
+    public function resetarSenhaForm(Request $request, User $usuario): View|RedirectResponse
+    {
+        Gate::authorize('gerenciar', User::class);
+        Gate::authorize('gerenciarUsuario', $usuario);
+
+        if (! $this->temaEhV2($request)) {
+            return redirect()->route('identidade.usuarios.index');
+        }
+
+        return view('temas.v2.identidade.usuarios-resetar-senha', [
+            'titulo' => 'Resetar senha',
+            'usuario' => $usuario,
+        ]);
+    }
+
+    /**
+     * PAR15-USR-001/PAR15-USR-004 - superficie de confirmacao 'Apagar usuario' do
+     * TEMA V2 (fonte `15.8.1/subp/apagar_usuario.php`). A exclusao definitiva segue
+     * como decisao de produto (hard delete do Legacy cascatearia a auditoria); esta
+     * tela preserva a organizacao/confirmacao sem inventar a acao destrutiva.
+     */
+    public function apagar(Request $request, User $usuario): View|RedirectResponse
+    {
+        Gate::authorize('gerenciar', User::class);
+        Gate::authorize('gerenciarUsuario', $usuario);
+
+        if (! $this->temaEhV2($request)) {
+            return redirect()->route('identidade.usuarios.index');
+        }
+
+        return view('temas.v2.identidade.usuarios-apagar', [
+            'titulo' => 'Apagar usuario',
+            'usuario' => $usuario,
+        ]);
+    }
+
+    private function temaEhV2(Request $request): bool
+    {
+        return ($request->attributes->get('temaAtivo') ?? TemaPreferido::V2) === TemaPreferido::V2;
     }
 
     /**

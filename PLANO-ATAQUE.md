@@ -5,6 +5,52 @@ Ultima atualizacao: 2026-09-09 (America/Sao_Paulo). Status no padrao canonico
 nunca usar hifen longo, sempre hifen simples (ver `docs/operacao/regra-hifen.md`).
 Handoff: `docs/produto/handoff-sessao-2026-09-09.md`.
 
+## AGORA - Auditoria forense de paridade Legacy -> Novo (2026-09-10)
+
+Frente aberta pelo dono, com prioridade sobre P12/P14:
+`[R] PAR-FORENSE-LEGACY-01 - inventario capability-first V1/V2`. Fonte canonica:
+`docs/produto/2026-09-10-matriz-forense-paridade-legacy-v1-v2.md` (IDs
+`PAR14-XXX-NNN` para o Legacy 14.6.1 e `PAR15-XXX-NNN` para o Legacy 15.8.1).
+
+Sentido obrigatorio: LEGACY -> CAPACIDADE -> NOVO -> EQUIVALENTE? -> COMPLETO?
+-> VISUALMENTE EQUIVALENTE? -> FUNCIONALMENTE EQUIVALENTE? Capacidade que sumiu
+do novo so aparece porque a auditoria comeca no Legacy, nunca nas rotas Laravel.
+Rota com nome parecido nao fecha `[x]`.
+
+Subtarefas:
+
+- [R] PF-01 - inventario de capacidades 14.6.1 (secao 1.1 da matriz).
+- [R] PF-02 - inventario de capacidades 15.8.1 (secao 1.2 da matriz).
+- [R] PF-03 - detalhe RMA V1 campo a campo (secao 5.1).
+- [R] PF-04 - detalhe RMA V2 campo a campo (secao 5.2).
+- [R] PF-05 - usuarios V1 (PAR14-USR-001..002).
+- [R] PF-06 - usuarios V2 (PAR15-USR-001..008).
+- [R] PF-07 - auditoria/logs V1 (PAR14-CTRL-001).
+- [R] PF-08 - auditoria/logs V2 (PAR15-AUD-001..007).
+- [R] PF-09 - relatorios V1 (PAR14-REL-001 e RPEC/RCD/RMPE).
+- [R] PF-10 - relatorios V2 (PAR15-REL-001..010).
+- [R] PF-11 - parceiros (PAR14/PAR15-PART-001).
+- [R] PF-12 - navegacao/shell (PAR14-SHELL/NAV, PAR15-SHELL/NAV).
+- [R] PF-13 - sweep de capacidades nao mapeadas (secoes 4 e 7).
+- [ ] PF-14 - browser comparison Legacy x novo (boundingBox/computedStyle/screenshot).
+- [ ] PF-15 - reconciliacao final e fechamento da frente.
+
+Fila de correcao apos o checkpoint documental (secao 6 da matriz):
+
+1. [R] PAR15-USR-001 - organizacao historica de /v2/usuarios.
+2. [ ] PAR15-RMA-DET-001 - select operacional + OK no topo do detalhe V2.
+3. [ ] PAR14/PAR15-RMA-STOCK/CREDIT - gaps medidos no runtime.
+4. [ ] PAR15-AUD-001..005 - auditoria/historico V2.
+5. [ ] PAR14-REL-RPEC-001..005 - RPEC V1.
+6. [ ] PAR14-REL-RCD-001..003 - RCD V1.
+7. [ ] PAR15-REL-001..010 - Relatorios V2.
+8. [ ] demais gaps da matriz.
+
+P12 permanece pendente enquanto esta auditoria esta aberta; P14 nao fecha antes
+dela. Os quatro quadrantes de browser tests nascem da matriz forense (PF-14),
+nunca de um contrato de paridade incompleto.
+
+
 ## CONTINUIDADE - Auditoria residual Legacy x V1/V2 (2026-09-09)
 
 O handoff PAR-V2 (`93fd4e4`) e um checkpoint, nao o fim do trabalho. Nova frente

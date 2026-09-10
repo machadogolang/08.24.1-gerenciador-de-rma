@@ -95,3 +95,13 @@ T3-08 (fundacao/shell), T3-09 (dashboard) e T3-10 (listagem RMAs) foram
 implementados somente sob rotas `/v3`, sem alterar V1/V2, seletor ou preferencia
 de usuario. V3 permanece `planejado`/oculto enquanto a matriz nao fechar.
 Referencia: `docs/produto/2026-09-09-checkpoint-arquitetural-tema-v3.md`.
+
+## Auditoria forense capability-first (2026-09-10)
+
+Frente `[R] PAR-FORENSE-LEGACY-01` aberta pelo dono com prioridade sobre P12/P14.
+Nova fonte canonica, separada por geracao (PAR14-* = Legacy 14.6.1 x Tema V1;
+PAR15-* = Legacy 15.8.1 x Tema V2):
+`docs/produto/2026-09-10-matriz-forense-paridade-legacy-v1-v2.md`.
+Esta matriz viva continua valida como visao de capacidade x tema; a matriz forense
+e a fonte de verdade detalhada por superficie, coluna, campo e acao, lida sempre
+no sentido LEGACY -> CAPACIDADE -> NOVO.

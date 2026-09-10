@@ -17,3 +17,9 @@
 - [x] Atualizar checklist mestre: Fase 10 concluída e gates G-04..G-07 fechados;
       Trilha B liberada em 2026-09-09 (G-08)
 - [x] Commit do gate: `204a335` (2026-09-04)
+
+- [R] Auditoria forense capability-first Legacy -> Novo (`PAR-FORENSE-LEGACY-01`,
+      2026-09-10): matriz canonica
+      `docs/produto/2026-09-10-matriz-forense-paridade-legacy-v1-v2.md`. Reabre o
+      contrato de paridade antes do fechamento de P12/P14; os quadrantes de browser
+      tests nascem desta matriz (PF-14).

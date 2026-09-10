@@ -57,20 +57,20 @@ Fonte canonica de estado: `docs/produto/2026-09-10-matriz-forense-paridade-legac
 
 ### Bloco 3 - Entrada segura para o Tema V3 (previa)
 
-- [ ] AD-20 - Flag de config `tema_v3_preview_enabled` (sem `env()` na Blade).
-- [ ] AD-21 - Entrada discreta "Previa V3" no V1 e no V2 quando ligada; OFF nao
+- [x] AD-20 - Flag de config `tema_v3_preview_enabled` (sem `env()` na Blade).
+- [x] AD-21 - Entrada discreta "Previa V3" no V1 e no V2 quando ligada; OFF nao
   mostra nada.
-- [ ] AD-22 - Acao "Voltar ao sistema" no shell V3, saindo de `/v3`.
-- [ ] AD-23 - Testes: `tema_preferido` persistido NAO muda ao entrar/sair; flag
+- [x] AD-22 - Acao "Voltar ao sistema" no shell V3, saindo de `/v3`.
+- [x] AD-23 - Testes: `tema_preferido` persistido NAO muda ao entrar/sair; flag
   OFF esconde a entrada; V3 continua sem ser opcao persistente publica.
 
 ### Bloco 4 - Nova direcao visual do Tema V3 (documental)
 
-- [ ] AD-30 - Documento de decisao "Console Operacional Dark" (referencia
+- [x] AD-30 - Documento de decisao "Console Operacional Dark" (referencia
   conceitual Laravel/Ignition, sem copiar HTML/assets).
-- [ ] AD-31 - Registrar precedencia: direcao clara anterior SUPERADA; nova
+- [x] AD-31 - Registrar precedencia: direcao clara anterior SUPERADA; nova
   direcao e NORTE VISUAL, implementacao ampla nas tasks T3-13+.
-- [ ] AD-32 - Nao redesenhar o V3 agora: apenas o necessario para a previa segura.
+- [x] AD-32 - Nao redesenhar o V3 agora: apenas o necessario para a previa segura.
 
 ### Bloco 5 - Reconciliacao documental da matriz (instrucao 1)
 

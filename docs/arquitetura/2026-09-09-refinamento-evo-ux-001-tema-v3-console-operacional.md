@@ -10,6 +10,13 @@ reescrever os marcos historicos. Referencia e evolui:
 
 Status: [R] REVISADO. Investigacao concluida; implementacao nao liberada.
 
+> ATUALIZACAO 2026-09-10 - DIRECAO VISUAL: a direcao CLARA registrada
+> originalmente para o V3 foi **SUPERADA**. O norte visual aprovado pelo dono
+> passou a ser **Console Operacional Dark** (referencia conceitual: linguagem
+> visual do debug moderno do Laravel, sem copiar HTML/assets). Documento de
+> decisao: `docs/arquitetura/2026-09-10-direcao-visual-v3-console-dark.md`.
+> A arquitetura de informacao deste documento continua valida.
+
 ## 0. Objetivo de produto
 
 O Tema V3 e um NOVO produto visual, nao uma reforma de V1 ou de V2:

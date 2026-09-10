@@ -41,6 +41,9 @@
                             {{ $item['rotulo'] }}
                         </a>
                     @endforeach
+                    {{-- AD-22 - sai do prefixo /v3 e volta para a rota canonica,
+                    que resolve de novo o tema persistido (V1 ou V2). --}}
+                    <a class="app-shell__nav-link app-shell__voltar-sistema" href="{{ route('rmas.index') }}">Voltar ao sistema</a>
                 </nav>
                 <button type="button" class="app-shell__rail-toggle" data-v3-rail>Recolher menu</button>
             </aside>
@@ -67,6 +70,9 @@
                             {{ $item['rotulo'] }}
                         </a>
                     @endforeach
+                    {{-- AD-22 - sai do prefixo /v3 e volta para a rota canonica,
+                    que resolve de novo o tema persistido (V1 ou V2). --}}
+                    <a class="app-shell__nav-link app-shell__voltar-sistema" href="{{ route('rmas.index') }}">Voltar ao sistema</a>
                 </nav>
             </div>
         </div>

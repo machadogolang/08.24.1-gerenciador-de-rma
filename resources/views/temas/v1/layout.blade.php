@@ -115,6 +115,12 @@
                     @can('gerenciar', \App\Models\User::class)
                         <a class="lisessao" href="{{ rota_tema('identidade.usuarios.index') }}">Usuários</a>
                     @endcan
+                    @if (config('temas.v3_preview_enabled'))
+                        {{-- AD-21 - entrada discreta de QA para a previa do Tema V3.
+                        NAO grava `tema_preferido`: a preferencia V1/V2 continua
+                        valendo quando o usuario clica "Voltar ao sistema". --}}
+                        <a class="lisessao menu-previa-v3" href="{{ route('v3.dashboard') }}">Previa V3</a>
+                    @endif
                                     <form method="POST" action="{{ route('tema.alternar') }}" class="lisessao-form">
                         @csrf
                         <button type="submit" class="lisessao menu-trocar-tema">Trocar p/ 15.8.1</button>

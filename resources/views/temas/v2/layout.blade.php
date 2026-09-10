@@ -70,6 +70,13 @@
                             no TEMA V1 (achado VIS-V1-008). --}}
                             <li class="lidropdown menuz"><a href="{{ rota_tema('identidade.usuarios.index') }}">Usuários</a></li>
                         @endcan
+                        @if (config('temas.v3_preview_enabled'))
+                            {{-- AD-21 - mesma entrada discreta de QA dos dois temas;
+                            nao persiste tema e nao aparece no menu historico do 15.8.1. --}}
+                            <li class="lidropdown menuz">
+                                <a class="link-como-item-dropdown menu-previa-v3" href="{{ route('v3.dashboard') }}">Previa V3</a>
+                            </li>
+                        @endif
                         <li class="lidropdown">
                             <form method="POST" action="{{ route('tema.alternar') }}">
                                 @csrf

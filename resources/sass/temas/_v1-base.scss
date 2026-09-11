@@ -1090,3 +1090,75 @@ select:disabled {
         font-size: 12px;
     }
 }
+
+// Blindagem contra vazamento de SVG em componentes ou paginacao
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
+// Estilizacao canonica da paginacao para o Tema V1
+.paginacao-container {
+    margin: 15px 0 10px;
+    font-size: 11px;
+    font-family: Arial, Tahoma, sans-serif;
+    color: #b9b4b0;
+    clear: both;
+
+    .paginacao-info {
+        margin-bottom: 6px;
+        font-size: 11px;
+        color: #888;
+
+        strong {
+            color: #fff;
+        }
+    }
+
+    .paginacao-lista {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 2px;
+    }
+
+    .paginacao-item {
+        display: inline-block;
+
+        span,
+        .paginacao-link {
+            display: inline-block;
+            padding: 2px 8px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 11px;
+            text-decoration: none;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            background-color: #26251f;
+            color: #ccc;
+            box-sizing: border-box;
+        }
+
+        .paginacao-link:hover {
+            background-color: rgb(54, 100, 139);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        &.paginacao-atual span {
+            background-color: rgb(54, 100, 139);
+            color: #fff;
+            font-weight: bold;
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        &.paginacao-desabilitado span {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: #555;
+            cursor: not-allowed;
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+}

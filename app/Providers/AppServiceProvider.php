@@ -21,6 +21,7 @@ use App\Rma\Infraestrutura\RmasEmBanco;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use App\Compartilhado\Tenant\ContextoDeTenant;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -47,6 +48,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::defaultView('compartilhado.paginacao');
+        Paginator::defaultSimpleView('compartilhado.paginacao-simples');
         foreach ([
             RmaCriado::class,
             RmaEditado::class,

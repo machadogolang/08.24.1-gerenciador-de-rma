@@ -68,7 +68,7 @@ test.describe('ControleV1Navegacao - Refinamento do Painel Controle V1 (UI-V1-CO
             linkAjuda.click(),
         ]);
         await expect(page).toHaveURL(/ajuda/);
-        await expect(page.locator('.JS-DivLEFT')).toBeVisible();
+        await expect(page.locator('h1.title-comicone')).toContainText('Central de Ajuda');
 
         // Volta ao Controle
         await page.goto(`${V3}/rmas-controle`, { waitUntil: 'domcontentloaded' });

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
     'nome',
     'representante',
     'cpf_cnpj',
+    'rgie',
     'email',
     'email_secundario',
     'telefone',

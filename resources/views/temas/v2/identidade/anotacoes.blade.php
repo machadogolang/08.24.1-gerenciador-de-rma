@@ -28,9 +28,12 @@
             <form method="POST" action="{{ route('identidade.perfil.anotacao.update') }}">
                 @csrf
                 @method('PUT')
-                <textarea class="anotacao" rows="20" id="anotacao" name="anotacao">{{ old('anotacao', $usuario->anotacao) }}</textarea>
-                <div style="clear:both;"></div>
-                <button type="submit" class="btn formSubmit">Salvar anotacao</button>
+                <textarea class="anotacao" rows="30" id="anotacao" name="anotacao"
+                    data-anotacao-autosave
+                    data-anotacao-url="{{ route('identidade.perfil.anotacao.update') }}">{{ old('anotacao', $usuario->anotacao) }}</textarea>
+                <div style="clear:both; margin-top:8px;"></div>
+                <p id="status-autosave" style="float:left;color:#999;font-size:11px;margin:5px 0 0 0;"></p>
+                <button type="submit" class="btn btn-default formSubmit" style="float:right;">Salvar anotacao</button>
             </form>
         </div>
     </div>

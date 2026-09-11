@@ -103,6 +103,7 @@ class FornecedorController extends Controller
             'nome' => ['required', 'string', 'max:255'],
             'representante' => ['nullable', 'string', 'max:255'],
             'cpf_cnpj' => ['nullable', 'string', 'max:32'],
+            'rgie' => ['nullable', 'string', 'max:50'],
             'email' => ['nullable', 'email', 'max:255'],
             'email_secundario' => ['nullable', 'email', 'max:255'],
             'telefone' => ['nullable', 'string', 'max:32'],

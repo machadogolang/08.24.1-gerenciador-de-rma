@@ -302,3 +302,27 @@ $vermelho-hover-v2: #f67d7d;
 .LiRight2 {
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+// PAR15-NOTE-001 - estilo historico da caixa de anotacao (15.8.1/css/15.8.1.css:445)
+.anotacao {
+    background-color: #2c2b29;
+    font-weight: 500;
+    border: 0;
+    color: #eee;
+    letter-spacing: 1px;
+    font-size: 12px;
+    width: 100%;
+    resize: none;
+    overflow-y: auto !important;
+    padding: 10px;
+    outline: none;
+    min-height: 480px;
+
+    &.anotacao--salvando {
+        opacity: 0.8;
+    }
+
+    &.anotacao--erro {
+        border: 1px solid #c20f41;
+    }
+}

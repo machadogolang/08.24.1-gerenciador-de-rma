@@ -36,31 +36,20 @@
             </div>
             <div class="form-group">
                 <label style="float:left;color:#EEE;" for="password">Senha</label>
-                <input style="clear:both;" type="password" class="form-control Input1" name="password" id="password" placeholder="Senha (minimo 8)" required>
+                <input style="clear:both;" type="password" class="form-control Input1" name="password" id="password" placeholder="Senha" required>
             </div>
             <div class="form-group">
                 <label style="float:left;color:#EEE;" for="papel">Permissao</label>
-                {{-- PAR15-USR-007/009 - composicao historica do 15.8.1 preservada
-                (`Bloqueado` / `Leitura` / `Leitura e modificacao`, com o mesmo
-                `Leitura` selecionado por padrao) e a capacidade moderna entra como
-                EXTENSAO controlada, em grupo proprio: os papeis adicionais do enum
-                ficam selecionaveis sem poluir o rotulo historico com nome tecnico.
-                `$papeisDisponiveis` ja vem filtrado por `podeOperarSobrePapel()`
-                (SUPERVISOR nunca cria SUPERADMINISTRADOR); o servidor valida de novo. --}}
                 <select style="clear:both;" class="form-control Input1" name="papel" id="papel" required>
-                    <optgroup label="Permissoes do 15.8.1">
-                        @foreach ($papeisHistoricos as $papel)
-                            <option value="{{ $papel->name }}" @selected($papel === \App\Identidade\Dominio\Papel::Leitura)>
-                                {{ $papel->rotuloDePermissaoLegado() }}
-                            </option>
-                        @endforeach
-                    </optgroup>
+                    @foreach ($papeisHistoricos as $papel)
+                        <option value="{{ $papel->name }}" @selected($papel === \App\Identidade\Dominio\Papel::Leitura)>
+                            {{ $papel->rotuloDePermissaoLegado() }}
+                        </option>
+                    @endforeach
                     @if ($papeisModernos->isNotEmpty())
-                        <optgroup label="Papeis modernos">
-                            @foreach ($papeisModernos as $papel)
-                                <option value="{{ $papel->name }}">{{ $papel->name }}</option>
-                            @endforeach
-                        </optgroup>
+                        @foreach ($papeisModernos as $papel)
+                            <option value="{{ $papel->name }}">{{ $papel->name }}</option>
+                        @endforeach
                     @endif
                 </select>
             </div>

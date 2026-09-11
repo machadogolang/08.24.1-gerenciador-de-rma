@@ -87,4 +87,58 @@ document.addEventListener('DOMContentLoaded', () => {
             botao.disabled = true;
         });
     });
+
+    // PAR15-NOTE-001 - Autosave de Anotacoes no Tema V2 (15.8.1/page/anotacoes.php onkeyup):
+    // debounce de 800ms + PUT com CSRF para endpoint moderno com feedback discreto.
+    const campoAnotacaoV2 = document.querySelector('[data-anotacao-autosave]');
+    const statusAutosave = document.querySelector('#status-autosave');
+
+    if (campoAnotacaoV2) {
+        let temporizador = null;
+
+        campoAnotacaoV2.addEventListener('input', () => {
+            clearTimeout(temporizador);
+            campoAnotacaoV2.classList.remove('anotacao--erro');
+            if (statusAutosave) {
+                statusAutosave.textContent = 'Digitando...';
+            }
+
+            temporizador = setTimeout(() => {
+                if (statusAutosave) {
+                    statusAutosave.textContent = 'Salvando...';
+                }
+                campoAnotacaoV2.classList.add('anotacao--salvando');
+
+                fetch(campoAnotacaoV2.dataset.anotacaoUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify({ anotacao: campoAnotacaoV2.value }),
+                })
+                    .then((resposta) => {
+                        campoAnotacaoV2.classList.remove('anotacao--salvando');
+                        if (resposta.ok) {
+                            if (statusAutosave) {
+                                statusAutosave.textContent = 'Salvo automaticamente.';
+                            }
+                        } else {
+                            campoAnotacaoV2.classList.add('anotacao--erro');
+                            if (statusAutosave) {
+                                statusAutosave.textContent = 'Erro ao salvar.';
+                            }
+                        }
+                    })
+                    .catch(() => {
+                        campoAnotacaoV2.classList.remove('anotacao--salvando');
+                        campoAnotacaoV2.classList.add('anotacao--erro');
+                        if (statusAutosave) {
+                            statusAutosave.textContent = 'Erro de conexao ao salvar.';
+                        }
+                    });
+            }, 800);
+        });
+    }
 });

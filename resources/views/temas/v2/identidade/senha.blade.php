@@ -34,7 +34,7 @@
                 <input style="clear:both;" type="password" class="form-control Input1" name="senha_atual" id="senha_atual" placeholder="senha atual" required>
             </div>
             <div class="form-group">
-                <label style="float:left;color:#EEE;" for="nova_senha">Nova Senha</label>
+                <label style="float:left;color:#EEE;" for="nova_senha"><img style="margin-top:-2px;" src="{{ asset('images/rma/editar.png') }}" width="18"/> Nova Senha</label>
                 <input style="clear:both;" type="password" class="form-control Input1" name="nova_senha" id="nova_senha" placeholder="nova senha" required>
             </div>
             <div class="form-group">

@@ -14,6 +14,7 @@ import $ from './_jquery-global';
 
 import 'bootstrap/js/tab';
 import 'bootstrap/js/dropdown';
+import { inicializarTodasTabelasSkinless } from '../compartilhado/tabela-skinless';
 
 // PAR-LOADER-002 - equivalência com loader histórico 15.8.1 (#loader, #loader_r e defer)
 window.defer = function () {
@@ -44,6 +45,7 @@ window.ocultarLoader = function () {
 
 document.addEventListener('DOMContentLoaded', () => {
     window.defer();
+    inicializarTodasTabelasSkinless();
 
     // Equivalente a `.pmo` (pattern/15.9.7.js), mesmo comportamento do TEMA V1.
     document.querySelectorAll('[data-pmo-alvo]').forEach((gatilho) => {

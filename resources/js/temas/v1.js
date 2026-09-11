@@ -3,6 +3,7 @@
 // pessoal via `.pmo`, painel "Novo RMA" via show/hide). TEMA V1 não importa jQuery nem
 // Bootstrap.
 import '../../sass/temas/v1.scss';
+import { inicializarTodasTabelasSkinless } from '../compartilhado/tabela-skinless';
 
 // PAR-LOADER-001 - equivalência com `defer()` do 14.6.1.js e controle do `#loader`
 window.defer = function () {
@@ -32,6 +33,7 @@ window.ocultarLoader = function () {
 
 document.addEventListener('DOMContentLoaded', () => {
     window.defer();
+    inicializarTodasTabelasSkinless();
 
     // Equivalente a `.pmo` (pattern/15.9.7.js) - alterna a exibição de um bloco de
     // anotação/observação sem reload de página.

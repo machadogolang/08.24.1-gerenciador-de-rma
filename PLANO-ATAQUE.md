@@ -197,13 +197,14 @@ Documento de referencia: `docs/produto/2026-09-11-proposta-tabelas-ordenacao-pag
   - Configurado `Paginator::defaultView` no `AppServiceProvider`.
   - Blindagem de CSS `svg { max-width: 100%; height: auto; }` nos dois temas.
   - Coberto por testes Playwright `PaginacaoSemVazamentoSvg.spec.ts` em `rmas-historico` e `historico-de-acesso`.
-- [ ] Fase 1: Spike arquitetural da biblioteca/script headless (DataTables skinless ou Vanilla sort)
-  - Sem carregar folhas de estilo externas ou classes poluentes.
-  - Indicadores de ordenacao discretos (`▲` / `▼`) de 10px embutidos nos `<th>` existentes.
-  - Seletor de pagina integrado com as classes historicas (`formSelectPanel` no V1, `formSelect3` no V2).
-- [ ] Fase 2: Implementacao piloto em `rmas-historico` (Tema V1 e V2)
-  - Ordenacao client-side em colunas de data, numero de RMA, fabricante e modelo.
-  - Validacao de fidelidade visual e geometria via Playwright.
+- [x] Fase 1: Spike arquitetural da biblioteca/script headless (DataTables skinless ou Vanilla sort)
+  - Criado motor vanilla leve `resources/js/compartilhado/tabela-skinless.js` sem classes poluentes.
+  - Indicadores de ordenacao discretos (`▲` / `▼`) de 9px embutidos nos `<th>` existentes.
+  - Deteccao automatica de tipos (data dd/mm/yyyy hh:ii:ss, numeros e texto).
+- [x] Fase 2: Implementacao piloto em `rmas-historico` (Tema V1 e V2)
+  - Ordenacao client-side em colunas de data, numero de RMA, fabricante, modelo e usuario.
+  - Rezebrado automatico dinamico mantendo padrao estrito (`Tabelinha-TR1`/`TR2` no V1 e `TrZebrada1`/`TR2` no V2).
+  - Validacao de fidelidade visual e geometria via Playwright (`TabelasSkinlessOrdenacao.spec.ts`).
 - [ ] Fase 3: Expansao para `historico-de-acesso` e tabelas de creditos
   - Aplicacao uniforme da camada skinless nas demais listagens tabulares.
 

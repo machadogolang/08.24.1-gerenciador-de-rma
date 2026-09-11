@@ -18,7 +18,7 @@
         @if ($modificacoes->isEmpty())
             <p class="nenhumencontrado">Nenhuma modificação registrada.</p>
         @else
-            <table class="Tabelinha-Table">
+            <table class="Tabelinha-Table" data-tabela-skinless="true">
                 <thead>
                     <tr class="TableListarFPEF-TR">
                         <th>DATA</th>

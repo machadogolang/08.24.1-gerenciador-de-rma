@@ -10,7 +10,7 @@ disponivel em bloco recolhido, sem trocar o contrato principal. --}}
     <li style="clear:both;"></li>
 </ol>
 
-<table class="Tabelinha-Table">
+<table class="Tabelinha-Table" data-tabela-skinless="true">
     <thead>
         <tr class="SuperTr">
             <th style="width:16%">DATA</th>

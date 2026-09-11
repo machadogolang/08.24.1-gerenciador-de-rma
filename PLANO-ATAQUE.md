@@ -484,9 +484,32 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 - [x] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/` (fechado 2026-09-11).
   Suite completa dos quatro quadrantes operacionais: CicloVidaRma (2/2), Parceiros (2/2),
   Relatorios (2/2), IdentidadeControle (2/2) e Tema (1/1) - 9/9 testes verdes em serie.
-- [x] P14 - Fechamento/handoff da paridade (fechado 2026-09-11).
-  Handoff canonico registrado em `docs/produto/handoff-sessao-2026-09-11-paridade-concluida.md`.
-- [ ] EVO-SAAS-001 - S10.4/S11.4/S13.2/S14.
+- [x] EVO-SAAS-001 - S10.4/S11.4/S13.2/S14 (fechado 2026-09-11).
+  Concorrencia real multiprocesso validada (80 reservas simultaneas em 4 processos independentes, 0 colisoes),
+  relatorio de migracao com tenant explicitado, suites PHPUnit (718/718) e Playwright (9/9) verdes,
+  homologacao registrada em `docs/qa/2026-09-11-homologacao-fundacao-multiempresa-evo-saas-001.md`.
+
+## NOVA FRENTE: REFINAMENTO DO PAINEL CONTROLE DO TEMA V1 (2026-09-11)
+
+Instrucao do dono:
+- NAO e redesign.
+- NAO transformar V1 em V2/V3.
+- NAO usar cards modernos.
+- NAO tornar o Tema V1 responsivo incidentalmente.
+- Referencia visual continua sendo: Legacy 14.6.1 (`legacy-source/14.6.1/page/controle.php`).
+- URL atual observada pelo dono: `http://localhost:8095/rmas-controle`.
+- Diagnostico inicial do dono: funciona, mas ainda esta visualmente longa, pouco refinada
+  e possui diferencas desnecessarias em relacao ao Controle historico.
+- Sequencia: INVESTIGACAO -> DOCUMENTACAO -> CORRECAO -> TESTE BROWSER.
+
+### Checklist Executavel da Frente Controle V1
+- [ ] CTRL-01 - Investigacao forense detalhada de `legacy-source/14.6.1/page/controle.php`
+      vs `resources/views/temas/v1/rma/controle.blade.php`, layout, estilos e `ControlePainelController`.
+- [ ] CTRL-02 - Documentar achados e matriz de diferencas (estrutura tabular, larguras, espacamentos,
+      cores, cabecalhos, contadores, alinhamentos, botoes de filtro) em `docs/produto/`.
+- [ ] CTRL-03 - Refinamento cirurgico de CSS/Blade do Painel Controle V1 mantendo 100% da estetica 14.6.1.
+- [ ] CTRL-04 - Teste automatizado de browser (Playwright) com comparacao visual e click-through.
+- [ ] CTRL-05 - Validacao da suite completa e commit isolado.
 
 ## DEPENDENCIAS
 

@@ -15,18 +15,26 @@ final class ReservarNumeroDeRma
 {
     public function reservar(int $companyId): int
     {
+        // Garante que a linha do contador exista deterministicamente antes do lock,
+        // evitando gap-locks de insercao concorrente simultanea em tabela vazia.
+        ContadorDeRma::query()->insertOrIgnore([
+            'company_id' => $companyId,
+            'proximo_numero' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return DB::transaction(function () use ($companyId): int {
+            /** @var ContadorDeRma $contador */
             $contador = ContadorDeRma::query()
+                ->where('company_id', $companyId)
                 ->lockForUpdate()
-                ->firstOrCreate(
-                    ['company_id' => $companyId],
-                    ['proximo_numero' => 1],
-                );
+                ->sole();
 
             $numero = (int) $contador->proximo_numero;
             $contador->increment('proximo_numero');
 
             return $numero;
-        });
+        }, 5);
     }
 }

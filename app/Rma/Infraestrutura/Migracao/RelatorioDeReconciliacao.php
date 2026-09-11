@@ -27,6 +27,16 @@ final class RelatorioDeReconciliacao
 
     private bool $dryRun = false;
 
+    private ?string $tenantDestino = null;
+
+    /**
+     * EVO-SAAS-001 (S11.4) - registra o tenant de destino no relatorio de reconciliacao.
+     */
+    public function definirTenantDestino(string $nome, int $id): void
+    {
+        $this->tenantDestino = "{$nome} (#{$id})";
+    }
+
     /**
      * ARQ-002 (`INV-RMA-10`): marca o relatório como resultado de `--dry-run` - as
      * contagens abaixo passam a refletir o que SERIA gravado (tradução completa rodou,
@@ -86,6 +96,10 @@ final class RelatorioDeReconciliacao
     {
         $linhas = [];
         $linhas[] = '=== Relatório de reconciliação - migração V2→V3 ===';
+
+        if ($this->tenantDestino !== null) {
+            $linhas[] = "Tenant de destino: {$this->tenantDestino}";
+        }
 
         if ($this->dryRun) {
             $linhas[] = '';

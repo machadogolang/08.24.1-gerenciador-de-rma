@@ -49,6 +49,7 @@ final class MigrarLegado extends Command
         }
 
         $relatorio = new RelatorioDeReconciliacao;
+        $relatorio->definirTenantDestino($cell->nome, $cell->id);
 
         if ($dryRun) {
             $relatorio->marcarComoDryRun();

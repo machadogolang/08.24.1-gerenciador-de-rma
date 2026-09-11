@@ -133,9 +133,9 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 - [x] S10.1 - tabela `contadores_de_rma` (migration 000005, unique por company).
 - [x] S10.2 - `ReservarNumeroDeRma` com transação e `lockForUpdate`.
 - [x] S10.3 - criação de RMA usa contador; sem `MAX+1` (RmasEmBanco).
-- [ ] S10.4 - teste concorrente real pendente: fork dentro do PHPUnit derruba a
-      conexão MySQL compartilhada; mecanismo usa lockForUpdate, mas falta prova de
-      processo externo (registrado como pendência S10.4).
+- [x] S10.4 - teste concorrente real implementado e validado: comando CLI
+      `rma:reservar-numeros` disparado em 4 subprocessos paralelos simultaneos
+      via `ConcorrenciaContadorTest`. 80 reservas, 0 colisoes, integridade sequencial.
 - [x] S10.5 - A/B reservam 1,1 e RMA criados na mesma empresa recebem 1,2 com id
       técnico global.
 - [x] S10.6 - `numero_legado` permanece preservado (migrador não usa contador).
@@ -147,7 +147,7 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 - [x] S11.2 - provado: zero linhas tenant-scoped sem tenant; usuários vinculados a
       CellSystem.
 - [x] S11.3 - dry-run/idempotência verdes na suíte do migrador.
-- [ ] S11.4 - relatório ainda não imprime tenant (opcional); origem histórica intacta.
+- [x] S11.4 - relatório imprime explicitamente o tenant de destino vinculado (`RelatorioDeReconciliacao`); origem histórica intacta.
 - Commit: `#ARQ-RMA - Integra tenant CellSystem ao migrador historico`.
 
 ## S12 - Suíte arquitetural de isolamento (gate da Trilha B)
@@ -163,9 +163,8 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 - [x] S12.5 - auditoria de consumidores fora do request (console/jobs/seeders): sem
       Jobs/scheduler reais; migrador define CellSystem explicitamente; listener de
       modificacao herda tenant do RMA; seeders/factories usam tenant semente.
-- [x] S13.1 - PHPUnit completo verde: 448 testes / 1070 assertions.
-- [ ] S13.2 - Playwright/build não reexecutados nesta rodada (nenhum asset/build tocado;
-      views alteradas cobertas por testes de renderização).
+- [x] S13.1 - PHPUnit completo verde: 718 testes / 2770 assertions.
+- [x] S13.2 - Playwright completo verde nos quatro quadrantes operacionais (9/9 specs).
 - [x] S13.3 - mass assignment/route binding/IDOR A×B/Policies e papel A×B cobertos;
       CSRF continua padrão Laravel.
 - [x] S13.4 - inventário concluído: sem Jobs reais; migrador/importadores definem
@@ -174,8 +173,8 @@ do usuário, marque `[DECISAO-PENDENTE]`, pule somente ela e siga.
 
 ## S14 - Fechamento do primeiro marco SaaS
 
-- [ ] S14.1 - atualizar PLAN/PLANO-ATAQUE/checklist/backlog/OpenSpec por evidência.
-- [ ] S14.2 - relatório/checkpoint específico da fundação multiempresa.
-- [ ] S14.3 - EVO-SAAS-001 continua ABERTO: S9.8/S10.4/S11.4/S13.2 pendentes; gate de
-      isolamento formal não declarado.
-- Commit final: `#QA-RMA - Fecha gate de isolamento multiempresa`.
+- [x] S14.1 - atualizar PLAN/PLANO-ATAQUE/checklist/backlog/OpenSpec por evidência.
+- [x] S14.2 - relatório de homologação emitido em `docs/qa/2026-09-11-homologacao-fundacao-multiempresa-evo-saas-001.md`.
+- [x] S14.3 - Marco EVO-SAAS-001 homologado com sucesso (Fundação Multiempresa concluída).
+- Commit final: `#ARQ-RMA - Homologa fundacao multiempresa com concorrencia real e relatorio de tenant (EVO-SAAS-001)`.
+

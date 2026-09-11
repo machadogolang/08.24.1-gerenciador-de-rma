@@ -37,4 +37,13 @@ class RelatorioDeReconciliacaoTest extends TestCase
         $this->assertStringContainsString('planejado=3', $resumo);
         $this->assertStringNotContainsString('destino=3', $resumo);
     }
+
+    public function test_resumo_com_tenant_destino_definido(): void
+    {
+        $relatorio = new RelatorioDeReconciliacao;
+        $relatorio->definirTenantDestino('CellSystem', 1);
+        $resumo = $relatorio->resumo();
+
+        $this->assertStringContainsString('Tenant de destino: CellSystem (#1)', $resumo);
+    }
 }

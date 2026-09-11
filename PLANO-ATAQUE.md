@@ -152,10 +152,36 @@ Decisao canonica do dono:
 13. [x] Expandir `CapabilityContractTest` e `DescobribilidadeTemasTest` para as 65 capabilities canônicas.
 14. [x] Jornadas de click-through E2E por dominio e auditoria comportamental de acoes C1..C10.
 15. [x] Fechar gaps visuais forenses pendentes no Tema V2: PAR15-SEC-001 (senha), PAR15-NOTE-001 (anotacoes), PAR15-USR-007/009 (novo usuario), PAR15-PART-DATA-001 (RG/IE), PAR15-PART-001..006 (Parceiros create/edit/show e RMAs associados).
-16. [ ] Sweep de `[R]`/`[ ]` residuais: PAR14-NAV-002, PAR15-RMA-LIST-001, PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001, PAR15-RMA-MARCAR-001.
+16. [x] Sweep de `[R]`/`[ ]` residuais: PAR14-NAV-002, PAR15-RMA-LIST-001, PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001, PAR15-RMA-MARCAR-001 (fechado na matriz forense e coberto por testes).
 17. [ ] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense).
 18. [ ] P11 revalidacao, P12, P13 final, P14.
-19. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
+19. [ ] FRENTE CURTA (NA FILA - EXECUTAR APOS CONCLUIR PENDENCIAS DE PARIDADE VISUAL): Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01).
+20. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
+
+## NA FILA: REFINAMENTO DO PAINEL "CONTROLE" DO TEMA V1 (UI-V1-CONTROLE-01)
+
+Instrucao prioritaria do dono (2026-09-11), anotada na fila para execucao imediatamente
+apos a conclusao dos itens pendentes de paridade visual.
+
+- URL observada pelo dono: `http://localhost:8095/rmas-controle`.
+- Referencia visual: `Legacy 14.6.1` (`legacy-source/14.6.1/page/controle.php` e `legacy-source/pattern/14.6.1.css`).
+- Regra basica: NAO e redesign. NAO transformar V1 em V2/V3. NAO usar cards modernos. NAO tornar o V1 responsivo incidentalmente. Preservar alinhamento historico a esquerda e classes `formLabelPanel`, `formInputPanel`, `formSelectPanel`, `formButtonEnviarPanel`, `formTitlePanel`.
+- Documento de investigacao inicial a registrar antes de codigo: `docs/produto/2026-09-11-investigacao-refinamento-controle-v1.md` (ID `UI-V1-CONTROLE-01`) com commit documental isolado.
+
+### Pontos e Diretrizes da Frente:
+1. Adicionar Representante: o Legacy 14.6.1 possui UM UNICO formulario (`NOME: [input] [select: ASSISTENCIA/FORNECEDOR/FABRICANTE] [ADICIONAR]`). O atual criou tres formularios separados que ocupam altura excessiva. Corrigir para formulario unico no layout historico com endpoint pequeno e seguro (`POST /rmas-controle/representante`) validando tipo em allow-list/enum, sem reintroduzir dispatcher inseguro.
+2. Arquivar RMA: retirar inline JS fragil (`onsubmit="this.action = ..."`). Criar endpoint seguro `POST /rmas-controle/arquivar` com payload `numero`, tenant-aware, Policy e reutilizando o caso de uso existente de arquivamento.
+3. Feedback de sucesso/erro: contextual no padrao visual V1, curto, sem stack tecnica, reabrindo o painel correspondente.
+4. Supressao de documentacao interna na UI: remover mencoes como "Pendente - exclusao definitiva... (ver VIS-V1-011 em docs/...)". Tratar indisponibilidade com mensagem simples e discreta ("Operacao indisponivel nesta versao.") sem inventar hard delete.
+5. Acoes destrutivas: separar visualmente com discricao compativel com o V1.
+6. Informacao do Procedimento: manter fechada por padrao, com largura/line-height confortaveis no padrao V1 e link discreto "ABRIR CENTRAL DE AJUDA" ao final.
+7. Recursos promovidos pela uniao funcional: Logs de Autenticacao, Logs de Modificacao e Cadastrar Novo Usuario integrados na mesma linguagem visual V1 (`formTitlePanel`, `<details>/<summary>`, sem cards).
+8. Paineis expansiveis: revisar `<details>/<summary>` para area clicavel completa, cursor pointer, foco e sem deslocamento de texto ao expandir.
+9. Lista de arquivados: auditar custo e volume, medindo largura, colunas e padrao V1 sem DataTable.
+10. Mudar senha: reter a seguranca moderna dos 3 campos, mas com alinhamento rigoroso no grid de classes do V1.
+11. Alinhamentos e larguras: labels no mesmo eixo X, inputs no mesmo eixo X, alinhamento vertical de selects e botoes.
+12. Validacao Browser: testes comparativos com Playwright medindo posicoes, gaps e jornadas reais de click-through (menu -> Controle -> Logs/Novo Usuario/Ajuda).
+
 
 ## REGRA DE STATUS PAI/FILHO (2026-09-10)
 

@@ -135,15 +135,15 @@ Esta frente e um refinamento cirurgico de paridade historica e robustez interaci
 
 ## 4. Plano de Execucao por Ondas
 
-- [ ] Onda 1: Backend seguro no `ControlePainelController` (`storeRepresentante` e `arquivarRma`) com validacao, tenant e policy.
-- [ ] Onda 2: View V1 `controle.blade.php`:
+- [x] Onda 1: Backend seguro no `ControlePainelController` (`storeRepresentante` e `arquivarRma`) com validacao, tenant e policy.
+- [x] Onda 2: View V1 `controle.blade.php`:
   - Formulario unico de Adicionar Representante (Nome + Select Tipo + Botao Adicionar).
   - Formulario de Arquivar sem inline JS.
   - Mensagens discretas de exclusao indisponivel (sem texto interno de docs).
   - Informacao do Procedimento fechada por padrao, tipografia 12px e link Central de Ajuda.
   - Alinhamentos do Mudar Senha.
   - Feedback contextual de erro/sucesso mantendo o painel aberto.
-- [ ] Onda 3: SCSS `_v1-base.scss` com ajustes pontuais de alinhamento (`formLabelPanel` alinhado, cursor pointer em `<summary>`, feedback V1).
-- [ ] Onda 4: Testes Feature dedicados (`ControleV1AcoesTest.php`) cobrindo criacao de representante, arquivamento valido/invalido e autorizacao.
-- [ ] Onda 5: Teste Playwright com jornada real de click-through no Controle V1 (`ControleV1Navegacao.spec.ts`).
-- [ ] Onda 6: Validacao completa (PHPUnit + Playwright), build e commit.
+- [x] Onda 3: SCSS `_v1-base.scss` com ajustes pontuais de alinhamento (`formLabelPanel` alinhado, cursor pointer em `<summary>`, feedback V1).
+- [x] Onda 4: Testes Feature dedicados (`ControleV1AcoesTest.php`, 8/8 testes verdes) cobrindo criacao de representante, arquivamento valido/invalido e autorizacao.
+- [x] Onda 5: Teste Playwright com jornada real de click-through no Controle V1 (`ControleV1Navegacao.spec.ts`, 4/4 testes verdes).
+- [x] Onda 6: Validacao completa (PHPUnit 226 testes e Playwright 60 testes 100% verdes).

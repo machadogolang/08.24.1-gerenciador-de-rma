@@ -155,13 +155,12 @@ Decisao canonica do dono:
 16. [x] Sweep de `[R]`/`[ ]` residuais: PAR14-NAV-002, PAR15-RMA-LIST-001, PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001, PAR15-RMA-MARCAR-001 (fechado na matriz forense e coberto por testes).
 17. [x] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense): 56 testes Playwright e 218 testes Feature comprovados no runtime.
 18. [x] P11 revalidacao, P12, P13 final, P14 (fechados).
-19. [ ] FRENTE CURTA (AGORA): Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01).
+19. [x] FRENTE CURTA: Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01) - formulario unico de representante, arquivamento sem inline JS, supressao de docs na UI, alinhamento V1, comprovado por 8 testes Feature e 4 testes Playwright de click-through.
 20. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
 
-## AGORA: REFINAMENTO DO PAINEL "CONTROLE" DO TEMA V1 (UI-V1-CONTROLE-01)
+## CONCLUIDO: REFINAMENTO DO PAINEL "CONTROLE" DO TEMA V1 (UI-V1-CONTROLE-01)
 
-Instrucao prioritaria do dono (2026-09-11), iniciada imediatamente apos o encerramento
-dos itens de paridade visual.
+Executado e validado em 2026-09-11 com evidencia em testes Feature e Browser.
 
 - URL observada pelo dono: `http://localhost:8095/rmas-controle`.
 - Referencia visual: `Legacy 14.6.1` (`legacy-source/14.6.1/page/controle.php` e `legacy-source/pattern/14.6.1.css`).

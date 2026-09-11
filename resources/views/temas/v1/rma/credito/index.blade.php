@@ -30,7 +30,7 @@ crédito, preservando a identidade visual do 14.6.1 (Tabelinha-Table e detalhes 
     @if (count($creditos) === 0)
         <p class="nenhumencontrado">Nenhum produto com crédito disponível.</p>
     @else
-        <table class="Tabelinha-Table">
+        <table class="Tabelinha-Table" data-tabela-skinless="true">
             <thead>
                 <tr class="TableListarFPEF-TR">
                     <th>DATA</th>

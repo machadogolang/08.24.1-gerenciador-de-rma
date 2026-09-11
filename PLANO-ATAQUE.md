@@ -157,7 +157,7 @@ Decisao canonica do dono:
 18. [x] P11 revalidacao, P12, P13 final, P14 (fechados).
 19. [x] FRENTE CURTA: Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01) - formulario unico de representante, arquivamento sem inline JS, supressao de docs na UI, alinhamento V1, comprovado por 8 testes Feature e 4 testes Playwright de click-through.
 20. [x] ARQUEOLOGIA E RESTAURACAO: Componente de Loading historico (#loader e loaderpp.gif) nos Temas V1 e V2 (ARQ-RMA-LOADER-001) - asset recuperado do backup 15.9.7, markup fiel nos layouts V1/V2, defer() e CSS canonico com validacao Playwright.
-21. [ ] FRENTE: Tabelas Interativas Skinless - ordenacao, paginacao e filtro mantendo o visual historico 14.6.1 / 15.8.1 (PROP-TABELAS-SKINLESS-01; BUG-PAG-SVG-001 corrigido).
+21. [x] FRENTE: Tabelas Interativas Skinless - ordenacao, paginacao e filtro mantendo o visual historico 14.6.1 / 15.8.1 (PROP-TABELAS-SKINLESS-01; BUG-PAG-SVG-001 corrigido).
 22. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
 
 ## CONCLUIDO: REFINAMENTO DO PAINEL "CONTROLE" DO TEMA V1 (UI-V1-CONTROLE-01)
@@ -205,8 +205,9 @@ Documento de referencia: `docs/produto/2026-09-11-proposta-tabelas-ordenacao-pag
   - Ordenacao client-side em colunas de data, numero de RMA, fabricante, modelo e usuario.
   - Rezebrado automatico dinamico mantendo padrao estrito (`Tabelinha-TR1`/`TR2` no V1 e `TrZebrada1`/`TR2` no V2).
   - Validacao de fidelidade visual e geometria via Playwright (`TabelasSkinlessOrdenacao.spec.ts`).
-- [ ] Fase 3: Expansao para `historico-de-acesso` e tabelas de creditos
-  - Aplicacao uniforme da camada skinless nas demais listagens tabulares.
+- [x] Fase 3: Expansao para `historico-de-acesso` e tabelas de creditos
+  - Aplicacao uniforme da camada skinless em `historico-de-acesso` (V1 e V2), `rmas-credito` (V1 e V2) e relatorios (RCD).
+  - Cobertura Playwright automatizada (`TabelasSkinlessOrdenacao.spec.ts`, 4/4 cenarios verdes).
 
 
 ## REGRA DE STATUS PAI/FILHO (2026-09-10)

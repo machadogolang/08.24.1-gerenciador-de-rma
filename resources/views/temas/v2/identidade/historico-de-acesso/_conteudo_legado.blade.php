@@ -10,7 +10,7 @@ moderna (e-mail informado) continua disponivel em bloco recolhido. --}}
     <li style="clear:both;"></li>
 </ol>
 
-<table class="Tabelinha-Table">
+<table class="Tabelinha-Table" data-tabela-skinless="true">
     <thead>
         <tr class="SuperTr">
             <th style="width:8%">DATA</th>

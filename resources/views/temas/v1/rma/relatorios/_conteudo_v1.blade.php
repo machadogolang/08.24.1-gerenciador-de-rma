@@ -10,7 +10,7 @@ Especifica (nao compartilhada com o V2): cada tema preserva o proprio contrato. 
     <p style="clear:both;margin-bottom:15px;font-size:14px;padding-top:10px;">{{ $relatorio['subtitulo'] }}</p>
     <hr class="both">
 
-    <table class="Tabelinha-Table">
+    <table class="Tabelinha-Table" data-tabela-skinless="true">
         <thead>
             <tr class="TableListarFPEF-TR">
                 @foreach ($relatorio['colunas'] as $coluna)

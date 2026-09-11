@@ -6,7 +6,7 @@ próprio: cada tema fornece o wrapper e a impressão limpa via `.relatorio-print
     @if ($registros->isEmpty())
         <p class="nenhumencontrado">Nenhum RMA com crédito disponível.</p>
     @else
-        <table class="Tabelinha-Table relatorio-tabela">
+        <table class="Tabelinha-Table relatorio-tabela" data-tabela-skinless="true">
             <thead>
                 <tr>
                     <th>#</th>

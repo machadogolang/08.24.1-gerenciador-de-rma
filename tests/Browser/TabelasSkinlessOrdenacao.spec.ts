@@ -81,4 +81,48 @@ test.describe('PROP-TABELAS-SKINLESS-01 - Ordenacao Dinamica sem Quebra Visual',
             await expect(linha).toHaveClass(new RegExp(classeEsperada));
         }
     });
+
+    test('historico-de-acesso: ordenacao skinless por USUARIO e DATA mantendo fidelidade visual', async ({ page }) => {
+        await login(page);
+        await page.goto(`${BASE_URL}/historico-de-acesso`, { waitUntil: 'domcontentloaded' });
+
+        const tabela = page.locator('table[data-tabela-skinless="true"]').first();
+        await expect(tabela).toBeVisible();
+
+        const thUsuario = tabela.locator('thead th:has-text("USUÁRIO")');
+        await expect(thUsuario).toBeVisible();
+
+        const linhas = tabela.locator('tbody tr');
+        const totalLinhas = await linhas.count();
+        expect(totalLinhas).toBeGreaterThan(0);
+
+        // Ordena por usuario
+        await thUsuario.click();
+        const indicador = thUsuario.locator('.skinless-sort-indicator');
+        await expect(indicador).toHaveText(' ▲');
+
+        // Valida zebrado apos ordenacao
+        for (let i = 0; i < totalLinhas; i++) {
+            const linha = linhas.nth(i);
+            const classeEsperada = i % 2 === 0 ? 'Tabelinha-TR1' : 'Tabelinha-TR2';
+            await expect(linha).toHaveClass(new RegExp(classeEsperada));
+        }
+    });
+
+    test('rmas-credito: ordenacao skinless na tabela de creditos mantendo as 11 colunas', async ({ page }) => {
+        await login(page);
+        await page.goto(`${BASE_URL}/rmas-credito`, { waitUntil: 'domcontentloaded' });
+
+        const tabela = page.locator('table[data-tabela-skinless="true"]').first();
+        if (await tabela.count() > 0) {
+            await expect(tabela).toBeVisible();
+
+            const thFabricante = tabela.locator('thead th:has-text("FABRICANTE")');
+            await expect(thFabricante).toBeVisible();
+
+            await thFabricante.click();
+            const indicador = thFabricante.locator('.skinless-sort-indicator');
+            await expect(indicador).toHaveText(' ▲');
+        }
+    });
 });

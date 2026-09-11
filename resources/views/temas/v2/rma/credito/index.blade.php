@@ -21,7 +21,7 @@ contrato principal. --}}
 
     {{-- O Legacy imprime o cabecalho da tabela ANTES do teste de vazio (e so entao o
     "Nenhum produto"); reproduzimos o cabecalho sempre visivel. --}}
-    <table class="Tabelinha-Table">
+    <table class="Tabelinha-Table" data-tabela-skinless="true">
         <thead>
             <tr class="SuperTr">
                     <th style="width:8%">DATA</th>

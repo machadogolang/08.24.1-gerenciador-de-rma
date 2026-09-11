@@ -165,7 +165,7 @@ Decisao canonica do dono:
     - [x] T3-17: Selecao explicita de tema (`DefinirTemaPreferido`, `TemaPreferidoController` com payload `tema` explicito, seletor de temas no perfil V3, testes Feature 7/7 e Playwright 1/1).
     - [x] T3-18: Mobile/browser (`MobileAdaptativoV3.spec.ts` validando viewports 375x667, 768x1024, 1440x900, drawer com ESC, cartoes de RMA/parceiros/usuarios e sem overflow horizontal).
     - [x] T3-19: Acessibilidade (`AcessibilidadeV3.spec.ts` validando alvos >= 44px, foco visivel, navegacao por teclado, aria-current e aria-expanded).
-    - [ ] T3-20: Performance (bundle, consultas, build).
+    - [x] T3-20: Performance (build Vite 706ms, bundle CSS 9.68 kB / JS 1.71 kB, consultas otimizadas sem N+1 em `PerformanceV3Test.php` 3/3 verdes).
     - [ ] T3-GATE: Liberar Tema V3 no seletor com criterios verdes.
 
 ## CONCLUIDO: REFINAMENTO DO PAINEL "CONTROLE" DO TEMA V1 (UI-V1-CONTROLE-01)

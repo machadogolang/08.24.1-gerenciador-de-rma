@@ -61,6 +61,8 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
   Evidencia: `tests/Browser/AcessibilidadeV3.spec.ts` (1/1 verde),
   alvos de toque >= 44px em links, botoes e inputs de formulario,
   foco visivel via `:focus-visible`, navegacao por Tab,
-  `aria-current="page"` no link ativo e gestao de foco com tecla ESC no drawer.
-- [ ] T3-20 - Performance (bundle, consultas, build).
+- [x] T3-20 - Performance (bundle, consultas, build).
+  Evidencia: build de producao Vite bem-sucedido em 706ms (`public/build/`),
+  bundle CSS V3 de 9.68 kB (2.4 kB gzip) e JS V3 de 1.71 kB (0.7 kB gzip),
+  eager loading comprovado e contagens agregadas em `tests/Feature/Temas/PerformanceV3Test.php` (3/3 verdes).
 - [ ] T3-GATE - Liberar Tema V3 no seletor com criterios verdes.

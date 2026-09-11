@@ -107,4 +107,53 @@ test.describe('CapabilityNavigationIdentidade - Click-Through de Usuários', () 
         await expect(page).toHaveURL(/\/v2\/usuarios/);
         await expect(page.locator('table.tabela-usuarios-v2')).toBeVisible();
     });
+
+    test('Cenário D: Anotações com autosave em V2 (PAR15-NOTE-001)', async ({ page }) => {
+        // 1. Login superadministrador
+        await page.goto('/login');
+        await page.fill('#email', 'superadministrador@rma.local');
+        await page.fill('#password', 'password');
+        await page.click('button[type="submit"]');
+        await page.waitForURL(url => !url.pathname.includes('/login'));
+
+        // 2. Acessar anotações pelo dropdown Menu V2
+        await page.goto('/v2/rma');
+        const menuDropdown = page.locator('li.dropdown > a.dropdown-toggle', { hasText: 'Menu' });
+        await menuDropdown.click();
+
+        const linkAnotacoes = page.locator('ul.dropdown-menu a', { hasText: 'Anotacoes' });
+        await expect(linkAnotacoes).toBeVisible();
+        await linkAnotacoes.click();
+
+        await expect(page).toHaveURL(/\/v2\/anotacoes/);
+        const textarea = page.locator('textarea#anotacao, textarea[data-anotacao-autosave]');
+        await expect(textarea).toBeVisible();
+
+        // 3. Digitar nova anotação e verificar disparo do autosave
+        const textoTeste = `Nota Playwright ${Date.now()}`;
+        await textarea.fill(textoTeste);
+
+        // Aguardar o status de salvo
+        await expect(page.locator('#status-autosave')).toContainText('Salvo automaticamente', { timeout: 5000 });
+
+        // Recarregar e conferir persistência
+        await page.reload();
+        await expect(page.locator('textarea#anotacao')).toHaveValue(textoTeste);
+    });
+
+    test('Cenário E: Troca de senha no tema V2 (PAR15-SEC-001)', async ({ page }) => {
+        // 1. Login superadministrador
+        await page.goto('/login');
+        await page.fill('#email', 'superadministrador@rma.local');
+        await page.fill('#password', 'password');
+        await page.click('button[type="submit"]');
+        await page.waitForURL(url => !url.pathname.includes('/login'));
+
+        // 2. Acessar tela de alteração de senha V2
+        await page.goto('/v2/perfil/senha');
+        await expect(page.locator('input[name="senha_atual"]')).toBeVisible();
+        await expect(page.locator('input[name="nova_senha"]')).toBeVisible();
+        await expect(page.locator('img[src*="editar.png"]')).toBeVisible();
+        await expect(page.locator('button[type="submit"]:has-text("Cadastrar")')).toBeVisible();
+    });
 });

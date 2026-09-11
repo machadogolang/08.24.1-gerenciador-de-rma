@@ -109,12 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 campoAnotacaoV2.classList.add('anotacao--salvando');
 
+                const tokenCsrf = document.querySelector('meta[name="csrf-token"]')?.content
+                    || document.querySelector('input[name="_token"]')?.value
+                    || '';
+
                 fetch(campoAnotacaoV2.dataset.anotacaoUrl, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                         Accept: 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'X-CSRF-TOKEN': tokenCsrf,
                     },
                     body: JSON.stringify({ anotacao: campoAnotacaoV2.value }),
                 })

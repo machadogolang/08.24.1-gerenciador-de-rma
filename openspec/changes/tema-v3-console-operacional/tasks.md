@@ -57,6 +57,10 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
   Evidencia: `tests/Browser/MobileAdaptativoV3.spec.ts` (2/2 verdes cobrindo 375x667, 768x1024 e 1440x900),
   validacao de cartoes em RMAs, usuarios, parceiros e formularios sem overflow horizontal,
   drawer mobile com abertura/fechamento por tecla ESC.
-- [ ] T3-19 - Acessibilidade (teclado, ARIA, alvo 44px, estados).
+- [x] T3-19 - Acessibilidade (teclado, ARIA, alvo 44px, estados).
+  Evidencia: `tests/Browser/AcessibilidadeV3.spec.ts` (1/1 verde),
+  alvos de toque >= 44px em links, botoes e inputs de formulario,
+  foco visivel via `:focus-visible`, navegacao por Tab,
+  `aria-current="page"` no link ativo e gestao de foco com tecla ESC no drawer.
 - [ ] T3-20 - Performance (bundle, consultas, build).
 - [ ] T3-GATE - Liberar Tema V3 no seletor com criterios verdes.

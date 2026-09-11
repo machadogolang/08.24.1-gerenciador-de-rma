@@ -398,3 +398,20 @@ svg {
         }
     }
 }
+
+// PAR-LOADER-002 - Estilo historico do loader 15.8.1 (15.8.1.css:463)
+.loader {
+    width: 900px;
+    margin: 15px auto;
+    text-align: center;
+}
+
+#loader_r {
+    border: 0px;
+    background-color: transparent;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 45px;
+    font-weight: normal;
+    text-align: center;
+}

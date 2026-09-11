@@ -4,7 +4,35 @@
 // Bootstrap.
 import '../../sass/temas/v1.scss';
 
+// PAR-LOADER-001 - equivalência com `defer()` do 14.6.1.js e controle do `#loader`
+window.defer = function () {
+    const hidden = document.getElementById('hidden');
+    const loader = document.getElementById('loader');
+    if (hidden && hidden.style.display === 'none') {
+        hidden.style.display = 'block';
+    }
+    if (loader) {
+        loader.style.display = 'none';
+    }
+};
+
+window.mostrarLoader = function () {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.display = 'block';
+    }
+};
+
+window.ocultarLoader = function () {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.display = 'none';
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+    window.defer();
+
     // Equivalente a `.pmo` (pattern/15.9.7.js) - alterna a exibição de um bloco de
     // anotação/observação sem reload de página.
     document.querySelectorAll('[data-pmo-alvo]').forEach((gatilho) => {

@@ -105,7 +105,12 @@
     </div>
 
     <div id="BASE">
-        <div id="MEIO">
+        {{-- PAR-LOADER-001 - loading historico com loaderpp.gif (14.6.1/index.php:179) --}}
+        <div id="loader" class="loader" style="display:none;">
+            <img src="{{ asset('images/loaderpp.gif') }}" alt="Loading" title="Loading">
+        </div>
+        <div id="hidden">
+            <div id="MEIO">
             <div class="menuDivSession" id="JS-Sessao" data-painel-pagina="{{ $painelSessao ? 'true' : 'false' }}" @style(['display:block' => $painelSessao, 'display:none' => ! $painelSessao])>
                 <nav class="JS-SessaoRIGHT" aria-label="Cadastros e administração">
                     <a class="lisessao {{ request()->routeIs('parceiros.fornecedores.*', 'v1.parceiros.fornecedores.*') ? 'active' : '' }}" href="{{ rota_tema('parceiros.fornecedores.index') }}">Fornecedores</a>
@@ -183,6 +188,7 @@
             <p class="p-rodape fl"><strong>Usuário:</strong> {{ auth()->user()?->name }}</p>
             <div class="designedby">Designed by <a href="http://scripting.com.br" target="_blank" rel="noopener"><strong>Scripting Studios Art</strong></a></div>
             <div class="designedby">Cópia licenciada para <strong>Cellsystem LTDA</strong></div>
+        </div>
         </div>
     </div>
 </body>

@@ -15,7 +15,36 @@ import $ from './_jquery-global';
 import 'bootstrap/js/tab';
 import 'bootstrap/js/dropdown';
 
+// PAR-LOADER-002 - equivalência com loader histórico 15.8.1 (#loader, #loader_r e defer)
+window.defer = function () {
+    const hidden = document.getElementById('hidden');
+    const loader = document.getElementById('loader');
+    const loaderR = document.getElementById('loader_r');
+    if (hidden && hidden.style.display === 'none') {
+        hidden.style.display = 'block';
+    }
+    if (loader) {
+        loader.style.display = 'none';
+    }
+    if (loaderR) {
+        loaderR.style.display = 'none';
+    }
+};
+
+window.mostrarLoader = function () {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.display = 'block';
+    }
+};
+
+window.ocultarLoader = function () {
+    window.defer();
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+    window.defer();
+
     // Equivalente a `.pmo` (pattern/15.9.7.js), mesmo comportamento do TEMA V1.
     document.querySelectorAll('[data-pmo-alvo]').forEach((gatilho) => {
         gatilho.addEventListener('click', () => {

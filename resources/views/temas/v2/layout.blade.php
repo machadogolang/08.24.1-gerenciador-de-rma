@@ -100,11 +100,23 @@
 
     <div class="shell-v2">
         <div class="container">
-            @if (session('status'))
-                <p class="centrodeavisos">{{ session('status') }}</p>
-            @endif
+            {{-- PAR-LOADER-002 - loading historico com loaderpp.gif (15.8.1/index.php:46) --}}
+            <div id="loader" class="loader" style="display:none;margin-left:15px;margin-top:45px;">
+                <img src="{{ asset('images/loaderpp.gif') }}" title="Loading" alt="Loading">
+            </div>
 
-            @yield('conteudo')
+            <div id="hidden">
+                @if (session('status'))
+                    <p class="centrodeavisos">{{ session('status') }}</p>
+                @endif
+
+                @yield('conteudo')
+            </div>
+        </div>
+
+        {{-- PAR-LOADER-002 - loader_r do painel direito historico (15.8.1/index.php:97) --}}
+        <div id="loader_r" class="upmenuright" style="display:none;border:0px;background-color:transparent;padding:0px;margin:0px;margin-top:45px;font-weight:normal;">
+            <img src="{{ asset('images/loaderpp.gif') }}" title="Loading" alt="Loading">
         </div>
 
         <aside class="shell-v2__sidebar upmenuright" id="menuright">

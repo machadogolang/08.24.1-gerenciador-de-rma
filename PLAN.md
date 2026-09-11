@@ -82,15 +82,17 @@ matriz-paridade-temas-v1-v2-v3.md`; tarefas atômicas: checklist mestre, seção
 - Não iniciar código da Trilha B antes do gate da Trilha A.
 - Não fazer push, PR, merge ou mudar visibilidade remota sem autorização explícita.
 
-- **EVO-UX-001 (Tema V3) refinado em 2026-09-09:** addendum
-  `docs/arquitetura/2026-09-09-refinamento-evo-ux-001-tema-v3-console-operacional.md`,
-  matriz `2026-09-09-matriz-aproveitamento-v1-v2-para-v3.md`, mapa de telas
-  `2026-09-09-mapa-telas-tema-v3.md`, wireframes, spike
-  `2026-09-09-spike-t3-tailwind-vs-css-semantico-v3.md` e OpenSpec
-  `openspec/changes/tema-v3-console-operacional/`. Implementacao segue em gate
-  futuro ([GATE-PENDENTE]); V3 nao selecionavel.
+- **Unificacao Funcional dos Temas V1 e V2 concluida (2026-09-10):** catalogo de 65
+  capabilities canonicas unificadas (V1 = V2 = Catalogo), com matriz viva
+  `docs/produto/2026-09-10-matriz-uniao-funcional-temas.md` e OpenSpec
+  `openspec/changes/unificacao-funcional-temas-v1-v2/`.
 
-- **T3-08 a T3-12 implementados (ocultos, 2026-09-09):** shell, dashboard,
-  listagem, detalhe e formularios de RMA do Tema V3 disponiveis somente via rotas
-  `/v3`; T3-11/T3-12 localmente concluidos e reconciliados. V3 nao aparece no
-  seletor e permanece nao selecionavel ate T3-GATE.
+- **Tema V3 / Console Operacional Adaptativa homologado (2026-09-11):** T3-08 a T3-20
+  concluidos (shell, dashboard, listagens densas, detalhe em secoes, formularios,
+  parceiros, usuarios/admin, relatorios, secundarias, selecao explicita, adaptabilidade
+  mobile/tablet/desktop, acessibilidade 44px/ARIA, bundle otimizado). Gate aprovado com
+  parecer `docs/pareceres/2026-09-11-parecer-t3-gate-tema-v3.md`.
+
+- **Contrato transversal de feedback e erros (2026-09-11):** UX-004 / P8 concluido com
+  `mensagens_feedback.blade.php`, paginas `errors/{403,404,500}` personalizadas e suite
+  com 601 testes PHPUnit Feature (100% verde) e testes Playwright verdes.

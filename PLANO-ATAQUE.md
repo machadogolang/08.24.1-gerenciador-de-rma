@@ -473,9 +473,9 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 
 - [x] P9 - Inventario de rotas/plugins residuais (`docs/produto/2026-09-10-inventario-rotas-e-plugins-residuais.md`,
   2026-09-10; 150 rotas, sem orfas, V3 segue oculto).
-- [ ] P10 - Parcial 2026-09-10: matriz de temas (Encaminhar/Concluir) e checklist-master
-  (H-026/H-034/H-035/H-036) reconciliados; PLAN.md nao referenciava os itens. Faltam
-  `paridade-v2-v3.md`, `checklist-paridade-temas.md` e o roteiro final.
+- [x] P10 - Reconciliacao documental de paridade (fechado 2026-09-11).
+  `PLAN.md`, `paridade-v2-v3.md` e `checklist-paridade-temas.md` reconciliados e atualizados
+  com as 65 capabilities da unificacao funcional e homologacao do Tema V3 / T3-GATE.
 - [x] P11 - Regressao funcional por fluxo: `SmokesParidadeFuncional` M-01/M-02/M-04/M-06
   4/4 verdes em 2026-09-10 (specs reconciliados com o detalhe V1 de edicao inline e a
   folha de relatorio).

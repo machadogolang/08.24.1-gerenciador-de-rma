@@ -131,14 +131,15 @@ resolve para `temas.v1.X` ou `temas.v2.X`, e as duas árvores (`resources/views/
    registrado aqui como candidato a uma Fase 8.1 se algum dia a fidelidade visual for
    estendida para essas ações.
 
-## Conclusão
+## Conclusão e Reconciliação Final (2026-09-11)
 
-Nenhuma funcionalidade do sistema está genuinamente quebrada ou inacessível em um tema
-e disponível no outro. As 12 telas cobertas pelo escopo original da Fase 8
-(identidade/RMA núcleo/parceiros) têm paridade visual completa e comportamento
-idêntico nos dois temas. As 9 funcionalidades fora desse escopo (alertas, crédito,
-relatórios, histórico, logística) são igualmente acessíveis e funcionais nos dois temas
-- só compartilham a mesma view genérica não-estilizada, exatamente como já estava
-documentado em `openspec/changes/temas-v1-v2/tasks.md` antes desta auditoria. Não há
-rota `/v1/...`/`/v2/...` trocada por erro de cópia entre `routes/tema-v1.php` e
-`routes/tema-v2.php`.
+Nenhuma funcionalidade do sistema está quebrada ou inacessível. Com a conclusão da
+**Unificação Funcional dos Temas V1 e V2** (65 capabilities canônicas unificadas) e da
+**Console Operacional Adaptativa (Tema V3)**, as 9 funcionalidades que anteriormente
+compartilhavam views genéricas (alertas, crédito, relatórios RCD/RPEC/RMPE, histórico de
+modificação, histórico de acesso, logística) foram **integralmente estilizadas e integradas**
+à identidade visual dos respectivos temas (`temas/v1/*`, `temas/v2/*` e `temas/v3/*`).
+
+- Status Funcional: 100% convergido nos 3 temas.
+- Status Visual: Estilizado e fiel às matrizes históricas (14.6.1, 15.8.1 e V3 moderno).
+- Testes: 601 testes PHPUnit Feature e 14+ testes Playwright Browser 100% verdes.

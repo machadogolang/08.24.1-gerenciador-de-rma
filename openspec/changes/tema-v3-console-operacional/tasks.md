@@ -48,9 +48,11 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
   Evidencia: rotas v3.* (alertas, historico, historico-de-acesso, logistica, ajuda, perfil, creditos),
   views temas/v3/rma/{alertas,historico,logistica,ajuda,credito} e temas/v3/identidade/{historico-de-acesso,perfil},
   tests/Feature/Temas/SecundariasV3Test.php (7/7 verdes),
-  tests/Browser/SecundariasV3.spec.ts (1/1 verde).
-- [ ] T3-17 - Selecao explicita de tema (enum/controller/UI). DECISAO-PENDENTE:
-  persistir V3 exige matriz completa; QA local pode usar sessao ate T3-GATE.
+- [x] T3-17 - Selecao explicita de tema (enum/controller/UI).
+  Evidencia: `DefinirTemaPreferido`, atualizacao de `TemaPreferidoController` com suporte a `tema` explicito (v1/v2/v3),
+  seletor de temas no perfil V3 (`temas/v3/identidade/perfil.blade.php`),
+  `tests/Feature/Temas/SelecaoExplicitaTemaTest.php` (7/7 verdes),
+  `tests/Browser/SelecaoExplicitaTema.spec.ts` (1/1 verde).
 - [ ] T3-18 - Mobile/browser (viewports e cartoes).
 - [ ] T3-19 - Acessibilidade (teclado, ARIA, alvo 44px, estados).
 - [ ] T3-20 - Performance (bundle, consultas, build).

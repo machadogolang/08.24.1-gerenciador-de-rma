@@ -716,15 +716,29 @@ li {
     font-size: 11px;
 }
 
-// VIS-V1-010 - painel "Controle" (`pattern/14.6.1.css`: `.formTitlePanel`,
+// VIS-V1-010 / UI-V1-CONTROLE-01 - painel "Controle" (`pattern/14.6.1.css`: `.formTitlePanel`,
 // `.formLabelPanel`, `.trcontrole1`/`.tdcontrole1`). `<details>/<summary>` nativos
-// substituem o `expande()`/`minimize()` em JS do legado (mesmo comportamento de
-// painel colapsado por padrão, sem framework - ver VIS-V1-002).
+// reproduzem com fidelidade o comportamento historico (cada painel expande e mantem
+// seu titulo em negrito, sem accordion exclusivo).
+details {
+    margin-bottom: 6px;
+
+    &[open] > summary.formTitlePanel {
+        font-weight: bold;
+        color: #fff;
+    }
+}
+
 .formTitlePanel {
     clear: both;
-    margin: 0 0 10px;
+    margin: 0 0 6px;
     font-size: 13px;
     cursor: pointer;
+    outline: none;
+
+    &:focus-visible {
+        outline: 1px dotted rgba(255, 255, 255, 0.5);
+    }
 }
 
 .formLabelPanel {

@@ -1,234 +1,225 @@
 @extends('temas.v1.layout')
 
-{{-- VIS-V1-010 - painel "Controle" do TEMA V1, fonte real `14.6.1/page/controle.php`
-(= `menujs-right/controle.php`), 7 ações administrativas na mesma ordem do legado.
-`<details>/<summary>` reproduz o comportamento "painel colapsado por padrão, expande ao
-clicar" do `expande()`/`minimize()` original sem precisar de JS novo (mesma filosofia de
-VIS-V1-002: nativo primeiro). Cada ação reaproveita rota/caso de uso V3 já existente -
-nenhum caso de uso novo foi criado para esta tela. --}}
+{{-- UI-V1-CONTROLE-01 - painel "Controle" do TEMA V1, fonte real `14.6.1/page/controle.php`
+(= `menujs-right/controle.php`).
+Preserva a fidelidade estrita ao Legacy 14.6.1:
+- Formulario unico de Adicionar Representante (Nome + Select tipo + Adicionar)
+- Arquivar RMA sem inline JS via rota segura dedicada
+- Supressao de documentacao interna na interface do usuario
+- Informacao do Procedimento fechada por padrao com link discreto para Ajuda
+- Mudar Senha preservando a seguranca moderna dos 3 campos alinhados no grid V1
+- Recursos promovidos da Capability Union na linguagem nativa V1
+--}}
 @section('conteudo')
     @if (session('status'))
-        <p class="centrodeavisos">{{ session('status') }}</p>
+        <p class="centrodeavisos" style="margin-bottom:12px;">{{ session('status') }}</p>
     @endif
 
     @if ($errors->any())
-        <ul>
+        <div class="centrodeavisos centrodeavisos--erro" style="margin-bottom:12px;background-color:rgba(180,40,40,0.4);border-color:rgba(255,80,80,0.6);">
             @foreach ($errors->all() as $erro)
-                <li>{{ $erro }}</li>
+                <p style="margin:2px 0;">{{ $erro }}</p>
             @endforeach
-        </ul>
+        </div>
     @endif
 
-    {{-- #01 ADICIONAR REPRESENTANTE - legado usa 1 form + select de tipo; aqui são 3
-    forms, um por rota V3 já existente (parceiros.{fornecedores,fabricantes,assistencias-tecnicas}.store),
-    sem inventar um dispatcher novo por "tipo". --}}
-    <details>
+    {{-- #01 ADICIONAR REPRESENTANTE - Legacy 14.6.1: 1 form compacto com select de tipo --}}
+    <details {{ session('painel_aberto') === 'representante' || $errors->has('nome') || $errors->has('tipo') ? 'open' : '' }}>
         <summary class="formTitlePanel">ADICIONAR REPRESENTANTE</summary>
 
-        <form method="POST" action="{{ route('parceiros.fornecedores.store') }}">
+        <form method="POST" action="{{ route('rmas.controle.representante.store') }}" style="margin-top:6px;">
             @csrf
-            <p class="fl formLabelPanel">FORNECEDOR  - NOME:</p>
-            <p class="fl"><input class="formInputPanel" type="text" name="nome" maxlength="255" required></p>
-            <p class="fl"><button class="formButtonEnviarPanel" type="submit">ADICIONAR</button></p>
-            <div style="height:10px;clear:both;"></div>
-        </form>
-        <form method="POST" action="{{ route('parceiros.fabricantes.store') }}">
-            @csrf
-            <p class="fl formLabelPanel">FABRICANTE  - NOME:</p>
-            <p class="fl"><input class="formInputPanel" type="text" name="nome" maxlength="255" required></p>
-            <p class="fl"><button class="formButtonEnviarPanel" type="submit">ADICIONAR</button></p>
-            <div style="height:10px;clear:both;"></div>
-        </form>
-        <form method="POST" action="{{ route('parceiros.assistencias-tecnicas.store') }}">
-            @csrf
-            <p class="fl formLabelPanel">ASSISTÊNCIA  - NOME:</p>
-            <p class="fl"><input class="formInputPanel" type="text" name="nome" maxlength="255" required></p>
-            <p class="fl"><button class="formButtonEnviarPanel" type="submit">ADICIONAR</button></p>
-            <div style="height:10px;clear:both;"></div>
+            <span class="fl formLabelPanel">NOME:</span>
+            <span class="fl">
+                <input class="formInputPanel" type="text" name="nome" value="{{ old('nome') }}" maxlength="255" style="width:220px;" required>
+            </span>
+            <select class="formSelectPanel fl" name="tipo" style="margin-left:10px;">
+                <option value="assistencia_tecnica" {{ old('tipo') === 'assistencia_tecnica' ? 'selected' : '' }}>ASSISTENCIA</option>
+                <option value="fornecedor" {{ old('tipo') === 'fornecedor' ? 'selected' : '' }}>FORNECEDOR</option>
+                <option value="fabricante" {{ old('tipo') === 'fabricante' ? 'selected' : '' }}>FABRICANTE</option>
+            </select>
+            <span class="fl">
+                <button class="formButtonEnviarPanel" type="submit" style="margin-left:10px;">ADICIONAR</button>
+            </span>
+            <div style="height:12px;clear:both;"></div>
         </form>
     </details>
 
-    {{-- #04 ARQUIVAR UMA SOLICITACAO DE RMA - reaproveita `rmas.arquivar`
-    (POST /rmas/{rma}/arquivar), já usado no detalhe do RMA. O legado identifica por
-    "NUMERO" digitado; a rota V3 usa o id na URL, então o form reescreve a própria
-    `action` com o valor digitado antes de submeter (POST nativo, sem fetch). --}}
-    <details>
+    {{-- #04 ARQUIVAR UMA SOLICITACAO DE RMA - Legacy 14.6.1: NUMERO + ARQUIVAR sem inline JS --}}
+    <details {{ session('painel_aberto') === 'arquivar' || $errors->has('numero') ? 'open' : '' }}>
         <summary class="formTitlePanel">ARQUIVAR UMA SOLICITACAO DE RMA</summary>
 
-        <form method="POST"
-            action="{{ route('rmas.arquivar', ['rma' => '__ID__']) }}"
-            onsubmit="this.action = this.action.replace('__ID__', this.numero.value); return true;">
+        <form method="POST" action="{{ route('rmas.controle.arquivar') }}" style="margin-top:6px;">
             @csrf
-            <p class="fl formLabelPanel">NUMERO:</p>
-            <p class="fl"><input class="formInputPanel" type="text" name="numero" inputmode="numeric" required></p>
-            <p class="fl"><button class="formButtonEnviarPanel" type="submit">ARQUIVAR</button></p>
+            <span class="fl formLabelPanel">NUMERO:</span>
+            <span class="fl">
+                <input class="formInputPanel" type="text" name="numero" value="{{ old('numero') }}" inputmode="numeric" style="width:120px;" required>
+            </span>
+            <span class="fl">
+                <button class="formButtonEnviarPanel" type="submit" style="margin-left:10px;">ARQUIVAR</button>
+            </span>
+            <div style="height:12px;clear:both;"></div>
         </form>
-        <div style="height:10px;clear:both;"></div>
     </details>
 
-    {{-- #05 DELETAR UMA SOLICITACAO DE RMA - VIS-V1-011, sem rota V3 (hard delete não
-    existe, `Route::resource('rmas', ...)->except(['destroy'])`). Decisão de produto
-    pendente - não implementado por inferência, só a pendência fica registrada aqui. --}}
+    {{-- #05 DELETAR UMA SOLICITACAO DE RMA - acao destrutiva indisponivel nesta versao --}}
     <details>
         <summary class="formTitlePanel">DELETAR UMA SOLICITACAO DE RMA</summary>
-        <p>Pendente - exclusão definitiva de RMA depende de decisão de produto/segurança
-            ainda não tomada (ver <code>VIS-V1-011</code> em
-            <code>docs/produto/checklist-paridade-visual-v1-runtime.md</code>). Hoje só
-            existe arquivamento (reversível), acima.</p>
+        <div style="padding:4px 0 8px 0;">
+            <p style="font-size:11px;color:#aaa;margin:0;">Operação indisponível nesta versão.</p>
+        </div>
+        <div style="height:6px;clear:both;"></div>
     </details>
 
-    {{-- #06 DELETAR UM USUARIO - VIS-V1-012, mesma situação: sem rota V3, decisão de
-    produto pendente. --}}
+    {{-- #06 DELETAR UM USUARIO - acao destrutiva indisponivel nesta versao --}}
     <details>
         <summary class="formTitlePanel">DELETAR UM USUARIO</summary>
-        <p>Pendente - exclusão definitiva de usuário depende de decisão de produto/segurança
-            ainda não tomada (ver <code>VIS-V1-012</code> em
-            <code>docs/produto/checklist-paridade-visual-v1-runtime.md</code>).</p>
+        <div style="padding:4px 0 8px 0;">
+            <p style="font-size:11px;color:#aaa;margin:0;">Operação indisponível nesta versão.</p>
+        </div>
+        <div style="height:6px;clear:both;"></div>
     </details>
 
-    {{-- #07 INFORMACAO DO PROCEDIMENTO DE RMA - texto estático do legado, sem regra de
-    negócio; artefatos de encoding do original (`m�os`, `�`) corrigidos para
-    "mãos"/"é". --}}
+    {{-- #07 INFORMACAO DO PROCEDIMENTO DE RMA - texto operacional fechado por padrao --}}
     <details>
         <summary class="formTitlePanel">INFORMACAO DO PROCEDIMENTO DE RMA</summary>
-        <div style="font-size:12px;">
+        <div style="font-size:12px;font-family:'Fira Mono','Open Sans','Arial',sans-serif;line-height:1.6;max-width:780px;padding:6px 0 10px 0;">
             <p class="title-comicone">Olá {{ auth()->user()?->name }}, você está na Central de Ajuda</p>
-            <hr class="both">
+            <hr class="both" style="border:0;border-top:1px solid rgba(255,255,255,0.15);margin:6px 0 10px 0;">
             <p>Nome da ferramenta: <strong>FERRAMENTA INTRANET DE RMA</strong></p>
             <p><strong>Versão:</strong> 14.6.1</p>
             <br>
-            <p>3 ETAPAS: Entrada, Processamento e Saída</p>
+            <p><strong>3 ETAPAS:</strong> Entrada, Processamento e Saída</p>
             <br>
-            <p>Entrada: Dados do produto</p>
-            <p>Processamento: Encaminhamento do produto</p>
-            <p>Saída: O produto reparado</p>
+            <p><strong>Entrada:</strong> Dados do produto</p>
+            <p><strong>Processamento:</strong> Encaminhamento do produto</p>
+            <p><strong>Saída:</strong> O produto reparado</p>
             <br>
-            <p>Todo o processo é feito pelo próprio responsável pelos RMAs, desde
-                adicionar uma nova solicitação para ele próprio. Vamos entender então:
-                primeiro é adicionada uma nova solicitação de RMA, este vai para a
-                ENTRADA e fica lá até que o setor de RMA assinale como RECEBIDO.</p>
+            <p>Todo o processo é feito pelo próprio responsável pelos RMAs, desde adicionar uma nova solicitação para ele próprio. Vamos entender então: primeiro é adicionada uma nova solicitação de RMA, este vai para a ENTRADA e fica lá até que o setor de RMA assinale como RECEBIDO.</p>
             <br>
-            <p>Para o RMA ser recebido, precisa estar com o produto em mãos e
-                identificado. Agora é identificada a nota fiscal e para quem vai
-                ENCAMINHAR (destinatário), assim é inserido os dados necessários para
-                fazer o ENCAMINHAMENTO.</p>
+            <p>Para o RMA ser recebido, precisa estar com o produto em mãos e identificado. Agora é identificada a nota fiscal e para quem vai ENCAMINHAR (destinatário), assim é inserido os dados necessários para fazer o ENCAMINHAMENTO.</p>
             <br>
-            <p>Para sair do RECEBIDO é necessário ter entrado em contato com o
-                DESTINATÁRIO, recebido formulários e informações do outro lado, para
-                então enviar novamente as informações e aguardar receber a autorização,
-                para logo fazer a nota fiscal de remessa e ENCAMINHAR ao setor essa NF
-                de remessa e aguardar AUTORIZAÇÃO da NF de remessa - se está correta -
-                para então encaminhar este produto ao setor de solução.</p>
+            <p>Para sair do RECEBIDO é necessário ter entrado em contato com o DESTINATÁRIO, recebido formulários e informações do outro lado, para então enviar novamente as informações e aguardar receber a autorização, para logo fazer a nota fiscal de remessa e ENCAMINHAR ao setor essa NF de remessa e aguardar AUTORIZAÇÃO da NF de remessa - se está correta - para então encaminhar este produto ao setor de solução.</p>
             <br>
-            <p>Quando encaminhado para o DESTINATÁRIO, a solicitação vai para os
-                ENCAMINHADOS e só sai de lá quando o produto retornar ao nosso SETOR DE
-                RMA.</p>
+            <p>Quando encaminhado para o DESTINATÁRIO, a solicitação vai para os ENCAMINHADOS e só sai de lá quando o produto retornar ao nosso SETOR DE RMA.</p>
             <br>
-            <p>Então, quando ele retornar ao setor de RMA, ele será assinalado como
-                CONCLUIDO, e nessa hora o produto pode retornar para a sua ORIGEM, como
-                por exemplo o CLIENTE ou ESTOQUE.</p>
+            <p>Então, quando ele retornar ao setor de RMA, ele será assinalado como CONCLUIDO, e nessa hora o produto pode retornar para a sua ORIGEM, como por exemplo o CLIENTE ou ESTOQUE.</p>
             <br>
-            <p>Importante acompanhar o produto no Smallcomerce para que, se retirado -1
-                do estoque, seja feito o retorno lançando o produto no Smallcomerce com
-                a NF de RETORNO.</p>
+            <p>Importante acompanhar o produto no Smallcomerce para que, se retirado -1 do estoque, seja feito o retorno lançando o produto no Smallcomerce com a NF de RETORNO.</p>
+            <p style="margin-top:14px;">
+                <a href="{{ route('rmas.ajuda') }}" class="formButtonEnviarPanel" style="display:inline-block;width:auto;padding:2px 12px;text-decoration:none;color:#fff;line-height:20px;text-align:center;">
+                    ABRIR CENTRAL DE AJUDA
+                </a>
+            </p>
         </div>
+        <div style="height:8px;clear:both;"></div>
     </details>
 
-    {{-- #08 LISTAR SOLICITACOES DE RMA ARQUIVADAS - VIS-V1-013, construída sobre
-    `Status::Arquivado` (`ControlePainelController::index`), sem decisão de produto
-    nova: o status já existe e já é gravado por `rmas.arquivar`/`rmas.reverter`. --}}
+    {{-- #08 LISTAR SOLICITACOES DE RMA ARQUIVADAS - tabela de 6 colunas do 14.6.1 --}}
     <details>
         <summary class="formTitlePanel">LISTAR SOLICITACOES DE RMA ARQUIVADAS</summary>
 
-        <div class="controle-arquivados-scroll">
+        <div class="controle-arquivados-scroll" style="margin-top:6px;margin-bottom:12px;">
         @if ($arquivados->isEmpty())
-            <p>Nenhum item arquivado</p>
+            <div style="margin-left:5px;margin-top:6px;font-size:11px;margin-bottom:10px;color:#aaa;">Nenhum item arquivado</div>
         @else
-            <table class="Tabelinha-Table">
+            <table width="100%" style="border:1px solid rgba(0,0,0,0.2);margin-bottom:10px;border-collapse:collapse;">
                 <thead>
-                    <tr class="TableListarFPEF-TR">
-                        <th>CHAVE</th><th>FABRICANTE</th><th>DESCRICAO</th><th>MODELO</th><th>S/N</th><th>OS</th>
+                    <tr style="background-color:rgba(0,0,0,0.4);height:30px;font-family:Arial,Tahoma,sans-serif;font-size:11px;border:0;text-align:center;">
+                        <th width="10%" style="color:#FFF;padding:4px;">CHAVE</th>
+                        <th width="15%" style="color:#FFF;padding:4px;">FABRICANTE</th>
+                        <th width="20%" style="color:#FFF;padding:4px;">DESCRICAO</th>
+                        <th width="20%" style="color:#FFF;padding:4px;">MODELO</th>
+                        <th width="20%" style="color:#FFF;padding:4px;">S/N</th>
+                        <th width="10%" style="color:#FFF;padding:4px;">OS</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($arquivados as $indice => $registro)
-                        <tr class="trcontrole1 {{ $indice % 2 === 0 ? 'Tabelinha-TR1' : 'Tabelinha-TR2' }}">
-                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}">{{ $registro->id }}</a></td>
-                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}">{{ $registro->fabricante?->nome }}</a></td>
-                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}">{{ $registro->descricao }}</a></td>
-                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}">{{ $registro->modelo }}</a></td>
-                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}">{{ $registro->sn }}</a></td>
-                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}">{{ $registro->os }}</a></td>
+                    @foreach ($arquivados as $registro)
+                        <tr class="trcontrole1">
+                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}"><div>{{ $registro->id }}</div></a></td>
+                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}"><div>{{ $registro->fabricante?->nome ?? '-' }}</div></a></td>
+                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}"><div>{{ $registro->descricao }}</div></a></td>
+                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}"><div>{{ $registro->modelo }}</div></a></td>
+                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}"><div>{{ $registro->sn }}</div></a></td>
+                            <td class="tdcontrole1"><a href="{{ route('rmas.show', ['rma' => $registro->id]) }}"><div>{{ $registro->os }}</div></a></td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         @endif
         </div>
+        <div style="height:6px;clear:both;"></div>
     </details>
 
-    {{-- #09 MUDAR SENHA - legado troca só a senha do usuário logado (ver
-    `post/mudar_senha.php`, usa `$_SESSION["START1597_email"]`), sem exigir senha atual.
-    Reaproveita `identidade.perfil.senha.update`, que já exige senha atual + confirmação
-    - mais seguro que o legado; não é reintrodução do form inseguro. --}}
-    <details>
+    {{-- #09 MUDAR SENHA - seguranca moderna dos 3 campos alinhados no grid V1 --}}
+    <details {{ $errors->has('senha_atual') || $errors->has('nova_senha') ? 'open' : '' }}>
         <summary class="formTitlePanel">MUDAR SENHA</summary>
 
-        <form method="POST" action="{{ route('identidade.perfil.senha.update') }}">
+        <form method="POST" action="{{ route('identidade.perfil.senha.update') }}" style="margin-top:6px;">
             @csrf
             @method('PUT')
-            <p class="fl formLabelPanel">SENHA ATUAL:</p>
-            <p class="fl"><input class="formInputPanel" type="password" name="senha_atual" required></p>
-            <div style="height:10px;clear:both;"></div>
-            <p class="fl formLabelPanel">NOVA SENHA:</p>
-            <p class="fl"><input class="formInputPanel" type="password" name="nova_senha" required></p>
-            <div style="height:10px;clear:both;"></div>
-            <p class="fl formLabelPanel">CONFIRMAR NOVA SENHA:</p>
-            <p class="fl"><input class="formInputPanel" type="password" name="nova_senha_confirmation" required></p>
-            <p class="fl"><button class="formButtonEnviarPanel" type="submit">SALVAR</button></p>
+            <div style="margin-bottom:6px;">
+                <span class="fl formLabelPanel" style="width:160px;">SENHA ATUAL:</span>
+                <span class="fl"><input class="formInputPanel" type="password" name="senha_atual" style="width:200px;" required></span>
+                <div style="clear:both;"></div>
+            </div>
+            <div style="margin-bottom:6px;">
+                <span class="fl formLabelPanel" style="width:160px;">NOVA SENHA:</span>
+                <span class="fl"><input class="formInputPanel" type="password" name="nova_senha" style="width:200px;" required></span>
+                <div style="clear:both;"></div>
+            </div>
+            <div style="margin-bottom:8px;">
+                <span class="fl formLabelPanel" style="width:160px;">CONFIRMAR NOVA SENHA:</span>
+                <span class="fl"><input class="formInputPanel" type="password" name="nova_senha_confirmation" style="width:200px;" required></span>
+                <span class="fl" style="margin-left:10px;">
+                    <button class="formButtonEnviarPanel" type="submit">SALVAR</button>
+                </span>
+                <div style="clear:both;"></div>
+            </div>
         </form>
-        <div style="height:10px;clear:both;"></div>
+        <div style="height:8px;clear:both;"></div>
     </details>
 
-    {{-- UF-10 (GAP-V1-03) - LOGS DE AUTENTICACAO: uniao funcional com Tema V2 no padrao de Controle V1. --}}
+    {{-- UF-10 (GAP-V1-03) - LOGS DE AUTENTICAÇÃO: capacidade promovida no padrao visual V1 --}}
     <details>
         <summary class="formTitlePanel">LOGS DE AUTENTICAÇÃO</summary>
-        <div style="font-size:12px;padding:10px 0;">
-            <p>Histórico completo de tentativas de login, acessos bem-sucedidos e falhas de autenticação.</p>
-            <p style="margin-top:10px;">
-                <a href="{{ rota_tema('identidade.historico-de-acesso.index') }}" class="formButtonEnviarPanel" style="display:inline-block;text-decoration:none;padding:5px 12px;color:#fff;">
+        <div style="font-size:12px;padding:6px 0 8px 0;max-width:780px;">
+            <p style="margin:0 0 8px 0;">Histórico completo de tentativas de login, acessos bem-sucedidos e falhas de autenticação.</p>
+            <p style="margin:0;">
+                <a href="{{ rota_tema('identidade.historico-de-acesso.index') }}" class="formButtonEnviarPanel" style="display:inline-block;width:auto;padding:2px 12px;text-decoration:none;color:#fff;line-height:20px;text-align:center;">
                     ABRIR LOGS DE AUTENTICAÇÃO
                 </a>
             </p>
         </div>
-        <div style="height:10px;clear:both;"></div>
+        <div style="height:8px;clear:both;"></div>
     </details>
 
-    {{-- UF-10 (GAP-V1-04/05) - LOGS DE MODIFICACAO DE RMA: uniao funcional com Tema V2 no padrao de Controle V1. --}}
+    {{-- UF-10 (GAP-V1-04/05) - LOGS DE MODIFICAÇÃO DE RMA: capacidade promovida no padrao visual V1 --}}
     <details>
         <summary class="formTitlePanel">LOGS DE MODIFICAÇÃO DE RMA</summary>
-        <div style="font-size:12px;padding:10px 0;">
-            <p>Histórico detalhado de alterações nos RMAs, incluindo usuário responsável, ação e atalho para visualização do produto.</p>
-            <p style="margin-top:10px;">
-                <a href="{{ rota_tema('rmas.historico.index') }}" class="formButtonEnviarPanel" style="display:inline-block;text-decoration:none;padding:5px 12px;color:#fff;">
+        <div style="font-size:12px;padding:6px 0 8px 0;max-width:780px;">
+            <p style="margin:0 0 8px 0;">Histórico detalhado de alterações nos RMAs, incluindo usuário responsável, ação e atalho para visualização do produto.</p>
+            <p style="margin:0;">
+                <a href="{{ rota_tema('rmas.historico.index') }}" class="formButtonEnviarPanel" style="display:inline-block;width:auto;padding:2px 12px;text-decoration:none;color:#fff;line-height:20px;text-align:center;">
                     ABRIR LOGS DE MODIFICAÇÃO
                 </a>
             </p>
         </div>
-        <div style="height:10px;clear:both;"></div>
+        <div style="height:8px;clear:both;"></div>
     </details>
 
-    {{-- UF-14 (GAP-V1-02) - CADASTRAR NOVO USUARIO: uniao funcional com Tema V2 no padrao de Controle V1. --}}
+    {{-- UF-14 (GAP-V1-02) - CADASTRAR NOVO USUÁRIO: capacidade promovida no padrao visual V1 --}}
     <details>
         <summary class="formTitlePanel">CADASTRAR NOVO USUÁRIO</summary>
-        <div style="font-size:12px;padding:10px 0;">
-            <p>Cadastrar um novo usuário no sistema com atribuição de permissão de acesso.</p>
-            <p style="margin-top:10px;">
-                <a href="{{ rota_tema('identidade.usuarios.create') }}" class="formButtonEnviarPanel" style="display:inline-block;text-decoration:none;padding:5px 12px;color:#fff;">
+        <div style="font-size:12px;padding:6px 0 8px 0;max-width:780px;">
+            <p style="margin:0 0 8px 0;">Cadastrar um novo usuário no sistema com atribuição de permissão de acesso.</p>
+            <p style="margin:0;">
+                <a href="{{ rota_tema('identidade.usuarios.create') }}" class="formButtonEnviarPanel" style="display:inline-block;width:auto;padding:2px 12px;text-decoration:none;color:#fff;line-height:20px;text-align:center;">
                     ABRIR FORMULÁRIO DE NOVO USUÁRIO
                 </a>
             </p>
         </div>
-        <div style="height:10px;clear:both;"></div>
+        <div style="height:8px;clear:both;"></div>
     </details>
 @endsection

@@ -144,6 +144,8 @@ Route::middleware('auth')->group(function () {
     // VIS-V1-010 - painel "Controle" do TEMA V1 (`14.6.1/page/controle.php`), distinto
     // do "Controle" do TEMA V2 (esse é `rmas.historico.index`, acima).
     Route::get('/rmas-controle', [ControlePainelController::class, 'index'])->name('rmas.controle.index');
+    Route::post('/rmas-controle/representante', [ControlePainelController::class, 'storeRepresentante'])->name('rmas.controle.representante.store');
+    Route::post('/rmas-controle/arquivar', [ControlePainelController::class, 'arquivarRma'])->name('rmas.controle.arquivar');
 
     // Logística (LEG-RMA-040/041, RN-16, Fase 7) - outro segmento inicial, sem
     // conflito com `rmas/{rma}`.

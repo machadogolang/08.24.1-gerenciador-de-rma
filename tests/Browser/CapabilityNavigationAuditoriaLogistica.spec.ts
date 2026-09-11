@@ -1,5 +1,19 @@
 import { test, expect } from '@playwright/test';
 
+async function garantirTema(page: any, tema: 'v1' | 'v2'): Promise<void> {
+    await page.goto('/perfil', { waitUntil: 'load' });
+    for (let tentativa = 0; tentativa < 4; tentativa++) {
+        const texto = await page.locator('button:has-text("Alternar tema")').textContent();
+        const atual = texto?.includes('atual: v1') ? 'v1' : texto?.includes('atual: v2') ? 'v2' : null;
+        if (atual === tema) return;
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            page.locator('button:has-text("Alternar tema")').click(),
+        ]);
+        await page.goto('/perfil', { waitUntil: 'load' });
+    }
+}
+
 test.describe('CapabilityNavigationAuditoriaLogistica - Auditoria e Logística (V1 e V2)', () => {
     test('Cenário A (V1): Controle e Transporte Porto Alegre via menu lateral V1', async ({ page }) => {
         // 1. Login superadministrador (acesso a controle)
@@ -8,6 +22,8 @@ test.describe('CapabilityNavigationAuditoriaLogistica - Auditoria e Logística (
         await page.fill('#password', 'password');
         await page.click('button[type="submit"]');
         await page.waitForURL(url => !url.pathname.includes('/login'));
+
+        await garantirTema(page, 'v1');
 
         await page.goto('/rmas');
         await page.click('#menu-sessao');
@@ -35,6 +51,8 @@ test.describe('CapabilityNavigationAuditoriaLogistica - Auditoria e Logística (
         await page.fill('#password', 'password');
         await page.click('button[type="submit"]');
         await page.waitForURL(url => !url.pathname.includes('/login'));
+
+        await garantirTema(page, 'v2');
 
         await page.goto('/v2/rma');
 

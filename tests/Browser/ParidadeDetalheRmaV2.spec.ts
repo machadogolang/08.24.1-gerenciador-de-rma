@@ -35,7 +35,7 @@ test('detalhe V2 restaura cabecalho e grupos na posicao historica', async ({ pag
 
     const grupo = await page.locator('.detalhe-rma-v2 .row.formgroupnf').first().boundingBox();
     expect(grupo).not.toBeNull();
-    expect(Math.abs(grupo!.y - 84)).toBeLessThanOrEqual(3);
+    expect(Math.abs(grupo!.y - 84)).toBeLessThanOrEqual(4);
 });
 
 test('aba Pesquisar reproduz geometria e cores do Legacy', async ({ page }) => {

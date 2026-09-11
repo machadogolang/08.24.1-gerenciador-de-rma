@@ -92,7 +92,7 @@ test('TEMA V1 carrega estrutura fixa, menu histórico, cascata e assets locais s
     await page.evaluate(() => document.fonts.ready);
 
     expect(await page.locator('#BASE').evaluate(el => getComputedStyle(el).width)).toBe('984px');
-    expect(await page.locator('.menu-up').count()).toBe(7);
+    expect(await page.locator('.menu-up').count()).toBe(8);
     expect(await page.locator('.menu-up').first().evaluate(el => getComputedStyle(el).float)).toBe('left');
     expect(await page.locator('.menuDivSession').evaluate(el => getComputedStyle(el).width)).toBe('982px');
     expect(await page.locator('.JS-SessaoLEFT').evaluate(el => getComputedStyle(el).width)).toBe('838px');

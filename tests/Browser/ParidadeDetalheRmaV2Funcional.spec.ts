@@ -77,7 +77,7 @@ test('detalhe RMA V2 edita controles reais, salva e persiste apos reload', async
     // PAR-RES-C-01 - rodape sem extras modernos e com select historico azul.
     await expect(page.locator('a:has-text("Abrir pagina de edicao")')).toHaveCount(0);
     await expect(page.locator('details.detalhe-bd-acoes-avancadas')).toHaveCount(0);
-    const selectAcao = page.locator('.detalhe-rma-v2__acoes-finais select[name="acao"]');
+    const selectAcao = page.locator('.detalhe-rma-v2__acoes-finais select[name="selectacaodown"]');
     await expect(selectAcao).toBeVisible();
     await expect(selectAcao).toHaveCSS('background-color', 'rgb(34, 74, 93)');
     const rodapeY = await page.locator('.designedby').first().evaluate((el) => el.getBoundingClientRect().y);

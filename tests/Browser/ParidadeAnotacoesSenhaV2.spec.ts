@@ -72,7 +72,7 @@ test('PAR-RES-E-04 - Alterar senha V2 e superficie separada com POST/CSRF/valida
     await login(page);
 
     await page.goto(`${V3}/v2/perfil/senha`, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('.shell-v2 .breadcrumb')).toContainText('Alterar senha');
+    await expect(page.locator('.shell-v2 .breadcrumb').last()).toContainText('Alterar senha');
     await expect(page.locator('#senha_atual')).toBeVisible();
     await expect(page.locator('#nova_senha')).toBeVisible();
     await expect(page.locator('#nova_senha_confirmation')).toBeVisible();

@@ -106,9 +106,7 @@
             </div>
 
             <div id="hidden">
-                @if (session('status'))
-                    <p class="centrodeavisos">{{ session('status') }}</p>
-                @endif
+                @include('compartilhado.mensagens_feedback')
 
                 @yield('conteudo')
             </div>

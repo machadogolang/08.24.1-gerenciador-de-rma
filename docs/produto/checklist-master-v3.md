@@ -435,9 +435,11 @@ Gate por linha definido na matriz. Código `PAR-*` de cada item está na coluna
   validada, sem mudar a regra de negócio (relacionado a `ARQ-005`). Fechado em
   2026-09-10 (`destinatario` = `tipo:id` revalidado no servidor; contrato em
   `2026-09-10-contrato-p7-encaminhar-selecao-e-par-rma-008.md`).
-- [ ] **DEV H-037 (`UX-004`) - contrato transversal de flash/validação/estado vazio/
-  403/404/500** e prevenção de duplo envio. Parcial 2026-09-10: duplo envio
-  implementado (JS do tema); falta o contrato transversal completo.
+- [x] **DEV H-037 (`UX-004`) - contrato transversal de flash/validacao/estado vazio/
+  403/404/500** e prevencao de duplo envio. Fechado em 2026-09-11 com componente
+  compartilhado `mensagens_feedback.blade.php`, views dedicadas `errors/{403,404,500}`,
+  contrato em `docs/produto/2026-09-11-contrato-transversal-feedback-e-erros-ux-004.md`,
+  Feature tests (6/6 verdes) e Playwright (1/1 verde).
 
 ### H.6 Tema 3 - Console Operacional Adaptativa
 

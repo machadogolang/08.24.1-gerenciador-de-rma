@@ -142,6 +142,7 @@
                     <div class="JS-DivLEFT">
                         <h1 class="titulo-v1 {{ ($painelSessao && $omitirTituloPadrao) ? 'sr-only' : '' }}">{{ $titulo ?? '' }}</h1>
                         @if ($painelSessao)
+                            @include('compartilhado.mensagens_feedback')
                             @yield('conteudo')
                         @endif
                     </div>
@@ -176,9 +177,7 @@
                     @unless ($omitirTituloPadrao)
                         <h1 class="titulo-v1 {{ $ocultarTituloVisual ? 'sr-only' : '' }}">{{ $titulo ?? '' }}</h1>
                     @endunless
-                    @if (session('status'))
-                        <p class="centrodeavisos">{{ session('status') }}</p>
-                    @endif
+                    @include('compartilhado.mensagens_feedback')
                     @yield('conteudo')
                 </div>
             @endunless

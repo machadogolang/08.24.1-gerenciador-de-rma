@@ -59,11 +59,7 @@
             </aside>
 
             <main id="conteudo" class="app-shell__main">
-                @if (session('status'))
-                    <p role="status" class="cartao estado-vazio" style="text-align:left;margin-bottom:16px;">
-                        {{ session('status') }}
-                    </p>
-                @endif
+                @include('compartilhado.mensagens_feedback')
                 @yield('conteudo')
             </main>
         </div>

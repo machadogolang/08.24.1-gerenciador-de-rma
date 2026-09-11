@@ -402,15 +402,15 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   - [x] T3-11 - RMA detalhe (ver A7/T3-11 acima; linha da frente V3 reconciliada em 2026-09-09).
   - [x] T3-12 - RMA formularios (57f1c13; PHPUnit 536/1619 e Playwright
     2/2 verdes).
-  - [ ] T3-13 - Parceiros.
-  - [ ] T3-14 - Usuarios/admin.
-  - [ ] T3-15 - Relatorios.
-  - [ ] T3-16 - Secundarias.
-  - [ ] T3-17 - Selecao explicita de tema (implementacao).
-  - [ ] T3-18 - Mobile/browser.
-  - [ ] T3-19 - Acessibilidade.
-  - [ ] T3-20 - Performance.
-  - [ ] T3-GATE - Liberar Tema V3 no seletor.
+  - [x] T3-13 - Parceiros.
+  - [x] T3-14 - Usuarios/admin.
+  - [x] T3-15 - Relatorios.
+  - [x] T3-16 - Secundarias.
+  - [x] T3-17 - Selecao explicita de tema.
+  - [x] T3-18 - Mobile/browser.
+  - [x] T3-19 - Acessibilidade.
+  - [x] T3-20 - Performance.
+  - [x] T3-GATE - Liberar Tema V3 no seletor.
 
 
 ## AUDITORIA E CORRECOES CONFIRMADAS (2026-09-09)
@@ -466,10 +466,10 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 - [x] P7 - UX-003: Encaminhar por selecao validada + PAR-RMA-008 (fechado 2026-09-10).
   Selecao `destinatario` (`tipo:id`) validada no servidor por `OpcoesDeDestinatario`
   (tipo, existencia e tenant); Feature 548/1691 e Playwright dirigido verdes.
-- [ ] P8 - Parcial 2026-09-10: Anotacoes V2 dedicada reconciliada (PAR-RES-E-04),
-  confirmacao de remocao (UX-002), UX-001 e duplo envio de UX-004 implementados com
-  testes. Falta o contrato transversal completo de flash/validacao/estado vazio/403/
-  404/500.
+- [x] P8 - Contrato transversal de flash/validacao/estado vazio/403/404/500 (fechado 2026-09-11).
+  Componente compartilhado `mensagens_feedback.blade.php`, views dedicadas `errors/{403,404,500}`,
+  contrato em `docs/produto/2026-09-11-contrato-transversal-feedback-e-erros-ux-004.md`,
+  Feature tests (6/6 verdes) e Playwright (1/1 verde).
 
 - [x] P9 - Inventario de rotas/plugins residuais (`docs/produto/2026-09-10-inventario-rotas-e-plugins-residuais.md`,
   2026-09-10; 150 rotas, sem orfas, V3 segue oculto).

@@ -52,12 +52,37 @@ test.describe('Quadrante 4 - Identidade, Auditoria e Controle (V1 e V2)', () => 
 
         // 2. Acesso ao painel Controle V1
         await page.goto(`${BASE_URL}/rmas-controle`, { waitUntil: 'domcontentloaded' });
-        await expect(page.locator('h1.titulo-v1:has-text("Controle")')).toBeVisible();
+        await expect(page.locator('h1.titulo-v1')).toHaveText(/Controle/i);
 
-        // Verifica presenca das secoes de auditoria e cadastro no Controle V1
-        await expect(page.locator('summary:has-text("LOGS DE AUTENTICAÇÃO"), summary:has-text("LOGS DE AUTENTICACAO")').first()).toBeVisible();
-        await expect(page.locator('summary:has-text("LOGS DE MODIFICAÇÃO"), summary:has-text("LOGS DE MODIFICACAO")').first()).toBeVisible();
-        await expect(page.locator('summary:has-text("CADASTRAR NOVO USUÁRIO"), summary:has-text("CADASTRAR NOVO USUARIO")').first()).toBeVisible();
+        // Painel #01: Adicionar Representante - formulário compacto
+        const summaryRep = page.locator('#panel1-details summary.formTitlePanel');
+        await expect(summaryRep).toBeVisible();
+        await summaryRep.click();
+        await expect(page.locator('#panel1-details input[name="nome"]')).toBeVisible();
+        await expect(page.locator('#panel1-details select[name="tipo"]')).toBeVisible();
+
+        // Painel #04: Arquivar RMA
+        const summaryArq = page.locator('#panel4-details summary.formTitlePanel');
+        await expect(summaryArq).toBeVisible();
+        await summaryArq.click();
+        await expect(page.locator('#panel4-details input[name="numero"]')).toBeVisible();
+
+        // Painéis históricos #05 e #06: formulários preservados
+        await expect(page.locator('#panel5-details summary.formTitlePanel')).toBeVisible();
+        await expect(page.locator('#panel6-details summary.formTitlePanel')).toBeVisible();
+
+        // Painel #09: Mudar Senha - layout compacto com 3 campos
+        const summarySenha = page.locator('#panel9-details summary.formTitlePanel');
+        await expect(summarySenha).toBeVisible();
+        await summarySenha.click();
+        await expect(page.locator('#panel9-details input[name="senha_atual"]')).toBeVisible();
+        await expect(page.locator('#panel9-details input[name="nova_senha"]')).toBeVisible();
+        await expect(page.locator('#panel9-details input[name="nova_senha_confirmation"]')).toBeVisible();
+
+        // Verifica presenca e navegacao das secoes de auditoria e cadastro no Controle V1
+        await expect(page.locator('#panel-logs-autenticacao summary.formTitlePanel')).toBeVisible();
+        await expect(page.locator('#panel-logs-modificacao summary.formTitlePanel')).toBeVisible();
+        await expect(page.locator('#panel-novo-usuario summary.formTitlePanel')).toBeVisible();
 
         // 3. Acesso ao formulario de novo usuario V1
         await page.goto(`${BASE_URL}/v1/usuarios/novo`, { waitUntil: 'domcontentloaded' });

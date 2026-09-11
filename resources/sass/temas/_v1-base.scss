@@ -719,9 +719,9 @@ li {
 // VIS-V1-010 / UI-V1-CONTROLE-01 - painel "Controle" (`pattern/14.6.1.css`: `.formTitlePanel`,
 // `.formLabelPanel`, `.trcontrole1`/`.tdcontrole1`). `<details>/<summary>` nativos
 // reproduzem com fidelidade o comportamento historico (cada painel expande e mantem
-// seu titulo em negrito, sem accordion exclusivo).
+// seu titulo em negrito, sem accordion exclusivo, sem marcador/seta nativa).
 details {
-    margin-bottom: 6px;
+    margin-bottom: 0;
 
     &[open] > summary.formTitlePanel {
         font-weight: bold;
@@ -729,12 +729,29 @@ details {
     }
 }
 
+summary.formTitlePanel,
 .formTitlePanel {
     clear: both;
-    margin: 0 0 6px;
+    margin: 0 0 10px;
     font-size: 13px;
+    font-weight: 300;
+    color: #fff;
     cursor: pointer;
+    list-style: none;
+    user-select: none;
     outline: none;
+
+    &::-webkit-details-marker {
+        display: none;
+    }
+
+    &::marker {
+        display: none;
+    }
+
+    &:hover {
+        color: yellow;
+    }
 
     &:focus-visible {
         outline: 1px dotted rgba(255, 255, 255, 0.5);

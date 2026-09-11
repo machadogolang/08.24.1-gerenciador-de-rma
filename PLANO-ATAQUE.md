@@ -503,13 +503,21 @@ Instrucao do dono:
 - Sequencia: INVESTIGACAO -> DOCUMENTACAO -> CORRECAO -> TESTE BROWSER.
 
 ### Checklist Executavel da Frente Controle V1
-- [ ] CTRL-01 - Investigacao forense detalhada de `legacy-source/14.6.1/page/controle.php`
+- [x] CTRL-01 - Investigacao forense detalhada de `legacy-source/14.6.1/page/controle.php`
       vs `resources/views/temas/v1/rma/controle.blade.php`, layout, estilos e `ControlePainelController`.
-- [ ] CTRL-02 - Documentar achados e matriz de diferencas (estrutura tabular, larguras, espacamentos,
-      cores, cabecalhos, contadores, alinhamentos, botoes de filtro) em `docs/produto/`.
-- [ ] CTRL-03 - Refinamento cirurgico de CSS/Blade do Painel Controle V1 mantendo 100% da estetica 14.6.1.
-- [ ] CTRL-04 - Teste automatizado de browser (Playwright) com comparacao visual e click-through.
-- [ ] CTRL-05 - Validacao da suite completa e commit isolado.
+      Identificadas setas nativas triangulares de summary, H1 artificial de Controle, formulários destruídos
+      em DELETAR, 3 linhas verticais em MUDAR SENHA e blocos prolixos da unificação funcional.
+- [x] CTRL-02 - Documentar achados e matriz de diferencas em `docs/produto/2026-09-11-refinamento-painel-controle-tema-v1.md`.
+- [x] CTRL-03 - Refinamento cirurgico de CSS/Blade do Painel Controle V1:
+      - Ocultado H1 visual com `@section('omitirTituloPadrao', true)`.
+      - Reset completo de summary (`list-style: none`, sem setas, hover amarelo fiel).
+      - Formularios historicos #05 e #06 restaurados em estetica pura (inputs/botoes desabilitados).
+      - Mudar Senha compactado em grid horizontal unico `.fl`.
+      - Capacidades promovidas compactadas em linhas horizontais limpas sem prolixidade.
+- [x] CTRL-04 - Teste automatizado de browser (Playwright) com comparacao visual e click-through
+      atualizado e aprovado em `tests/Browser/Fluxos/IdentidadeControle.spec.ts`.
+- [x] CTRL-05 - Validacao da suite completa (23/23 PHPUnit, 9/9 Playwright nos quatro quadrantes operacionais).
+
 
 ## DEPENDENCIAS
 

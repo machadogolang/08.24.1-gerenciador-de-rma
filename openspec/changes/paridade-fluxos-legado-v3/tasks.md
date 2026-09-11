@@ -11,16 +11,15 @@
   `12b74f0`.
 - [x] P6 - Busca textual integral por contrapartes (fabricante/fornecedor/cliente/
   destinatário) com prova A×B - `13e4c3a`.
-- [ ] P7 - Encaminhar por seleção validada e conclusão Legacy (UX-003/PAR-RMA-008).
+- [x] P7 - Encaminhar por selecao validada e conclusao Legacy (UX-003/PAR-RMA-008).
 - [x] PAR-V2-THEME-01 (addendum 2026-09-09) - troca V1/V2 em rota prefixada
   corrigida (9fbeac1; PHPUnit 4/4, Playwright 1/1).
-- [ ] P8 - Anotações V2 dedicada, confirmação de remoção, UX-001/UX-004.
-- [ ] P9 - Inventário de rotas/plugins residuais (avisar, enviar_email,
-  representantes, marcarcomo, pomodoro já classificado J).
-- [ ] P10 - Reconciliação documental (checklist, paridade, matriz temas, roteiro).
-- [ ] P11 - Regressão funcional por fluxo.
-- [ ] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/`.
-- [ ] P13 - PHPUnit completo + build (atual 515 testes / 1421 assertions).
+- [x] P8 - Contrato transversal de flash/validacao/estado vazio/403/404/500 (UX-004).
+- [x] P9 - Inventario de rotas/plugins residuais (`docs/produto/2026-09-10-inventario-rotas-e-plugins-residuais.md`).
+- [x] P10 - Reconciliacao documental (checklist, paridade, matriz temas, roteiro).
+- [x] P11 - Regressao funcional por fluxo (`SmokesParidadeFuncional` 4/4 verdes).
+- [x] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/` (9/9 testes verdes).
+- [x] P13 - PHPUnit completo + build (717 testes / 2758 assertions verdes).
 - [ ] P14 - Fechamento/handoff.
 
 

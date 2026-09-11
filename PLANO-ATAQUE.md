@@ -481,8 +481,9 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
   folha de relatorio).
 - [x] P13 - PHPUnit completo + build final: 550 testes / 1699 assertions verdes +
   `npm run build` verde (2026-09-10).
-- [ ] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/`: hoje so
-  `Fluxos/Tema.spec.ts`; os demais quadrantes nao foram escritos nesta sessao.
+- [x] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/` (fechado 2026-09-11).
+  Suite completa dos quatro quadrantes operacionais: CicloVidaRma (2/2), Parceiros (2/2),
+  Relatorios (2/2), IdentidadeControle (2/2) e Tema (1/1) - 9/9 testes verdes em serie.
 - [ ] P14 - Fechamento/handoff da paridade.
 - [ ] EVO-SAAS-001 - S10.4/S11.4/S13.2/S14.
 

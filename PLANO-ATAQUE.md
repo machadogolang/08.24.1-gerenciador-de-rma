@@ -159,7 +159,7 @@ Decisao canonica do dono:
 20. [x] ARQUEOLOGIA E RESTAURACAO: Componente de Loading historico (#loader e loaderpp.gif) nos Temas V1 e V2 (ARQ-RMA-LOADER-001) - asset recuperado do backup 15.9.7, markup fiel nos layouts V1/V2, defer() e CSS canonico com validacao Playwright.
 22. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+):
     - [x] T3-13: Parceiros no Tema V3 (rotas `v3.parceiros.*`, views `index`, `show` e `_form`, abas de navegacao, busca/filtro, estilizacao adaptativa mobile/desktop, testes Feature 7/7 e Playwright 1/1).
-    - [ ] T3-14: Usuarios/admin (listagem e acoes contextuais).
+    - [x] T3-14: Usuarios/admin (rotas `v3.identidade.usuarios.*`, views `usuarios` e `usuarios-novo`, navegacao no rail, acoes contextuais de alterar papel e resetar senha, testes Feature 6/6 e Playwright 1/1).
     - [ ] T3-15: Relatorios (hub + RCD/RPEC/RMPE).
     - [ ] T3-16: Secundarias (alertas, historicos, logistica, ajuda, perfil).
     - [ ] T3-17: Selecao explicita de tema (enum/controller/UI).

@@ -36,7 +36,10 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
   Evidencia: rotas v3.parceiros.*, views temas/v3/parceiros/{index,show,_form},
   tests/Feature/Temas/ParceirosV3Test.php (7/7 verdes),
   tests/Browser/ParceirosV3.spec.ts (1/1 verde).
-- [ ] T3-14 - Usuarios/admin (listagem e acoes contextuais).
+- [x] T3-14 - Usuarios/admin (listagem e acoes contextuais).
+  Evidencia: rotas v3.identidade.usuarios.*, views temas/v3/identidade/usuarios{,-novo},
+  tests/Feature/Temas/UsuariosV3Test.php (6/6 verdes),
+  tests/Browser/UsuariosV3.spec.ts (1/1 verde).
 - [ ] T3-15 - Relatorios (hub + RCD/RPEC/RMPE).
 - [ ] T3-16 - Secundarias (alertas, historicos, logistica, ajuda, perfil).
 - [ ] T3-17 - Selecao explicita de tema (enum/controller/UI). DECISAO-PENDENTE:

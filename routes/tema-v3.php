@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Identidade\UsuarioController;
 use App\Http\Controllers\Parceiros\AssistenciaTecnicaController;
 use App\Http\Controllers\Parceiros\ClienteController;
 use App\Http\Controllers\Parceiros\FabricanteController;
@@ -46,4 +47,12 @@ Route::prefix('v3')
         Route::resource('parceiros/assistencias-tecnicas', AssistenciaTecnicaController::class)
             ->parameters(['assistencias-tecnicas' => 'assistenciaTecnica'])
             ->names('parceiros.assistencias-tecnicas');
+
+        // T3-14 - Usuarios/admin no Tema V3: mesmo UsuarioController de V1/V2
+        Route::get('/usuarios', [UsuarioController::class, 'index'])->name('identidade.usuarios.index');
+        Route::get('/usuarios/novo', [UsuarioController::class, 'create'])->name('identidade.usuarios.create');
+        Route::post('/usuarios', [UsuarioController::class, 'store'])->name('identidade.usuarios.store');
+        Route::put('/usuarios/{usuario}', [UsuarioController::class, 'update'])->name('identidade.usuarios.update');
+        Route::post('/usuarios/{usuario}/resetar-senha', [UsuarioController::class, 'resetarSenha'])
+            ->name('identidade.usuarios.resetar-senha');
     });

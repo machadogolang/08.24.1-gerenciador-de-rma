@@ -1,10 +1,18 @@
 @php
     $rotaAtual = request()->route()?->getName() ?? '';
+    $podeGerenciarUsuarios = auth()->user()?->papelAtivo()->podeGerenciarUsuarios() ?? false;
     $itensNavegacao = [
         ['rotulo' => 'Dashboard', 'rota' => 'v3.dashboard', 'ativo' => str_starts_with($rotaAtual, 'v3.dashboard')],
         ['rotulo' => 'RMAs', 'rota' => 'v3.rmas.index', 'ativo' => str_starts_with($rotaAtual, 'v3.rmas')],
         ['rotulo' => 'Parceiros', 'rota' => 'v3.parceiros.clientes.index', 'ativo' => str_starts_with($rotaAtual, 'v3.parceiros')],
     ];
+    if ($podeGerenciarUsuarios) {
+        $itensNavegacao[] = [
+            'rotulo' => 'Administração',
+            'rota' => 'v3.identidade.usuarios.index',
+            'ativo' => str_starts_with($rotaAtual, 'v3.identidade'),
+        ];
+    }
 @endphp
 <!DOCTYPE html>
 <html lang="pt-BR">

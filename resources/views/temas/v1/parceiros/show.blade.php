@@ -61,7 +61,7 @@
                                 <td style="text-align:left;padding:4px 8px;">{{ $registroRma->descricao }}</td>
                                 <td style="text-align:center;">{{ $registroRma->status->name }}</td>
                                 <td style="text-align:center;">
-                                    <a href="{{ rota_tema('rmas.edit', $registroRma->id) }}" style="color:#004a80;font-weight:bold;text-decoration:none;" class="acao acao--secundaria acao--compacta">Ver</a>
+                                    <a href="{{ route('rmas.show', $registroRma->id) }}" style="color:#004a80;font-weight:bold;text-decoration:none;" class="acao acao--secundaria acao--compacta">Ver</a>
                                 </td>
                             </tr>
                         @endforeach

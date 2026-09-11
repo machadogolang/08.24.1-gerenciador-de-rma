@@ -157,7 +157,7 @@ Decisao canonica do dono:
 18. [x] P11 revalidacao, P12, P13 final, P14 (fechados).
 19. [x] FRENTE CURTA: Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01) - formulario unico de representante, arquivamento sem inline JS, supressao de docs na UI, alinhamento V1, comprovado por 8 testes Feature e 4 testes Playwright de click-through.
 20. [x] ARQUEOLOGIA E RESTAURACAO: Componente de Loading historico (#loader e loaderpp.gif) nos Temas V1 e V2 (ARQ-RMA-LOADER-001) - asset recuperado do backup 15.9.7, markup fiel nos layouts V1/V2, defer() e CSS canonico com validacao Playwright.
-22. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+):
+22. [x] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+):
     - [x] T3-13: Parceiros no Tema V3 (rotas `v3.parceiros.*`, views `index`, `show` e `_form`, abas de navegacao, busca/filtro, estilizacao adaptativa mobile/desktop, testes Feature 7/7 e Playwright 1/1).
     - [x] T3-14: Usuarios/admin (rotas `v3.identidade.usuarios.*`, views `usuarios` e `usuarios-novo`, navegacao no rail, acoes contextuais de alterar papel e resetar senha, testes Feature 6/6 e Playwright 1/1).
     - [x] T3-15: Relatorios (rotas `v3.rmas.relatorios.*`, views `index`, `_menu`, `rcd`, `rpec` e `rmpe`, hub com metricas consolidadas, testes Feature 5/5 e Playwright 1/1).
@@ -166,7 +166,7 @@ Decisao canonica do dono:
     - [x] T3-18: Mobile/browser (`MobileAdaptativoV3.spec.ts` validando viewports 375x667, 768x1024, 1440x900, drawer com ESC, cartoes de RMA/parceiros/usuarios e sem overflow horizontal).
     - [x] T3-19: Acessibilidade (`AcessibilidadeV3.spec.ts` validando alvos >= 44px, foco visivel, navegacao por teclado, aria-current e aria-expanded).
     - [x] T3-20: Performance (build Vite 706ms, bundle CSS 9.68 kB / JS 1.71 kB, consultas otimizadas sem N+1 em `PerformanceV3Test.php` 3/3 verdes).
-    - [ ] T3-GATE: Liberar Tema V3 no seletor com criterios verdes.
+    - [x] T3-GATE: Liberar Tema V3 com parecer `docs/pareceres/2026-09-11-parecer-t3-gate-tema-v3.md` e criterios verdes comprovados.
 
 ## CONCLUIDO: REFINAMENTO DO PAINEL "CONTROLE" DO TEMA V1 (UI-V1-CONTROLE-01)
 

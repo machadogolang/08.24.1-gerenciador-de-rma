@@ -65,4 +65,6 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
   Evidencia: build de producao Vite bem-sucedido em 706ms (`public/build/`),
   bundle CSS V3 de 9.68 kB (2.4 kB gzip) e JS V3 de 1.71 kB (0.7 kB gzip),
   eager loading comprovado e contagens agregadas em `tests/Feature/Temas/PerformanceV3Test.php` (3/3 verdes).
-- [ ] T3-GATE - Liberar Tema V3 no seletor com criterios verdes.
+- [x] T3-GATE - Liberar Tema V3 no seletor com criterios verdes.
+  Evidencia: parecer `docs/pareceres/2026-09-11-parecer-t3-gate-tema-v3.md`,
+  matriz completa, 595 testes Feature PHPUnit verdes e 14 testes Browser Playwright verdes.

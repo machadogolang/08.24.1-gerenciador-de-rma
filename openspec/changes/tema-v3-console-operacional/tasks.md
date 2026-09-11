@@ -32,7 +32,10 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
 - [x] T3-12 - RMA formularios (secoes, 2 colunas por relacao).
   Evidencia: 57f1c13, tests/Feature/Temas/FormulariosRmaV3Test.php,
   tests/Browser/FormulariosRmaV3.spec.ts.
-- [ ] T3-13 - Parceiros (lista/busca/detalhe/form em secoes).
+- [x] T3-13 - Parceiros (lista/busca/detalhe/form em secoes).
+  Evidencia: rotas v3.parceiros.*, views temas/v3/parceiros/{index,show,_form},
+  tests/Feature/Temas/ParceirosV3Test.php (7/7 verdes),
+  tests/Browser/ParceirosV3.spec.ts (1/1 verde).
 - [ ] T3-14 - Usuarios/admin (listagem e acoes contextuais).
 - [ ] T3-15 - Relatorios (hub + RCD/RPEC/RMPE).
 - [ ] T3-16 - Secundarias (alertas, historicos, logistica, ajuda, perfil).

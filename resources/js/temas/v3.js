@@ -38,4 +38,47 @@ document.addEventListener('DOMContentLoaded', () => {
         const rail = document.querySelector('[data-v3-rail-conteudo]');
         rail?.classList.toggle('is-collapsed');
     });
+
+    // Confirmacao de remocao com data-confirmar-remocao
+    document.addEventListener('submit', (evento) => {
+        const formulario = evento.target instanceof Element
+            ? evento.target.closest('[data-confirmar-remocao]')
+            : null;
+
+        if (formulario && ! window.confirm(formulario.dataset.confirmarRemocao || 'Confirmar remocao?')) {
+            evento.preventDefault();
+        }
+    });
+
+    // Prevencao de duplo envio
+    document.addEventListener('submit', (evento) => {
+        const formulario = evento.target;
+        if (! (formulario instanceof HTMLFormElement) || evento.defaultPrevented) {
+            return;
+        }
+
+        const botao = formulario.querySelector('button[type="submit"]');
+        if (botao instanceof HTMLButtonElement) {
+            setTimeout(() => {
+                botao.disabled = true;
+            }, 0);
+        }
+    });
+
+    // Filtro rapido de tabela / cartoes de parceiro
+    const campoFiltro = document.querySelector('[data-v3-filtro-tabela]');
+    if (campoFiltro instanceof HTMLInputElement) {
+        campoFiltro.addEventListener('input', () => {
+            const termo = campoFiltro.value.trim().toLowerCase();
+            const linhas = document.querySelectorAll('[data-linha-parceiro]');
+
+            linhas.forEach((linha) => {
+                const texto = (linha.textContent || '').toLowerCase();
+                const corresponde = termo === '' || texto.includes(termo);
+                if (linha instanceof HTMLElement) {
+                    linha.style.display = corresponde ? '' : 'none';
+                }
+            });
+        });
+    }
 });

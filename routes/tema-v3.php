@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Parceiros\AssistenciaTecnicaController;
+use App\Http\Controllers\Parceiros\ClienteController;
+use App\Http\Controllers\Parceiros\FabricanteController;
+use App\Http\Controllers\Parceiros\FornecedorController;
 use App\Http\Controllers\Rma\RmaController;
 use App\Http\Controllers\Rma\V3ConsoleController;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +31,19 @@ Route::prefix('v3')
         Route::get('/rma/{rma}/editar', [RmaController::class, 'edit'])->name('rmas.edit');
         Route::match(['put', 'patch'], '/rma/{rma}', [RmaController::class, 'update'])
             ->name('rmas.update');
+
+        // T3-13 - Parceiros no Tema V3: mesmos controllers de V1/V2/web.php,
+        // gerando v3.parceiros.{clientes,fabricantes,fornecedores,assistencias-tecnicas}.*
+        Route::get('/parceiros', fn () => redirect()->route('v3.parceiros.clientes.index'))
+            ->name('parceiros.index');
+        Route::resource('parceiros/clientes', ClienteController::class)
+            ->names('parceiros.clientes');
+        Route::resource('parceiros/fabricantes', FabricanteController::class)
+            ->names('parceiros.fabricantes');
+        Route::resource('parceiros/fornecedores', FornecedorController::class)
+            ->parameters(['fornecedores' => 'fornecedor'])
+            ->names('parceiros.fornecedores');
+        Route::resource('parceiros/assistencias-tecnicas', AssistenciaTecnicaController::class)
+            ->parameters(['assistencias-tecnicas' => 'assistenciaTecnica'])
+            ->names('parceiros.assistencias-tecnicas');
     });

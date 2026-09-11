@@ -3,6 +3,7 @@
     $itensNavegacao = [
         ['rotulo' => 'Dashboard', 'rota' => 'v3.dashboard', 'ativo' => str_starts_with($rotaAtual, 'v3.dashboard')],
         ['rotulo' => 'RMAs', 'rota' => 'v3.rmas.index', 'ativo' => str_starts_with($rotaAtual, 'v3.rmas')],
+        ['rotulo' => 'Parceiros', 'rota' => 'v3.parceiros.clientes.index', 'ativo' => str_starts_with($rotaAtual, 'v3.parceiros')],
     ];
 @endphp
 <!DOCTYPE html>

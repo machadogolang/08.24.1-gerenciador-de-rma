@@ -156,7 +156,8 @@ Decisao canonica do dono:
 17. [x] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense): 56 testes Playwright e 218 testes Feature comprovados no runtime.
 18. [x] P11 revalidacao, P12, P13 final, P14 (fechados).
 19. [x] FRENTE CURTA: Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01) - formulario unico de representante, arquivamento sem inline JS, supressao de docs na UI, alinhamento V1, comprovado por 8 testes Feature e 4 testes Playwright de click-through.
-20. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
+20. [ ] FRENTE: Tabelas Interativas Skinless - ordenacao, paginacao e filtro mantendo o visual historico 14.6.1 / 15.8.1 (PROP-TABELAS-SKINLESS-01; BUG-PAG-SVG-001 corrigido).
+21. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
 
 ## CONCLUIDO: REFINAMENTO DO PAINEL "CONTROLE" DO TEMA V1 (UI-V1-CONTROLE-01)
 
@@ -180,6 +181,30 @@ Executado e validado em 2026-09-11 com evidencia em testes Feature e Browser.
 10. Mudar senha: reter a seguranca moderna dos 3 campos, mas com alinhamento rigoroso no grid de classes do V1.
 11. Alinhamentos e larguras: labels no mesmo eixo X, inputs no mesmo eixo X, alinhamento vertical de selects e botoes.
 12. Validacao Browser: testes comparativos com Playwright medindo posicoes, gaps e jornadas reais de click-through (menu -> Controle -> Logs/Novo Usuario/Ajuda).
+
+## FRENTE: TABELAS INTERATIVAS SKINLESS (PROP-TABELAS-SKINLESS-01)
+
+Diretriz: Adicionar ordenacao dinamica de colunas, paginacao e filtro rapido nas
+tabelas dos Temas V1 e V2 rodando mecanismo headless/skinless por tras, mantendo o
+visual 100% identico ao legado 14.6.1 e 15.8.1 (sem vazamento de estilos externos,
+sem cards modernos, sem caixas de busca Bootstrap/DataTables tradicional).
+
+Documento de referencia: `docs/produto/2026-09-11-proposta-tabelas-ordenacao-paginacao-skinless.md`.
+
+- [x] Fase 0: Extincao do bug de vazamento de SVGs gigantes na paginacao (BUG-PAG-SVG-001)
+  - Criada view canonica compartilhada `resources/views/compartilhado/paginacao.blade.php`.
+  - Configurado `Paginator::defaultView` no `AppServiceProvider`.
+  - Blindagem de CSS `svg { max-width: 100%; height: auto; }` nos dois temas.
+  - Coberto por testes Playwright `PaginacaoSemVazamentoSvg.spec.ts` em `rmas-historico` e `historico-de-acesso`.
+- [ ] Fase 1: Spike arquitetural da biblioteca/script headless (DataTables skinless ou Vanilla sort)
+  - Sem carregar folhas de estilo externas ou classes poluentes.
+  - Indicadores de ordenacao discretos (`▲` / `▼`) de 10px embutidos nos `<th>` existentes.
+  - Seletor de pagina integrado com as classes historicas (`formSelectPanel` no V1, `formSelect3` no V2).
+- [ ] Fase 2: Implementacao piloto em `rmas-historico` (Tema V1 e V2)
+  - Ordenacao client-side em colunas de data, numero de RMA, fabricante e modelo.
+  - Validacao de fidelidade visual e geometria via Playwright.
+- [ ] Fase 3: Expansao para `historico-de-acesso` e tabelas de creditos
+  - Aplicacao uniforme da camada skinless nas demais listagens tabulares.
 
 
 ## REGRA DE STATUS PAI/FILHO (2026-09-10)

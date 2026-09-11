@@ -376,7 +376,7 @@ plano atualizado, `git diff --check`, commit e continuacao.
 | 5 | PAR14-REL-RPEC-001..005 | RPEC V1 (colunas, selecao, totais, info adicional, rotulos) | [x] |
 | 6 | PAR14-REL-RCD-001..003 + RMPE | RCD V1 (colunas, regra, totais, info adicional) e RMPE (PAR14-REL-RMPE-001/002) | [x] |
 | 7 | PAR15-REL-001..010 | Relatorios V2: hub estatistico + menu historico corrigido | [x] (REL-010 markup V1/V2 em RPEC/RCD/RMPE) |
-| 8 | demais | Fila executavel corrente (secao 12): USR-007/009, SEC-001, NOTE-001, PART-001..006, PART-DATA-001 e sweep de `[R]`/`[ ]` | [ ] |
+| 8 | demais | Fila executavel corrente (secao 12): USR-007/009, SEC-001, NOTE-001, PART-001..006, PART-DATA-001 e sweep de `[R]`/`[ ]` | [x] |
 
 ## 7. Decisoes pendentes abertas
 
@@ -521,4 +521,6 @@ Fila executavel corrente (ordem do dono; nada aqui e "so parecer"):
    - `PAR15-EMAIL-001`: Decisao DEC-02 mantida (envio externo inativo no ambiente local).
    - `PAR15-RMA-MARCAR-001`: Acoes de ciclo de vida com selects topo/rodape comprovadas.
 9. [x] PF-14 completo, PF-15, revalidacao P11, P12, P13 final, P14: 56 testes Playwright (`tests/Browser/CapabilityNavigation*.spec.ts` e `Paridade*.spec.ts`) e 218 testes Feature (`tests/Feature/Rma/`) 100% verdes no runtime.
-10. [ ] Proxima frente na fila: Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01).
+10. [x] Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01): formulario unico de representante, arquivamento sem inline JS, supressao de docs na UI e alinhamentos V1 comprovados por testes Feature e Playwright.
+11. [x] Arqueologia e Restauracao do componente Loading (#loader e loaderpp.gif nos temas V1 e V2, ARQ-RMA-LOADER-001).
+12. [x] Tabelas Interativas Skinless (PROP-TABELAS-SKINLESS-01): ordenacao client-side em rmas-historico, historico-de-acesso, creditos e relatorios com preservacao estrita do zebrado e zero vazamento.

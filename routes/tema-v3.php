@@ -1,10 +1,16 @@
 <?php
 
+use App\Http\Controllers\Identidade\HistoricoDeAcessoController;
 use App\Http\Controllers\Identidade\UsuarioController;
 use App\Http\Controllers\Parceiros\AssistenciaTecnicaController;
 use App\Http\Controllers\Parceiros\ClienteController;
 use App\Http\Controllers\Parceiros\FabricanteController;
 use App\Http\Controllers\Parceiros\FornecedorController;
+use App\Http\Controllers\Rma\AjudaController;
+use App\Http\Controllers\Rma\CreditoController;
+use App\Http\Controllers\Rma\HistoricoDeModificacaoController;
+use App\Http\Controllers\Rma\LogisticaController;
+use App\Http\Controllers\Rma\PainelDeAlertasController;
 use App\Http\Controllers\Rma\PainelDeRelatoriosController;
 use App\Http\Controllers\Rma\RelatorioController;
 use App\Http\Controllers\Rma\RmaController;
@@ -69,4 +75,13 @@ Route::prefix('v3')
             ->name('rmas.relatorios.rmpe');
         Route::put('/relatorios/{codigo}/informacao-adicional', [RelatorioController::class, 'salvarInformacaoAdicional'])
             ->name('rmas.relatorios.informacao-adicional.update');
+
+        // T3-16 - Secundarias no Tema V3: alertas, historicos, logistica, ajuda, perfil, creditos
+        Route::get('/alertas', [PainelDeAlertasController::class, 'index'])->name('rmas.alertas');
+        Route::get('/rmas-historico', [HistoricoDeModificacaoController::class, 'index'])->name('rmas.historico.index');
+        Route::get('/historico-de-acesso', [HistoricoDeAcessoController::class, 'index'])->name('identidade.historico-de-acesso.index');
+        Route::get('/logistica/porto-alegre', [LogisticaController::class, 'fretePortoAlegre'])->name('rmas.logistica.frete-porto-alegre');
+        Route::get('/ajuda', [AjudaController::class, 'index'])->name('rmas.ajuda');
+        Route::get('/perfil', [UsuarioController::class, 'perfil'])->name('identidade.perfil.show');
+        Route::get('/creditos', [CreditoController::class, 'index'])->name('rmas.credito.index');
     });

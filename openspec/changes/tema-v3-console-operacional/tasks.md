@@ -44,7 +44,11 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
   Evidencia: rotas v3.rmas.relatorios.*, views temas/v3/rma/relatorios/{index,_menu,rcd,rpec,rmpe},
   tests/Feature/Temas/RelatoriosV3Test.php (5/5 verdes),
   tests/Browser/RelatoriosV3.spec.ts (1/1 verde).
-- [ ] T3-16 - Secundarias (alertas, historicos, logistica, ajuda, perfil).
+- [x] T3-16 - Secundarias (alertas, historicos, logistica, ajuda, perfil).
+  Evidencia: rotas v3.* (alertas, historico, historico-de-acesso, logistica, ajuda, perfil, creditos),
+  views temas/v3/rma/{alertas,historico,logistica,ajuda,credito} e temas/v3/identidade/{historico-de-acesso,perfil},
+  tests/Feature/Temas/SecundariasV3Test.php (7/7 verdes),
+  tests/Browser/SecundariasV3.spec.ts (1/1 verde).
 - [ ] T3-17 - Selecao explicita de tema (enum/controller/UI). DECISAO-PENDENTE:
   persistir V3 exige matriz completa; QA local pode usar sessao ate T3-GATE.
 - [ ] T3-18 - Mobile/browser (viewports e cartoes).

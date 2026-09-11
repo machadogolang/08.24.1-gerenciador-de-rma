@@ -161,7 +161,7 @@ Decisao canonica do dono:
     - [x] T3-13: Parceiros no Tema V3 (rotas `v3.parceiros.*`, views `index`, `show` e `_form`, abas de navegacao, busca/filtro, estilizacao adaptativa mobile/desktop, testes Feature 7/7 e Playwright 1/1).
     - [x] T3-14: Usuarios/admin (rotas `v3.identidade.usuarios.*`, views `usuarios` e `usuarios-novo`, navegacao no rail, acoes contextuais de alterar papel e resetar senha, testes Feature 6/6 e Playwright 1/1).
     - [x] T3-15: Relatorios (rotas `v3.rmas.relatorios.*`, views `index`, `_menu`, `rcd`, `rpec` e `rmpe`, hub com metricas consolidadas, testes Feature 5/5 e Playwright 1/1).
-    - [ ] T3-16: Secundarias (alertas, historicos, logistica, ajuda, perfil).
+    - [x] T3-16: Secundarias (rotas `v3.*` para alertas, historico, historico-de-acesso, logistica, ajuda, perfil, creditos, views completas integradas ao layout V3, testes Feature 7/7 e Playwright 1/1).
     - [ ] T3-17: Selecao explicita de tema (enum/controller/UI).
     - [ ] T3-18..20: Mobile/browser, acessibilidade e performance.
     - [ ] T3-GATE: Liberar Tema V3 no seletor com criterios verdes.

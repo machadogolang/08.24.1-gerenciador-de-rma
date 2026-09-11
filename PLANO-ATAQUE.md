@@ -484,7 +484,8 @@ Ondas (cada uma com teste, commit atomico e atualizacao de plano/docs):
 - [x] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/` (fechado 2026-09-11).
   Suite completa dos quatro quadrantes operacionais: CicloVidaRma (2/2), Parceiros (2/2),
   Relatorios (2/2), IdentidadeControle (2/2) e Tema (1/1) - 9/9 testes verdes em serie.
-- [ ] P14 - Fechamento/handoff da paridade.
+- [x] P14 - Fechamento/handoff da paridade (fechado 2026-09-11).
+  Handoff canonico registrado em `docs/produto/handoff-sessao-2026-09-11-paridade-concluida.md`.
 - [ ] EVO-SAAS-001 - S10.4/S11.4/S13.2/S14.
 
 ## DEPENDENCIAS

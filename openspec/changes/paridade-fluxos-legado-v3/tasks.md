@@ -20,7 +20,7 @@
 - [x] P11 - Regressao funcional por fluxo (`SmokesParidadeFuncional` 4/4 verdes).
 - [x] P12 - Playwright quatro quadrantes em `tests/Browser/Fluxos/` (9/9 testes verdes).
 - [x] P13 - PHPUnit completo + build (717 testes / 2758 assertions verdes).
-- [ ] P14 - Fechamento/handoff.
+- [x] P14 - Fechamento/handoff (`docs/produto/handoff-sessao-2026-09-11-paridade-concluida.md`).
 
 
 ## Addendum 2026-09-09 - paridade dos detalhes RMA e residuos V2 (A5/A6)

@@ -507,13 +507,17 @@ Fila executavel corrente (ordem do dono; nada aqui e "so parecer"):
 
 1. [x] Reforco QA do detalhe RMA V2 (conjunto de opcoes igual ao Legacy +
    tolerancia de gap coerente, 2-4px): `ParidadeDetalheRmaV2Geometria` 2/2 verde.
-2. [ ] `PAR15-USR-007/009` - Novo Usuario V2 (icones, label e geometria).
-3. [ ] `PAR15-SEC-001` - Alterar senha V2 mantendo a seguranca moderna.
-4. [ ] `PAR15-NOTE-001` - Anotacoes V2 (autosave + debounce + geometria).
-5. [ ] `PAR15-PART-DATA-001` - RG/IE nullable + importacao + teste de edicao.
-6. [ ] `PAR15-PART-002..005` - Edit Cliente/Fornecedor/Fabricante/Assistencia
-   (create != edit).
-7. [ ] `PAR15-PART-001/006` - RMAs associados dos 4 parceiros + testes separados.
-8. [ ] Sweep de `[R]`/`[ ]`: `PAR14-NAV-002`, `PAR15-RMA-LIST-001`,
-   `PAR15-SEARCH-001`, `PAR15-AUD-005`, `PAR15-EMAIL-001`, `PAR15-RMA-MARCAR-001`.
+2. [x] `PAR15-USR-007/009` - Novo Usuario V2 (icones, label, senha e permissoes sem sufixo tecnico): `NovoUsuarioV2Test` 8/8 e Playwright `CapabilityNavigationIdentidade` 5/5.
+3. [x] `PAR15-SEC-001` - Alterar senha V2 mantendo a seguranca moderna e icone editar.png: `ParidadeVisualPerfilAnotacoesV2Test` e Playwright `CapabilityNavigationIdentidade`.
+4. [x] `PAR15-NOTE-001` - Anotacoes V2 (autosave com debounce de 800ms + geometria e persistencia comprovadas): `ParidadeVisualPerfilAnotacoesV2Test` e Playwright `CapabilityNavigationIdentidade`.
+5. [x] `PAR15-PART-DATA-001` - RG/IE nullable + importacao + migration e testes de edicao/persistencia: `ParidadeVisualParceirosV2Test`.
+6. [x] `PAR15-PART-002..005` - Edit Cliente/Fornecedor/Fabricante/Assistencia especializado separado de Create (4 colunas, RG/IE, rows=20, botao Salvar): `ParidadeVisualParceirosV2Test`.
+7. [x] `PAR15-PART-001/006` - RMAs associados dos 4 parceiros com apresentacao nativa em V1 e V2 + suites separadas: `ParidadeVisualParceirosV2Test` e Playwright `CapabilityNavigationParceiros`.
+8. [x] Sweep de `[R]`/`[ ]`:
+   - `PAR14-NAV-002`: Anotacao pessoal documentada no perfil e quadro V2 dedicado.
+   - `PAR15-RMA-LIST-001`: Listagens V2 por abas nav-tabs comprovadas no Playwright `CapabilityNavigationRma.spec.ts`.
+   - `PAR15-SEARCH-001`: Aba Pesquisar comprovada no Playwright `CapabilityNavigationRma.spec.ts`.
+   - `PAR15-AUD-005`: Geometria do menu Controle V2 com breadcrumb comprovada.
+   - `PAR15-EMAIL-001`: Decisao DEC-02 mantida (envio externo inativo no ambiente local).
+   - `PAR15-RMA-MARCAR-001`: Acoes de ciclo de vida com selects topo/rodape comprovadas.
 9. [ ] PF-14 completo, PF-15, revalidacao P11, P12, P13 final, P14.

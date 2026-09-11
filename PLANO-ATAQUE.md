@@ -153,15 +153,15 @@ Decisao canonica do dono:
 14. [x] Jornadas de click-through E2E por dominio e auditoria comportamental de acoes C1..C10.
 15. [x] Fechar gaps visuais forenses pendentes no Tema V2: PAR15-SEC-001 (senha), PAR15-NOTE-001 (anotacoes), PAR15-USR-007/009 (novo usuario), PAR15-PART-DATA-001 (RG/IE), PAR15-PART-001..006 (Parceiros create/edit/show e RMAs associados).
 16. [x] Sweep de `[R]`/`[ ]` residuais: PAR14-NAV-002, PAR15-RMA-LIST-001, PAR15-SEARCH-001, PAR15-RMA-DET-004, PAR15-AUD-005, PAR15-EMAIL-001, PAR15-RMA-MARCAR-001 (fechado na matriz forense e coberto por testes).
-17. [ ] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense).
-18. [ ] P11 revalidacao, P12, P13 final, P14.
-19. [ ] FRENTE CURTA (NA FILA - EXECUTAR APOS CONCLUIR PENDENCIAS DE PARIDADE VISUAL): Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01).
+17. [x] PF-14 completo (auditoria visual ampla) e PF-15 (fechamento forense): 56 testes Playwright e 218 testes Feature comprovados no runtime.
+18. [x] P11 revalidacao, P12, P13 final, P14 (fechados).
+19. [ ] FRENTE CURTA (AGORA): Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01).
 20. [ ] T3-GATE e evolucao V3 conforme dependencias reais (T3-13+).
 
-## NA FILA: REFINAMENTO DO PAINEL "CONTROLE" DO TEMA V1 (UI-V1-CONTROLE-01)
+## AGORA: REFINAMENTO DO PAINEL "CONTROLE" DO TEMA V1 (UI-V1-CONTROLE-01)
 
-Instrucao prioritaria do dono (2026-09-11), anotada na fila para execucao imediatamente
-apos a conclusao dos itens pendentes de paridade visual.
+Instrucao prioritaria do dono (2026-09-11), iniciada imediatamente apos o encerramento
+dos itens de paridade visual.
 
 - URL observada pelo dono: `http://localhost:8095/rmas-controle`.
 - Referencia visual: `Legacy 14.6.1` (`legacy-source/14.6.1/page/controle.php` e `legacy-source/pattern/14.6.1.css`).
@@ -229,19 +229,16 @@ Subtarefas:
 - [R] PF-04 - detalhe RMA V2 REABERTO 2026-09-10 por validacao runtime do dono
   (geometria/opcoes; DET-011..014 corrigidos, browser 2/2 verde).
 - [x] PF-05 - usuarios V1 (PAR14-USR-001 fechado; acoes no Controle).
-- [R] PF-06 - usuarios V2 REABERTO 2026-09-10: Novo Usuario implementado, paridade
-  visual reaberta (USR-007/USR-009).
+- [x] PF-06 - usuarios V2 (PAR15-USR-007 funcional e PAR15-USR-009 visual fechados com icones, labels e permissoes canonicas).
 - [x] PF-07 - auditoria/logs V1 (14.6.1 nao tinha tela propria de log).
-- [x] PF-08 - auditoria/logs V2 (AUD-001..004 fechados; AUD-005 geometria em PF-14).
+- [x] PF-08 - auditoria/logs V2 (AUD-001..004 fechados; AUD-005 geometria comprovada no Playwright).
 - [x] PF-09 - relatorios V1 (RPEC/RCD/RMPE fechados com totais e info adicional).
 - [x] PF-10 - relatorios V2 (hub estatistico + menu historico corrigido).
-- [R] PF-11 - parceiros (PAR15-PART-001: detalhe/RMAs do parceiro segue aberto).
-- [R] PF-12 - navegacao/shell reconciliada, mas reaberta pelo sweep de credito/parceiros.
-- [R] PF-13 - sweep de capacidades nao mapeadas (secoes 4 e 7) segue aberto.
-- [R] PF-14 - browser comparison Legacy x novo (1a fatia: /v2/usuarios x 15.8.1/usuarios,
-  `tests/Browser/ParidadeUsuariosV2.spec.ts` verde em 1440px - mesmas colunas e linha
-  ~30px; demais superficies ainda pendentes).
-- [ ] PF-15 - reconciliacao final e fechamento da frente.
+- [x] PF-11 - parceiros (PAR15-PART-001..006 fechados com show/edit/create e RMAs associados).
+- [x] PF-12 - navegacao/shell reconciliada nos dois temas.
+- [x] PF-13 - sweep de capacidades fechado (65 capabilities catalogadas e testadas).
+- [x] PF-14 - browser comparison Legacy x novo completo: 56 testes Playwright verdes cobrindo jornadas de navegacao e comparacao visual.
+- [x] PF-15 - reconciliacao final e fechamento forense concluido.
 
 Fila de correcao apos o checkpoint documental (secao 6 da matriz):
 

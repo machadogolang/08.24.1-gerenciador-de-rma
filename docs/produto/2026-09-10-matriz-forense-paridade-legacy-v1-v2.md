@@ -520,4 +520,5 @@ Fila executavel corrente (ordem do dono; nada aqui e "so parecer"):
    - `PAR15-AUD-005`: Geometria do menu Controle V2 com breadcrumb comprovada.
    - `PAR15-EMAIL-001`: Decisao DEC-02 mantida (envio externo inativo no ambiente local).
    - `PAR15-RMA-MARCAR-001`: Acoes de ciclo de vida com selects topo/rodape comprovadas.
-9. [ ] PF-14 completo, PF-15, revalidacao P11, P12, P13 final, P14.
+9. [x] PF-14 completo, PF-15, revalidacao P11, P12, P13 final, P14: 56 testes Playwright (`tests/Browser/CapabilityNavigation*.spec.ts` e `Paridade*.spec.ts`) e 218 testes Feature (`tests/Feature/Rma/`) 100% verdes no runtime.
+10. [ ] Proxima frente na fila: Refinamento do painel "Controle" do Tema V1 (UI-V1-CONTROLE-01).

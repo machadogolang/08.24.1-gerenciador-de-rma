@@ -40,7 +40,10 @@ Status do plano: [ ] pendente, [R] revisado, [x] concluido com evidencia.
   Evidencia: rotas v3.identidade.usuarios.*, views temas/v3/identidade/usuarios{,-novo},
   tests/Feature/Temas/UsuariosV3Test.php (6/6 verdes),
   tests/Browser/UsuariosV3.spec.ts (1/1 verde).
-- [ ] T3-15 - Relatorios (hub + RCD/RPEC/RMPE).
+- [x] T3-15 - Relatorios (hub + RCD/RPEC/RMPE).
+  Evidencia: rotas v3.rmas.relatorios.*, views temas/v3/rma/relatorios/{index,_menu,rcd,rpec,rmpe},
+  tests/Feature/Temas/RelatoriosV3Test.php (5/5 verdes),
+  tests/Browser/RelatoriosV3.spec.ts (1/1 verde).
 - [ ] T3-16 - Secundarias (alertas, historicos, logistica, ajuda, perfil).
 - [ ] T3-17 - Selecao explicita de tema (enum/controller/UI). DECISAO-PENDENTE:
   persistir V3 exige matriz completa; QA local pode usar sessao ate T3-GATE.
